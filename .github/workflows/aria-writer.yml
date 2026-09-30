@@ -1,0 +1,60 @@
+# Aria AI Writer – Subscription Runner
+# Created and managed automatically by the WordPress plugin. Do not rename this file.
+name: Aria AI Writer
+
+on:
+  workflow_dispatch:
+    inputs:
+      trigger:
+        description: "cron | manual | test"
+        default: "manual"
+      topic_id:
+        description: "Specific topic id (0 = next in queue)"
+        default: "0"
+      engine:
+        description: "claude | codex"
+        default: "claude"
+      model:
+        description: "Model alias (optional)"
+        default: ""
+
+concurrency:
+  group: aria-ai-writer
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  write:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install official CLI (Claude Code or OpenAI Codex)
+        run: |
+          if [ "${{ inputs.engine }}" = "codex" ]; then
+            npm install -g @openai/codex
+            codex --version
+          else
+            npm install -g @anthropic-ai/claude-code
+            claude --version
+          fi
+
+      - name: Write articles with your subscription
+        run: node runner/runner.mjs
+        env:
+          AAW_TRIGGER: ${{ inputs.trigger }}
+          AAW_TOPIC_ID: ${{ inputs.topic_id }}
+          AAW_ENGINE: ${{ inputs.engine }}
+          AAW_MODEL: ${{ inputs.model }}
+          AAW_WP_API: ${{ secrets.AAW_WP_API }}
+          AAW_WORKER_URL: ${{ secrets.AAW_WORKER_URL }}
+          AAW_SHARED_SECRET: ${{ secrets.AAW_SHARED_SECRET }}
+          CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          CODEX_AUTH_JSON: ${{ secrets.CODEX_AUTH_JSON }}
