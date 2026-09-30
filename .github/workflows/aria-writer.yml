@@ -17,6 +17,9 @@ on:
       model:
         description: "Model alias (optional)"
         default: ""
+      pull_id:
+        description: "Local-site mode job id (internal)"
+        default: ""
 
 concurrency:
   group: aria-ai-writer
@@ -53,6 +56,7 @@ jobs:
           AAW_TOPIC_ID: ${{ inputs.topic_id }}
           AAW_ENGINE: ${{ inputs.engine }}
           AAW_MODEL: ${{ inputs.model }}
+          AAW_PULL_ID: ${{ inputs.pull_id }}
           AAW_WP_API: ${{ secrets.AAW_WP_API }}
           AAW_WORKER_URL: ${{ secrets.AAW_WORKER_URL }}
           AAW_SHARED_SECRET: ${{ secrets.AAW_SHARED_SECRET }}
