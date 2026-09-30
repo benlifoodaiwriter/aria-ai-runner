@@ -70,7 +70,7 @@ const worker = (route, p, ms) => {
 };
 
 /* ------------------------------ reporting (direct or via Cloudflare KV for local sites) ------------------------------ */
-const mailbox = { results: [], logs: [], ideas: null, fatal: '' };
+const mailbox = { results: [], logs: [], ideas: null, fatal: '', analysis: null };
 async function reportDraft(topicId, article, meta) {
   if (PULL_ID) { mailbox.results.push({ topic_id: topicId, article, meta }); return { post_id: 0, title: article.title, edit_url: '(local site will collect it)' }; }
   return wp('draft', { topic_id: topicId, article, meta });
@@ -147,10 +147,12 @@ async function persistCodexAuth() {
   } catch (e) { log('Could not persist refreshed auth:', e.message); }
 }
 
-async function askClaude(system, prompt, model) {
+async function askClaude(system, prompt, model, opts = {}) {
   const sysFile = join(workDir, `sys-${Date.now()}.txt`);
   await writeFile(sysFile, system || 'You are a helpful writer.', 'utf8');
-  const args = ['-p', '--output-format', 'json', '--model', model || 'sonnet', '--tools', '', '--max-turns', '2', '--no-session-persistence', '--system-prompt-file', sysFile];
+  const args = opts.web
+    ? ['-p', '--output-format', 'json', '--model', model || 'sonnet', '--tools', 'WebSearch,WebFetch', '--allowedTools', 'WebSearch,WebFetch', '--max-turns', '40', '--no-session-persistence', '--system-prompt-file', sysFile]
+    : ['-p', '--output-format', 'json', '--model', model || 'sonnet', '--tools', '', '--max-turns', '2', '--no-session-persistence', '--system-prompt-file', sysFile];
   const env = { ...E, DISABLE_AUTOUPDATER: '1' };
   delete env.ANTHROPIC_API_KEY; // never bill the API – use the subscription token
   delete env.ANTHROPIC_AUTH_TOKEN;
@@ -199,7 +201,7 @@ async function askCodex(system, prompt, model) {
   return { text, usage };
 }
 
-const ask = (system, prompt, model) => (ENGINE === 'codex' ? askCodex(system, prompt, model) : askClaude(system, prompt, model));
+const ask = (system, prompt, model, opts) => (ENGINE === 'codex' ? askCodex(system, prompt, model) : askClaude(system, prompt, model, opts));
 
 /* ------------------------------ JSON parsing (same as worker) ------------------------------ */
 function escapeControl(src) {
@@ -305,6 +307,32 @@ async function main() {
     const msg = `اتصال اکانت اشتراکی (${ENGINE === 'claude' ? 'Claude' : 'ChatGPT'}) از GitHub موفق بود: «${r.text.trim().slice(0, 60)}» در ${Math.round((Date.now() - t0) / 1000)} ثانیه`;
     await reportLog('success', 'test', msg);
     summary('### ' + msg);
+    return;
+  }
+
+  if (TRIGGER === 'analyze') {
+    if (!PULL_ID) throw new Error('analyze requires a job id');
+    const q = await worker('queue_get', { id: PULL_ID }, 30000);
+    const a = q.payload || {};
+    let prompt = a.prompt || '';
+    let fetched = 0;
+    if (Array.isArray(a.competitors) && a.competitors.length) {
+      try {
+        const c = await worker('competitors', { urls: a.competitors }, 120000);
+        fetched = c.fetched || 0;
+        if (c.text) prompt += '\n\n# داده‌های واقعی جمع‌آوری‌شده از سایت رقبا' + c.text;
+      } catch (e) { log('competitor fetch failed:', e.message); }
+    }
+    const t0 = Date.now();
+    const r = await ask(a.system || '', prompt, MODEL, { web: ENGINE === 'claude' });
+    let analysis = parseJSON(r.text);
+    if (!analysis || !analysis.topics) {
+      const fix = await ask('Return the same content as ONE valid JSON object with keys summary, audience, business_type, pillars, gaps, competitors, trends, seo_notes, topics. JSON only.', r.text.slice(0, 60000), MODEL);
+      analysis = parseJSON(fix.text);
+    }
+    if (!analysis || !analysis.topics) throw new Error('خروجی تحلیل قابل پردازش نبود.');
+    mailbox.analysis = { result: analysis, meta: { provider: 'sub_' + ENGINE, model: MODEL || (ENGINE === 'claude' ? 'sonnet' : 'default'), web: ENGINE === 'claude', competitors_fetched: fetched, runner: 'github', ms: Date.now() - t0, stats: a.stats || {} } };
+    summary(`### تحلیل هوشمند سایت انجام شد: ${analysis.topics.length} موضوع پیشنهادی`);
     return;
   }
 
