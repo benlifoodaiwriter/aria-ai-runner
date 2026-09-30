@@ -1,2 +1,10 @@
-# aria-ai-runner
-Aria AI Writer – subscription runner (managed by WordPress plugin)
+# Aria AI Writer – Subscription Runner
+
+این مخزن به‌صورت خودکار توسط افزونه وردپرس «آریا رایتر هوشمند» ساخته شده است.
+
+- هر بار که زمان‌بند کلادفلر (یا دکمه «تولید فوری») اجرا شود، Workflow «Aria AI Writer» روشن می‌شود.
+- ابزار رسمی **Claude Code** (با توکن اشتراک Claude Pro/Max) یا **OpenAI Codex** (با اکانت ChatGPT Plus/Pro) مقاله را می‌نویسد.
+- مقاله با امضای امنیتی HMAC به وردپرس ارسال و در پیش‌نویس ذخیره می‌شود.
+
+این مخزن را **خصوصی** نگه دارید و Secrets آن را با کسی به اشتراک نگذارید.
+فایل‌ها را دستی تغییر ندهید؛ افزونه در صورت نیاز آن‌ها را به‌روزرسانی می‌کند.
