@@ -26,6 +26,7 @@ const TRIGGER = E.AAW_TRIGGER || 'cron';
 const TOPIC_ID = Number(E.AAW_TOPIC_ID || 0);
 const ENGINE = (E.AAW_ENGINE || 'claude').toLowerCase() === 'codex' ? 'codex' : 'claude';
 const MODEL = /^[a-z0-9.\-\[\]:]{0,80}$/i.test(E.AAW_MODEL || '') ? (E.AAW_MODEL || '') : '';
+const PULL_ID = String(E.AAW_PULL_ID || '').replace(/[^a-z0-9]/gi, '');
 const CLAUDE_BIN = E.CLAUDE_BIN || 'claude';
 const CODEX_BIN = E.CODEX_BIN || 'codex';
 const ENGINE_TIMEOUT = Math.min(Math.max(Number(E.AAW_ENGINE_TIMEOUT || 900), 60), 1800) * 1000;
@@ -67,6 +68,26 @@ const worker = (route, p, ms) => {
   if (!WORKER) throw new Error('AAW_WORKER_URL is not set');
   return signedPost(WORKER, route, p, ms || 180000);
 };
+
+/* ------------------------------ reporting (direct or via Cloudflare KV for local sites) ------------------------------ */
+const mailbox = { results: [], logs: [], ideas: null, fatal: '' };
+async function reportDraft(topicId, article, meta) {
+  if (PULL_ID) { mailbox.results.push({ topic_id: topicId, article, meta }); return { post_id: 0, title: article.title, edit_url: '(local site will collect it)' }; }
+  return wp('draft', { topic_id: topicId, article, meta });
+}
+async function reportFail(topicId, error, meta) {
+  if (PULL_ID) { mailbox.results.push({ topic_id: topicId, error, meta }); return; }
+  return wp('fail', { topic_id: topicId, error, meta });
+}
+async function reportLog(level, event, message) {
+  if (PULL_ID) { mailbox.logs.push({ level, event, message }); return; }
+  return wp('log', { level, event, message });
+}
+async function flushMailbox() {
+  if (!PULL_ID) return;
+  await worker('result_put', { id: PULL_ID, data: mailbox }, 60000);
+  log('Result stored in Cloudflare KV for the local site.');
+}
 
 /* ------------------------------ process helper ------------------------------ */
 function run(bin, args, input, env, timeoutMs = ENGINE_TIMEOUT) {
@@ -268,13 +289,13 @@ async function processJob(job, runtime) {
   }
   meta.duration_ms = Date.now() - t0;
   meta.runner = 'github';
-  const res = await wp('draft', { topic_id: job.topic.id, article, meta });
-  return res;
+  return reportDraft(job.topic.id, article, meta);
 }
 
 /* ------------------------------ main ------------------------------ */
 async function main() {
-  if (!WP_API || !SECRET) throw new Error('AAW_WP_API / AAW_SHARED_SECRET secrets are missing. Reconnect GitHub from the plugin.');
+  if (!SECRET || (!WP_API && !PULL_ID)) throw new Error('AAW_WP_API / AAW_SHARED_SECRET secrets are missing. Reconnect GitHub from the plugin.');
+  if (PULL_ID && !WORKER) throw new Error('AAW_WORKER_URL secret is missing (required for local-site mode).');
   await prepare();
   log(`engine=${ENGINE} trigger=${TRIGGER} topic=${TOPIC_ID || '-'}`);
 
@@ -282,16 +303,27 @@ async function main() {
     const t0 = Date.now();
     const r = await ask('You are a connectivity test.', 'Reply with exactly: OK', MODEL);
     const msg = `اتصال اکانت اشتراکی (${ENGINE === 'claude' ? 'Claude' : 'ChatGPT'}) از GitHub موفق بود: «${r.text.trim().slice(0, 60)}» در ${Math.round((Date.now() - t0) / 1000)} ثانیه`;
-    await wp('log', { level: 'success', event: 'test', message: msg });
+    await reportLog('success', 'test', msg);
     summary('### ' + msg);
     return;
   }
 
-  let job = await wp('job', { trigger: 'runner', origin: TRIGGER, topic_id: TOPIC_ID });
+  let job;
+  if (PULL_ID) {
+    const q = await worker('queue_get', { id: PULL_ID }, 30000);
+    job = q.payload || {};
+  } else {
+    job = await wp('job', { trigger: 'runner', origin: TRIGGER, topic_id: TOPIC_ID });
+  }
   if (job.status === 'need_topics' && job.ideas) {
     const r = await ask('You are an SEO content strategist. Return JSON only.', job.ideas.prompt, MODEL);
     const data = parseJSON(r.text);
     const ideas = ((data && (data.topics || data.ideas)) || []).map((t) => (typeof t === 'string' ? { title: t } : t)).filter((t) => t && t.title);
+    if (PULL_ID) {
+      mailbox.ideas = ideas;
+      summary(`- ${ideas.length} ایده موضوع برای سایت لوکال آماده شد`);
+      return;
+    }
     if (ideas.length) {
       await wp('topics', { topics: ideas });
       summary(`- ${ideas.length} ایده موضوع جدید اضافه شد`);
@@ -313,7 +345,7 @@ async function main() {
     } catch (e) {
       log('Failed:', j.topic.title, e.message);
       summary(`- خطا در «${j.topic.title}»: ${e.message}`);
-      try { await wp('fail', { topic_id: j.topic.id, error: e.message, meta: { provider: 'sub_' + ENGINE, runner: 'github' } }); } catch (_) { /* ignore */ }
+      try { await reportFail(j.topic.id, e.message, { provider: 'sub_' + ENGINE, runner: 'github' }); } catch (_) { /* ignore */ }
     }
   }
   if (!okCount && job.jobs.length) process.exitCode = 1;
@@ -325,11 +357,13 @@ if (isMain) {
     .catch(async (e) => {
       console.error('[aria] ERROR:', e.message);
       summary('### خطا: ' + e.message);
-      try { await wp('log', { level: 'error', event: 'run', message: 'GitHub Runner: ' + e.message }); } catch (_) { /* ignore */ }
+      mailbox.fatal = e.message;
+      try { await reportLog('error', 'run', 'GitHub Runner: ' + e.message); } catch (_) { /* ignore */ }
       process.exitCode = 1;
     })
     .finally(async () => {
       await persistCodexAuth();
+      try { await flushMailbox(); } catch (e) { console.error('[aria] could not store result:', e.message); process.exitCode = 1; }
       if (E.GITHUB_STEP_SUMMARY && summaryLines.length) {
         try { await appendFile(E.GITHUB_STEP_SUMMARY, '## Aria AI Writer\n' + summaryLines.join('\n') + '\n'); } catch (_) { /* ignore */ }
       }
