@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Aria AI Writer – Subscription Runner (GitHub Actions)
+ * ARIAGH.AIWRITER – Subscription Runner (GitHub Actions)
  * ---------------------------------------------------------------
  * Writes articles with the AI account you already pay for (chat subscription),
  * using the vendors' OFFICIAL command-line tools in headless mode:
@@ -393,7 +393,7 @@ if (isMain) {
       await persistCodexAuth();
       try { await flushMailbox(); } catch (e) { console.error('[aria] could not store result:', e.message); process.exitCode = 1; }
       if (E.GITHUB_STEP_SUMMARY && summaryLines.length) {
-        try { await appendFile(E.GITHUB_STEP_SUMMARY, '## Aria AI Writer\n' + summaryLines.join('\n') + '\n'); } catch (_) { /* ignore */ }
+        try { await appendFile(E.GITHUB_STEP_SUMMARY, '## ARIAGH.AIWRITER\n' + summaryLines.join('\n') + '\n'); } catch (_) { /* ignore */ }
       }
       if (workDir) await rm(workDir, { recursive: true, force: true }).catch(() => {});
     });
