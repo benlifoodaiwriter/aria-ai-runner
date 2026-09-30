@@ -1,6 +1,6 @@
-# Aria AI Writer – Subscription Runner
+# ARIAGH.AIWRITER – Subscription Runner
 # Created and managed automatically by the WordPress plugin. Do not rename this file.
-name: Aria AI Writer
+name: ARIAGH.AIWRITER
 
 on:
   workflow_dispatch:
