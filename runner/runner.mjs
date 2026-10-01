@@ -285,8 +285,11 @@ async function processJob(job, runtime) {
   const { article, meta } = out;
   if (runtime.image && runtime.image.enabled && WORKER) {
     try {
-      const img = await worker('image', { cfg: runtime.image, article }, 180000);
-      if (img && img.image) article.image = img.image;
+      const img = await worker('image', { cfg: runtime.image, article, refs: job.images || {} }, 600000);
+      if (img && img.image) {
+        if (img.image.inline) { article.inline_images = img.image.inline; delete img.image.inline; }
+        article.image = img.image;
+      }
     } catch (e) { meta.image_error = e.message; }
   }
   meta.duration_ms = Date.now() - t0;
