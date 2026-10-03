@@ -13,7 +13,7 @@
  */
 import { spawn } from 'node:child_process';
 import { createHmac, randomBytes } from 'node:crypto';
-import { mkdtemp, writeFile, readFile, rm, mkdir, appendFile } from 'node:fs/promises';
+import { mkdtemp, writeFile, readFile, rm, mkdir, appendFile, readdir, stat } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
@@ -70,7 +70,7 @@ const worker = (route, p, ms) => {
 };
 
 /* ------------------------------ reporting (direct or via Cloudflare KV for local sites) ------------------------------ */
-const mailbox = { results: [], logs: [], ideas: null, fatal: '', analysis: null };
+const mailbox = { results: [], logs: [], ideas: null, fatal: '', analysis: null, images: [], revisions: [] };
 async function reportDraft(topicId, article, meta) {
   if (PULL_ID) { mailbox.results.push({ topic_id: topicId, article, meta }); return { post_id: 0, title: article.title, edit_url: '(local site will collect it)' }; }
   return wp('draft', { topic_id: topicId, article, meta });
@@ -201,6 +201,66 @@ async function askCodex(system, prompt, model) {
   return { text, usage };
 }
 
+/**
+ * Image with the ChatGPT plan: Codex CLI's official built-in image generation ($imagegen,
+ * gpt-image) – counts against the ChatGPT subscription, no Images API key.
+ * Reference images (product photos + site theme samples) are passed with -i.
+ */
+async function codexImage(prompt, refFiles, outName) {
+  const outDir = join(workDir, 'out');
+  await mkdir(outDir, { recursive: true });
+  const target = join(outDir, outName);
+  const genDir = join(codexHome, 'generated_images');
+  const before = Date.now();
+  const task = `Use your built-in image generation ($imagegen skill / image_gen tool) to create exactly ONE photorealistic image.
+${refFiles.length ? `The attached images are references: product photos first (keep the exact product, packaging, label and colors), then example images from the website (match their color palette, lighting and mood).\n` : ''}Image description: ${prompt}
+No text, letters or watermark in the image. Save the final image as ${target} (PNG). Do not create any other files and do not run unrelated commands.`;
+  const args = ['exec', '--skip-git-repo-check', '--sandbox', 'workspace-write', '--ephemeral', '--json', '-C', workDir];
+  if (refFiles.length) args.push('-i', refFiles.join(','));
+  args.push('-');
+  const env = { ...E, CODEX_HOME: codexHome };
+  delete env.OPENAI_API_KEY; // use the ChatGPT plan, never the Images API
+  delete env.CODEX_API_KEY;
+  const r = await run(CODEX_BIN, args, task, env);
+  await persistCodexAuth();
+  let file = existsSync(target) ? target : '';
+  if (!file && existsSync(genDir)) {
+    // Fall back to the newest image Codex saved in its generated_images folder.
+    const walk = async (d) => {
+      let best = null;
+      for (const n of await readdir(d)) {
+        const f = join(d, n); const st = await stat(f);
+        if (st.isDirectory()) { const b = await walk(f); if (b && (!best || b.t > best.t)) best = b; }
+        else if (/\.(png|jpe?g|webp)$/i.test(n) && st.mtimeMs >= before - 1000 && (!best || st.mtimeMs > best.t)) best = { f, t: st.mtimeMs };
+      }
+      return best;
+    };
+    const b = await walk(genDir);
+    if (b) file = b.f;
+  }
+  if (!file) {
+    const msg = (r.err || r.out || 'no image produced').slice(-600);
+    throw Object.assign(new Error((/limit|quota|usage/i.test(msg) ? 'سهمیه تصویر ChatGPT: ' : 'Codex image: ') + msg), { quota: /limit|quota|usage/i.test(msg) });
+  }
+  const buf = await readFile(file);
+  const mime = /\.jpe?g$/i.test(file) ? 'image/jpeg' : /\.webp$/i.test(file) ? 'image/webp' : 'image/png';
+  return { base64: buf.toString('base64'), mime, engine: 'sub_codex' };
+}
+
+async function refsToFiles(refs) {
+  const files = [];
+  let i = 0;
+  for (const r of refs || []) {
+    try {
+      let buf = null;
+      if (r.b64) buf = Buffer.from(r.b64, 'base64');
+      else if (r.url) { const res = await fetch(r.url); if (res.ok) buf = Buffer.from(await res.arrayBuffer()); }
+      if (buf && buf.length > 100) { const f = join(workDir, `ref-${i++}.jpg`); await writeFile(f, buf); files.push(f); }
+    } catch (_) { /* skip unreachable reference */ }
+  }
+  return files.slice(0, 8);
+}
+
 const ask = (system, prompt, model, opts) => (ENGINE === 'codex' ? askCodex(system, prompt, model) : askClaude(system, prompt, model, opts));
 
 /* ------------------------------ JSON parsing (same as worker) ------------------------------ */
@@ -310,6 +370,39 @@ async function main() {
     const msg = `اتصال اکانت اشتراکی (${ENGINE === 'claude' ? 'Claude' : 'ChatGPT'}) از GitHub موفق بود: «${r.text.trim().slice(0, 60)}» در ${Math.round((Date.now() - t0) / 1000)} ثانیه`;
     await reportLog('success', 'test', msg);
     summary('### ' + msg);
+    return;
+  }
+
+  if (TRIGGER === 'image') {
+    if (!PULL_ID) throw new Error('image requires a job id');
+    const q = await worker('queue_get', { id: PULL_ID }, 30000);
+    const t = q.payload || {};
+    const refs = await refsToFiles([...(t.refs && t.refs.products || []), ...(t.refs && t.refs.styles || [])]);
+    const image = await codexImage(t.prompt || 'editorial product photo', refs, 'featured.png');
+    image.refs_used = refs.length;
+    const inline = [];
+    for (const [k, it] of (t.inline || []).entries()) {
+      try { inline.push({ ...(await codexImage(it.prompt, refs, `inline-${k}.png`)), alt: it.alt || '', after_h2: it.after_h2 || 0 }); } catch (e) { if (e.quota) break; }
+    }
+    mailbox.images.push({ post_id: t.post_id || 0, topic_id: t.topic_id || 0, image, inline, prompt: t.prompt || '', replace_inline: !!t.replace_inline });
+    summary(`### تصویر با اشتراک ChatGPT ساخته شد (${refs.length} مرجع${inline.length ? '، ' + inline.length + ' تصویر داخل متن' : ''})`);
+    return;
+  }
+
+  if (TRIGGER === 'revise') {
+    if (!PULL_ID) throw new Error('revise requires a job id');
+    const q = await worker('queue_get', { id: PULL_ID }, 30000);
+    const t = q.payload || {};
+    const r = await ask(t.system || '', t.prompt || '', MODEL);
+    let article = parseJSON(r.text);
+    if (!article || !article.content_html) {
+      const fix = await ask('Convert into ONE valid JSON object with keys: title, seo_title, meta_description, focus_keyword, excerpt, content_html, faq. JSON only.', r.text.slice(0, 60000), MODEL);
+      article = parseJSON(fix.text);
+    }
+    if (!article || !article.content_html) throw new Error('خروجی اصلاح قابل پردازش نبود.');
+    article._meta = { provider: 'sub_' + ENGINE, usage: r.usage };
+    mailbox.revisions.push({ post_id: t.post_id || 0, article, request_id: t.request_id || '' });
+    summary('### اصلاحات روی مقاله اعمال شد: ' + (article.title || ''));
     return;
   }
 
