@@ -1,0 +1,212 @@
+<?php
+/**
+ * Registry of background job handlers.
+ *
+ * @package SEOlity
+ */
+
+namespace SEOlity\Queue;
+
+use SEOlity\Plugin;
+
+defined( 'ABSPATH' ) || exit;
+
+final class Jobs {
+
+	public static function register( Queue $q, Plugin $p ) {
+		// Crawler / audit.
+		$q->handler( 'crawl_start', static function ( $a ) use ( $p ) {
+			return $p->crawler->start( isset( $a['type'] ) ? $a['type'] : 'full' );
+		} );
+		$q->handler( 'crawl_seed', static function ( $a ) use ( $p ) {
+			return $p->crawler->seed( (int) $a['audit_id'], $a['phase'], (int) $a['offset'] );
+		} );
+		$q->handler( 'crawl_batch', static function ( $a ) use ( $p ) {
+			return $p->crawler->process_batch( (int) $a['audit_id'] );
+		} );
+		$q->handler( 'crawl_finalize', static function ( $a ) use ( $p ) {
+			return $p->crawler->finalize( (int) $a['audit_id'] );
+		} );
+		$q->handler( 'pagespeed_run', static function () use ( $p ) {
+			return $p->pagespeed->run_batch();
+		} );
+
+		// Google Search Console.
+		$q->handler( 'gsc_sync', static function ( $a ) use ( $p ) {
+			return $p->gsc_sync->sync( isset( $a['days'] ) ? (int) $a['days'] : null );
+		} );
+		$q->handler( 'gsc_sync_range', static function ( $a ) use ( $p ) {
+			return $p->gsc_sync->sync_range( $a['start'], $a['end'], $a['kind'], isset( $a['start_row'] ) ? (int) $a['start_row'] : 0 );
+		} );
+
+		// Intelligence.
+		$q->handler( 'recommendations_refresh', static function () use ( $p ) {
+			return $p->recommendations->refresh();
+		} );
+		$q->handler( 'keywords_sync', static function () use ( $p ) {
+			return $p->keywords->sync_from_gsc();
+		} );
+		$q->handler( 'experiments_evaluate', static function () use ( $p ) {
+			$p->experiments->evaluate_due();
+			$p->learning->recompute();
+		} );
+		$q->handler( 'alerts_check', static function () use ( $p ) {
+			return $p->alerts->check();
+		} );
+		$q->handler( 'briefing_generate', static function ( $a ) use ( $p ) {
+			return $p->briefing->generate( isset( $a['date'] ) ? $a['date'] : gmdate( 'Y-m-d' ) );
+		} );
+		$q->handler( 'health_snapshot', static function () use ( $p ) {
+			return $p->health->snapshot();
+		} );
+		$q->handler( 'links_suggest', static function () use ( $p ) {
+			return $p->links->build_suggestions();
+		} );
+		$q->handler( 'clusters_build', static function () use ( $p ) {
+			return $p->planner->build_clusters();
+		} );
+
+		// Competitors.
+		$q->handler( 'competitor_analyze', static function ( $a ) use ( $p ) {
+			return $p->competitors->analyze( (int) $a['id'] );
+		} );
+		$q->handler( 'competitor_crawl_batch', static function ( $a ) use ( $p ) {
+			return $p->competitors->crawl_batch( (int) $a['id'] );
+		} );
+		$q->handler( 'competitor_summarize', static function ( $a ) use ( $p ) {
+			return $p->competitors->summarize( (int) $a['id'] );
+		} );
+
+		// Images / 404.
+		$q->handler( 'images_scan', static function ( $a ) use ( $p ) {
+			return $p->images->scan( isset( $a['offset'] ) ? (int) $a['offset'] : 0 );
+		} );
+		$q->handler( 'not_found_suggest', static function () use ( $p ) {
+			return $p->not_found->suggest_pending();
+		} );
+
+		// AI bulk work (one object per job keeps memory + timeouts in check).
+		$q->handler( 'bulk_item', static function ( $a ) use ( $p ) {
+			return $p->optimizer->bulk_item( $a );
+		} );
+		$q->handler( 'analyze_object', static function ( $a ) use ( $p ) {
+			return $p->optimizer->analyze_object( $a['object_type'], (int) $a['object_id'] );
+		} );
+
+		// Rules / automation.
+		$q->handler( 'rules_event', static function ( $a ) use ( $p ) {
+			return $p->rules->run_event( $a['event'], isset( $a['context'] ) ? $a['context'] : array() );
+		} );
+		$q->handler( 'rules_scheduled', static function () use ( $p ) {
+			return $p->rules->run_scheduled();
+		} );
+
+		// Reports.
+		$q->handler( 'report_generate', static function ( $a ) use ( $p ) {
+			$id = $p->reports->generate( $a['type'] );
+			if ( ! empty( $a['email'] ) && $id ) {
+				$p->reports->email( $id );
+			}
+			return true;
+		} );
+
+		// Knowledge base + GitHub storage.
+		$q->handler( 'knowledge_sync', static function ( $a ) use ( $p ) {
+			return $p->knowledge->sync( ! empty( $a['bundled_only'] ) );
+		} );
+		$q->handler( 'knowledge_contribute', static function () use ( $p ) {
+			return $p->knowledge->contribute_learnings();
+		} );
+		$q->handler( 'archive_run', static function () use ( $p ) {
+			return $p->archive->run();
+		} );
+
+		// Orchestration.
+		$q->handler( 'daily_pipeline', static function () use ( $p ) {
+			self::daily_pipeline( $p );
+		} );
+		$q->handler( 'weekly_pipeline', static function () use ( $p ) {
+			self::weekly_pipeline( $p );
+		} );
+		$q->handler( 'cleanup', static function () use ( $p ) {
+			self::cleanup( $p );
+		} );
+	}
+
+	/**
+	 * The "Automated Daily SEO Intelligence" pipeline (section 30). Each step is
+	 * its own job so one failure never blocks the rest; dependent steps are delayed.
+	 */
+	public static function daily_pipeline( Plugin $p ) {
+		$q = $p->queue;
+		$s = $p->settings;
+
+		if ( $p->gsc_oauth->is_connected() ) {
+			$q->push( 'gsc_sync', array( 'days' => 5 ), array( 'unique' => 'daily', 'priority' => 2 ) );
+			$q->push( 'keywords_sync', array(), array( 'unique' => true, 'priority' => 15, 'delay' => 20 * MINUTE_IN_SECONDS ) );
+		}
+		$freq = $s->get( 'crawl_frequency' );
+		$last = (int) get_option( 'seolity_last_full_crawl', 0 );
+		$due  = array( 'daily' => DAY_IN_SECONDS, 'weekly' => WEEK_IN_SECONDS, 'monthly' => 30 * DAY_IN_SECONDS );
+		if ( isset( $due[ $freq ] ) && time() - $last >= $due[ $freq ] - HOUR_IN_SECONDS ) {
+			$q->push( 'crawl_start', array( 'type' => 'full' ), array( 'unique' => true, 'priority' => 5 ) );
+		} else {
+			$q->push( 'crawl_start', array( 'type' => 'incremental' ), array( 'unique' => true, 'priority' => 5 ) );
+		}
+		foreach ( $p->competitors->due_ids() as $cid ) {
+			$q->push( 'competitor_analyze', array( 'id' => $cid ), array( 'unique' => true, 'priority' => 25 ) );
+		}
+		$q->push( 'experiments_evaluate', array(), array( 'unique' => true, 'priority' => 10, 'delay' => 30 * MINUTE_IN_SECONDS ) );
+		$q->push( 'recommendations_refresh', array(), array( 'unique' => true, 'priority' => 12, 'delay' => 40 * MINUTE_IN_SECONDS ) );
+		$q->push( 'rules_scheduled', array(), array( 'unique' => true, 'priority' => 14, 'delay' => 45 * MINUTE_IN_SECONDS ) );
+		$q->push( 'alerts_check', array(), array( 'unique' => true, 'priority' => 5, 'delay' => 50 * MINUTE_IN_SECONDS ) );
+		$q->push( 'health_snapshot', array(), array( 'unique' => true, 'priority' => 15, 'delay' => 55 * MINUTE_IN_SECONDS ) );
+		$q->push( 'briefing_generate', array( 'date' => gmdate( 'Y-m-d' ) ), array( 'unique' => true, 'priority' => 8, 'delay' => HOUR_IN_SECONDS ) );
+		$q->push( 'pagespeed_run', array(), array( 'unique' => true, 'priority' => 40, 'delay' => 70 * MINUTE_IN_SECONDS ) );
+
+		if ( 'daily' === $s->get( 'report_frequency' ) ) {
+			$q->push( 'report_generate', array( 'type' => 'daily', 'email' => true ), array( 'unique' => true, 'priority' => 30, 'delay' => 75 * MINUTE_IN_SECONDS ) );
+		}
+		if ( 'monthly' === $s->get( 'report_frequency' ) && '01' === gmdate( 'd' ) ) {
+			$q->push( 'report_generate', array( 'type' => 'monthly', 'email' => true ), array( 'unique' => true, 'priority' => 30, 'delay' => 75 * MINUTE_IN_SECONDS ) );
+		}
+		if ( $s->get( 'storage_enabled' ) ) {
+			$q->push( 'archive_run', array(), array( 'unique' => true, 'priority' => 50, 'delay' => 90 * MINUTE_IN_SECONDS ) );
+		}
+		if ( $s->get( 'kb_auto_sync' ) ) {
+			$q->push( 'knowledge_sync', array(), array( 'unique' => true, 'priority' => 45 ) );
+		}
+		$q->push( 'cleanup', array(), array( 'unique' => true, 'priority' => 60, 'delay' => 2 * HOUR_IN_SECONDS ) );
+	}
+
+	public static function weekly_pipeline( Plugin $p ) {
+		$q = $p->queue;
+		$q->push( 'links_suggest', array(), array( 'unique' => true, 'priority' => 30 ) );
+		$q->push( 'clusters_build', array(), array( 'unique' => true, 'priority' => 35 ) );
+		$q->push( 'images_scan', array( 'offset' => 0 ), array( 'unique' => true, 'priority' => 30 ) );
+		if ( 'weekly' === $p->settings->get( 'report_frequency' ) ) {
+			$q->push( 'report_generate', array( 'type' => 'weekly', 'email' => true ), array( 'unique' => true, 'priority' => 30 ) );
+		}
+		if ( $p->settings->get( 'kb_contribute' ) ) {
+			$q->push( 'knowledge_contribute', array(), array( 'unique' => true, 'priority' => 60 ) );
+		}
+	}
+
+	public static function cleanup( Plugin $p ) {
+		$db        = $p->db;
+		$retention = (int) $p->settings->get( 'retention_days' );
+		$cutoff    = gmdate( 'Y-m-d H:i:s', time() - $retention * DAY_IN_SECONDS );
+		$p->queue->cleanup();
+		$db->query( 'DELETE FROM {ai_cache} WHERE expires_at < %s', array( gmdate( 'Y-m-d H:i:s' ) ) );
+		$db->query( 'DELETE FROM {ai_requests} WHERE created_at < %s', array( $cutoff ) );
+		$db->query( "DELETE FROM {alerts} WHERE status <> 'new' AND created_at < %s", array( $cutoff ) );
+		$db->query( "DELETE FROM {not_found} WHERE status = 'ignored' AND last_seen < %s", array( $cutoff ) );
+		$db->query( 'DELETE FROM {chat} WHERE created_at < %s', array( $cutoff ) );
+		$db->query( "DELETE FROM {recommendations} WHERE status IN ('dismissed','done','stale') AND updated_at < %s", array( $cutoff ) );
+		// GSC rows beyond the configured window are kept only if not archived to GitHub.
+		if ( ! $p->settings->get( 'storage_enabled' ) ) {
+			$gsc_cutoff = gmdate( 'Y-m-d', time() - max( 490, $retention ) * DAY_IN_SECONDS );
+			$db->query( 'DELETE FROM {gsc_page_query} WHERE date < %s', array( $gsc_cutoff ) );
+		}
+	}
+}
