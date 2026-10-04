@@ -149,6 +149,7 @@ final class EditorIntegration {
 					<button type="button" class="button seolity-meta-btn"><?php esc_html_e( 'AI title & description', 'seolity' ); ?></button>
 					<button type="button" class="button seolity-faq-btn"><?php esc_html_e( 'Generate FAQ', 'seolity' ); ?></button>
 					<button type="button" class="button seolity-links-btn"><?php esc_html_e( 'Internal links', 'seolity' ); ?></button>
+					<button type="button" class="button seolity-eeat-btn"><?php esc_html_e( 'E-E-A-T analysis', 'seolity' ); ?></button>
 					<?php if ( 'product' === $post->post_type ) : ?>
 						<button type="button" class="button seolity-product-btn"><?php esc_html_e( 'AI Product Optimizer', 'seolity' ); ?></button>
 					<?php endif; ?>

@@ -80,6 +80,9 @@
 					el( Button, { variant: 'secondary', className: 'seolity-g-btn', disabled: ! saved, onClick: function () {
 						SL.linksFor( id );
 					} }, t( 'Internal links' ) ),
+					el( Button, { variant: 'secondary', className: 'seolity-g-btn', disabled: ! saved, onClick: function () {
+						SL.eeatFor( 'post', id );
+					} }, t( 'E-E-A-T analysis' ) ),
 					type === 'product' ? el( Button, { variant: 'secondary', className: 'seolity-g-btn', disabled: ! saved, onClick: function () {
 						SL.productFor( id );
 					} }, t( 'AI Product Optimizer' ) ) : null,

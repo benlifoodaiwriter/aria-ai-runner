@@ -1,0 +1,38 @@
+E-E-A-T analysis	تحلیل E-E-A-T
+Enter a keyword.	یک کلمه کلیدی وارد کنید.
+Add a SERP API key (SerpApi) in Settings → Crawler & audits to analyze live search results.	برای تحلیل نتایج زنده جست‌وجو، کلید SERP API (سرویس SerpApi) را در تنظیمات ← خزنده و ممیزی‌ها وارد کنید.
+SERP API error: %s	خطای SERP API: %s
+AI schema suggestions	پیشنهادهای اسکیمای هوش مصنوعی
+Eligible types	نوع‌های واجد شرایط
+Only mark up information that is visible on the page.	فقط اطلاعاتی را نشانه‌گذاری کنید که در صفحه قابل مشاهده است.
+SERP analysis	تحلیل نتایج جست‌وجو (SERP)
+SERP	SERP
+Analyze	تحلیل
+Keyword, e.g. buy espresso machine	کلمه کلیدی، مثلاً خرید اسپرسوساز
+Market	بازار
+Automatic (site language)	خودکار (زبان سایت)
+Fetches the live Google results page through your SERP API key and explains the dominant intent, winning format, title patterns, topics and questions.	صفحه نتایج زنده گوگل را با کلید SERP API شما دریافت می‌کند و نیت غالب، قالب برنده، الگوی عنوان‌ها، موضوعات و پرسش‌ها را توضیح می‌دهد.
+Add a SERP API key (SerpApi) in Settings → Crawler & audits to enable live SERP analysis.	برای فعال شدن تحلیل زنده SERP، کلید SERP API (سرویس SerpApi) را در تنظیمات ← خزنده و ممیزی‌ها وارد کنید.
+Analyze SERP	تحلیل SERP
+Fetching live Google results and analyzing them…	در حال دریافت نتایج زنده گوگل و تحلیل آن‌ها…
+Checking experience, expertise, authority and trust signals…	در حال بررسی سیگنال‌های تجربه، تخصص، اعتبار و اعتماد…
+E-E-A-T	E-E-A-T
+A guide for improving trust signals, not a Google metric.	راهنمایی برای بهبود سیگنال‌های اعتماد است، نه معیاری از گوگل.
+Signals found	سیگنال‌های موجود
+Missing signals	سیگنال‌های ناموجود
+Site-wide trust pages	صفحات اعتمادساز سایت
+About page	صفحه درباره ما
+Contact page	صفحه تماس با ما
+Privacy policy	حریم خصوصی
+Returns / refund policy	شرایط بازگشت کالا / بازپرداخت
+Search intent	نیت جست‌وجو
+You rank #%s	جایگاه شما: %s
+Not in the top 10	خارج از ۱۰ نتیجه اول
+Winning format	قالب برنده
+SERP features	ویژگی‌های صفحه نتایج
+Title patterns	الگوی عنوان‌ها
+Topics to cover	موضوعاتی که باید پوشش دهید
+Questions people ask	پرسش‌های کاربران
+Top results (%s)	نتایج برتر (%s)
+Related searches	جست‌وجوهای مرتبط
+Live results fetched %s (cached for 24 hours).	نتایج زنده در %s دریافت شد (۲۴ ساعت در حافظه نگهداری می‌شود).

@@ -148,6 +148,7 @@ final class Plugin {
 			'sitemap'         => Technical\SitemapService::class,
 			'robots'          => Technical\RobotsService::class,
 			'pagespeed'       => Technical\PageSpeed::class,
+			'serp'            => Serp\SerpService::class,
 		);
 		foreach ( $map as $id => $class ) {
 			$this->set(

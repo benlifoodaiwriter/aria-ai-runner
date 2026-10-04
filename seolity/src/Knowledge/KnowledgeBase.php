@@ -119,6 +119,7 @@ final class KnowledgeBase {
 		$dir   = SEOLITY_DIR . 'knowledge/';
 		$files = is_dir( $dir ) ? $this->scan( $dir ) : array();
 		$known = array();
+		$blobs = array(); // Relative path => git blob sha of the bundled copy (to skip identical GitHub files).
 		foreach ( $this->plugin->db->rows( "SELECT DISTINCT path, sha FROM {knowledge} WHERE source = 'bundled'" ) as $r ) {
 			$known[ $r['path'] ] = $r['sha'];
 		}
@@ -126,6 +127,7 @@ final class KnowledgeBase {
 			$rel = ltrim( str_replace( $dir, '', $file ), '/' );
 			$md  = (string) file_get_contents( $file ); // phpcs:ignore WordPress.WP.AlternativeFunctions
 			$sha = sha1( $md );
+			$blobs[ $rel ] = sha1( 'blob ' . strlen( $md ) . "\0" . $md );
 			if ( ! isset( $known[ $rel ] ) || $known[ $rel ] !== $sha ) {
 				$this->store_doc( 'bundled', $rel, $sha, $md );
 				$stats['bundled']++;
@@ -146,18 +148,21 @@ final class KnowledgeBase {
 				foreach ( $this->plugin->db->rows( "SELECT DISTINCT path, sha FROM {knowledge} WHERE source = 'github'" ) as $r ) {
 					$remote[ $r['path'] ] = $r['sha'];
 				}
+				$prefix = trim( (string) $this->plugin->settings->get( 'kb_path' ), '/' );
 				foreach ( array_slice( $tree, 0, 400 ) as $node ) {
-					if ( $node['size'] > 400000 ) {
-						continue;
+					// Same relative path as bundled files, so a newer GitHub copy supersedes the bundled one.
+					$rel = $prefix && 0 === strpos( $node['path'], $prefix . '/' ) ? substr( $node['path'], strlen( $prefix ) + 1 ) : $node['path'];
+					if ( $node['size'] > 400000 || 'README.md' === basename( $rel ) || ( isset( $blobs[ $rel ] ) && $blobs[ $rel ] === $node['sha'] ) ) {
+						continue; // Identical to the bundled copy (or not a knowledge doc): nothing to store.
 					}
-					if ( ! isset( $remote[ $node['path'] ] ) || $remote[ $node['path'] ] !== $node['sha'] ) {
+					if ( ! isset( $remote[ $rel ] ) || $remote[ $rel ] !== $node['sha'] ) {
 						$content = $this->plugin->github->blob( $repo, $node['sha'] );
 						if ( ! is_wp_error( $content ) ) {
-							$this->store_doc( 'github', $node['path'], $node['sha'], $content );
+							$this->store_doc( 'github', $rel, $node['sha'], $content );
 							$stats['github']++;
 						}
 					}
-					unset( $remote[ $node['path'] ] );
+					unset( $remote[ $rel ] );
 				}
 				foreach ( array_keys( $remote ) as $gone ) {
 					$this->plugin->db->delete( 'knowledge', array( 'source' => 'github', 'path' => $gone ) );
@@ -206,10 +211,21 @@ final class KnowledgeBase {
 		if ( ! $rows && $topics ) {
 			$rows = $db->rows( 'SELECT id, source, path, title, lang, topic, tags, content FROM {knowledge} LIMIT 600' );
 		}
+		$superseded = array();
+		foreach ( $rows as $r ) {
+			if ( 'github' === $r['source'] ) {
+				$superseded[ $r['path'] ] = true;
+			}
+		}
 		$terms     = array_keys( Text::term_frequencies( $query ) );
-		$site_lang = 0 === strpos( get_locale(), 'fa' ) ? 'fa' : 'en';
+		$content   = (string) $this->plugin->settings->get( 'ai_content_language' );
+		$site_lang = 'auto' !== $content && '' !== $content ? $content : ( '' !== trim( $query ) ? Text::lang( $query ) : ( 0 === strpos( get_locale(), 'fa' ) ? 'fa' : 'en' ) );
+		$site_lang = 'fa' === $site_lang ? 'fa' : 'en'; // Bundled knowledge exists in Persian and English.
 		$scored    = array();
 		foreach ( $rows as $r ) {
+			if ( 'bundled' === $r['source'] && isset( $superseded[ $r['path'] ] ) ) {
+				continue; // A fresher GitHub version of this document exists.
+			}
 			$score = in_array( $r['topic'], $topics, true ) ? 3 : 0;
 			$score += $r['lang'] === $site_lang ? 1.5 : 0;
 			$score += 'github' === $r['source'] ? 0.3 : 0; // Fresher distilled knowledge.

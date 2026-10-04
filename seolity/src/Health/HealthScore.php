@@ -183,10 +183,11 @@ final class HealthScore {
 		}
 
 		// Competitors.
-		$comps = (int) $db->value( "SELECT COUNT(*) FROM {competitors} WHERE project_id = %d AND status = 'active'", array( $pid ) );
+		// Only analyzed competitors count: "no gaps" before any analysis would be a guess, not data.
+		$comps = (int) $db->value( "SELECT COUNT(*) FROM {competitors} WHERE project_id = %d AND status = 'active' AND summary IS NOT NULL", array( $pid ) );
 		if ( $comps ) {
 			$gaps  = 0;
-			foreach ( $db->column( "SELECT summary FROM {competitors} WHERE project_id = %d AND status = 'active'", array( $pid ) ) as $s ) {
+			foreach ( $db->column( "SELECT summary FROM {competitors} WHERE project_id = %d AND status = 'active' AND summary IS NOT NULL", array( $pid ) ) as $s ) {
 				$d     = json_decode( (string) $s, true );
 				$gaps += isset( $d['gap']['opportunities'] ) ? count( $d['gap']['opportunities'] ) : 0;
 			}

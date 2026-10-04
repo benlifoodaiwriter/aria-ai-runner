@@ -32,8 +32,8 @@ final class Command {
 	 * Queue operations.
 	 *
 	 * ## OPTIONS
-	 * <action>
-	 * : run|stats|retry
+	 * [<action>]
+	 * : run|stats|retry (default: run)
 	 * [--seconds=<seconds>]
 	 * : Time budget for run.
 	 */
@@ -53,25 +53,46 @@ final class Command {
 		\WP_CLI::success( "Processed {$n} jobs." );
 	}
 
-	/** Start a site audit. [--type=<full|incremental>] */
+	/**
+	 * Start a site audit.
+	 *
+	 * ## OPTIONS
+	 * [--type=<type>]
+	 * : full|incremental
+	 * ---
+	 * default: full
+	 * ---
+	 */
 	public function audit( $args, $assoc ) {
 		$id = $this->plugin->crawler->start( isset( $assoc['type'] ) ? $assoc['type'] : 'full' );
 		\WP_CLI::success( "Audit #{$id} started. Run `wp seolity queue run` to process it." );
 	}
 
-	/** Queue a Search Console sync. [--days=<days>] */
+	/**
+	 * Queue a Search Console sync.
+	 *
+	 * ## OPTIONS
+	 * [--days=<days>]
+	 * : Days to (re)sync. Default: automatic (full back-fill first, then the last 5 days).
+	 *
+	 * @subcommand gsc-sync
+	 */
 	public function gsc_sync( $args, $assoc ) {
 		$res = $this->plugin->gsc_sync->sync( isset( $assoc['days'] ) ? (int) $assoc['days'] : null );
 		is_wp_error( $res ) ? \WP_CLI::error( $res->get_error_message() ) : \WP_CLI::success( 'GSC sync queued.' );
 	}
 
-	/** Run the daily intelligence pipeline now. */
+	/**
+	 * Run the daily intelligence pipeline now.
+	 */
 	public function daily() {
 		\SEOlity\Queue\Jobs::daily_pipeline( $this->plugin );
 		\WP_CLI::success( 'Daily pipeline queued.' );
 	}
 
-	/** Print the explainable health score. */
+	/**
+	 * Print the explainable health score.
+	 */
 	public function health() {
 		$h = $this->plugin->health->compute();
 		\WP_CLI::line( 'Health: ' . ( null === $h['score'] ? 'n/a' : $h['score'] . '/100 (' . $h['grade'] . ')' ) );
@@ -80,12 +101,18 @@ final class Command {
 		}
 	}
 
-	/** Sync the SEO knowledge base (bundled + GitHub). */
+	/**
+	 * Sync the SEO knowledge base (bundled + GitHub).
+	 *
+	 * @subcommand knowledge-sync
+	 */
 	public function knowledge_sync() {
 		\WP_CLI::print_value( $this->plugin->knowledge->sync( false ), array( 'format' => 'json' ) );
 	}
 
-	/** Archive cold data to GitHub storage. */
+	/**
+	 * Archive cold data to GitHub storage.
+	 */
 	public function archive() {
 		$res = $this->plugin->archive->run();
 		is_wp_error( $res ) ? \WP_CLI::error( $res->get_error_message() ) : \WP_CLI::print_value( $res, array( 'format' => 'json' ) );

@@ -1,0 +1,68 @@
+# SEOlity – SEO knowledge builder
+# Distils authoritative Persian and international SEO documentation into
+# seolity/knowledge/distilled/, which every SEOlity install syncs from GitHub
+# (Settings → Knowledge base) and injects into its AI prompts.
+#
+# Setup: add a repository secret ANTHROPIC_API_KEY (Settings → Secrets and variables → Actions).
+# Optional repository variables: KB_MODEL (default claude-opus-5-5), KB_EFFORT (default medium).
+name: SEOlity knowledge builder
+
+on:
+  schedule:
+    - cron: "17 3 * * 1" # Weekly, Monday 03:17 UTC
+  workflow_dispatch:
+    inputs:
+      max_sources:
+        description: "Maximum documents to distil in this run"
+        default: "12"
+      only:
+        description: "Comma-separated source ids (empty = all)"
+        default: ""
+      force:
+        description: "Re-distil unchanged sources (1 = yes)"
+        default: "0"
+
+concurrency:
+  group: seolity-knowledge
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install dependencies
+        working-directory: seolity/tools/knowledge-builder
+        run: npm install --no-audit --no-fund
+
+      - name: Distil knowledge
+        working-directory: seolity/tools/knowledge-builder
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          KB_MODEL: ${{ vars.KB_MODEL }}
+          KB_EFFORT: ${{ vars.KB_EFFORT }}
+          KB_MAX_SOURCES: ${{ github.event.inputs.max_sources || '12' }}
+          KB_ONLY: ${{ github.event.inputs.only || '' }}
+          KB_FORCE: ${{ github.event.inputs.force || '0' }}
+        run: node build.mjs
+
+      - name: Commit changes
+        run: |
+          if [ -z "$(git status --porcelain seolity/knowledge)" ]; then
+            echo "No knowledge changes."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add seolity/knowledge
+          git commit -m "SEOlity knowledge: weekly distillation $(date -u +%Y-%m-%d)"
+          git push

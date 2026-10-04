@@ -53,6 +53,7 @@
 	 * Table. cols: [{label, render(row) | key, class}]
 	 */
 	App.table = function ( cols, rows, opts ) {
+		cols = cols.filter( Boolean ); // Allows conditional columns (null).
 		opts = opts || {};
 		if ( ! rows || ! rows.length ) {
 			return SL.empty( opts.empty || t( 'Nothing here yet' ), opts.emptyText || '' );
@@ -250,6 +251,8 @@
 		}
 		SL.clear( root );
 		root.classList.add( 'sl-root' );
+		// Explicit direction: the UI language can differ from the WordPress admin language.
+		root.setAttribute( 'dir', C.rtl ? 'rtl' : 'ltr' );
 		if ( C.rtl ) {
 			root.classList.add( 'is-rtl' );
 		}

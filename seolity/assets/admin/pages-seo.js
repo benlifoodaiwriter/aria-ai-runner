@@ -617,11 +617,12 @@
 		var tabs = [
 			{ label: t( 'Keywords' ), render: all },
 			{ label: t( 'Keyword Research' ), render: research },
+			{ label: t( 'SERP analysis' ), render: serp },
 			{ label: t( 'Cannibalization' ), render: cannibal },
 			{ label: t( 'Keyword Mapping' ), render: mapping },
 		];
 		if ( q.tab === 'cannibalization' ) {
-			tabs.unshift( tabs.splice( 2, 1 )[ 0 ] );
+			tabs.unshift( tabs.splice( 3, 1 )[ 0 ] );
 		}
 		v.appendChild( SL.tabs( tabs ) );
 
@@ -680,6 +681,11 @@
 						{ label: t( 'Target URL' ), render: function ( k ) {
 							return k.target_url ? App.ext( k.target_url ) : h( 'span', { class: 'sl-muted', text: t( 'unmapped' ) } );
 						} },
+						App.cap( 'ai' ) && App.state.boot && App.state.boot.serp ? { label: t( 'SERP' ), render: function ( k ) {
+							return h( 'button', { type: 'button', class: 'sl-btn sl-btn--sm', onClick: function () {
+								SL.serpFor( k.keyword );
+							} }, t( 'Analyze' ) );
+						} } : null,
 						{ label: t( 'Track' ), render: function ( k ) {
 							var cb = h( 'input', { type: 'checkbox', checked: +k.tracked === 1, 'aria-label': t( 'Track' ), onChange: function () {
 								SL.api( 'keywords/' + k.id, { method: 'PATCH', body: { tracked: cb.checked ? 1 : 0 } } ).catch( SL.fail );
@@ -694,6 +700,39 @@
 				} );
 			}
 			load();
+			return box;
+		}
+
+		function serp() {
+			var box = h( 'div', { class: 'sl-stack' } );
+			var kw = h( 'input', { class: 'sl-input', placeholder: t( 'Keyword, e.g. buy espresso machine' ), dir: 'auto' } );
+			var market = h( 'select', { class: 'sl-input', 'aria-label': t( 'Market' ) },
+				h( 'option', { value: '' }, t( 'Automatic (site language)' ) ),
+				[ [ 'ir', 'Iran – فارسی' ], [ 'us', 'United States – English' ], [ 'gb', 'United Kingdom – English' ], [ 'de', 'Germany – Deutsch' ], [ 'tr', 'Türkiye – Türkçe' ], [ 'ae', 'UAE – العربية' ] ].map( function ( o ) {
+					return h( 'option', { value: o[ 0 ] }, o[ 1 ] );
+				} ) );
+			var out = h( 'div' );
+			box.appendChild( h( 'p', { class: 'sl-muted', text: t( 'Fetches the live Google results page through your SERP API key and explains the dominant intent, winning format, title patterns, topics and questions.' ) } ) );
+			if ( ! ( App.state.boot && App.state.boot.serp ) ) {
+				box.appendChild( h( 'div', { class: 'sl-alert sl-alert--info' }, t( 'Add a SERP API key (SerpApi) in Settings → Crawler & audits to enable live SERP analysis.' ), ' ', App.link( t( 'Settings' ), 'settings?tab=crawler' ) ) );
+				return box;
+			}
+			box.appendChild( h( 'div', { class: 'sl-toolbar' }, kw, market, App.cap( 'ai' ) ? App.abtn( '✨ ' + t( 'Analyze SERP' ), function () {
+				if ( ! kw.value.trim() ) {
+					SL.toast( t( 'Enter a keyword.' ), 'error' );
+					return null;
+				}
+				SL.clear( out );
+				out.appendChild( SL.spinner( t( 'Fetching live Google results and analyzing them…' ) ) );
+				return SL.api( 'serp/analyze', { body: { keyword: kw.value.trim(), market: market.value } } ).then( function ( r ) {
+					SL.clear( out );
+					out.appendChild( SL.serpView( r ) );
+				} ).catch( function ( e ) {
+					SL.clear( out );
+					throw e;
+				} );
+			}, 'primary' ) : null ) );
+			box.appendChild( out );
 			return box;
 		}
 

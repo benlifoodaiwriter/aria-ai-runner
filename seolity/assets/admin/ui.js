@@ -174,7 +174,7 @@
 	SL.modal = function ( opts ) {
 		var prev = d.activeElement;
 		var close;
-		var overlay = h( 'div', { class: 'sl-modal-overlay sl-root' + ( C.rtl ? ' is-rtl' : '' ), role: 'presentation' } );
+		var overlay = h( 'div', { class: 'sl-modal-overlay sl-root' + ( C.rtl ? ' is-rtl' : '' ), role: 'presentation', dir: C.rtl ? 'rtl' : 'ltr' } );
 		var box = h( 'div', { class: 'sl-modal' + ( opts.wide ? ' sl-modal--wide' : '' ), role: 'dialog', 'aria-modal': 'true', 'aria-label': opts.title || '' } );
 		var body = h( 'div', { class: 'sl-modal__body' } );
 		var foot = h( 'div', { class: 'sl-modal__foot' } );
@@ -862,6 +862,83 @@
 					}
 				} ).catch( SL.fail );
 			} }, t( 'Apply' ) ) );
+		} ).catch( function ( e ) {
+			m.close();
+			SL.fail( e );
+		} );
+	};
+
+	/* ------------------------------------------------------------------ Shared list block */
+	SL.listBlock = function ( title, items, kind ) {
+		return items && items.length ? h( 'div', { class: 'sl-alert sl-alert--' + ( kind || 'info' ) }, h( 'strong', { text: title } ), h( 'ul', null, items.map( function ( x ) {
+			return h( 'li', { dir: 'auto', text: x } );
+		} ) ) ) : null;
+	};
+
+	/* ------------------------------------------------------------------ E-E-A-T analysis modal */
+	SL.eeatFor = function ( type, id ) {
+		var m = SL.modal( { title: t( 'E-E-A-T analysis' ), wide: true } );
+		m.body.appendChild( SL.spinner( t( 'Checking experience, expertise, authority and trust signals…' ) ) );
+		SL.api( 'eeat', { body: { object_type: type || 'post', object_id: id } } ).then( function ( r ) {
+			var a = r.analysis;
+			var s = r.signals || {};
+			var yes = function ( v ) {
+				return v ? '✓' : '✗';
+			};
+			SL.clear( m.body );
+			m.body.appendChild( h( 'div', { class: 'sl-stack' },
+				h( 'div', { class: 'sl-toolbar' }, SL.scoreRing( a.score, 72, t( 'E-E-A-T' ) ), h( 'p', { class: 'sl-muted', text: t( 'A guide for improving trust signals, not a Google metric.' ) } ) ),
+				SL.listBlock( t( 'Signals found' ), a.signals_present, 'success' ),
+				SL.listBlock( t( 'Missing signals' ), a.missing_signals, 'warn' ),
+				SL.listBlock( t( 'Recommendations' ), a.recommendations, 'info' ),
+				h( 'details', null, h( 'summary', { text: t( 'Site-wide trust pages' ) } ), h( 'ul', null,
+					h( 'li', { text: yes( s.https ) + ' HTTPS' } ),
+					h( 'li', { text: yes( s.about_page ) + ' ' + t( 'About page' ) } ),
+					h( 'li', { text: yes( s.contact_page ) + ' ' + t( 'Contact page' ) } ),
+					h( 'li', { text: yes( s.privacy_policy ) + ' ' + t( 'Privacy policy' ) } ),
+					h( 'li', { text: yes( s.returns_policy ) + ' ' + t( 'Returns / refund policy' ) } )
+				) )
+			) );
+		} ).catch( function ( e ) {
+			m.close();
+			SL.fail( e );
+		} );
+	};
+
+	/* ------------------------------------------------------------------ SERP analysis */
+	SL.serpView = function ( r ) {
+		var a = r.analysis;
+		var intents = { informational: t( 'Informational' ), commercial: t( 'Commercial' ), transactional: t( 'Transactional' ), navigational: t( 'Navigational' ) };
+		return h( 'div', { class: 'sl-stack' },
+			h( 'div', { class: 'sl-toolbar' }, SL.badge( t( 'Search intent' ) + ': ' + ( intents[ a.intent ] || a.intent ), 'brand' ), r.yours.length ? SL.badge( t( 'You rank #%s', r.yours[ 0 ].position ), 'good' ) : SL.badge( t( 'Not in the top 10' ), 'warn' ) ),
+			h( 'div', null, h( 'strong', { text: t( 'Winning format' ) + ': ' } ), h( 'span', { dir: 'auto', text: a.content_format } ) ),
+			h( 'div', null, h( 'strong', { text: t( 'SERP features' ) + ': ' } ), SL.chips( r.serp.features.concat( a.features ).filter( function ( x, i, arr ) {
+				return arr.indexOf( x ) === i;
+			} ) ) ),
+			SL.listBlock( t( 'Recommendations' ), a.recommendations, 'info' ),
+			SL.listBlock( t( 'Title patterns' ), a.title_patterns, 'success' ),
+			h( 'div', null, h( 'strong', { text: t( 'Topics to cover' ) + ': ' } ), SL.chips( a.common_topics ) ),
+			SL.listBlock( t( 'Questions people ask' ), a.questions.length ? a.questions : r.serp.questions, 'warn' ),
+			h( 'details', null, h( 'summary', { text: t( 'Top results (%s)', r.serp.results.length ) } ), h( 'div', null, r.serp.results.map( function ( x ) {
+				var mine = r.yours.some( function ( y ) {
+					return y.url === x.url;
+				} );
+				return h( 'div', { class: 'sl-serp-result' + ( mine ? ' is-yours' : '' ) },
+					h( 'div', { class: 'sl-serp-result__url', text: '#' + x.position + ' · ' + x.url } ),
+					h( 'div', { class: 'sl-serp-result__title', dir: 'auto', text: x.title } ),
+					h( 'div', { class: 'sl-small', dir: 'auto', text: x.snippet } )
+				);
+			} ) ) ),
+			r.serp.related.length ? h( 'div', null, h( 'strong', { text: t( 'Related searches' ) + ': ' } ), SL.chips( r.serp.related ) ) : null,
+			h( 'p', { class: 'sl-small sl-muted', text: t( 'Live results fetched %s (cached for 24 hours).', SL.date( r.serp.fetched ) ) } )
+		);
+	};
+	SL.serpFor = function ( keyword, market ) {
+		var m = SL.modal( { title: t( 'SERP analysis' ) + ': ' + keyword, wide: true } );
+		m.body.appendChild( SL.spinner( t( 'Fetching live Google results and analyzing them…' ) ) );
+		SL.api( 'serp/analyze', { body: { keyword: keyword, market: market || '' } } ).then( function ( r ) {
+			SL.clear( m.body );
+			m.body.appendChild( SL.serpView( r ) );
 		} ).catch( function ( e ) {
 			m.close();
 			SL.fail( e );

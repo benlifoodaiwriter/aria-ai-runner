@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: SEOlity 1.0.0\n"
-"POT-Creation-Date: 2026-10-04 09:44+0000\n"
+"POT-Creation-Date: 2026-10-04 10:24+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -192,6 +192,9 @@ msgid "Generate FAQ"
 msgstr ""
 
 msgid "Internal links"
+msgstr ""
+
+msgid "E-E-A-T analysis"
 msgstr ""
 
 msgid "AI Product Optimizer"
@@ -1169,9 +1172,6 @@ msgstr ""
 msgid "Pages with critical issues"
 msgstr ""
 
-msgid "Pages with high security/mobile/server issues"
-msgstr ""
-
 msgid "Status codes, redirects, HTTPS, mixed content, mobile viewport, canonical conflicts."
 msgstr ""
 
@@ -1666,6 +1666,16 @@ msgid "Add BreadcrumbList schema."
 msgstr ""
 
 msgid "Homepage has no Organization/LocalBusiness entity — important for the Knowledge Panel and E-E-A-T."
+msgstr ""
+
+msgid "Enter a keyword."
+msgstr ""
+
+msgid "Add a SERP API key (SerpApi) in Settings → Crawler & audits to analyze live search results."
+msgstr ""
+
+#, php-format
+msgid "SERP API error: %s"
 msgstr ""
 
 msgid "GitHub storage is not configured."
@@ -3054,12 +3064,6 @@ msgstr ""
 msgid "Validate Product, Article, FAQ, Breadcrumb, Organization, LocalBusiness, Review, AggregateRating, WebSite, WebPage and Person markup; find missing opportunities."
 msgstr ""
 
-msgid "Validate a URL"
-msgstr ""
-
-msgid "Check structured data"
-msgstr ""
-
 msgid "Types found"
 msgstr ""
 
@@ -3077,7 +3081,22 @@ msgstr ""
 msgid "Opportunities"
 msgstr ""
 
+msgid "AI schema suggestions"
+msgstr ""
+
+msgid "Eligible types"
+msgstr ""
+
+msgid "Only mark up information that is visible on the page."
+msgstr ""
+
 msgid "Raw JSON-LD"
+msgstr ""
+
+msgid "Check structured data"
+msgstr ""
+
+msgid "Validate a URL"
 msgstr ""
 
 msgid "Schema coverage"
@@ -3683,6 +3702,9 @@ msgstr ""
 msgid "Keyword Research"
 msgstr ""
 
+msgid "SERP analysis"
+msgstr ""
+
 msgid "Cannibalization"
 msgstr ""
 
@@ -3737,6 +3759,12 @@ msgstr ""
 msgid "unmapped"
 msgstr ""
 
+msgid "SERP"
+msgstr ""
+
+msgid "Analyze"
+msgstr ""
+
 msgid "Track"
 msgstr ""
 
@@ -3744,6 +3772,27 @@ msgid "No keywords yet"
 msgstr ""
 
 msgid "Connect Search Console or run keyword research."
+msgstr ""
+
+msgid "Keyword, e.g. buy espresso machine"
+msgstr ""
+
+msgid "Market"
+msgstr ""
+
+msgid "Automatic (site language)"
+msgstr ""
+
+msgid "Fetches the live Google results page through your SERP API key and explains the dominant intent, winning format, title patterns, topics and questions."
+msgstr ""
+
+msgid "Add a SERP API key (SerpApi) in Settings → Crawler & audits to enable live SERP analysis."
+msgstr ""
+
+msgid "Analyze SERP"
+msgstr ""
+
+msgid "Fetching live Google results and analyzing them…"
 msgstr ""
 
 msgid "Seed keywords, one per line (e.g. espresso machine, coffee grinder)"
@@ -4256,6 +4305,72 @@ msgid "Google preview"
 msgstr ""
 
 msgid "Title & description applied."
+msgstr ""
+
+msgid "Checking experience, expertise, authority and trust signals…"
+msgstr ""
+
+msgid "E-E-A-T"
+msgstr ""
+
+msgid "A guide for improving trust signals, not a Google metric."
+msgstr ""
+
+msgid "Signals found"
+msgstr ""
+
+msgid "Missing signals"
+msgstr ""
+
+msgid "Site-wide trust pages"
+msgstr ""
+
+msgid "About page"
+msgstr ""
+
+msgid "Contact page"
+msgstr ""
+
+msgid "Privacy policy"
+msgstr ""
+
+msgid "Returns / refund policy"
+msgstr ""
+
+msgid "Search intent"
+msgstr ""
+
+#, php-format
+msgid "You rank #%s"
+msgstr ""
+
+msgid "Not in the top 10"
+msgstr ""
+
+msgid "Winning format"
+msgstr ""
+
+msgid "SERP features"
+msgstr ""
+
+msgid "Title patterns"
+msgstr ""
+
+msgid "Topics to cover"
+msgstr ""
+
+msgid "Questions people ask"
+msgstr ""
+
+#, php-format
+msgid "Top results (%s)"
+msgstr ""
+
+msgid "Related searches"
+msgstr ""
+
+#, php-format
+msgid "Live results fetched %s (cached for 24 hours)."
 msgstr ""
 
 msgid "Short description"

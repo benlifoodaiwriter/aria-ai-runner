@@ -175,6 +175,7 @@ def main():
     print('strings: %d (php %d, js %d) · fa_IR translated: %d · missing: %d' % (len(allstrings), len(php), len(js), n, len(missing)))
     if missing:
         print('missing sample:', missing[:15])
+        open(os.environ.get('SEOLITY_I18N_MISSING', os.devnull), 'w', encoding='utf8').write('\n'.join(missing))
 
 
 if __name__ == '__main__':

@@ -87,6 +87,15 @@ final class Router {
 		return null === $v ? $default : sanitize_text_field( wp_unslash( (string) $v ) );
 	}
 
+	/**
+	 * URL parameter. Never use str() for URLs: sanitize_text_field() strips
+	 * percent-encoded octets and would mangle non-ASCII (e.g. Persian) URLs.
+	 */
+	private static function url( Req $r, $key, $default = '' ) {
+		$v = $r->get_param( $key );
+		return null === $v ? $default : esc_url_raw( trim( wp_unslash( (string) $v ) ) );
+	}
+
 	private static function key( Req $r, $key, $default = '' ) {
 		$v = $r->get_param( $key );
 		return null === $v ? $default : sanitize_key( (string) $v );
@@ -121,6 +130,7 @@ final class Router {
 				'ai_ready'  => $p->ai->is_ready(),
 				'gsc'       => $p->gsc_oauth->is_connected(),
 				'woo'       => class_exists( 'WooCommerce' ),
+				'serp'      => $p->serp->available(),
 				'engine'    => $p->meta->engine(),
 				'mode'      => $p->settings->get( 'approval_mode' ),
 				'unread_alerts' => $p->alerts->unread(),
@@ -228,6 +238,14 @@ final class Router {
 			$cid = $p->optimizer->faq( self::int( $r, 'object_id' ) );
 			return is_wp_error( $cid ) ? $cid : array( 'change' => $p->changes->get( $cid ) );
 		} );
+		$this->route( 'POST', '/eeat', 'ai', function ( Req $r ) use ( $p ) {
+			$type = self::key( $r, 'object_type', 'post' );
+			$id   = self::int( $r, 'object_id' );
+			if ( ! Capabilities::can_edit_object( $type, $id ) ) {
+				return new \WP_Error( 'seolity_forbidden', __( 'You are not allowed to edit this item.', 'seolity' ), array( 'status' => 403 ) );
+			}
+			return $p->optimizer->eeat( $type, $id );
+		} );
 		$this->route( 'GET', '/changes', 'view', function ( Req $r ) use ( $p ) {
 			return $p->changes->query( self::filters( $r, array( 'status', 'object_type', 'field', 'source', 'risk', 'batch_id', 'page', 'per_page' ) ) );
 		} );
@@ -315,7 +333,7 @@ final class Router {
 			return $p->pagespeed->summary();
 		} );
 		$this->route( 'POST', '/pagespeed/test', 'manage', function ( Req $r ) use ( $p ) {
-			$url = esc_url_raw( self::str( $r, 'url' ) );
+			$url = self::url( $r, 'url' );
 			if ( ! \SEOlity\Crawler\PageParser::same_site( wp_parse_url( $url, PHP_URL_HOST ), wp_parse_url( home_url(), PHP_URL_HOST ) ) ) {
 				return new \WP_Error( 'seolity_url', __( 'Only URLs of this site can be tested.', 'seolity' ), array( 'status' => 400 ) );
 			}
@@ -375,7 +393,7 @@ final class Router {
 			return $p->gsc_analytics->overview( self::days( $r ) );
 		} );
 		$this->route( 'GET', '/gsc/table', 'view', function ( Req $r ) use ( $p ) {
-			return $p->gsc_analytics->grouped( 'query' === self::key( $r, 'by' ) ? 'query' : 'page', self::days( $r ), max( 1, min( 1000, self::int( $r, 'limit', 100 ) ) ), self::key( $r, 'order', 'clicks' ), array_filter( array( 'search' => self::str( $r, 'search' ), 'page' => esc_url_raw( self::str( $r, 'page_url' ) ), 'query' => self::str( $r, 'query' ) ) ) );
+			return $p->gsc_analytics->grouped( 'query' === self::key( $r, 'by' ) ? 'query' : 'page', self::days( $r ), max( 1, min( 1000, self::int( $r, 'limit', 100 ) ) ), self::key( $r, 'order', 'clicks' ), array_filter( array( 'search' => self::str( $r, 'search' ), 'page' => self::url( $r, 'page_url' ), 'query' => self::str( $r, 'query' ) ) ) );
 		} );
 		$this->route( 'GET', '/gsc/insights', 'view', function ( Req $r ) use ( $p ) {
 			$a    = $p->gsc_analytics;
@@ -396,11 +414,11 @@ final class Router {
 			return $p->gsc_analytics->breakdown( $dim, self::days( $r ) );
 		} );
 		$this->route( 'GET', '/gsc/page', 'view', function ( Req $r ) use ( $p ) {
-			$url = esc_url_raw( self::str( $r, 'url' ) );
+			$url = self::url( $r, 'url' );
 			return array( 'metrics' => $p->gsc_analytics->page_metrics( $url, self::days( $r ) ), 'series' => $p->gsc_analytics->page_series( $url, max( 28, self::days( $r ) ) ), 'queries' => $p->gsc_analytics->page_queries( $url, self::days( $r ), 50 ) );
 		} );
 		$this->route( 'POST', '/gsc/inspect', 'manage', function ( Req $r ) use ( $p ) {
-			return $p->gsc_client->inspect( esc_url_raw( self::str( $r, 'url' ) ) );
+			return $p->gsc_client->inspect( self::url( $r, 'url' ) );
 		} );
 
 		/* ---------------- Keywords ---------------- */
@@ -418,6 +436,9 @@ final class Router {
 		} );
 		$this->route( 'POST', '/keywords/research', 'ai', function ( Req $r ) use ( $p ) {
 			return $p->keywords->research( (array) $r->get_param( 'seeds' ), self::str( $r, 'market' ) );
+		} );
+		$this->route( 'POST', '/serp/analyze', 'ai', function ( Req $r ) use ( $p ) {
+			return $p->serp->analyze( self::str( $r, 'keyword' ), self::key( $r, 'market' ) );
 		} );
 		$this->route( 'POST', '/keywords/sync', 'manage', function () use ( $p ) {
 			$p->queue->push( 'keywords_sync', array(), array( 'unique' => true, 'priority' => 2 ) );
@@ -486,7 +507,7 @@ final class Router {
 			return $p->competitors->query();
 		} );
 		$this->route( 'POST', '/competitors', 'manage', function ( Req $r ) use ( $p ) {
-			return $p->competitors->create( self::str( $r, 'name' ), self::str( $r, 'domain' ), self::key( $r, 'frequency', 'weekly' ), esc_url_raw( self::str( $r, 'sitemap' ) ) );
+			return $p->competitors->create( self::str( $r, 'name' ), self::str( $r, 'domain' ), self::key( $r, 'frequency', 'weekly' ), self::url( $r, 'sitemap' ) );
 		} );
 		$this->route( 'DELETE', '/competitors/(?P<id>\d+)', 'manage', function ( Req $r ) use ( $p ) {
 			return array( 'ok' => $p->competitors->delete( self::int( $r, 'id' ) ) );
@@ -547,7 +568,7 @@ final class Router {
 			return $p->not_found->query( self::filters( $r, array( 'status', 'search', 'page', 'per_page' ) ) );
 		} );
 		$this->route( 'POST', '/404/(?P<id>\d+)/redirect', 'manage', function ( Req $r ) use ( $p ) {
-			return array( 'id' => $p->not_found->redirect( self::int( $r, 'id' ), esc_url_raw( self::str( $r, 'target' ) ), self::int( $r, 'type', 301 ) ) );
+			return array( 'id' => $p->not_found->redirect( self::int( $r, 'id' ), self::url( $r, 'target' ), self::int( $r, 'type', 301 ) ) );
 		} );
 		$this->route( 'POST', '/404/(?P<id>\d+)/status', 'manage', function ( Req $r ) use ( $p ) {
 			return array( 'ok' => $p->not_found->set_status( self::int( $r, 'id' ), self::key( $r, 'status' ) ) );
@@ -563,7 +584,10 @@ final class Router {
 			return $p->schema->coverage();
 		} );
 		$this->route( 'POST', '/schema/check', 'view', function ( Req $r ) use ( $p ) {
-			return $p->schema->check_url( esc_url_raw( self::str( $r, 'url' ) ) );
+			return $p->schema->check_url( self::url( $r, 'url' ) );
+		} );
+		$this->route( 'POST', '/schema/suggest', 'ai', function ( Req $r ) use ( $p ) {
+			return $p->schema->suggest( self::url( $r, 'url' ) );
 		} );
 		$this->route( 'GET', '/sitemap', 'view', function ( Req $r ) use ( $p ) {
 			$out = $p->sitemap->analyze( (bool) $r->get_param( 'fresh' ) );
@@ -574,7 +598,7 @@ final class Router {
 			return $out;
 		} );
 		$this->route( 'POST', '/sitemap/submit', 'manage', function ( Req $r ) use ( $p ) {
-			return $p->gsc_client->submit_sitemap( esc_url_raw( self::str( $r, 'url', home_url( '/wp-sitemap.xml' ) ) ) );
+			return $p->gsc_client->submit_sitemap( self::url( $r, 'url', home_url( '/wp-sitemap.xml' ) ) );
 		} );
 		$this->route( 'GET', '/robots', 'view', function () use ( $p ) {
 			return $p->robots->analyze();
@@ -587,7 +611,7 @@ final class Router {
 			return $p->robots->analyze();
 		} );
 		$this->route( 'POST', '/robots/test', 'view', function ( Req $r ) use ( $p ) {
-			return $p->robots->test( esc_url_raw( self::str( $r, 'url' ) ), sanitize_textarea_field( wp_unslash( (string) $r->get_param( 'content' ) ) ) );
+			return $p->robots->test( self::url( $r, 'url' ), sanitize_textarea_field( wp_unslash( (string) $r->get_param( 'content' ) ) ) );
 		} );
 
 		/* ---------------- Reports / alerts / briefing / chat ---------------- */

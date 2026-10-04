@@ -262,7 +262,7 @@ final class SchemaService {
 	}
 
 	/** Fetch a URL and validate its structured data + list opportunities. */
-	public function check_url( $url ) {
+	public function check_url( $url, &$page = null ) {
 		if ( ! PageParser::same_site( wp_parse_url( $url, PHP_URL_HOST ), wp_parse_url( home_url(), PHP_URL_HOST ) ) ) {
 			return new \WP_Error( 'seolity_schema_url', __( 'Only URLs of this site can be checked.', 'seolity' ), array( 'status' => 400 ) );
 		}
@@ -298,6 +298,40 @@ final class SchemaService {
 		$result['blocks']        = $page['schema_blocks'];
 		$result['invalid_json']  = $page['schema_errors'];
 		return $result;
+	}
+
+	/**
+	 * Rule-based check plus AI suggestions: which schema.org types are eligible and
+	 * truthful for this page, and what is wrong or missing in the current markup.
+	 */
+	public function suggest( $url ) {
+		$page  = null;
+		$check = $this->check_url( $url, $page );
+		if ( is_wp_error( $check ) ) {
+			return $check;
+		}
+		$post_id = url_to_postid( $url );
+		$res     = $this->plugin->ai->run(
+			'schema_suggest',
+			array(
+				'url'                => $url,
+				'post_type'          => $post_id ? get_post_type( $post_id ) : '',
+				'title'              => $page['title'],
+				'headings'           => array_slice( array_merge( $page['h1'], $page['h2'], $page['h3'] ), 0, 30 ),
+				'visible_text'       => $page['text_sample'],
+				'existing_types'     => $check['types'],
+				'existing_json_ld'   => mb_substr( wp_json_encode( $check['blocks'], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES ), 0, 6000 ),
+				'validation_errors'  => array_slice( wp_list_pluck( $check['errors'], 'message' ), 0, 20 ),
+				'validation_warnings' => array_slice( wp_list_pluck( $check['warnings'], 'message' ), 0, 20 ),
+				'rule_opportunities' => $check['opportunities'],
+			)
+		);
+		if ( is_wp_error( $res ) ) {
+			return $res;
+		}
+		$check['ai']   = $res['data'];
+		$check['meta'] = $res['meta'];
+		return $check;
 	}
 
 	/** Site-wide coverage from crawl data. */

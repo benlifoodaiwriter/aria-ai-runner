@@ -363,25 +363,41 @@
 		v.appendChild( App.header( t( 'Schema Intelligence' ), t( 'Validate Product, Article, FAQ, Breadcrumb, Organization, LocalBusiness, Review, AggregateRating, WebSite, WebPage and Person markup; find missing opportunities.' ) ) );
 		var url = h( 'input', { class: 'sl-input', type: 'url', placeholder: C.homeUrl, dir: 'ltr' } );
 		var result = h( 'div' );
-		v.appendChild( App.card( t( 'Validate a URL' ), h( 'div', null, h( 'div', { class: 'sl-toolbar' }, url, App.abtn( t( 'Check structured data' ), function () {
-			return SL.api( 'schema/check', { body: { url: url.value || C.homeUrl } } ).then( function ( r ) {
-				SL.clear( result );
-				result.appendChild( h( 'div', { class: 'sl-stack' },
-					h( 'div', null, h( 'strong', { text: t( 'Types found' ) + ': ' } ), SL.chips( r.types ) ),
-					r.invalid_json ? h( 'div', { class: 'sl-alert sl-alert--error', text: t( '%s JSON-LD blocks contain invalid JSON.', r.invalid_json ) } ) : null,
-					r.errors.length ? h( 'div', { class: 'sl-alert sl-alert--error' }, h( 'strong', { text: t( 'Errors' ) } ), h( 'ul', null, r.errors.map( function ( e ) {
-						return h( 'li', { text: e.message } );
-					} ) ) ) : h( 'div', { class: 'sl-alert sl-alert--success', text: t( 'No required properties missing.' ) } ),
-					r.warnings.length ? h( 'details', null, h( 'summary', { text: t( 'Warnings (%s)', r.warnings.length ) } ), h( 'ul', null, r.warnings.map( function ( e ) {
-						return h( 'li', { text: e.message } );
-					} ) ) ) : null,
-					r.opportunities.length ? h( 'div', { class: 'sl-alert sl-alert--info' }, h( 'strong', { text: t( 'Opportunities' ) } ), h( 'ul', null, r.opportunities.map( function ( o ) {
-						return h( 'li', { text: o } );
-					} ) ) ) : null,
-					h( 'details', null, h( 'summary', { text: t( 'Raw JSON-LD' ) } ), h( 'pre', { class: 'sl-json', dir: 'ltr', text: JSON.stringify( r.blocks, null, 2 ) } ) )
-				) );
-			} );
-		}, 'primary' ) ), result ) ) );
+		var list = function ( title, items, kind ) {
+			return items && items.length ? h( 'div', { class: 'sl-alert sl-alert--' + kind }, h( 'strong', { text: title } ), h( 'ul', null, items.map( function ( x ) {
+				return h( 'li', { dir: 'auto', text: x } );
+			} ) ) ) : null;
+		};
+		var render = function ( r ) {
+			SL.clear( result );
+			result.appendChild( h( 'div', { class: 'sl-stack' },
+				h( 'div', null, h( 'strong', { text: t( 'Types found' ) + ': ' } ), SL.chips( r.types ) ),
+				r.invalid_json ? h( 'div', { class: 'sl-alert sl-alert--error', text: t( '%s JSON-LD blocks contain invalid JSON.', r.invalid_json ) } ) : null,
+				r.errors.length ? list( t( 'Errors' ), r.errors.map( function ( e ) {
+					return e.message;
+				} ), 'error' ) : h( 'div', { class: 'sl-alert sl-alert--success', text: t( 'No required properties missing.' ) } ),
+				r.warnings.length ? h( 'details', null, h( 'summary', { text: t( 'Warnings (%s)', r.warnings.length ) } ), h( 'ul', null, r.warnings.map( function ( e ) {
+					return h( 'li', { text: e.message } );
+				} ) ) ) : null,
+				list( t( 'Opportunities' ), r.opportunities, 'info' ),
+				r.ai ? h( 'div', { class: 'sl-card sl-card--inset' }, h( 'h3', { text: '✨ ' + t( 'AI schema suggestions' ) } ),
+					h( 'div', null, h( 'strong', { text: t( 'Eligible types' ) + ': ' } ), SL.chips( r.ai.eligible_types ) ),
+					list( t( 'Issues' ), r.ai.issues, 'warn' ),
+					list( t( 'Opportunities' ), r.ai.opportunities, 'info' ),
+					h( 'p', { class: 'sl-small sl-muted', text: t( 'Only mark up information that is visible on the page.' ) } )
+				) : null,
+				h( 'details', null, h( 'summary', { text: t( 'Raw JSON-LD' ) } ), h( 'pre', { class: 'sl-json', dir: 'ltr', text: JSON.stringify( r.blocks, null, 2 ) } ) )
+			) );
+		};
+		var actions = [ App.abtn( t( 'Check structured data' ), function () {
+			return SL.api( 'schema/check', { body: { url: url.value || C.homeUrl } } ).then( render );
+		}, 'primary' ) ];
+		if ( App.cap( 'ai' ) ) {
+			actions.push( App.abtn( '✨ ' + t( 'AI schema suggestions' ), function () {
+				return SL.api( 'schema/suggest', { body: { url: url.value || C.homeUrl } } ).then( render );
+			} ) );
+		}
+		v.appendChild( App.card( t( 'Validate a URL' ), h( 'div', null, h( 'div', { class: 'sl-toolbar' }, [ url ].concat( actions ) ), result ) ) );
 		var cov = h( 'div' );
 		v.appendChild( cov );
 		App.load( cov, SL.api( 'schema' ), function ( r ) {

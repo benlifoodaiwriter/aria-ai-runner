@@ -189,6 +189,15 @@
 			SL.linksFor( ctx.object_id );
 			return;
 		}
+		if ( e.target.closest && e.target.closest( '.seolity-eeat-btn' ) ) {
+			e.preventDefault();
+			if ( ! ctx.object_id ) {
+				SL.toast( t( 'Save the item first.' ) );
+				return;
+			}
+			SL.eeatFor( ctx.object_type === 'term' || ctx.object_type === 'user' ? ctx.object_type : 'post', ctx.object_id );
+			return;
+		}
 		if ( e.target.closest && e.target.closest( '.seolity-product-btn' ) ) {
 			e.preventDefault();
 			SL.productFor( ctx.object_id );

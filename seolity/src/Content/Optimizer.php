@@ -366,6 +366,79 @@ final class Optimizer {
 		);
 	}
 
+	/**
+	 * E-E-A-T analysis of one object (read-only; nothing is changed).
+	 *
+	 * Combines page content with site-level trust signals the model cannot see
+	 * from the page alone (author profile, about/contact/policy pages, reviews).
+	 */
+	public function eeat( $type, $id ) {
+		$ctx = Objects::context( $this->plugin, $type, $id );
+		if ( ! $ctx ) {
+			return new \WP_Error( 'seolity_object', __( 'Object not found.', 'seolity' ), array( 'status' => 404 ) );
+		}
+		$input = array(
+			'title'   => $ctx['title'],
+			'url'     => $ctx['url'],
+			'kind'    => $ctx['object_type'],
+			'content' => Text::truncate( Text::strip( (string) $ctx['content'] ), 6000 ),
+			'site'    => $this->trust_signals(),
+		);
+		if ( 'post' === $type ) {
+			$post   = get_post( $id );
+			$author = $post ? get_userdata( (int) $post->post_author ) : null;
+			$input['published'] = $post ? $post->post_date_gmt : '';
+			$input['modified']  = $post ? $post->post_modified_gmt : '';
+			$input['author']    = $author ? array(
+				'name'        => $author->display_name,
+				'bio_words'   => Text::word_count( (string) $author->description ),
+				'bio'         => Text::truncate( (string) $author->description, 400 ),
+				'has_website' => '' !== (string) $author->user_url,
+				'posts'       => (int) count_user_posts( $author->ID, 'post', true ),
+			) : null;
+			if ( $post && 'product' === $post->post_type && function_exists( 'wc_get_product' ) ) {
+				$product = wc_get_product( $id );
+				if ( $product ) {
+					$input['reviews'] = array( 'count' => (int) $product->get_review_count(), 'average' => (float) $product->get_average_rating() );
+				}
+			}
+		}
+		$res = $this->plugin->ai->run( 'eeat_analysis', $input );
+		if ( is_wp_error( $res ) ) {
+			return $res;
+		}
+		return array( 'analysis' => $res['data'], 'signals' => $input['site'], 'meta' => $res['meta'] );
+	}
+
+	/** Site-level trust signals (pages that exist, HTTPS, contact data). */
+	private function trust_signals() {
+		$find = static function ( array $slugs ) {
+			foreach ( $slugs as $slug ) {
+				$page = get_page_by_path( $slug );
+				if ( $page && 'publish' === $page->post_status ) {
+					return get_permalink( $page );
+				}
+			}
+			return null;
+		};
+		$privacy = (int) get_option( 'wp_page_for_privacy_policy' );
+		return array(
+			'https'          => 0 === strpos( home_url(), 'https://' ),
+			'about_page'     => $find( array( 'about', 'about-us', 'درباره-ما' ) ),
+			'contact_page'   => $find( array( 'contact', 'contact-us', 'تماس-با-ما' ) ),
+			'privacy_policy' => $privacy && 'publish' === get_post_status( $privacy ) ? get_permalink( $privacy ) : null,
+			'returns_policy' => $find( array( 'refund_returns', 'returns', 'refund-policy', 'shipping-returns', 'شرایط-بازگشت-کالا' ) ),
+			'organization'   => array_filter(
+				array(
+					'name'    => (string) $this->plugin->settings->get( 'org_name' ),
+					'phone'   => '' !== (string) $this->plugin->settings->get( 'org_phone' ),
+					'address' => '' !== (string) $this->plugin->settings->get( 'org_address' ),
+					'same_as' => count( (array) $this->plugin->settings->get( 'org_same_as' ) ),
+				)
+			),
+		);
+	}
+
 	/** Content with no H1 and a theme that doesn't print one: propose a title-based H1? We only fix empty titles. */
 	private function fix_missing_h1( $post_id ) {
 		$post = get_post( $post_id );

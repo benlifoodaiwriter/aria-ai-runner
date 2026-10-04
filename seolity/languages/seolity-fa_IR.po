@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: SEOlity 1.0.0\n"
-"POT-Creation-Date: 2026-10-04 09:44+0000\n"
+"POT-Creation-Date: 2026-10-04 10:24+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -194,6 +194,9 @@ msgstr "تولید سؤالات متداول"
 
 msgid "Internal links"
 msgstr "لینک‌های داخلی"
+
+msgid "E-E-A-T analysis"
+msgstr "تحلیل E-E-A-T"
 
 msgid "AI Product Optimizer"
 msgstr "بهینه‌ساز هوشمند محصول"
@@ -1170,9 +1173,6 @@ msgstr "سرچ کنسول متصل نیست."
 msgid "Pages with critical issues"
 msgstr "صفحات دارای مشکل بحرانی"
 
-msgid "Pages with high security/mobile/server issues"
-msgstr "صفحات دارای مشکلات جدی امنیت/موبایل/سرور"
-
 msgid "Status codes, redirects, HTTPS, mixed content, mobile viewport, canonical conflicts."
 msgstr "کدهای وضعیت، ریدایرکت‌ها، HTTPS، محتوای ترکیبی، viewport موبایل، تداخل کنونیکال."
 
@@ -1668,6 +1668,16 @@ msgstr "اسکیمای BreadcrumbList را اضافه کنید."
 
 msgid "Homepage has no Organization/LocalBusiness entity — important for the Knowledge Panel and E-E-A-T."
 msgstr "صفحه اصلی موجودیت Organization/LocalBusiness ندارد — برای پنل دانش و E-E-A-T مهم است."
+
+msgid "Enter a keyword."
+msgstr "یک کلمه کلیدی وارد کنید."
+
+msgid "Add a SERP API key (SerpApi) in Settings → Crawler & audits to analyze live search results."
+msgstr "برای تحلیل نتایج زنده جست‌وجو، کلید SERP API (سرویس SerpApi) را در تنظیمات ← خزنده و ممیزی‌ها وارد کنید."
+
+#, php-format
+msgid "SERP API error: %s"
+msgstr "خطای SERP API: %s"
 
 msgid "GitHub storage is not configured."
 msgstr "ذخیره‌سازی گیت‌هاب تنظیم نشده است."
@@ -3055,12 +3065,6 @@ msgstr "هوش اسکیما"
 msgid "Validate Product, Article, FAQ, Breadcrumb, Organization, LocalBusiness, Review, AggregateRating, WebSite, WebPage and Person markup; find missing opportunities."
 msgstr "اعتبارسنجی نشانه‌گذاری‌های Product، Article، FAQ، Breadcrumb، Organization، LocalBusiness، Review، AggregateRating، WebSite، WebPage و Person و یافتن فرصت‌های از دست رفته."
 
-msgid "Validate a URL"
-msgstr "اعتبارسنجی یک URL"
-
-msgid "Check structured data"
-msgstr "بررسی داده ساختاریافته"
-
 msgid "Types found"
 msgstr "انواع یافت‌شده"
 
@@ -3078,8 +3082,23 @@ msgstr "هشدارها (%s)"
 msgid "Opportunities"
 msgstr "فرصت‌ها"
 
+msgid "AI schema suggestions"
+msgstr "پیشنهادهای اسکیمای هوش مصنوعی"
+
+msgid "Eligible types"
+msgstr "نوع‌های واجد شرایط"
+
+msgid "Only mark up information that is visible on the page."
+msgstr "فقط اطلاعاتی را نشانه‌گذاری کنید که در صفحه قابل مشاهده است."
+
 msgid "Raw JSON-LD"
 msgstr "JSON-LD خام"
+
+msgid "Check structured data"
+msgstr "بررسی داده ساختاریافته"
+
+msgid "Validate a URL"
+msgstr "اعتبارسنجی یک URL"
 
 msgid "Schema coverage"
 msgstr "پوشش اسکیما"
@@ -3684,6 +3703,9 @@ msgstr "همگام‌سازی از سرچ کنسول"
 msgid "Keyword Research"
 msgstr "تحقیق کلمات کلیدی"
 
+msgid "SERP analysis"
+msgstr "تحلیل نتایج جست‌وجو (SERP)"
+
 msgid "Cannibalization"
 msgstr "هم‌نوع‌خواری (Cannibalization)"
 
@@ -3738,6 +3760,12 @@ msgstr "URL هدف"
 msgid "unmapped"
 msgstr "نگاشت‌نشده"
 
+msgid "SERP"
+msgstr "SERP"
+
+msgid "Analyze"
+msgstr "تحلیل"
+
 msgid "Track"
 msgstr "پیگیری"
 
@@ -3746,6 +3774,27 @@ msgstr "هنوز کلمه کلیدی وجود ندارد"
 
 msgid "Connect Search Console or run keyword research."
 msgstr "سرچ کنسول را متصل کنید یا تحقیق کلمات کلیدی انجام دهید."
+
+msgid "Keyword, e.g. buy espresso machine"
+msgstr "کلمه کلیدی، مثلاً خرید اسپرسوساز"
+
+msgid "Market"
+msgstr "بازار"
+
+msgid "Automatic (site language)"
+msgstr "خودکار (زبان سایت)"
+
+msgid "Fetches the live Google results page through your SERP API key and explains the dominant intent, winning format, title patterns, topics and questions."
+msgstr "صفحه نتایج زنده گوگل را با کلید SERP API شما دریافت می‌کند و نیت غالب، قالب برنده، الگوی عنوان‌ها، موضوعات و پرسش‌ها را توضیح می‌دهد."
+
+msgid "Add a SERP API key (SerpApi) in Settings → Crawler & audits to enable live SERP analysis."
+msgstr "برای فعال شدن تحلیل زنده SERP، کلید SERP API (سرویس SerpApi) را در تنظیمات ← خزنده و ممیزی‌ها وارد کنید."
+
+msgid "Analyze SERP"
+msgstr "تحلیل SERP"
+
+msgid "Fetching live Google results and analyzing them…"
+msgstr "در حال دریافت نتایج زنده گوگل و تحلیل آن‌ها…"
 
 msgid "Seed keywords, one per line (e.g. espresso machine, coffee grinder)"
 msgstr "کلمات کلیدی پایه، هر خط یکی (مثلاً اسپرسوساز، آسیاب قهوه)"
@@ -4258,6 +4307,72 @@ msgstr "پیش‌نمایش گوگل"
 
 msgid "Title & description applied."
 msgstr "عنوان و توضیحات اعمال شد."
+
+msgid "Checking experience, expertise, authority and trust signals…"
+msgstr "در حال بررسی سیگنال‌های تجربه، تخصص، اعتبار و اعتماد…"
+
+msgid "E-E-A-T"
+msgstr "E-E-A-T"
+
+msgid "A guide for improving trust signals, not a Google metric."
+msgstr "راهنمایی برای بهبود سیگنال‌های اعتماد است، نه معیاری از گوگل."
+
+msgid "Signals found"
+msgstr "سیگنال‌های موجود"
+
+msgid "Missing signals"
+msgstr "سیگنال‌های ناموجود"
+
+msgid "Site-wide trust pages"
+msgstr "صفحات اعتمادساز سایت"
+
+msgid "About page"
+msgstr "صفحه درباره ما"
+
+msgid "Contact page"
+msgstr "صفحه تماس با ما"
+
+msgid "Privacy policy"
+msgstr "حریم خصوصی"
+
+msgid "Returns / refund policy"
+msgstr "شرایط بازگشت کالا / بازپرداخت"
+
+msgid "Search intent"
+msgstr "نیت جست‌وجو"
+
+#, php-format
+msgid "You rank #%s"
+msgstr "جایگاه شما: %s"
+
+msgid "Not in the top 10"
+msgstr "خارج از ۱۰ نتیجه اول"
+
+msgid "Winning format"
+msgstr "قالب برنده"
+
+msgid "SERP features"
+msgstr "ویژگی‌های صفحه نتایج"
+
+msgid "Title patterns"
+msgstr "الگوی عنوان‌ها"
+
+msgid "Topics to cover"
+msgstr "موضوعاتی که باید پوشش دهید"
+
+msgid "Questions people ask"
+msgstr "پرسش‌های کاربران"
+
+#, php-format
+msgid "Top results (%s)"
+msgstr "نتایج برتر (%s)"
+
+msgid "Related searches"
+msgstr "جست‌وجوهای مرتبط"
+
+#, php-format
+msgid "Live results fetched %s (cached for 24 hours)."
+msgstr "نتایج زنده در %s دریافت شد (۲۴ ساعت در حافظه نگهداری می‌شود)."
 
 msgid "Short description"
 msgstr "توضیحات کوتاه"
