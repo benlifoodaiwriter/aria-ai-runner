@@ -150,7 +150,7 @@ final class Sync {
 				$page     = (string) $r['keys'][0];
 				$query    = mb_substr( (string) $r['keys'][1], 0, 500 );
 				$values[] = '(%d,%s,%s,%s,%s,%s,%d,%d,%f,%f)';
-				array_push( $args, $pid, $date, Database::hash( $page ), Database::hash( $query ), $page, $query, (int) $r['clicks'], (int) $r['impressions'], (float) $r['ctr'], (float) $r['position'] );
+				array_push( $args, $pid, $date, Database::url_hash( $page ), Database::hash( $query ), $page, $query, (int) $r['clicks'], (int) $r['impressions'], (float) $r['ctr'], (float) $r['position'] );
 			}
 			$sql = "INSERT INTO {$table} (project_id,date,page_hash,query_hash,page,query,clicks,impressions,ctr,position) VALUES " . implode( ',', $values )
 				. ' ON DUPLICATE KEY UPDATE clicks=VALUES(clicks), impressions=VALUES(impressions), ctr=VALUES(ctr), position=VALUES(position)';

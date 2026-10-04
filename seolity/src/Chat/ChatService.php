@@ -107,7 +107,7 @@ final class ChatService {
 			}
 		}
 		if ( $object ) {
-			$row = $p->db->row( 'SELECT id, object_type, object_id, status_code, indexable, title, meta_description, word_count, inlinks, depth FROM {urls} WHERE project_id = %d AND url_hash = %s', array( $p->db->project_id(), Database::hash( \SEOlity\Crawler\PageParser::normalize_url( $object ) ) ) );
+			$row = $p->db->row( 'SELECT id, object_type, object_id, status_code, indexable, title, meta_description, word_count, inlinks, depth FROM {urls} WHERE project_id = %d AND url_hash = %s', array( $p->db->project_id(), Database::url_hash( $object ) ) );
 			$ctx['page'] = array(
 				'url'     => $object,
 				'crawl'   => $row,

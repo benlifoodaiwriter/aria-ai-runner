@@ -287,14 +287,23 @@ final class PageParser {
 		return $root . implode( '/', $segs );
 	}
 
-	/** Canonical form used as crawl identity (lower host, no fragment, keep query). */
+	/**
+	 * Canonical form used as URL identity everywhere (crawl, GSC, experiments):
+	 * lower-case scheme/host, no fragment, and a single percent-encoding form
+	 * for the path (decode → re-encode, upper-case hex). Without this, Persian
+	 * and other non-ASCII URLs appear as both "%d9…" (WordPress permalinks)
+	 * and "%D9…" (browsers, GSC) and would be counted as different pages.
+	 */
 	public static function normalize_url( $url ) {
-		$p = wp_parse_url( $url );
+		$p = wp_parse_url( trim( (string) $url ) );
 		if ( empty( $p['host'] ) ) {
 			return $url;
 		}
-		$path  = isset( $p['path'] ) ? $p['path'] : '/';
-		$query = isset( $p['query'] ) ? '?' . $p['query'] : '';
-		return strtolower( $p['scheme'] ) . '://' . strtolower( $p['host'] ) . ( isset( $p['port'] ) ? ':' . $p['port'] : '' ) . $path . $query;
+		$path = isset( $p['path'] ) && '' !== $p['path'] ? $p['path'] : '/';
+		$path = implode( '/', array_map( static function ( $seg ) {
+			return rawurlencode( rawurldecode( $seg ) );
+		}, explode( '/', $path ) ) );
+		$query = isset( $p['query'] ) && '' !== $p['query'] ? '?' . $p['query'] : '';
+		return strtolower( isset( $p['scheme'] ) ? $p['scheme'] : 'http' ) . '://' . strtolower( $p['host'] ) . ( isset( $p['port'] ) ? ':' . $p['port'] : '' ) . $path . $query;
 	}
 }

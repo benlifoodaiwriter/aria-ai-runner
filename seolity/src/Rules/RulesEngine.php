@@ -223,7 +223,7 @@ final class RulesEngine {
 				return 'post' === $type && 'product' === get_post_type( $id ) ? ( '' === trim( (string) get_post_field( 'post_excerpt', $id ) ) ? '1' : '0' ) : null;
 			case 'inlinks_lt':
 				$url = 'post' === $type ? get_permalink( $id ) : '';
-				$v   = $url ? $this->plugin->db->value( 'SELECT inlinks FROM {urls} WHERE project_id = %d AND url_hash = %s', array( $this->plugin->db->project_id(), Database::hash( \SEOlity\Crawler\PageParser::normalize_url( $url ) ) ) ) : null;
+				$v   = $url ? $this->plugin->db->value( 'SELECT inlinks FROM {urls} WHERE project_id = %d AND url_hash = %s', array( $this->plugin->db->project_id(), Database::url_hash( $url ) ) ) : null;
 				return null === $v ? null : (int) $v;
 		}
 		return null;

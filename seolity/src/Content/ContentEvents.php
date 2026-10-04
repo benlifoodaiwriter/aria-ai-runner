@@ -84,7 +84,7 @@ final class ContentEvents {
 		}
 		$url     = get_permalink( $post );
 		$metrics = $this->plugin->gsc_oauth->is_connected() ? $this->plugin->gsc_analytics->page_metrics( $url, 28 ) : null;
-		$inlinks = (int) $this->plugin->db->value( 'SELECT inlinks FROM {urls} WHERE project_id = %d AND url_hash = %s', array( $this->plugin->db->project_id(), Database::hash( $url ) ) );
+		$inlinks = (int) $this->plugin->db->value( 'SELECT inlinks FROM {urls} WHERE project_id = %d AND url_hash = %s', array( $this->plugin->db->project_id(), Database::url_hash( $url ) ) );
 		if ( ( $metrics && $metrics['clicks'] > 0 ) || $inlinks > 0 ) {
 			$this->plugin->alerts->raise(
 				'page_removed',
@@ -125,8 +125,8 @@ final class ContentEvents {
 			'urls',
 			array(
 				'project_id'   => $db->project_id(),
-				'url'          => $url,
-				'url_hash'     => Database::hash( $url ),
+				'url'          => \SEOlity\Crawler\PageParser::normalize_url( $url ),
+				'url_hash'     => Database::url_hash( $url ),
 				'object_type'  => $type,
 				'object_id'    => (int) $id,
 				'source'       => 'wp',

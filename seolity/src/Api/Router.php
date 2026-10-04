@@ -663,12 +663,14 @@ final class Router {
 
 		/* ---------------- Settings / AI / knowledge / storage ---------------- */
 		$this->route( 'GET', '/settings', 'manage', function () use ( $p ) {
+			$schema = array_map( static function ( $d ) {
+				return array( 'type' => $d[0], 'default' => $d[1], 'options' => isset( $d[2] ) && 'enum' === $d[0] ? $d[2] : null, 'range' => isset( $d[2] ) && in_array( $d[0], array( 'int', 'float' ), true ) ? $d[2] : null );
+			}, Settings::schema() );
+			$schema['ai_provider']['options'] = array_keys( \SEOlity\AI\ProviderRegistry::all( $p ) );
 			return array(
 				'settings' => $p->settings->all(),
 				'secrets'  => $p->settings->secret_flags(),
-				'schema'   => array_map( static function ( $d ) {
-					return array( 'type' => $d[0], 'default' => $d[1], 'options' => isset( $d[2] ) && 'enum' === $d[0] ? $d[2] : null, 'range' => isset( $d[2] ) && in_array( $d[0], array( 'int', 'float' ), true ) ? $d[2] : null );
-				}, Settings::schema() ),
+				'schema'   => $schema,
 				'providers' => array_map( static function ( $pr ) {
 					return array( 'id' => $pr->id(), 'label' => $pr->label(), 'configured' => $pr->is_configured(), 'model' => $pr->model() );
 				}, array_values( \SEOlity\AI\ProviderRegistry::all( $p ) ) ),

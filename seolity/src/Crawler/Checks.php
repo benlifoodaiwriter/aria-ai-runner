@@ -285,8 +285,9 @@ final class Checks {
 		}
 		$path = (string) wp_parse_url( $url, PHP_URL_PATH );
 		$q    = (string) wp_parse_url( $url, PHP_URL_QUERY );
-		if ( mb_strlen( urldecode( $path ) ) > 115 || preg_match( '/[A-Z_]/', $path ) || substr_count( $q, '&' ) >= 2 ) {
-			$found['url_issues'] = array( 'path' => urldecode( $path ) );
+		$decoded = rawurldecode( $path );
+		if ( mb_strlen( $decoded ) > 115 || preg_match( '/[A-Z_]/', $decoded ) || substr_count( $q, '&' ) >= 2 ) {
+			$found['url_issues'] = array( 'path' => $decoded );
 		}
 		return $found;
 	}

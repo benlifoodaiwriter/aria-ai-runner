@@ -202,9 +202,14 @@ final class Database {
 		return $data;
 	}
 
-	/** SHA1 hash used for indexed lookups on long text columns (URLs, queries). */
+	/** SHA1 hash used for indexed lookups on long text columns (queries, redirects). */
 	public static function hash( $value ) {
 		return sha1( (string) $value );
+	}
+
+	/** Hash of a URL in canonical form (see PageParser::normalize_url). */
+	public static function url_hash( $url ) {
+		return sha1( \SEOlity\Crawler\PageParser::normalize_url( (string) $url ) );
 	}
 
 	/**

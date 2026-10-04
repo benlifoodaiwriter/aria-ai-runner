@@ -188,7 +188,7 @@ final class SitemapService {
 		$problem = array();
 		$hashes  = array();
 		foreach ( array_keys( $data['urls'] ) as $u ) {
-			$hashes[ Database::hash( PageParser::normalize_url( $u ) ) ] = $u;
+			$hashes[ Database::url_hash( $u ) ] = $u;
 		}
 		foreach ( array_chunk( array_keys( $hashes ), 300 ) as $chunk ) {
 			$in = implode( ',', array_fill( 0, count( $chunk ), '%s' ) );

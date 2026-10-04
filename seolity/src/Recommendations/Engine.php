@@ -116,7 +116,7 @@ final class Engine {
 	/** Map a URL to a WordPress object. */
 	public function resolve( $url ) {
 		$db  = $this->plugin->db;
-		$row = $db->row( 'SELECT object_type, object_id FROM {urls} WHERE project_id = %d AND url_hash = %s AND object_id IS NOT NULL', array( $db->project_id(), Database::hash( PageParser::normalize_url( $url ) ) ) );
+		$row = $db->row( 'SELECT object_type, object_id FROM {urls} WHERE project_id = %d AND url_hash = %s AND object_id IS NOT NULL', array( $db->project_id(), Database::url_hash( $url ) ) );
 		if ( $row ) {
 			return array( $row['object_type'], (int) $row['object_id'] );
 		}

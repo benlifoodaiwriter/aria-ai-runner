@@ -274,7 +274,7 @@ final class KeywordService {
 		}
 		$pages = array();
 		foreach ( $c['pages'] as $p ) {
-			$row     = $this->plugin->db->row( 'SELECT title, h1, word_count, inlinks, data FROM {urls} WHERE project_id = %d AND url_hash = %s', array( $this->pid(), Database::hash( $p['page'] ) ) );
+			$row     = $this->plugin->db->row( 'SELECT title, h1, word_count, inlinks, data FROM {urls} WHERE project_id = %d AND url_hash = %s', array( $this->pid(), Database::url_hash( $p['page'] ) ) );
 			$d       = $row ? json_decode( (string) $row['data'], true ) : array();
 			$pages[] = array_merge(
 				$p,

@@ -179,7 +179,7 @@ final class ContentAnalyzer {
 		$add( 'readability', 'readability', $readability >= 60 ? 'pass' : ( $readability >= 40 ? 'warn' : 'fail' ), 6, $readability >= 60 ? __( 'Text is easy to read.', 'seolity' ) : __( 'Shorten long sentences and paragraphs; use lists for steps and specs.', 'seolity' ), array( 'score' => $readability ) );
 
 		/* ---------- Depth ---------- */
-		$depth = $this->depth( $word_count, $target, $h2, $lists, $tables, $images, $faq_like );
+		$depth = $this->depth( $word_count, $target, $h2, $lists, $tables, count( $images ), $faq_like );
 		$add( 'depth', 'depth', $depth >= 70 ? 'pass' : ( $depth >= 45 ? 'warn' : 'fail' ), 10, sprintf( /* translators: 1 words 2 target */ __( '%1$d words (recommended ≥ %2$d for this type) — depth score reflects coverage, structure and supporting elements, not length alone.', 'seolity' ), $word_count, $target ), array( 'score' => $depth ) );
 
 		/* ---------- Semantic / entities ---------- */

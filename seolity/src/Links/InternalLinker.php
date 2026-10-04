@@ -147,7 +147,7 @@ final class InternalLinker {
 			return new \WP_Error( 'seolity_object', __( 'Object not found.', 'seolity' ) );
 		}
 		$source_url = get_permalink( $post );
-		$source_id  = (int) $this->plugin->db->value( 'SELECT id FROM {urls} WHERE project_id = %d AND url_hash = %s', array( $this->plugin->db->project_id(), Database::hash( \SEOlity\Crawler\PageParser::normalize_url( $source_url ) ) ) );
+		$source_id  = (int) $this->plugin->db->value( 'SELECT id FROM {urls} WHERE project_id = %d AND url_hash = %s', array( $this->plugin->db->project_id(), Database::url_hash( $source_url ) ) );
 		$vec        = Text::term_frequencies( $post->post_title . ' ' . Text::strip( $post->post_content ) );
 		$cands      = array();
 		foreach ( $this->pages( 1500 ) as $p ) {
@@ -211,7 +211,7 @@ final class InternalLinker {
 	/** Suggestions where $post_id is the TARGET (for orphan pages). */
 	public function suggest_to( $post_id ) {
 		$url = get_permalink( (int) $post_id );
-		$row = $this->plugin->db->row( 'SELECT id, url, title, h1, inlinks, data FROM {urls} WHERE project_id = %d AND url_hash = %s', array( $this->plugin->db->project_id(), Database::hash( \SEOlity\Crawler\PageParser::normalize_url( (string) $url ) ) ) );
+		$row = $this->plugin->db->row( 'SELECT id, url, title, h1, inlinks, data FROM {urls} WHERE project_id = %d AND url_hash = %s', array( $this->plugin->db->project_id(), Database::url_hash( (string) $url ) ) );
 		if ( ! $row ) {
 			return new \WP_Error( 'seolity_links', __( 'Run a site audit first so SEOlity knows your link graph.', 'seolity' ), array( 'status' => 400 ) );
 		}

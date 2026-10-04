@@ -176,7 +176,7 @@ final class GitHubArchive {
 					array(
 						'project_id'  => $db->project_id(),
 						'date'        => $r['date'],
-						'page_hash'   => Database::hash( $r['page'] ),
+						'page_hash'   => Database::url_hash( $r['page'] ),
 						'query_hash'  => Database::hash( $r['query'] ),
 						'page'        => $r['page'],
 						'query'       => $r['query'],

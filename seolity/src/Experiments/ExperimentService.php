@@ -38,7 +38,7 @@ final class ExperimentService {
 			return null;
 		}
 		$db   = $this->plugin->db;
-		$hash = Database::hash( $change['url'] );
+		$hash = Database::url_hash( $change['url'] );
 		$kind = 'post' === $change['object_type'] ? get_post_type( (int) $change['object_id'] ) : 'term';
 		// Group changes applied to the same page within 2 hours into one experiment.
 		$open = $db->row( "SELECT * FROM {experiments} WHERE project_id = %d AND page_hash = %s AND status = 'running' AND started_at >= %s ORDER BY id DESC", array( $db->project_id(), $hash, gmdate( 'Y-m-d H:i:s', time() - 2 * HOUR_IN_SECONDS ) ) );

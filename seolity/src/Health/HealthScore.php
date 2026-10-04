@@ -71,18 +71,29 @@ final class HealthScore {
 		$cats  = array();
 
 		if ( $pages ) {
-			// Technical.
-			$crit = $this->issues_count( array(), array( 'critical' ) );
-			$high = $this->issues_count( array(), array( 'high' ), 'security' ) + $this->issues_count( array(), array( 'high' ), 'mobile' ) + $this->issues_count( array( 'http_5xx', 'redirect_loop', 'canonical_multiple', 'schema_invalid' ) );
-			$score = max( 0, min( self::ratio_score( $crit, $pages, 3 ), self::ratio_score( $crit + $high, $pages, 1.5 ) ) );
-			$cats['technical'] = $this->cat(
-				$score,
-				array(
-					array( __( 'Pages with critical issues', 'seolity' ), $crit, -min( 60, $crit * 5 ) ),
-					array( __( 'Pages with high security/mobile/server issues', 'seolity' ), $high, -min( 40, $high * 2 ) ),
-				),
-				__( 'Status codes, redirects, HTTPS, mixed content, mobile viewport, canonical conflicts.', 'seolity' )
+			// Technical: one penalty per distinct problem type, scaled by how much of the
+			// site it affects — a single site-wide issue (e.g. no HTTPS) costs a fixed
+			// amount instead of zeroing the category.
+			$weights = array( 'critical' => 35, 'high' => 20, 'medium' => 8, 'low' => 2 );
+			$tech    = $db->rows(
+				"SELECT check_code, severity, COUNT(DISTINCT url_id) c FROM {issues} WHERE project_id = %d AND status = 'open' AND category IN ('indexation','security','mobile','technical') AND severity IN ('critical','high','medium','low') GROUP BY check_code, severity ORDER BY FIELD(severity,'critical','high','medium','low')",
+				array( $pid )
 			);
+			$score   = 100;
+			$factors = array();
+			foreach ( $tech as $t ) {
+				$share   = min( 1, (int) $t['c'] / $pages );
+				$penalty = (int) round( $weights[ $t['severity'] ] * ( 0.5 + 0.5 * $share ) );
+				$score  -= $penalty;
+				$meta    = \SEOlity\Crawler\Checks::meta( $t['check_code'] );
+				if ( count( $factors ) < 8 ) {
+					$factors[] = array( $meta ? $meta['title'] : $t['check_code'], (int) $t['c'], -$penalty );
+				}
+			}
+			if ( ! $factors ) {
+				$factors[] = array( __( 'Pages with critical issues', 'seolity' ), 0, 0 );
+			}
+			$cats['technical'] = $this->cat( max( 0, $score ), $factors, __( 'Status codes, redirects, HTTPS, mixed content, mobile viewport, canonical conflicts.', 'seolity' ) );
 			// Content.
 			$avg   = $db->value( 'SELECT AVG(score) FROM {content_analysis} WHERE project_id = %d', array( $pid ) );
 			$thin  = $this->issues_count( array( 'thin_content' ) );

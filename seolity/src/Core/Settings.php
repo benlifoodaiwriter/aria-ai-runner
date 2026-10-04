@@ -168,6 +168,10 @@ final class Settings {
 		$schema = self::schema();
 		$clean  = array();
 		foreach ( $values as $key => $value ) {
+			if ( 'ai_provider' === $key && $this->plugin && \SEOlity\AI\ProviderRegistry::get( $this->plugin, sanitize_key( (string) $value ) ) ) {
+				$clean[ $key ] = sanitize_key( (string) $value ); // Includes providers registered by extensions.
+				continue;
+			}
 			if ( isset( $schema[ $key ] ) ) {
 				$clean[ $key ] = self::sanitize_value( $value, $schema[ $key ] );
 			}

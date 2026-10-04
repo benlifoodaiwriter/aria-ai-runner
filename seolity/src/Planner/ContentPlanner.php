@@ -246,7 +246,7 @@ final class ContentPlanner {
 			// Pillar ↔ member internal-link check.
 			$missing = array();
 			if ( $r['pillar_url'] ) {
-				$pillar_id = (int) $this->plugin->db->value( 'SELECT id FROM {urls} WHERE project_id = %d AND url_hash = %s', array( $this->pid(), Database::hash( $r['pillar_url'] ) ) );
+				$pillar_id = (int) $this->plugin->db->value( 'SELECT id FROM {urls} WHERE project_id = %d AND url_hash = %s', array( $this->pid(), Database::url_hash( $r['pillar_url'] ) ) );
 				foreach ( (array) $r['members'] as $m ) {
 					if ( (int) $m['url_id'] === $pillar_id ) {
 						continue;

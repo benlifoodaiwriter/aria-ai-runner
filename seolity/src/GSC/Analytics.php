@@ -130,7 +130,7 @@ final class Analytics {
 		}
 		if ( ! empty( $filter['page'] ) ) {
 			$where  .= ' AND page_hash = %s';
-			$extra[] = Database::hash( $filter['page'] );
+			$extra[] = Database::url_hash( $filter['page'] );
 		}
 		if ( ! empty( $filter['query'] ) ) {
 			$where  .= ' AND query_hash = %s';
@@ -345,7 +345,7 @@ final class Analytics {
 		$r    = $this->plugin->db->row(
 			'SELECT COALESCE(SUM(clicks),0) clicks, COALESCE(SUM(impressions),0) impressions, COALESCE(SUM(position*impressions)/NULLIF(SUM(impressions),0),0) position, COUNT(DISTINCT query_hash) queries
 			FROM {gsc_page_query} WHERE project_id = %d AND page_hash = %s AND date BETWEEN %s AND %s',
-			array( $this->pid(), Database::hash( $url ), $start, $end )
+			array( $this->pid(), Database::url_hash( $url ), $start, $end )
 		);
 		$impr = (int) $r['impressions'];
 		return array(
@@ -382,7 +382,7 @@ final class Analytics {
 		list( $cs, $ce ) = $this->periods( $days );
 		return $this->plugin->db->rows(
 			'SELECT date, SUM(clicks) clicks, SUM(impressions) impressions, ROUND(SUM(position*impressions)/NULLIF(SUM(impressions),0),1) position FROM {gsc_page_query} WHERE project_id = %d AND page_hash = %s AND date BETWEEN %s AND %s GROUP BY date ORDER BY date',
-			array( $this->pid(), Database::hash( $url ), $cs, $ce )
+			array( $this->pid(), Database::url_hash( $url ), $cs, $ce )
 		);
 	}
 }

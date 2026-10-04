@@ -105,7 +105,7 @@ final class ContentList {
 		$db    = $this->p->db;
 		$meta  = 'term' === $type ? array( $this->p->meta->get_term( $id, 'meta_title' ), $this->p->meta->get_term( $id, 'meta_description' ), $this->p->meta->get_term( $id, 'focus_keyword' ) ) : array( $this->p->meta->get_post( $id, 'meta_title' ), $this->p->meta->get_post( $id, 'meta_description' ), $this->p->meta->get_post( $id, 'focus_keyword' ) );
 		$score = $db->value( 'SELECT score FROM {content_analysis} WHERE project_id = %d AND object_type = %s AND object_id = %d', array( $db->project_id(), $type, $id ) );
-		$url_id = $url ? $db->value( 'SELECT id FROM {urls} WHERE project_id = %d AND url_hash = %s', array( $db->project_id(), Database::hash( PageParser::normalize_url( $url ) ) ) ) : null;
+		$url_id = $url ? $db->value( 'SELECT id FROM {urls} WHERE project_id = %d AND url_hash = %s', array( $db->project_id(), Database::url_hash( $url ) ) ) : null;
 		return array(
 			'object_type'      => $type,
 			'id'               => (int) $id,

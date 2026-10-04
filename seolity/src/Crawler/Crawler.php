@@ -159,7 +159,7 @@ final class Crawler {
 	private function add_url( $url, $depth, $source, $object_type, $object_id, array $data, $requeue = true, $in_sitemap = false ) {
 		$url  = PageParser::normalize_url( $url );
 		$db   = $this->plugin->db;
-		$hash = Database::hash( $url );
+		$hash = Database::url_hash( $url );
 		$row  = $db->row( 'SELECT id, data FROM {urls} WHERE project_id = %d AND url_hash = %s', array( $this->pid(), $hash ) );
 		if ( $row ) {
 			$update = array();
@@ -390,7 +390,7 @@ final class Crawler {
 		);
 
 		// 2) Click depth via BFS from the homepage.
-		$home_id = (int) $db->value( 'SELECT id FROM {urls} WHERE project_id = %d AND url_hash = %s', array( $pid, Database::hash( PageParser::normalize_url( home_url( '/' ) ) ) ) );
+		$home_id = (int) $db->value( 'SELECT id FROM {urls} WHERE project_id = %d AND url_hash = %s', array( $pid, Database::url_hash( home_url( '/' ) ) ) );
 		$adj     = array();
 		foreach ( $db->rows( "SELECT source_id, target_id FROM {internal_links} WHERE project_id = %d AND link_type = 'existing'", array( $pid ) ) as $e ) {
 			$adj[ (int) $e['source_id'] ][] = (int) $e['target_id'];
@@ -489,8 +489,15 @@ final class Crawler {
 		}
 
 		// Canonical to non-200.
-		foreach ( $db->rows( "SELECT u.id, u.canonical, c.status_code FROM {urls} u JOIN {urls} c ON c.project_id = u.project_id AND c.url_hash = SHA1(u.canonical) WHERE u.project_id = %d AND u.canonical IS NOT NULL AND u.canonical <> u.url AND c.status_code <> 200 AND c.crawl_status = 'done'", array( $pid ) ) as $r ) {
-			$add( $r['id'], 'canonical_to_error', array( 'canonical' => $r['canonical'], 'status' => (int) $r['status_code'] ) );
+		$status_by_hash = array();
+		foreach ( $db->rows( "SELECT url_hash, status_code FROM {urls} WHERE project_id = %d AND crawl_status = 'done'", array( $pid ) ) as $r ) {
+			$status_by_hash[ $r['url_hash'] ] = (int) $r['status_code'];
+		}
+		foreach ( $db->rows( 'SELECT id, url, url_hash, canonical FROM {urls} WHERE project_id = %d AND canonical IS NOT NULL AND canonical <> \'\'', array( $pid ) ) as $r ) {
+			$h = Database::url_hash( $r['canonical'] );
+			if ( $h !== $r['url_hash'] && isset( $status_by_hash[ $h ] ) && 200 !== $status_by_hash[ $h ] ) {
+				$add( $r['id'], 'canonical_to_error', array( 'canonical' => $r['canonical'], 'status' => $status_by_hash[ $h ] ) );
+			}
 		}
 		// Noindex vs sitemap / traffic.
 		$gsc = $this->plugin->gsc_oauth->is_connected();
@@ -518,7 +525,7 @@ final class Crawler {
 
 		// 4) Site-wide technical checks (url_id = 0).
 		$global = array();
-		$sm     = $this->plugin->sitemap->analyze();
+		$sm     = $this->plugin->sitemap->analyze( true );
 		if ( empty( $sm['sitemaps'] ) ) {
 			$global['sitemap_missing'] = array();
 		} elseif ( ! empty( $sm['problem_urls'] ) ) {

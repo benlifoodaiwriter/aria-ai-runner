@@ -109,7 +109,7 @@ final class CompetitorService {
 			if ( ! $this->plugin->robots->is_allowed( $url, 'seolitybot', $parsed ) ) {
 				continue;
 			}
-			$hash   = Database::hash( $url );
+			$hash   = Database::url_hash( $url );
 			$exists = $db->row( 'SELECT id, lastmod FROM {competitor_pages} WHERE competitor_id = %d AND url_hash = %s', array( (int) $id, $hash ) );
 			if ( $exists ) {
 				$changed = $lastmod && $exists['lastmod'] && strtotime( $lastmod ) > strtotime( $exists['lastmod'] . ' UTC' );
