@@ -6,13 +6,13 @@ on:
   workflow_dispatch:
     inputs:
       trigger:
-        description: "cron | manual | test | analyze | image | revise"
+        description: "cron | manual | test | analyze | image | revise | crawl | seo_learn"
         default: "manual"
       topic_id:
         description: "Specific topic id (0 = next in queue)"
         default: "0"
       engine:
-        description: "claude | codex"
+        description: "claude | codex | none"
         default: "claude"
       model:
         description: "Model alias (optional)"
@@ -26,7 +26,7 @@ concurrency:
   cancel-in-progress: false
 
 permissions:
-  contents: read
+  contents: write   # site backup / SEO database on branch aaw-data
 
 jobs:
   write:
@@ -40,6 +40,7 @@ jobs:
           node-version: 22
 
       - name: Install official CLI (Claude Code or OpenAI Codex)
+        if: ${{ inputs.engine != 'none' }}
         run: |
           if [ "${{ inputs.engine }}" = "codex" ]; then
             npm install -g @openai/codex
@@ -62,3 +63,4 @@ jobs:
           AAW_SHARED_SECRET: ${{ secrets.AAW_SHARED_SECRET }}
           CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           CODEX_AUTH_JSON: ${{ secrets.CODEX_AUTH_JSON }}
+          GITHUB_TOKEN: ${{ github.token }}
