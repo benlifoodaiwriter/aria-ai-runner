@@ -76,6 +76,8 @@ const worker = (route, p, ms) => {
 const mailbox = { results: [], logs: [], ideas: null, fatal: '', analysis: null, images: [], revisions: [], site_data: null, seo_playbook: null };
 async function reportDraft(topicId, article, meta) {
   if (PULL_ID) { mailbox.results.push({ topic_id: topicId, article, meta }); return { post_id: 0, title: article.title, edit_url: '(local site will collect it)' }; }
+  if (article.image) article.image = await compressImage(article.image);
+  if (Array.isArray(article.inline_images)) article.inline_images = await Promise.all(article.inline_images.map(compressImage));
   return wp('draft', { topic_id: topicId, article, meta });
 }
 async function reportFail(topicId, error, meta) {
@@ -86,9 +88,31 @@ async function reportLog(level, event, message) {
   if (PULL_ID) { mailbox.logs.push({ level, event, message }); return; }
   return wp('log', { level, event, message });
 }
+/** Shrink big images (PNG 1–3 MB → WebP ~150 KB) so slow hosts download them quickly. */
+export async function compressImage(img) {
+  if (!img || !img.base64 || img.base64.length < 250000) return img;
+  try {
+    const sharp = (await import('sharp')).default;
+    const buf = Buffer.from(img.base64, 'base64');
+    const out = await sharp(buf).resize({ width: 1600, withoutEnlargement: true }).webp({ quality: 82 }).toBuffer();
+    if (out.length > 1000 && out.length < buf.length) return { ...img, base64: out.toString('base64'), mime: 'image/webp', shrunk: true };
+  } catch (_) { /* sharp not installed – keep original */ }
+  return img;
+}
+async function compressMailbox(m) {
+  for (const r of m.results || []) {
+    if (r.article && r.article.image) r.article.image = await compressImage(r.article.image);
+    if (r.article && Array.isArray(r.article.inline_images)) r.article.inline_images = await Promise.all(r.article.inline_images.map(compressImage));
+  }
+  for (const im of m.images || []) {
+    im.image = await compressImage(im.image);
+    if (Array.isArray(im.inline)) im.inline = await Promise.all(im.inline.map(compressImage));
+  }
+}
 async function flushMailbox() {
   if (!PULL_ID) return;
-  await worker('result_put', { id: PULL_ID, data: mailbox }, 60000);
+  await compressMailbox(mailbox);
+  await worker('result_put', { id: PULL_ID, data: mailbox }, 120000);
   log('Result stored in Cloudflare KV for the local site.');
 }
 
