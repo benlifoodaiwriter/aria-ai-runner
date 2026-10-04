@@ -262,8 +262,8 @@ final class KnowledgeBase {
 		if ( '' === $title || '' === $content ) {
 			return new \WP_Error( 'seolity_kb', __( 'Title and content are required.', 'seolity' ), array( 'status' => 400 ) );
 		}
-		$slug = sanitize_title( $title );
-		$slug = $slug ? $slug : md5( $title );
+		$slug = rawurldecode( sanitize_title( $title ) ); // Readable UTF-8 file names (GitHub paths are encoded per request).
+		$slug = '' !== trim( $slug, '-' ) ? $slug : md5( $title );
 		$path = 'user/' . sanitize_key( $topic ) . '/' . $slug . '.md';
 		$md   = "---\ntitle: {$title}\ntopic: " . sanitize_key( $topic ) . "\nlang: " . Text::lang( $content ) . "\n---\n\n# {$title}\n\n{$content}\n";
 		$this->store_doc( 'user', $path, sha1( $md ), $md );

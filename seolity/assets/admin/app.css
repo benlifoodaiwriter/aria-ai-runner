@@ -165,9 +165,9 @@
 
 @media (max-width: 960px) {
 	.sl-layout { grid-template-columns: 1fr; }
-	.sl-side { position: fixed; inset-block: 46px 0; inset-inline-start: 0; width: 260px; z-index: 100; transform: translateX(-105%); transition: transform .2s; height: auto; box-shadow: var(--sl-shadow); }
-	.is-rtl .sl-side { transform: translateX(105%); }
-	.nav-open .sl-side { transform: none; }
+	/* Closed drawer is display:none (a translated fixed element would still widen the page in RTL). */
+	.sl-side { position: fixed; inset-block: 46px 0; inset-inline-start: 0; width: min(260px, 85vw); z-index: 100; display: none; height: auto; overflow-y: auto; box-shadow: var(--sl-shadow); }
+	.nav-open .sl-side { display: block; animation: sl-drawer .18s ease-out; }
 	.sl-menu-btn { display: inline-block; }
 	.sl-top, .sl-side { inset-block-start: 46px; }
 	.sl-view { padding: 16px; }
@@ -175,3 +175,8 @@
 	.sl-modes { grid-template-columns: 1fr; }
 	.sl-diag__grid { grid-template-columns: 1fr; }
 }
+
+@keyframes sl-drawer { from { opacity: 0; transform: translateX(-24px); } to { opacity: 1; transform: none; } }
+.is-rtl .nav-open .sl-side { animation-name: sl-drawer-rtl; }
+@keyframes sl-drawer-rtl { from { opacity: 0; transform: translateX(24px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .nav-open .sl-side { animation: none; } }

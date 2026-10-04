@@ -56,7 +56,23 @@ final class Router {
 					} catch ( \Throwable $e ) {
 						return new \WP_Error( 'seolity_error', defined( 'WP_DEBUG' ) && WP_DEBUG ? $e->getMessage() : __( 'Unexpected error.', 'seolity' ), array( 'status' => 500 ) );
 					}
-					return is_wp_error( $res ) ? $res : rest_ensure_response( $res );
+					if ( is_array( $res ) ) {
+						foreach ( $res as $value ) {
+							if ( is_wp_error( $value ) ) {
+								$res = $value; // e.g. array( 'id' => save() ) where save() failed validation.
+								break;
+							}
+						}
+					}
+					if ( is_wp_error( $res ) ) {
+						$data = $res->get_error_data();
+						if ( ! is_array( $data ) || empty( $data['status'] ) ) {
+							// Service-level errors are expected conditions (not configured, provider refused…), not server faults.
+							$res->add_data( array_merge( is_array( $data ) ? $data : array(), array( 'status' => false !== strpos( $res->get_error_code(), 'disconnected' ) ? 409 : 400 ) ) );
+						}
+						return $res;
+					}
+					return rest_ensure_response( $res );
 				},
 			)
 		);
