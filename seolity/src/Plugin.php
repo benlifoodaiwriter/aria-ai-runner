@@ -200,6 +200,15 @@ final class Plugin {
 	}
 
 	public function load_textdomain() {
+		$forced = $this->settings->get( 'ui_language' );
+		if ( 'fa' === $forced ) {
+			// Persian UI regardless of the site/user locale.
+			load_textdomain( 'seolity', SEOLITY_DIR . 'languages/seolity-fa_IR.mo' );
+			return;
+		}
+		if ( 'en' === $forced ) {
+			return; // English source strings.
+		}
 		load_plugin_textdomain( 'seolity', false, dirname( SEOLITY_BASENAME ) . '/languages' );
 	}
 }

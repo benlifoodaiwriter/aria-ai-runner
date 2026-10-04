@@ -1,0 +1,360 @@
+Add 2–5 real SEO competitors (sites that rank for your keywords).	۲ تا ۵ رقیب واقعی سئو (سایت‌هایی که برای کلمات کلیدی شما رتبه دارند) اضافه کنید.
+Pages analyzed	صفحات تحلیل‌شده
+%s known	%s شناخته‌شده
+Avg. words	میانگین کلمات
+Pages with FAQ	صفحات دارای سؤالات متداول
+Where they are stronger	نقاط قوت آن‌ها
+Opportunities for you	فرصت‌های شما
+Threats	تهدیدها
+Recommended actions	اقدامات پیشنهادی
+AI summary will appear after the analysis finishes (requires an AI provider).	خلاصه هوش مصنوعی پس از پایان تحلیل نمایش داده می‌شود (نیازمند ارائه‌دهنده هوش مصنوعی).
+Content sections	بخش‌های محتوایی
+Content gap	شکاف محتوایی
+Analyze now	همین حالا تحلیل کن
+Analysis queued.	تحلیل در صف قرار گرفت.
+Remove this competitor and its data?	این رقیب و داده‌هایش حذف شوند؟
+Content gap opportunities	فرصت‌های شکاف محتوایی
+Keyword	کلمه کلیدی
+Suggested page	صفحه پیشنهادی
+Priority	اولویت
+Brief	بریف
+Outline	ساختار
+Filter…	فیلتر…
+First seen	اولین مشاهده
+SEO Experiments	آزمایش‌های سئو
+Every applied change becomes an experiment: equal before/after windows, adjusted by the site-wide trend (control), judged Positive / Negative / Neutral / Inconclusive.	هر تغییر اعمال‌شده به یک آزمایش تبدیل می‌شود: بازه‌های برابر قبل/بعد، تعدیل‌شده با روند کل سایت (گروه کنترل)، با نتیجه مثبت / منفی / خنثی / نامشخص.
+Evaluate now	همین حالا ارزیابی کن
+Evaluation queued.	ارزیابی در صف قرار گرفت.
+Inconclusive	نامشخص
+Site-Specific SEO Intelligence	هوش سئوی اختصاصی سایت
+win rate	نرخ موفقیت
+Learning in progress	در حال یادگیری
+After a few experiments are evaluated, SEOlity learns which changes work best on your site and uses it in every AI suggestion.	پس از ارزیابی چند آزمایش، سئولیتی یاد می‌گیرد کدام تغییرات روی سایت شما بهتر جواب می‌دهد و از آن در همه پیشنهادهای هوش مصنوعی استفاده می‌کند.
+Experiment	آزمایش
+Change	تغییر
+Before → After	قبل ← بعد
+Window: %s days	بازه: %s روز
+Outcome	نتیجه
+Started	شروع
+Revert	بازگردانی
+Revert all changes made in this experiment?	همه تغییرات این آزمایش بازگردانده شوند؟
+Reverted.	بازگردانده شد.
+No experiments yet	هنوز آزمایشی وجود ندارد
+Apply an AI change to a page that gets search traffic — SEOlity measures the result automatically.	یک تغییر هوش مصنوعی را روی صفحه‌ای با ترافیک جستجو اعمال کنید؛ سئولیتی نتیجه را خودکار اندازه می‌گیرد.
+Redirect Manager	مدیریت ریدایرکت
+301 / 302 / 307 / 410 / 451, regex, bulk import/export, chain & loop detection, hit tracking.	۳۰۱ / ۳۰۲ / ۳۰۷ / ۴۱۰ / ۴۵۱، عبارت باقاعده، ورود/خروج گروهی، تشخیص زنجیره و حلقه، شمارش بازدید.
+Export CSV	خروجی CSV
+or	یا
+Permanent	دائمی
+Temporary	موقت
+Gone	حذف‌شده
+Add redirect	افزودن ریدایرکت
+Regex	عبارت باقاعده
+Bulk import	ورود گروهی
+Bulk import (CSV)	ورود گروهی (CSV)
+Import	ورود
+%s redirects imported.	%s ریدایرکت وارد شد.
+%s lines had errors.	%s خط خطا داشت.
+Search redirects…	جستجوی ریدایرکت‌ها…
+%s redirect chains/loops detected.	%s زنجیره/حلقه ریدایرکت شناسایی شد.
+Flatten chains	صاف کردن زنجیره‌ها
+Type	نوع
+Hits	بازدیدها
+Last used	آخرین استفاده
+Origin	منشأ
+Active	فعال
+Delete this redirect?	این ریدایرکت حذف شود؟
+No redirects yet	هنوز ریدایرکتی وجود ندارد
+404 Monitor	پایشگر ۴۰۴
+Every 404 is logged with referrer and hits; SEOlity suggests the best redirect target (slug similarity + AI).	هر خطای ۴۰۴ با ارجاع‌دهنده و تعداد بازدید ثبت می‌شود؛ سئولیتی بهترین مقصد ریدایرکت را پیشنهاد می‌دهد (شباهت نامک + هوش مصنوعی).
+Suggest targets	پیشنهاد مقصد
+Computing suggestions in the background.	در حال محاسبه پیشنهادها در پس‌زمینه.
+Open 404s	۴۰۴های باز
+Hits (7 days)	بازدیدها (۷ روز)
+New (24h)	جدید (۲۴ ساعت)
+With referrer	دارای ارجاع‌دهنده
+Open	باز
+Redirected	ریدایرکت‌شده
+Ignored	نادیده‌گرفته‌شده
+URL	آدرس (URL)
+Referrer	ارجاع‌دهنده
+Last seen	آخرین مشاهده
+Suggested redirect	ریدایرکت پیشنهادی
+no good match	مورد مناسبی نیست
+pending	در انتظار
+410 Gone	۴۱۰ حذف‌شده
+Marked as gone (410).	به‌عنوان حذف‌شده (۴۱۰) علامت‌گذاری شد.
+Ignore	نادیده بگیر
+No 404 errors logged	خطای ۴۰۴ ثبت نشده
+Schema Intelligence	هوش اسکیما
+Validate Product, Article, FAQ, Breadcrumb, Organization, LocalBusiness, Review, AggregateRating, WebSite, WebPage and Person markup; find missing opportunities.	اعتبارسنجی نشانه‌گذاری‌های Product، Article، FAQ، Breadcrumb، Organization، LocalBusiness، Review، AggregateRating، WebSite، WebPage و Person و یافتن فرصت‌های از دست رفته.
+Validate a URL	اعتبارسنجی یک URL
+Check structured data	بررسی داده ساختاریافته
+Types found	انواع یافت‌شده
+%s JSON-LD blocks contain invalid JSON.	%s بلوک JSON-LD دارای JSON نامعتبر است.
+No required properties missing.	هیچ ویژگی الزامی‌ای جا نیفتاده است.
+Warnings (%s)	هشدارها (%s)
+Opportunities	فرصت‌ها
+Raw JSON-LD	JSON-LD خام
+Schema coverage	پوشش اسکیما
+%1$s of %2$s indexable pages have no structured data.	%1$s از %2$s صفحه قابل ایندکس داده ساختاریافته ندارند.
+Schema issues	مشکلات اسکیما
+Issue	مشکل
+No schema issues	مشکلی در اسکیما نیست
+SEOlity outputs Organization, WebSite, WebPage, Breadcrumb and Article schema.	سئولیتی اسکیماهای Organization، WebSite، WebPage، Breadcrumb و Article را خروجی می‌دهد.
+Another SEO plugin outputs your main schema; SEOlity adds FAQ schema only.	افزونه سئوی دیگری اسکیمای اصلی را خروجی می‌دهد؛ سئولیتی فقط اسکیمای FAQ اضافه می‌کند.
+Pages with SEOlity FAQ schema	صفحات دارای اسکیمای FAQ سئولیتی
+Organization settings	تنظیمات سازمان
+Sitemap Intelligence	هوش نقشه سایت
+Checks every sitemap URL against crawl data: 404s, redirects, noindex and canonicalized URLs, missing important pages and lastmod quality.	هر URL نقشه سایت را با داده‌های خزش بررسی می‌کند: ۴۰۴ها، ریدایرکت‌ها، نوایندکس و کنونیکال‌شده‌ها، صفحات مهم جاافتاده و کیفیت lastmod.
+Re-check	بررسی مجدد
+Sitemaps	نقشه‌های سایت
+URLs in sitemaps	URLهای نقشه سایت
+Problem URLs	URLهای مشکل‌دار
+Missing important pages	صفحات مهم جاافتاده
+Recommendations	پیشنهادها
+Sitemap	نقشه سایت
+Entries	ورودی‌ها
+Submit to Google	ارسال به گوگل
+Sitemap submitted to Search Console.	نقشه سایت به سرچ کنسول ارسال شد.
+Search Console sitemap status	وضعیت نقشه سایت در سرچ کنسول
+Last downloaded	آخرین دریافت
+Warnings	هشدارها
+Remove from sitemap	حذف از نقشه سایت
+Sitemap is clean	نقشه سایت تمیز است
+Add to sitemap (indexable pages missing)	افزودن به نقشه سایت (صفحات قابل ایندکس جاافتاده)
+Inlinks	لینک‌های ورودی
+Nothing missing	چیزی جا نیفتاده
+Robots.txt Intelligence	هوش Robots.txt
+Google-compatible rule matching, blocked important URLs, crawl-waste detection and a safe editor with live testing.	تطبیق قوانین سازگار با گوگل، URLهای مهم مسدودشده، تشخیص هدررفت بودجه خزش و ویرایشگر امن با آزمایش زنده.
+A physical robots.txt file exists in your web root; WordPress (and SEOlity) cannot override it. Edit or delete that file.	یک فایل فیزیکی robots.txt در ریشه سایت وجود دارد؛ وردپرس (و سئولیتی) نمی‌تواند آن را بازنویسی کند. آن فایل را ویرایش یا حذف کنید.
+Editor	ویرایشگر
+Serve this content as robots.txt (virtual)	این محتوا به‌عنوان robots.txt ارائه شود (مجازی)
+robots.txt saved.	robots.txt ذخیره شد.
+Load suggested	بارگذاری پیشنهادی
+Test URL	آزمایش URL
+allowed	مجاز
+blocked	مسدود
+Issues	مشکلات
+No issues	مشکلی نیست
+Crawl-waste suggestions	پیشنهادهای جلوگیری از هدررفت خزش
+Nothing to suggest	پیشنهادی نیست
+Important URLs blocked	URLهای مهم مسدودشده
+SEO Reports	گزارش‌های سئو
+Daily, weekly and monthly reports with traffic, rankings, issues, improvements, competitors, AI changes and recommendations — white-label ready.	گزارش‌های روزانه، هفتگی و ماهانه با ترافیک، رتبه‌ها، مشکلات، بهبودها، رقبا، تغییرات هوش مصنوعی و پیشنهادها — آماده برندسازی اختصاصی.
+Generate report	تولید گزارش
+Generate	تولید
+Report generated.	گزارش تولید شد.
+Schedule & recipients	زمان‌بندی و گیرندگان
+Report	گزارش
+Period	دوره
+Storage	ذخیره‌سازی
+Local	محلی
+Export	خروجی
+View / PDF	مشاهده / PDF
+Email	ایمیل
+Report sent.	گزارش ارسال شد.
+No recipients configured.	گیرنده‌ای تنظیم نشده.
+No reports yet	هنوز گزارشی وجود ندارد
+AI Alerts	هشدارهای هوشمند
+Ranking, traffic, CTR and indexing drops, new 404s, lost/new keywords, deindexed pages, sitemap & Core Web Vitals problems, competitor growth.	افت رتبه، ترافیک، CTR و ایندکس، ۴۰۴های جدید، کلمات کلیدی ازدست‌رفته/جدید، صفحات حذف‌شده از ایندکس، مشکلات نقشه سایت و Core Web Vitals، رشد رقبا.
+Mark all as read	علامت‌گذاری همه به‌عنوان خوانده‌شده
+No alerts	هشداری نیست
+SEOlity checks for important changes every hour.	سئولیتی هر ساعت تغییرات مهم را بررسی می‌کند.
+Site Audit & SEO Doctor	ممیزی سایت و دکتر سئو
+Full crawl of your site with 60+ checks. The SEO Doctor explains what is wrong, why it matters, where, and how to fix it.	خزش کامل سایت با بیش از ۶۰ بررسی. دکتر سئو توضیح می‌دهد چه مشکلی هست، چرا مهم است، کجاست و چطور رفع می‌شود.
+Start full audit	شروع ممیزی کامل
+Audit started in the background.	ممیزی در پس‌زمینه شروع شد.
+Incremental	افزایشی
+Incremental audit queued.	ممیزی افزایشی در صف قرار گرفت.
+No audit yet	هنوز ممیزی انجام نشده
+Start your first audit — it runs in the background and never slows down your visitors.	اولین ممیزی را شروع کنید؛ در پس‌زمینه اجرا می‌شود و هرگز سایت را برای بازدیدکنندگان کند نمی‌کند.
+Audit in progress	ممیزی در حال انجام
+Phase: %1$s · %2$s of %3$s URLs	مرحله: %1$s · %2$s از %3$s URL
+Last audit: %1$s · %2$s URLs crawled	آخرین ممیزی: %1$s · %2$s URL خزش شد
+SEO Doctor	دکتر سئو
+Health score	امتیاز سلامت
+All issues	همه مشکلات
+URL explorer	کاوشگر URL
+Core Web Vitals	Core Web Vitals
+Your site looks healthy	سایت شما سالم به نظر می‌رسد
+No open diagnoses. Keep monitoring with scheduled audits.	تشخیص بازی وجود ندارد. با ممیزی‌های زمان‌بندی‌شده به پایش ادامه دهید.
+AI can fix	قابل اصلاح با هوش مصنوعی
+Manual fix	اصلاح دستی
+Why is it a problem?	چرا مشکل است؟
+Likely impact	تأثیر احتمالی
+How to fix	راه‌حل
+Where	کجا
+Fix it	اصلاحش کن
+Show affected URLs	نمایش URLهای درگیر
+Grade	رتبه
+Weight	وزن
+Excluded (no data yet)	مستثنا (هنوز داده‌ای نیست)
+All severities	همه سطوح
+Info	اطلاعات
+All categories	همه دسته‌ها
+Fixed	رفع‌شده
+Site-wide	کل سایت
+Severity	شدت
+AI fix	اصلاح هوشمند
+Find links	یافتن لینک
+No issues found	مشکلی یافت نشد
+Filter URLs…	فیلتر URLها…
+Most linked	بیشترین لینک
+Word count	تعداد کلمات
+Slowest	کندترین
+Deepest	عمیق‌ترین
+Status code	کد وضعیت
+Indexable	قابل ایندکس
+Depth	عمق
+Response	پاسخ
+Test with PageSpeed Insights	آزمایش با PageSpeed Insights
+Performance score: %s	امتیاز عملکرد: %s
+(field)	(داده واقعی)
+Top opportunities	مهم‌ترین فرصت‌ها
+Tested	آزمایش‌شده
+No PageSpeed data yet	هنوز داده PageSpeed نیست
+SEOlity tests your most important pages daily (10 per day).	سئولیتی مهم‌ترین صفحات شما را روزانه آزمایش می‌کند (۱۰ صفحه در روز).
+Search Console Analytics	تحلیل سرچ کنسول
+Real Google data, analyzed deeper than Search Console itself.	داده‌های واقعی گوگل، عمیق‌تر از خود سرچ کنسول تحلیل‌شده.
+Search Console is not connected	سرچ کنسول متصل نیست
+Ask an administrator to connect Google Search Console.	از مدیر سایت بخواهید گوگل سرچ کنسول را متصل کند.
+Step 1 — Google OAuth client	مرحله ۱ — کلاینت OAuth گوگل
+Open Google Cloud Console → APIs & Services → enable “Google Search Console API”.	Google Cloud Console را باز کنید ← APIs & Services ← «Google Search Console API» را فعال کنید.
+Create OAuth client ID → type “Web application”.	یک OAuth client ID بسازید ← نوع «Web application».
+Add the Authorized redirect URI below (exactly).	Authorized redirect URI زیر را (دقیقاً) اضافه کنید.
+Paste the Client ID and Client Secret here.	Client ID و Client Secret را اینجا وارد کنید.
+Authorized redirect URI	آدرس بازگشت مجاز (Redirect URI)
+Copy	کپی
+Copied.	کپی شد.
+Client ID	شناسه کلاینت (Client ID)
+Client secret	کلید محرمانه کلاینت (Client Secret)
+Stored encrypted. Never shown again or sent to the browser.	رمزنگاری‌شده ذخیره می‌شود. دیگر نمایش داده نمی‌شود و به مرورگر ارسال نمی‌شود.
+Save credentials	ذخیره اطلاعات اتصال
+Saved.	ذخیره شد.
+Step 2 — Connect your Google account	مرحله ۲ — اتصال حساب گوگل
+SEOlity requests read-only access (webmasters.readonly). You can revoke it anytime.	سئولیتی فقط دسترسی خواندنی (webmasters.readonly) درخواست می‌کند. هر زمان بخواهید می‌توانید آن را لغو کنید.
+Reconnect Google account	اتصال مجدد حساب گوگل
+Connect Google account	اتصال حساب گوگل
+Step 3 — Choose a property	مرحله ۳ — انتخاب پراپرتی
+No verified properties	پراپرتی تأییدشده‌ای نیست
+Verify your site in Google Search Console first.	ابتدا سایت خود را در گوگل سرچ کنسول تأیید کنید.
+matches this site	مطابق این سایت
+Use this property	استفاده از این پراپرتی
+Property selected. Importing data in the background…	پراپرتی انتخاب شد. در حال وارد کردن داده‌ها در پس‌زمینه…
+Last 7 days	۷ روز گذشته
+Last 28 days	۲۸ روز گذشته
+Last 3 months	۳ ماه گذشته
+Last 6 months	۶ ماه گذشته
+Last 12 months	۱۲ ماه گذشته
+rows	ردیف
+Sync now	همگام‌سازی همین حالا
+Sync queued.	همگام‌سازی در صف قرار گرفت.
+Change property	تغییر پراپرتی
+Select	انتخاب
+Disconnect	قطع اتصال
+Disconnect Google Search Console? Stored data stays until you change property.	اتصال گوگل سرچ کنسول قطع شود؟ داده‌های ذخیره‌شده تا زمان تغییر پراپرتی باقی می‌مانند.
+Importing your Search Console data… the first import can take a few minutes.	در حال وارد کردن داده‌های سرچ کنسول… اولین ورود ممکن است چند دقیقه طول بکشد.
+Average position	میانگین جایگاه
+Trend	روند
+Click Trend	روند کلیک
+Impression Trend	روند نمایش
+CTR Trend	روند CTR
+Average Position	میانگین جایگاه
+Top Queries	برترین کوئری‌ها
+Top Pages	برترین صفحات
+Winners & Losers	برندگان و بازندگان
+New & Lost Keywords	کلمات کلیدی جدید و ازدست‌رفته
+Rising & Declining Pages	صفحات در حال رشد و افت
+Ranking Distribution	توزیع رتبه‌ها
+Countries & Devices	کشورها و دستگاه‌ها
+Query	کوئری
+Queries	کوئری‌ها
+Click change	تغییر کلیک
+CTR Opportunities	فرصت‌های CTR
+Pages with many impressions whose CTR is far below what their position should earn. Rewriting title + description is usually the fastest win.	صفحاتی با نمایش زیاد که CTR آن‌ها بسیار کمتر از انتظار جایگاهشان است. بازنویسی عنوان و توضیحات معمولاً سریع‌ترین برد است.
+Potential clicks	کلیک‌های بالقوه
+Insight	بینش
+This page has %1$s impressions but a low CTR; improving the title and meta description has high growth potential.	این صفحه %1$s نمایش دارد اما CTR آن پایین است؛ اگر عنوان و توضیحات متا اصلاح شود، فرصت رشد بالایی دارد.
+Fix with AI	اصلاح با هوش مصنوعی
+No CTR opportunities	فرصت CTR وجود ندارد
+Position Opportunities	فرصت‌های جایگاه
+URLs ranking for several keywords on positions 8–20 — improving content depth and internal links can push them onto page 1.	URLهایی که برای چند کلمه کلیدی در جایگاه ۸ تا ۲۰ هستند؛ بهبود عمق محتوا و لینک‌سازی داخلی می‌تواند آن‌ها را به صفحه اول برساند.
+Keywords at 8–20	کلمات کلیدی در جایگاه ۸–۲۰
+This URL ranks for %1$s keywords in positions 8–20; improving content depth is likely worth it.	این URL برای %1$s کلمه کلیدی در جایگاه ۸ تا ۲۰ قرار دارد و با بهبود عمق محتوا احتمالاً ارزش بهینه‌سازی دارد.
+No position opportunities	فرصت جایگاهی وجود ندارد
+Winners	برندگان
+Losers	بازندگان
+New Keywords	کلمات کلیدی جدید
+Lost Keywords	کلمات کلیدی ازدست‌رفته
+Rising Pages	صفحات در حال رشد
+Declining Pages	صفحات در حال افت
+New Pages	صفحات جدید
+This URL is not mapped to a WordPress object yet. Run a site audit first.	این URL هنوز به محتوایی در وردپرس نگاشت نشده. ابتدا ممیزی سایت را اجرا کنید.
+Devices	دستگاه‌ها
+Countries	کشورها
+Search Appearance	ظاهر در جستجو
+No data	داده‌ای نیست
+Keyword Intelligence	هوش کلمات کلیدی
+Your keyword universe from Search Console + AI research, with intent, opportunity scores, URL mapping and cannibalization detection.	مجموعه کلمات کلیدی شما از سرچ کنسول و تحقیق هوش مصنوعی، همراه با هدف جستجو، امتیاز فرصت، نگاشت به URL و تشخیص هم‌نوع‌خواری.
+Sync from Search Console	همگام‌سازی از سرچ کنسول
+Keyword Research	تحقیق کلمات کلیدی
+Cannibalization	هم‌نوع‌خواری (Cannibalization)
+Keyword Mapping	نگاشت کلمات کلیدی
+Search keywords…	جستجوی کلمات کلیدی…
+Add keywords (comma separated)	افزودن کلمات کلیدی (جداشده با کاما)
+All intents	همه اهداف
+Informational	اطلاعاتی
+Commercial	تجاری
+Transactional	تراکنشی
+Navigational	ناوبری
+All types	همه انواع
+Head	اصلی (Head)
+Questions	سؤالات
+Entities	موجودیت‌ها
+Intent	هدف جستجو
+Opportunity	فرصت
+Difficulty (est.)	سختی (تخمینی)
+Target URL	URL هدف
+unmapped	نگاشت‌نشده
+Track	پیگیری
+No keywords yet	هنوز کلمه کلیدی وجود ندارد
+Connect Search Console or run keyword research.	سرچ کنسول را متصل کنید یا تحقیق کلمات کلیدی انجام دهید.
+Seed keywords, one per line (e.g. espresso machine, coffee grinder)	کلمات کلیدی پایه، هر خط یکی (مثلاً اسپرسوساز، آسیاب قهوه)
+Market / language (optional), e.g. Iran – Persian	بازار / زبان (اختیاری)، مثلاً ایران – فارسی
+Research keywords	تحقیق کلمات کلیدی
+Expanding seeds with AI and your Search Console data…	در حال گسترش کلمات پایه با هوش مصنوعی و داده‌های سرچ کنسول…
+Why	چرا
+Clusters	خوشه‌ها
+Keyword → URL mapping	نگاشت کلمه کلیدی ← URL
+New page?	صفحه جدید؟
+new	جدید
+Queries where several of your URLs share impressions. SEOlity can suggest merge, redirect, differentiate, internal linking or changing the keyword target.	کوئری‌هایی که چند URL شما در نمایش‌های آن شریک‌اند. سئولیتی می‌تواند ادغام، ریدایرکت، متمایزسازی، لینک داخلی یا تغییر کلمه هدف را پیشنهاد دهد.
+Competing URLs	URLهای رقیب
+AI advice	مشاوره هوش مصنوعی
+No cannibalization detected	هم‌نوع‌خواری شناسایی نشد
+Requires Search Console data.	به داده‌های سرچ کنسول نیاز دارد.
+Keywords by URL	کلمات کلیدی بر اساس URL
+Unmapped keywords (content opportunities)	کلمات کلیدی نگاشت‌نشده (فرصت‌های محتوایی)
+Content	محتوا
+Inventory with SEO scores, AI optimization, content planner, topic clusters and bulk AI.	فهرست محتوا با امتیاز سئو، بهینه‌سازی هوشمند، برنامه‌ریز محتوا، خوشه‌های موضوعی و عملیات گروهی هوش مصنوعی.
+Inventory	فهرست محتوا
+Content Planner	برنامه‌ریز محتوا
+Topic Clusters	خوشه‌های موضوعی
+Bulk AI	عملیات گروهی هوش مصنوعی
+Search…	جستجو…
+Posts, pages & products	نوشته‌ها، برگه‌ها و محصولات
+Categories & tags	دسته‌ها و برچسب‌ها
+Title problems	مشکلات عنوان
+Meta description problems	مشکلات توضیحات متا
+Thin content	محتوای کم‌عمق
+H1 problems	مشکلات H1
+Low SEO score	امتیاز سئوی پایین
+No focus keyword	بدون کلمه کلیدی کانونی
+(no title)	(بدون عنوان)
+Meta	متا
+title	عنوان
+description	توضیحات
+Optimize	بهینه‌سازی
+%s pending	%s در انتظار
+Focus (optional): topic, product line, season…	تمرکز (اختیاری): موضوع، خط محصول، فصل…

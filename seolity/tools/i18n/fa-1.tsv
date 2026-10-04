@@ -1,0 +1,360 @@
+Nothing here yet	هنوز چیزی اینجا نیست
+Previous	قبلی
+Page %1$s of %2$s	صفحه %1$s از %2$s
+Next	بعدی
+Create redirect	ایجاد ریدایرکت
+From	از
+To	به
+Cancel	انصراف
+Create 301 redirect	ایجاد ریدایرکت ۳۰۱
+Redirect created.	ریدایرکت ایجاد شد.
+Suggestions are ready for review.	پیشنهادها آماده بررسی هستند.
+%s items queued for background AI processing.	%s مورد برای پردازش هوش مصنوعی در پس‌زمینه در صف قرار گرفت.
+%s redirect chains fixed.	%s زنجیره ریدایرکت اصلاح شد.
+Added to the content planner.	به برنامه‌ریز محتوا اضافه شد.
+Impact	تأثیر
+Effort	زحمت
+Confidence	اطمینان
+Do it	انجامش بده
+Why?	چرا؟
+Mark as done	علامت‌گذاری به‌عنوان انجام‌شده
+Dismiss	رد کردن
+SEOlity navigation	ناوبری سئولیتی
+Toggle dark mode	تغییر حالت تاریک
+AI SEO Intelligence for WordPress	هوش سئوی مبتنی بر هوش مصنوعی برای وردپرس
+Menu	منو
+Manual approval	تأیید دستی
+Semi-automatic	نیمه‌خودکار
+Autonomous	خودمختار
+AI connected	هوش مصنوعی متصل است
+AI not configured	هوش مصنوعی تنظیم نشده
+Search Console connected	سرچ کنسول متصل است
+Search Console not connected	سرچ کنسول متصل نیست
+%s changes awaiting review	%s تغییر در انتظار بررسی
+Google Search Console connected. Now choose a property.	گوگل سرچ کنسول متصل شد. حالا یک پراپرتی انتخاب کنید.
+Google access was denied.	دسترسی گوگل رد شد.
+The connection link expired. Please try again.	لینک اتصال منقضی شد. لطفاً دوباره تلاش کنید.
+Google did not return a refresh token. Remove SEOlity from your Google account permissions and connect again.	گوگل توکن تمدید را برنگرداند. سئولیتی را از دسترسی‌های حساب گوگل خود حذف کرده و دوباره متصل شوید.
+Dashboard	داشبورد
+Your SEO command center: health, traffic, opportunities and AI activity.	مرکز فرماندهی سئوی شما: سلامت، ترافیک، فرصت‌ها و فعالیت هوش مصنوعی.
+What should I do today?	امروز چه کار کنم؟
+SEO Health Score	امتیاز سلامت سئو
+Why this score?	چرا این امتیاز؟
+Organic clicks	کلیک‌های ارگانیک
+Connect Search Console	اتصال سرچ کنسول
+Impressions	نمایش‌ها
+CTR	نرخ کلیک (CTR)
+Avg. position	میانگین جایگاه
+Indexable pages	صفحات قابل ایندکس
+%s crawled	%s خزش‌شده
+Critical issues	مشکلات بحرانی
+High priority opportunities	فرصت‌های با اولویت بالا
+Optimization opportunities	فرصت‌های بهینه‌سازی
+Improvements	بهبودها
+AI Action Center	مرکز اقدام هوش مصنوعی
+No recommendations yet	هنوز پیشنهادی وجود ندارد
+Run a site audit and connect Search Console — SEOlity will tell you exactly what to do.	یک ممیزی سایت اجرا کنید و سرچ کنسول را متصل کنید؛ سئولیتی دقیقاً به شما می‌گوید چه کاری انجام دهید.
+See all	مشاهده همه
+Click & impression trend	روند کلیک و نمایش
+Clicks	کلیک‌ها
+No Search Console data	داده‌ای از سرچ کنسول نیست
+Connect Google Search Console to see real traffic.	برای دیدن ترافیک واقعی، گوگل سرچ کنسول را متصل کنید.
+Connect	اتصال
+Errors	خطاها
+Critical	بحرانی
+High	بالا
+Medium	متوسط
+Low	پایین
+Open audit	باز کردن ممیزی
+Experiments	آزمایش‌ها
+Running	در حال اجرا
+Positive	مثبت
+Negative	منفی
+Neutral	خنثی
+Details	جزئیات
+AI actions	اقدامات هوش مصنوعی
+Applied (30 days)	اعمال‌شده (۳۰ روز)
+Awaiting review	در انتظار بررسی
+Review	بررسی
+Alerts	هشدارها
+All quiet	همه‌چیز آرام است
+No new alerts.	هشدار جدیدی نیست.
+All alerts	همه هشدارها
+Competitor status	وضعیت رقبا
+Competitor	رقیب
+Pages	صفحات
+New pages	صفحات جدید
+Last analyzed	آخرین تحلیل
+No competitors yet	هنوز رقیبی اضافه نشده
+Add competitors to monitor their content and find gaps.	رقبا را اضافه کنید تا محتوایشان پایش و شکاف‌ها پیدا شوند.
+Add competitor	افزودن رقیب
+Connect an AI provider	اتصال ارائه‌دهنده هوش مصنوعی
+Add an API key (Anthropic, OpenAI, Gemini, OpenRouter) or a local LLM.	یک کلید API (Anthropic، OpenAI، Gemini، OpenRouter) یا مدل زبانی محلی اضافه کنید.
+Connect Google Search Console	اتصال گوگل سرچ کنسول
+Real clicks, impressions and queries power every recommendation.	کلیک‌ها، نمایش‌ها و کوئری‌های واقعی پشتوانه هر پیشنهاد هستند.
+Run your first site audit	اولین ممیزی سایت را اجرا کنید
+SEOlity crawls your site in the background without slowing it down.	سئولیتی سایت شما را در پس‌زمینه و بدون کند کردن آن خزش می‌کند.
+Add competitors	افزودن رقبا
+Monitor competitor content and discover gaps.	محتوای رقبا را پایش کنید و شکاف‌ها را کشف کنید.
+Get started	شروع کنید
+Start	شروع
+No briefing yet	هنوز گزارش روزانه‌ای نیست
+Your daily SEO briefing is generated every morning.	گزارش روزانه سئوی شما هر صبح تولید می‌شود.
+Generate now	همین حالا تولید کن
+Do today	امروز انجام دهید
+Today's SEO Briefing	گزارش سئوی امروز
+What Should I Do Today?	امروز چه کاری انجام دهم؟
+AI-prioritized actions ranked by impact, effort and confidence. Every suggestion explains itself — click “Why?”.	اقداماتی که هوش مصنوعی بر اساس تأثیر، زحمت و اطمینان اولویت‌بندی کرده است. هر پیشنهاد دلیل خود را توضیح می‌دهد؛ روی «چرا؟» کلیک کنید.
+Refresh recommendations	به‌روزرسانی پیشنهادها
+Refreshing in the background — reload in a minute.	در حال به‌روزرسانی در پس‌زمینه؛ یک دقیقه دیگر صفحه را تازه کنید.
+All	همه
+%s AI changes are waiting for your approval.	%s تغییر هوش مصنوعی منتظر تأیید شماست.
+Review now	همین حالا بررسی کن
+Nothing to do here	اینجا کاری برای انجام نیست
+Great job — or SEOlity needs more data (audit + Search Console).	عالی است؛ یا سئولیتی به داده بیشتری (ممیزی + سرچ کنسول) نیاز دارد.
+AI SEO Chat	چت سئوی هوش مصنوعی
+Ask anything about your site. Answers are grounded in your real Search Console, audit, competitor and experiment data.	هر سؤالی درباره سایت خود بپرسید. پاسخ‌ها بر اساس داده‌های واقعی سرچ کنسول، ممیزی، رقبا و آزمایش‌های شماست.
+New conversation	گفتگوی جدید
+e.g. Why did my organic sales drop this month?	مثلاً: چرا فروش ارگانیک من این ماه کم شده؟
+Send	ارسال
+Why has my organic traffic dropped?	چرا ترافیک ارگانیک من کم شده؟
+Why does this product not rank?	چرا این محصول رتبه نمی‌گیرد؟
+Which pages should I optimize today?	کدام صفحات را باید امروز بهینه کنم؟
+What did my competitor do recently?	رقیب من اخیراً چه کاری انجام داده؟
+Why does this page have a low CTR?	چرا این صفحه CTR پایینی دارد؟
+Should I redirect this URL?	این URL را ریدایرکت کنم؟
+Data used	داده‌های استفاده‌شده
+Analyzing your data…	در حال تحلیل داده‌های شما…
+Hi! I am your AI SEO strategist. Ask me about traffic, rankings, products, competitors or what to do next.	سلام! من استراتژیست سئوی هوش مصنوعی شما هستم. درباره ترافیک، رتبه‌ها، محصولات، رقبا یا قدم بعدی از من بپرسید.
+Recent conversations	گفتگوهای اخیر
+AI Changes	تغییرات هوش مصنوعی
+Every change is previewed, approved, logged and versioned. Nothing destructive happens without your approval unless you enable Autonomous mode.	هر تغییر پیش‌نمایش، تأیید، ثبت و نسخه‌بندی می‌شود. هیچ تغییر مخربی بدون تأیید شما انجام نمی‌شود مگر اینکه حالت خودمختار را فعال کنید.
+All statuses	همه وضعیت‌ها
+Pending approval	در انتظار تأیید
+Applied	اعمال‌شده
+Rejected	ردشده
+Reverted	بازگردانده‌شده
+Apply all in this batch	اعمال همه موارد این دسته
+Reject all	رد همه
+Item	مورد
+After	بعد
+Risk	ریسک
+Status	وضعیت
+Source	منبع
+Score	امتیاز
+Date	تاریخ
+View	مشاهده
+History	تاریخچه
+No changes	تغییری وجود ندارد
+AI suggestions you generate will appear here for approval.	پیشنهادهای هوش مصنوعی که تولید می‌کنید برای تأیید اینجا نمایش داده می‌شوند.
+Internal link suggestions	پیشنهادهای لینک داخلی
+No good link opportunities found	فرصت مناسبی برای لینک پیدا نشد
+SEOlity only suggests links whose anchor text already exists in the source content.	سئولیتی فقط لینک‌هایی را پیشنهاد می‌دهد که انکر تکست آن‌ها از قبل در محتوای مبدأ وجود دارد.
+Anchor	انکر تکست
+Target	مقصد
+Relevance	ارتباط
+Reason	دلیل
+Apply	اعمال
+Cannibalization: %s	هم‌نوع‌خواری: %s
+Merge	ادغام
+Redirect	ریدایرکت
+Differentiate	متمایزسازی
+Internal link	لینک داخلی
+Change keyword target	تغییر کلمه کلیدی هدف
+No action	بدون اقدام
+Recommended action	اقدام پیشنهادی
+Primary URL	URL اصلی
+Page	صفحه
+Position	جایگاه
+Share	سهم
+Redirect %s → primary	ریدایرکت %s ← اصلی
+Create a 301 redirect from %1$s to %2$s?	ریدایرکت ۳۰۱ از %1$s به %2$s ایجاد شود؟
+AI Product Optimizer	بهینه‌ساز هوشمند محصول
+SEO Score Before	امتیاز سئو قبل
+SEO Score After	امتیاز سئو بعد
+Proposed changes	تغییرات پیشنهادی
+Field	فیلد
+Image ALT	متن جایگزین تصویر (ALT)
+Preview	پیش‌نمایش
+Applied.	اعمال شد.
+Keywords	کلمات کلیدی
+Focus	کانونی
+Secondary	ثانویه
+Long-tail	دم‌بلند
+Semantic	معنایی
+Benefits	مزایا
+Content weaknesses	نقاط ضعف محتوا
+Missing attributes	ویژگی‌های ناقص
+Suggested categories	دسته‌بندی‌های پیشنهادی
+Suggested tags	برچسب‌های پیشنهادی
+CTA ideas	ایده‌های فراخوان به اقدام (CTA)
+Schema	اسکیما
+Competitor gaps	شکاف‌ها نسبت به رقبا
+Internal link ideas	ایده‌های لینک داخلی
+Apply all	اعمال همه
+All changes applied.	همه تغییرات اعمال شد.
+Save the item first.	ابتدا مورد را ذخیره کنید.
+Generate FAQ	تولید سؤالات متداول
+Writing FAQs from your content and real question queries…	در حال نوشتن سؤالات متداول از محتوا و کوئری‌های سؤالی واقعی شما…
+Run a site audit so SEOlity knows your pages, then try again.	یک ممیزی سایت اجرا کنید تا سئولیتی صفحات شما را بشناسد، سپس دوباره تلاش کنید.
+The anchor text was not found in the current editor content.	انکر تکست در محتوای فعلی ویرایشگر پیدا نشد.
+Inserted	درج شد
+Link inserted. Save the post to keep it.	لینک درج شد. برای ماندگاری، نوشته را ذخیره کنید.
+Insert link	درج لینک
+Analyzing product data, queries and competitors…	در حال تحلیل داده‌های محصول، کوئری‌ها و رقبا…
+Inserted into the editor. Save the product to keep it.	در ویرایشگر درج شد. برای ماندگاری، محصول را ذخیره کنید.
+Insert into editor	درج در ویرایشگر
+Google will generate a snippet from your content. Write a description to control it.	گوگل از محتوای شما یک خلاصه می‌سازد. برای کنترل آن، توضیحات بنویسید.
+Optimize with SEOlity AI	بهینه‌سازی با هوش مصنوعی سئولیتی
+Select a Text Editor or Heading widget first.	ابتدا یک ویجت ویرایشگر متن یا عنوان را انتخاب کنید.
+Analyzing…	در حال تحلیل…
+SEO score (live)	امتیاز سئو (زنده)
+Keyword coverage	پوشش کلمه کلیدی
+Search intent match	تطابق با هدف جستجو
+Readability	خوانایی
+Content depth	عمق محتوا
+Words	کلمات
+Optimize content	بهینه‌سازی محتوا
+AI title & description	عنوان و توضیحات با هوش مصنوعی
+Optimize short description	بهینه‌سازی توضیحات کوتاه
+Optimize excerpt	بهینه‌سازی چکیده
+Internal links	لینک‌های داخلی
+Version history	تاریخچه نسخه‌ها
+Live SEO analysis	تحلیل زنده سئو
+Automation	اتوماسیون
+Approval workflow, SEO rules engine, background queue and the full audit log.	گردش‌کار تأیید، موتور قوانین سئو، صف پس‌زمینه و گزارش کامل رویدادها.
+Approval workflow	گردش‌کار تأیید
+Rules	قوانین
+Background queue	صف پس‌زمینه
+Audit log	گزارش رویدادها
+Manual	دستی
+Every change needs your approval (recommended to start).	هر تغییر به تأیید شما نیاز دارد (برای شروع توصیه می‌شود).
+Semi-Automatic	نیمه‌خودکار
+Low-risk changes (ALT text, meta descriptions, focus keywords) are applied automatically; everything else waits for approval.	تغییرات کم‌ریسک (متن ALT، توضیحات متا، کلمات کلیدی کانونی) خودکار اعمال می‌شوند؛ بقیه منتظر تأیید می‌مانند.
+AI acts within your rules: low and medium-risk changes are applied automatically. High-risk changes (content, titles, slugs, noindex, redirects) always need approval.	هوش مصنوعی در چارچوب قوانین شما عمل می‌کند: تغییرات کم و متوسط‌ریسک خودکار اعمال می‌شوند. تغییرات پرریسک (محتوا، عناوین، نامک، نوایندکس، ریدایرکت) همیشه نیاز به تأیید دارند.
+Approval mode updated.	حالت تأیید به‌روزرسانی شد.
+All changes — automatic or manual — are logged, versioned and can be undone.	همه تغییرات، خودکار یا دستی، ثبت و نسخه‌بندی می‌شوند و قابل بازگشت هستند.
+Post type	نوع نوشته
+Has image without ALT	دارای تصویر بدون ALT
+Meta description missing	توضیحات متا وجود ندارد
+SEO title length >	طول عنوان سئو >
+SEO score <	امتیاز سئو <
+Word count <	تعداد کلمات <
+CTR % <	درصد CTR <
+Impressions (28d) >	نمایش‌ها (۲۸ روز) >
+Position >	جایگاه >
+Position <	جایگاه <
+Has FAQ	دارای سؤالات متداول
+Product without short description	محصول بدون توضیحات کوتاه
+Internal links <	لینک‌های داخلی <
+Generate ALT	تولید ALT
+Analyze & rewrite title + meta	تحلیل و بازنویسی عنوان + متا
+Suggest internal links	پیشنهاد لینک داخلی
+Propose noindex	پیشنهاد نوایندکس
+Send alert	ارسال هشدار
+Create recommendation	ایجاد پیشنهاد
+Content published	محتوا منتشر شد
+Content updated	محتوا به‌روزرسانی شد
+Image uploaded	تصویر بارگذاری شد
+Daily check	بررسی روزانه
+New rule	قانون جدید
+Templates:	الگوها:
+Rule	قانون
+IF	اگر
+THEN	آنگاه
+Trigger	محرک
+Mode	حالت
+Auto (within approval mode)	خودکار (در چارچوب حالت تأیید)
+Suggest only	فقط پیشنهاد
+Runs	اجراها
+Last run	آخرین اجرا
+Edit	ویرایش
+Delete this rule?	این قانون حذف شود؟
+Delete	حذف
+No rules yet	هنوز قانونی وجود ندارد
+Example: IF product has image without ALT THEN generate ALT.	مثال: اگر محصول تصویر بدون ALT دارد، آنگاه ALT تولید کن.
+Edit rule	ویرایش قانون
+Name	نام
+When	زمان
+IF (all conditions)	اگر (همه شرط‌ها)
+Condition	شرط
+Save rule	ذخیره قانون
+Pending	در انتظار
+Done (3 days)	انجام‌شده (۳ روز)
+Failed	ناموفق
+Run queue now	اجرای صف همین حالا
+%s jobs processed.	%s کار پردازش شد.
+Retry failed	تلاش مجدد ناموفق‌ها
+Next cron tick	اجرای بعدی کران
+Tip: for busy or low-traffic sites, add a real system cron that runs “wp seolity queue run” (or hits wp-cron.php) every minute.	نکته: برای سایت‌های پرترافیک یا کم‌ترافیک، یک کران واقعی سیستم اضافه کنید که هر دقیقه «wp seolity queue run» را اجرا کند (یا wp-cron.php را فراخوانی کند).
+Job	کار
+Attempts	تلاش‌ها
+Error	خطا
+Created	ایجاد
+User	کاربر
+System	سیستم
+Action	اقدام
+Object	شیء
+SEO Knowledge Base	پایگاه دانش سئو
+Curated Persian & English SEO best practices that ground every AI answer. Synced from GitHub, where a scheduled workflow distils the best Iranian and international SEO documentation.	بهترین روش‌های منتخب سئو به فارسی و انگلیسی که پشتوانه هر پاسخ هوش مصنوعی هستند. از گیت‌هاب همگام می‌شود؛ جایی که یک گردش‌کار زمان‌بندی‌شده بهترین مستندات سئوی ایرانی و بین‌المللی را خلاصه و استخراج می‌کند.
+Sync from GitHub	همگام‌سازی از گیت‌هاب
+Synced: %1$s bundled, %2$s from GitHub.	همگام شد: %1$s داخلی، %2$s از گیت‌هاب.
+Repository	مخزن
+Last sync	آخرین همگام‌سازی
+Title	عنوان
+topic	موضوع
+Your own SEO rule, brand guideline or lesson learned…	قانون سئو، راهنمای برند یا تجربه‌ای که آموخته‌اید…
+Add your own knowledge	دانش خودتان را اضافه کنید
+Also commit it to the GitHub knowledge repository	در مخزن دانش گیت‌هاب هم ثبت شود
+Save note	ذخیره یادداشت
+Knowledge saved.	دانش ذخیره شد.
+Settings	تنظیمات
+Save settings	ذخیره تنظیمات
+Settings saved.	تنظیمات ذخیره شد.
+(saved — enter a new value to replace)	(ذخیره‌شده — برای جایگزینی مقدار جدید وارد کنید)
+Save	ذخیره
+(saved)	(ذخیره‌شده)
+Saved securely (encrypted).	به‌صورت امن (رمزنگاری‌شده) ذخیره شد.
+Remove	حذف
+Removed.	حذف شد.
+Write-only: secrets are encrypted on the server and never sent back to the browser.	فقط‌نوشتنی: اطلاعات محرمانه روی سرور رمزنگاری می‌شوند و هرگز به مرورگر برگردانده نمی‌شوند.
+configured	تنظیم‌شده
+not configured	تنظیم‌نشده
+Test	آزمایش
+Connection OK — model %s	اتصال برقرار است — مدل %s
+Encryption	رمزنگاری
+For maximum security define SEOLITY_ENCRYPTION_KEY in wp-config.php. You can also define any secret as a constant, e.g. SEOLITY_ANTHROPIC_API_KEY.	برای بیشترین امنیت، SEOLITY_ENCRYPTION_KEY را در wp-config.php تعریف کنید. هر کلید محرمانه را هم می‌توانید به‌صورت ثابت تعریف کنید، مثلاً SEOLITY_ANTHROPIC_API_KEY.
+AI usage this month	مصرف هوش مصنوعی در این ماه
+Spend (est.)	هزینه (تخمینی)
+Budget	بودجه
+unlimited	نامحدود
+Requests (30d)	درخواست‌ها (۳۰ روز)
+Task	وظیفه
+Requests	درخواست‌ها
+Tokens in/out	توکن ورودی/خروجی
+Cost	هزینه
+GitHub data storage	ذخیره‌سازی داده در گیت‌هاب
+Cold data (old Search Console rows, audit logs, reports, change history backups, crawl snapshots, config) is committed to your private GitHub repository and pruned locally, keeping your hosting database small. SEOlity reads it back when needed.	داده‌های قدیمی (ردیف‌های قدیمی سرچ کنسول، گزارش رویدادها، گزارش‌ها، پشتیبان تاریخچه تغییرات، تصاویر لحظه‌ای خزش، پیکربندی) در مخزن خصوصی گیت‌هاب شما ثبت و از دیتابیس محلی حذف می‌شوند تا دیتابیس هاست سبک بماند. سئولیتی در صورت نیاز آن‌ها را بازمی‌خواند.
+SEOlity tables size	حجم جدول‌های سئولیتی
+GSC rows (local)	ردیف‌های سرچ کنسول (محلی)
+Last archive	آخرین بایگانی
+%s files	%s فایل
+Test repository access	آزمایش دسترسی مخزن
+private	خصوصی
+PUBLIC — use a private repo!	عمومی — از مخزن خصوصی استفاده کنید!
+write access	دسترسی نوشتن
+read only	فقط خواندنی
+Archive now	همین حالا بایگانی کن
+Archived %s files to GitHub.	%s فایل در گیت‌هاب بایگانی شد.
+Restore archived Search Console data:	بازیابی داده‌های بایگانی‌شده سرچ کنسول:
+Restore	بازیابی
+Restored %1$s rows from %2$s days.	%1$s ردیف از %2$s روز بازیابی شد.
+SEO engine detected	موتور سئوی شناسایی‌شده
+when another SEO plugin is active, SEOlity writes titles/descriptions into it and does not duplicate head tags.	وقتی افزونه سئوی دیگری فعال است، سئولیتی عنوان/توضیحات را در آن می‌نویسد و تگ‌های head را تکرار نمی‌کند.
+Competitor Intelligence	هوش رقابتی
+SEOlity monitors competitor sitemaps and pages (politely, respecting robots.txt), tracks new content and finds content gaps.	سئولیتی نقشه‌سایت و صفحات رقبا را (با رعایت ادب و robots.txt) پایش می‌کند، محتوای جدید را دنبال کرده و شکاف‌های محتوایی را پیدا می‌کند.
+Daily	روزانه
+Weekly	هفتگی
+Monthly	ماهانه
+Add	افزودن
+Competitor added. First analysis is running in the background.	رقیب اضافه شد. اولین تحلیل در پس‌زمینه در حال اجراست.

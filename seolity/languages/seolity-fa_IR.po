@@ -1,0 +1,4830 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: SEOlity 1.0.0\n"
+"POT-Creation-Date: 2026-10-04 09:44+0000\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Domain: seolity\n"
+"Language: fa_IR\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#, php-format
+msgid "%1$s request failed: %2$s"
+msgstr "درخواست %1$s ناموفق بود: %2$s"
+
+#, php-format
+msgid "%1$s API error (%2$d): %3$s"
+msgstr "خطای API در %1$s (%2$d): %3$s"
+
+msgid "AI provider returned a non-JSON response."
+msgstr "ارائه‌دهنده هوش مصنوعی پاسخی غیر JSON برگرداند."
+
+msgid "No AI provider is configured. Add an API key in SEOlity → Settings → AI."
+msgstr "هیچ ارائه‌دهنده هوش مصنوعی تنظیم نشده است. در سئولیتی ← تنظیمات ← هوش مصنوعی یک کلید API اضافه کنید."
+
+msgid "Monthly AI budget reached. Increase it in Settings or wait until next month."
+msgstr "بودجه ماهانه هوش مصنوعی تمام شده است. آن را در تنظیمات افزایش دهید یا تا ماه بعد صبر کنید."
+
+msgid "The AI response did not match the expected structure. Please try again."
+msgstr "پاسخ هوش مصنوعی با ساختار مورد انتظار مطابقت نداشت. لطفاً دوباره تلاش کنید."
+
+#, php-format
+msgid "Possible keyword stuffing: focus keyword density %s%%."
+msgstr "احتمال انباشت کلمه کلیدی: تراکم کلمه کانونی %s%%."
+
+msgid "Generated content contains hidden-text styling — removed is recommended."
+msgstr "محتوای تولیدشده دارای استایل متن مخفی است — حذف آن توصیه می‌شود."
+
+#, php-format
+msgid "%d original link(s) were removed — review before applying."
+msgstr "%d لینک اصلی حذف شده است — قبل از اعمال بررسی کنید."
+
+#, php-format
+msgid "New external link added: %s — verify it exists and is appropriate."
+msgstr "لینک خارجی جدید اضافه شد: %s — از وجود و مناسب بودن آن مطمئن شوید."
+
+#, php-format
+msgid "Shortcode [%s] is missing from the optimized version."
+msgstr "کد کوتاه [%s] در نسخه بهینه وجود ندارد."
+
+#, php-format
+msgid "New figure \"%s\" not found in original — verify accuracy."
+msgstr "عدد جدید «%s» در متن اصلی نبود — صحت آن را بررسی کنید."
+
+msgid "The model declined this request."
+msgstr "مدل این درخواست را رد کرد."
+
+msgid "Custom (OpenAI-compatible)"
+msgstr "سفارشی (سازگار با OpenAI)"
+
+msgid "Custom AI endpoint URL is not allowed."
+msgstr "آدرس سرویس هوش مصنوعی سفارشی مجاز نیست."
+
+msgid "Gemini blocked this response for safety reasons."
+msgstr "جمینای این پاسخ را به دلایل ایمنی مسدود کرد."
+
+msgid "Local LLM (Ollama)"
+msgstr "مدل زبانی محلی (Ollama)"
+
+msgid "Dashboard"
+msgstr "داشبورد"
+
+msgid "AI Action Center"
+msgstr "مرکز اقدام هوش مصنوعی"
+
+msgid "AI SEO Chat"
+msgstr "چت سئوی هوش مصنوعی"
+
+msgid "Site Audit"
+msgstr "ممیزی سایت"
+
+msgid "Search Console"
+msgstr "سرچ کنسول"
+
+msgid "Keywords"
+msgstr "کلمات کلیدی"
+
+msgid "Content"
+msgstr "محتوا"
+
+msgid "Products"
+msgstr "محصولات"
+
+msgid "Images"
+msgstr "تصاویر"
+
+msgid "Internal Links"
+msgstr "لینک‌های داخلی"
+
+msgid "Competitors"
+msgstr "رقبا"
+
+msgid "Experiments"
+msgstr "آزمایش‌ها"
+
+msgid "AI Changes"
+msgstr "تغییرات هوش مصنوعی"
+
+msgid "Redirects"
+msgstr "ریدایرکت‌ها"
+
+msgid "404 Monitor"
+msgstr "پایشگر ۴۰۴"
+
+msgid "Schema"
+msgstr "اسکیما"
+
+msgid "Sitemap"
+msgstr "نقشه سایت"
+
+msgid "Robots.txt"
+msgstr "Robots.txt"
+
+msgid "Reports"
+msgstr "گزارش‌ها"
+
+msgid "Alerts"
+msgstr "هشدارها"
+
+msgid "Automation"
+msgstr "اتوماسیون"
+
+msgid "Knowledge Base"
+msgstr "پایگاه دانش"
+
+msgid "Settings"
+msgstr "تنظیمات"
+
+msgid "You are not allowed to access this page."
+msgstr "شما اجازه دسترسی به این صفحه را ندارید."
+
+msgid "SEOlity requires JavaScript."
+msgstr "سئولیتی به جاوااسکریپت نیاز دارد."
+
+msgid "Forbidden"
+msgstr "غیرمجاز"
+
+msgid "Analyze this page"
+msgstr "تحلیل این صفحه"
+
+msgid "SEO Health"
+msgstr "سلامت سئو"
+
+#, php-format
+msgid "%1$d critical and %2$d high-priority actions waiting."
+msgstr "%1$d اقدام بحرانی و %2$d اقدام با اولویت بالا در انتظار است."
+
+msgid "What should I do today?"
+msgstr "امروز چه کار کنم؟"
+
+msgid "Optimize with SEOlity AI"
+msgstr "بهینه‌سازی با هوش مصنوعی سئولیتی"
+
+msgid "SEO score (live)"
+msgstr "امتیاز سئو (زنده)"
+
+msgid "Focus keyword"
+msgstr "کلمه کلیدی کانونی"
+
+msgid "e.g. espresso machine for home"
+msgstr "مثلاً اسپرسوساز خانگی"
+
+msgid "SEO title"
+msgstr "عنوان سئو"
+
+msgid "Meta description"
+msgstr "توضیحات متا"
+
+msgid "Noindex this page"
+msgstr "نوایندکس کردن این صفحه"
+
+#, php-format
+msgid "SEO title & description are managed by %s. SEOlity AI reads and writes them there."
+msgstr "عنوان و توضیحات سئو توسط %s مدیریت می‌شوند. هوش مصنوعی سئولیتی آن‌ها را از همان‌جا می‌خواند و می‌نویسد."
+
+msgid "Optimize content"
+msgstr "بهینه‌سازی محتوا"
+
+msgid "AI title & description"
+msgstr "عنوان و توضیحات با هوش مصنوعی"
+
+msgid "Generate FAQ"
+msgstr "تولید سؤالات متداول"
+
+msgid "Internal links"
+msgstr "لینک‌های داخلی"
+
+msgid "AI Product Optimizer"
+msgstr "بهینه‌ساز هوشمند محصول"
+
+msgid "Version history"
+msgstr "تاریخچه نسخه‌ها"
+
+msgid "Noindex this archive"
+msgstr "نوایندکس کردن این آرشیو"
+
+msgid "Tip: an author bio with real credentials and experience strengthens E-E-A-T. Use “Optimize with SEOlity AI” next to the biography field."
+msgstr "نکته: زندگی‌نامه نویسنده با سوابق و تجربه واقعی، E-E-A-T را تقویت می‌کند. از دکمه «بهینه‌سازی با هوش مصنوعی سئولیتی» کنار فیلد زندگی‌نامه استفاده کنید."
+
+#, php-format
+msgid "Organic clicks dropped %1$s%% week over week"
+msgstr "کلیک‌های ارگانیک نسبت به هفته قبل %1$s%% کاهش یافت"
+
+#, php-format
+msgid "Clicks went from %2$d to %3$d (last 7 days vs previous 7). Check the Losers report and recent changes."
+msgstr "کلیک‌ها از %2$d به %3$d رسید (۷ روز اخیر در برابر ۷ روز قبل). گزارش بازندگان و تغییرات اخیر را بررسی کنید."
+
+#, php-format
+msgid "Site CTR dropped %s%% week over week"
+msgstr "CTR سایت نسبت به هفته قبل %s%% کاهش یافت"
+
+msgid "Impressions held but fewer people click — SERP features, competitor snippets or title changes may be the cause."
+msgstr "نمایش‌ها ثابت مانده اما کلیک کمتر شده — ویژگی‌های صفحه نتایج، اسنیپت رقبا یا تغییر عنوان‌ها می‌تواند علت باشد."
+
+#, php-format
+msgid "Average position worsened by %s"
+msgstr "میانگین جایگاه %s واحد بدتر شد"
+
+msgid "Rankings fell across the site — check for algorithm updates, technical problems or lost pages."
+msgstr "رتبه‌ها در کل سایت افت کرده — به‌روزرسانی الگوریتم، مشکلات فنی یا صفحات ازدست‌رفته را بررسی کنید."
+
+#, php-format
+msgid "Page lost all organic clicks: %s"
+msgstr "صفحه همه کلیک‌های ارگانیک را از دست داد: %s"
+
+msgid "This page went from steady traffic to zero — it may be deindexed, broken, redirected or noindexed."
+msgstr "ترافیک این صفحه از حالت پایدار به صفر رسیده — ممکن است از ایندکس حذف، خراب، ریدایرکت یا نوایندکس شده باشد."
+
+#, php-format
+msgid "Lost keyword: \"%s\""
+msgstr "کلمه کلیدی ازدست‌رفته: «%s»"
+
+#, php-format
+msgid "It had %1$d impressions at position %2$s and no longer appears."
+msgstr "این کلمه %1$d نمایش در جایگاه %2$s داشت و دیگر ظاهر نمی‌شود."
+
+#, php-format
+msgid "New keyword gaining visibility: \"%s\""
+msgstr "کلمه کلیدی جدید در حال دیده‌شدن: «%s»"
+
+#, php-format
+msgid "%1$d impressions at position %2$s — consider strengthening the ranking page."
+msgstr "%1$d نمایش در جایگاه %2$s — تقویت صفحه رتبه‌دار را در نظر بگیرید."
+
+#, php-format
+msgid "New 404 getting hits: %s"
+msgstr "۴۰۴ جدید با بازدید: %s"
+
+#, php-format
+msgid "%d hits since it first appeared. Redirect it to the suggested target."
+msgstr "%d بازدید از زمان اولین ظهور. آن را به مقصد پیشنهادی ریدایرکت کنید."
+
+#, php-format
+msgid "%d published pages became noindex in the last 24h"
+msgstr "%d صفحه منتشرشده در ۲۴ ساعت گذشته نوایندکس شدند"
+
+msgid "A setting, plugin or theme change may be hiding pages from Google."
+msgstr "یک تنظیم، افزونه یا تغییر قالب ممکن است صفحات را از گوگل پنهان کرده باشد."
+
+#, php-format
+msgid "%1$s published %2$d new pages"
+msgstr "%1$s تعداد %2$d صفحه جدید منتشر کرد"
+
+msgid "Review their new content and the content-gap report."
+msgstr "محتوای جدید آن‌ها و گزارش شکاف محتوایی را بررسی کنید."
+
+msgid "Focus keyword appears in the SEO title."
+msgstr "کلمه کلیدی کانونی در عنوان سئو آمده است."
+
+msgid "Add the focus keyword to the SEO title, ideally near the beginning."
+msgstr "کلمه کلیدی کانونی را ترجیحاً در ابتدای عنوان سئو قرار دهید."
+
+msgid "Focus keyword appears in the meta description."
+msgstr "کلمه کلیدی کانونی در توضیحات متا آمده است."
+
+msgid "Mention the focus keyword naturally in the meta description (Google bolds matching terms)."
+msgstr "کلمه کلیدی کانونی را به‌طور طبیعی در توضیحات متا بیاورید (گوگل عبارات منطبق را پررنگ می‌کند)."
+
+msgid "Focus keyword is used in the introduction."
+msgstr "کلمه کلیدی کانونی در مقدمه استفاده شده است."
+
+msgid "Use the focus keyword (or a close variant) in the first paragraph."
+msgstr "کلمه کلیدی کانونی (یا شکل نزدیک آن) را در پاراگراف اول به کار ببرید."
+
+msgid "Focus keyword appears in a subheading."
+msgstr "کلمه کلیدی کانونی در یک زیرعنوان آمده است."
+
+msgid "Use the focus keyword or a variant in at least one H2/H3."
+msgstr "کلمه کلیدی کانونی یا شکل دیگری از آن را حداقل در یک H2/H3 به کار ببرید."
+
+msgid "URL slug reflects the topic."
+msgstr "نامک URL موضوع را نشان می‌دهد."
+
+msgid "The URL slug does not contain the focus keyword (only change slugs of new pages, or add a redirect)."
+msgstr "نامک URL شامل کلمه کلیدی کانونی نیست (فقط نامک صفحات جدید را تغییر دهید یا ریدایرکت اضافه کنید)."
+
+#, php-format
+msgid "Keyword density is %s%% — this looks like keyword stuffing. Use synonyms and natural language."
+msgstr "تراکم کلمه کلیدی %s%% است — شبیه انباشت کلمه کلیدی است. از مترادف‌ها و زبان طبیعی استفاده کنید."
+
+#, php-format
+msgid "Focus keyword used %d time(s). Make sure the main topic is clearly covered."
+msgstr "کلمه کلیدی کانونی %d بار استفاده شده. مطمئن شوید موضوع اصلی به‌خوبی پوشش داده شده است."
+
+#, php-format
+msgid "Natural keyword usage (%s%%)."
+msgstr "استفاده طبیعی از کلمه کلیدی (%s%%)."
+
+msgid "At least one image ALT describes the topic."
+msgstr "حداقل یک ALT تصویر موضوع را توصیف می‌کند."
+
+msgid "Describe at least one relevant image with an ALT that relates to the topic."
+msgstr "حداقل یک تصویر مرتبط را با ALT مرتبط با موضوع توصیف کنید."
+
+msgid "No focus keyword set — SEOlity can suggest one from Search Console data."
+msgstr "کلمه کلیدی کانونی تعیین نشده — سئولیتی می‌تواند از داده‌های سرچ کنسول یکی پیشنهاد دهد."
+
+msgid "SEO title is missing."
+msgstr "عنوان سئو وجود ندارد."
+
+#, php-format
+msgid "SEO title is short (%d chars). Use the space to add a benefit or qualifier."
+msgstr "عنوان سئو کوتاه است (%d نویسه). از فضای باقی‌مانده برای افزودن مزیت یا توصیف‌کننده استفاده کنید."
+
+#, php-format
+msgid "SEO title may be truncated in Google (~%dpx, limit ≈580px)."
+msgstr "عنوان سئو ممکن است در گوگل بریده شود (حدود %dpx، حد مجاز ≈۵۸۰px)."
+
+msgid "SEO title length is good."
+msgstr "طول عنوان سئو مناسب است."
+
+msgid "Meta description is missing — Google will pick a random snippet."
+msgstr "توضیحات متا وجود ندارد — گوگل یک بخش تصادفی را نمایش می‌دهد."
+
+#, php-format
+msgid "Meta description is short (%d chars). Aim for 120–160."
+msgstr "توضیحات متا کوتاه است (%d نویسه). ۱۲۰ تا ۱۶۰ نویسه هدف‌گذاری کنید."
+
+#, php-format
+msgid "Meta description is long (%d chars) and will be truncated."
+msgstr "توضیحات متا طولانی است (%d نویسه) و بریده می‌شود."
+
+msgid "Meta description length is good."
+msgstr "طول توضیحات متا مناسب است."
+
+msgid "Content contains more than one H1. Themes usually output the title as H1 — use H2 inside content."
+msgstr "محتوا بیش از یک H1 دارد. قالب‌ها معمولاً عنوان را H1 نمایش می‌دهند — داخل محتوا از H2 استفاده کنید."
+
+msgid "Content is structured with subheadings."
+msgstr "محتوا با زیرعنوان‌ها ساختاربندی شده است."
+
+msgid "Break the content into sections with descriptive H2/H3 headings."
+msgstr "محتوا را با زیرعنوان‌های توصیفی H2/H3 بخش‌بندی کنید."
+
+msgid "Heading levels are skipped (e.g. H2 → H4). Keep a logical hierarchy for accessibility."
+msgstr "سطوح عنوان جا افتاده‌اند (مثلاً H2 ← H4). برای دسترس‌پذیری، سلسله‌مراتب منطقی را حفظ کنید."
+
+#, php-format
+msgid "%d internal link(s) found."
+msgstr "%d لینک داخلی پیدا شد."
+
+msgid "Add internal links to related pages to help users and crawlers."
+msgstr "برای کمک به کاربران و خزنده‌ها به صفحات مرتبط لینک داخلی دهید."
+
+msgid "Cites external sources."
+msgstr "به منابع خارجی ارجاع می‌دهد."
+
+msgid "Consider citing authoritative sources (supports E-E-A-T)."
+msgstr "ارجاع به منابع معتبر را در نظر بگیرید (به E-E-A-T کمک می‌کند)."
+
+#, php-format
+msgid "%d image(s) have no ALT text."
+msgstr "%d تصویر متن ALT ندارد."
+
+msgid "All images have ALT text."
+msgstr "همه تصاویر متن ALT دارند."
+
+msgid "No images — visuals improve engagement and can rank in Image Search."
+msgstr "بدون تصویر — تصاویر تعامل را افزایش می‌دهند و می‌توانند در جستجوی تصاویر رتبه بگیرند."
+
+msgid "Text is easy to read."
+msgstr "متن خوانا است."
+
+msgid "Shorten long sentences and paragraphs; use lists for steps and specs."
+msgstr "جملات و پاراگراف‌های طولانی را کوتاه کنید؛ برای مراحل و مشخصات از فهرست استفاده کنید."
+
+#, php-format
+msgid "%1$d words (recommended ≥ %2$d for this type) — depth score reflects coverage, structure and supporting elements, not length alone."
+msgstr "%1$d کلمه (برای این نوع ≥ %2$d توصیه می‌شود) — امتیاز عمق، پوشش، ساختار و عناصر پشتیبان را می‌سنجد، نه فقط طول را."
+
+#, php-format
+msgid "Covers %1$d of %2$d related terms/subtopics."
+msgstr "%1$d از %2$d اصطلاح/زیرموضوع مرتبط را پوشش می‌دهد."
+
+#, php-format
+msgid "Mentions %1$d of %2$d key entities."
+msgstr "به %1$d از %2$d موجودیت کلیدی اشاره می‌کند."
+
+#, php-format
+msgid "Content format vs. \"%s\" search intent."
+msgstr "قالب محتوا در برابر هدف جستجوی «%s»."
+
+msgid "Several sentences are repeated — remove boilerplate to increase information gain."
+msgstr "چند جمله تکرار شده‌اند — متن‌های تکراری را حذف کنید تا ارزش اطلاعاتی افزایش یابد."
+
+msgid "Unexpected error."
+msgstr "خطای غیرمنتظره."
+
+msgid "You are not allowed to edit this item."
+msgstr "شما اجازه ویرایش این مورد را ندارید."
+
+msgid "Change not found."
+msgstr "تغییر پیدا نشد."
+
+msgid "Only URLs of this site can be tested."
+msgstr "فقط URLهای همین سایت قابل آزمایش هستند."
+
+msgid "This property is not available for the connected account."
+msgstr "این پراپرتی برای حساب متصل در دسترس نیست."
+
+msgid "You are not allowed to edit this product."
+msgstr "شما اجازه ویرایش این محصول را ندارید."
+
+msgid "Unknown secret."
+msgstr "کلید محرمانه ناشناخته."
+
+msgid "Dates must be YYYY-MM-DD."
+msgstr "تاریخ‌ها باید به‌صورت YYYY-MM-DD باشند."
+
+#, php-format
+msgid "%1$s clicks this week (%2$s%%)"
+msgstr "%1$s کلیک در این هفته (%2$s%%)"
+
+#, php-format
+msgid "Impressions %3$s, avg. position %4$s."
+msgstr "نمایش‌ها %3$s، میانگین جایگاه %4$s."
+
+#, php-format
+msgid "Rising: %1$s (+%2$d clicks)"
+msgstr "در حال رشد: %1$s (+%2$d کلیک)"
+
+#, php-format
+msgid "Falling: %1$s (%2$d clicks)"
+msgstr "در حال افت: %1$s (%2$d کلیک)"
+
+#, php-format
+msgid "%d new issue types detected in the last audit"
+msgstr "%d نوع مشکل جدید در آخرین ممیزی شناسایی شد"
+
+#, php-format
+msgid "Experiment \"%1$s\": %2$s"
+msgstr "آزمایش «%1$s»: %2$s"
+
+#, php-format
+msgid "Organic clicks %s%% week over week"
+msgstr "کلیک‌های ارگانیک %s%% نسبت به هفته قبل"
+
+msgid "Your daily SEO briefing"
+msgstr "گزارش روزانه سئوی شما"
+
+#, php-format
+msgid "Health score %1$s. %2$d prioritized actions are waiting, %3$d AI changes need your review."
+msgstr "امتیاز سلامت %1$s. %2$d اقدام اولویت‌دار در انتظار است و %3$d تغییر هوش مصنوعی نیاز به بررسی شما دارد."
+
+msgid "Please type a question."
+msgstr "لطفاً یک سؤال بنویسید."
+
+msgid "Enter a valid domain, e.g. example.com"
+msgstr "یک دامنه معتبر وارد کنید، مثلاً example.com"
+
+msgid "This domain does not resolve to a public address."
+msgstr "این دامنه به یک آدرس عمومی اشاره نمی‌کند."
+
+msgid "Competitor not found."
+msgstr "رقیب پیدا نشد."
+
+msgid "This field cannot be changed by SEOlity."
+msgstr "این فیلد توسط سئولیتی قابل تغییر نیست."
+
+msgid "Object not found."
+msgstr "مورد پیدا نشد."
+
+msgid "Suggested value is identical to the current value."
+msgstr "مقدار پیشنهادی با مقدار فعلی یکسان است."
+
+msgid "Could not store the change."
+msgstr "ذخیره تغییر ممکن نشد."
+
+msgid "This change is no longer pending."
+msgstr "این تغییر دیگر در انتظار نیست."
+
+msgid "Only applied changes can be reverted."
+msgstr "فقط تغییرات اعمال‌شده قابل بازگشت هستند."
+
+#, php-format
+msgid "A page with organic traffic was trashed: %s"
+msgstr "صفحه‌ای با ترافیک ارگانیک به زباله‌دان منتقل شد: %s"
+
+#, php-format
+msgid "It received %1$d clicks in the last 28 days and has %2$d internal links. Add a 301 redirect to the closest relevant page to keep its value."
+msgstr "این صفحه در ۲۸ روز گذشته %1$d کلیک گرفته و %2$d لینک داخلی دارد. برای حفظ ارزش آن، به نزدیک‌ترین صفحه مرتبط ریدایرکت ۳۰۱ بزنید."
+
+msgid "FAQ must be valid JSON."
+msgstr "سؤالات متداول باید JSON معتبر باشد."
+
+msgid "Term not found."
+msgstr "دسته/برچسب پیدا نشد."
+
+msgid "There is no content to optimize yet. Write a draft or use \"Generate\"."
+msgstr "هنوز محتوایی برای بهینه‌سازی وجود ندارد. یک پیش‌نویس بنویسید یا از «تولید» استفاده کنید."
+
+msgid "Unknown bulk task."
+msgstr "عملیات گروهی ناشناخته."
+
+msgid "FAQ generated from page content and real question queries."
+msgstr "سؤالات متداول از محتوای صفحه و کوئری‌های سؤالی واقعی تولید شد."
+
+msgid "Page has an empty title, so no H1 / title tag is generated."
+msgstr "صفحه عنوان خالی دارد، بنابراین H1 / تگ عنوان تولید نمی‌شود."
+
+msgid "SEOlity Client"
+msgstr "مشتری سئولیتی"
+
+msgid "Pages returning 4xx errors"
+msgstr "صفحات با خطای 4xx"
+
+msgid "Broken pages waste crawl budget, lose link equity and frustrate users."
+msgstr "صفحات خراب بودجه خزش را هدر می‌دهند، اعتبار لینک را از بین می‌برند و کاربران را ناامید می‌کنند."
+
+msgid "Restore the page or 301-redirect it to the closest relevant URL; update internal links."
+msgstr "صفحه را بازیابی کنید یا به نزدیک‌ترین URL مرتبط ریدایرکت ۳۰۱ بزنید؛ لینک‌های داخلی را به‌روز کنید."
+
+msgid "Pages returning server errors (5xx)"
+msgstr "صفحات با خطای سرور (5xx)"
+
+msgid "Repeated 5xx responses make Google crawl less and can drop pages from the index."
+msgstr "خطاهای مکرر 5xx باعث کاهش خزش گوگل می‌شود و ممکن است صفحات از ایندکس حذف شوند."
+
+msgid "Check PHP error logs, hosting resources and plugin conflicts."
+msgstr "گزارش خطاهای PHP، منابع هاست و تداخل افزونه‌ها را بررسی کنید."
+
+msgid "Temporary (302/307) redirects"
+msgstr "ریدایرکت‌های موقت (302/307)"
+
+msgid "Temporary redirects signal the move is not permanent; signals may not consolidate."
+msgstr "ریدایرکت موقت نشان می‌دهد انتقال دائمی نیست؛ ممکن است سیگنال‌ها تجمیع نشوند."
+
+msgid "Use 301 for permanent moves."
+msgstr "برای انتقال دائمی از ۳۰۱ استفاده کنید."
+
+msgid "Redirect chains"
+msgstr "زنجیره‌های ریدایرکت"
+
+msgid "Each hop adds latency and Google may stop following long chains."
+msgstr "هر پرش تأخیر اضافه می‌کند و گوگل ممکن است زنجیره‌های طولانی را دنبال نکند."
+
+msgid "Point the first URL directly at the final destination."
+msgstr "URL اول را مستقیماً به مقصد نهایی هدایت کنید."
+
+msgid "Redirect loops"
+msgstr "حلقه‌های ریدایرکت"
+
+msgid "Loops make pages completely inaccessible."
+msgstr "حلقه‌ها صفحات را کاملاً غیرقابل دسترس می‌کنند."
+
+msgid "Break the loop by fixing or deleting one of the redirects."
+msgstr "با اصلاح یا حذف یکی از ریدایرکت‌ها حلقه را بشکنید."
+
+msgid "Noindex pages"
+msgstr "صفحات نوایندکس"
+
+msgid "These pages are excluded from Google. That is fine for utility pages but harmful for pages meant to rank."
+msgstr "این صفحات از گوگل حذف شده‌اند. برای صفحات کاربردی اشکالی ندارد اما برای صفحاتی که باید رتبه بگیرند مضر است."
+
+msgid "Confirm each noindex is intentional."
+msgstr "مطمئن شوید هر نوایندکس عمدی است."
+
+msgid "Noindex pages that still earn search impressions"
+msgstr "صفحات نوایندکسی که هنوز در جستجو نمایش دارند"
+
+msgid "A page Google still shows is set to noindex — traffic will be lost when Google re-crawls it."
+msgstr "صفحه‌ای که گوگل هنوز نمایش می‌دهد نوایندکس شده — با خزش مجدد گوگل ترافیک آن از دست می‌رود."
+
+msgid "Remove noindex if the page should rank."
+msgstr "اگر صفحه باید رتبه بگیرد، نوایندکس را بردارید."
+
+msgid "Noindex URLs listed in the XML sitemap"
+msgstr "URLهای نوایندکس در نقشه سایت XML"
+
+msgid "Conflicting signals: the sitemap asks Google to index a page that says noindex."
+msgstr "سیگنال‌های متناقض: نقشه سایت از گوگل می‌خواهد صفحه‌ای را ایندکس کند که نوایندکس است."
+
+msgid "Remove these URLs from the sitemap or remove the noindex."
+msgstr "این URLها را از نقشه سایت حذف کنید یا نوایندکس را بردارید."
+
+msgid "Published pages blocked by robots.txt"
+msgstr "صفحات منتشرشده مسدود توسط robots.txt"
+
+msgid "Google cannot crawl blocked pages, so their content cannot rank."
+msgstr "گوگل نمی‌تواند صفحات مسدود را خزش کند، پس محتوای آن‌ها رتبه نمی‌گیرد."
+
+msgid "Adjust robots.txt rules (SEOlity → Robots)."
+msgstr "قوانین robots.txt را اصلاح کنید (سئولیتی ← Robots)."
+
+msgid "Pages with meta nofollow"
+msgstr "صفحات دارای متای نوفالو"
+
+msgid "Links on these pages pass no signals to the rest of the site."
+msgstr "لینک‌های این صفحات هیچ سیگنالی به بقیه سایت منتقل نمی‌کنند."
+
+msgid "Remove nofollow unless intentional."
+msgstr "اگر عمدی نیست، نوفالو را بردارید."
+
+msgid "Missing canonical tag"
+msgstr "تگ کنونیکال وجود ندارد"
+
+msgid "Without a canonical, URL variants (parameters, trailing slashes) can be indexed as duplicates."
+msgstr "بدون کنونیکال، نسخه‌های مختلف URL (پارامترها، اسلش انتهایی) ممکن است به‌عنوان تکراری ایندکس شوند."
+
+msgid "Add a self-referencing canonical."
+msgstr "یک کنونیکال خودارجاع اضافه کنید."
+
+msgid "Multiple canonical tags"
+msgstr "چند تگ کنونیکال"
+
+msgid "Google ignores conflicting canonicals."
+msgstr "گوگل کنونیکال‌های متناقض را نادیده می‌گیرد."
+
+msgid "Make sure only one plugin/theme outputs a canonical."
+msgstr "مطمئن شوید فقط یک افزونه/قالب کنونیکال خروجی می‌دهد."
+
+msgid "Relative or invalid canonical URL"
+msgstr "URL کنونیکال نسبی یا نامعتبر"
+
+msgid "Canonicals should be absolute URLs."
+msgstr "کنونیکال باید URL مطلق باشد."
+
+msgid "Use the absolute URL."
+msgstr "از URL مطلق استفاده کنید."
+
+msgid "Canonical points to a redirect or error page"
+msgstr "کنونیکال به صفحه ریدایرکت یا خطا اشاره می‌کند"
+
+msgid "Google will likely ignore it and may choose another canonical."
+msgstr "گوگل احتمالاً آن را نادیده گرفته و کنونیکال دیگری انتخاب می‌کند."
+
+msgid "Point the canonical at a 200, indexable URL."
+msgstr "کنونیکال را به یک URL قابل ایندکس با کد ۲۰۰ اشاره دهید."
+
+msgid "Canonicalized to another URL"
+msgstr "کنونیکال به URL دیگر"
+
+msgid "This URL declares another URL as the primary version."
+msgstr "این URL، URL دیگری را نسخه اصلی معرفی می‌کند."
+
+msgid "Verify the canonical target is correct."
+msgstr "از درستی مقصد کنونیکال مطمئن شوید."
+
+msgid "No XML sitemap found"
+msgstr "نقشه سایت XML پیدا نشد"
+
+msgid "Sitemaps help Google discover and prioritize URLs."
+msgstr "نقشه سایت به گوگل در کشف و اولویت‌بندی URLها کمک می‌کند."
+
+msgid "Enable SEOlity sitemaps or your SEO plugin sitemap and submit it in GSC."
+msgstr "نقشه سایت سئولیتی یا افزونه سئوی خود را فعال و در سرچ کنسول ثبت کنید."
+
+msgid "Sitemap lists redirects or broken URLs"
+msgstr "نقشه سایت شامل ریدایرکت یا URL خراب است"
+
+msgid "Sitemaps should only list canonical, 200, indexable URLs."
+msgstr "نقشه سایت فقط باید شامل URLهای کنونیکال، با کد ۲۰۰ و قابل ایندکس باشد."
+
+msgid "Exclude these URLs from the sitemap."
+msgstr "این URLها را از نقشه سایت حذف کنید."
+
+msgid "robots.txt does not reference the sitemap"
+msgstr "robots.txt به نقشه سایت اشاره نمی‌کند"
+
+msgid "Listing the sitemap in robots.txt helps all crawlers find it."
+msgstr "معرفی نقشه سایت در robots.txt به همه خزنده‌ها کمک می‌کند آن را پیدا کنند."
+
+msgid "Add a Sitemap: line."
+msgstr "یک خط Sitemap: اضافه کنید."
+
+msgid "Missing title tag"
+msgstr "تگ عنوان وجود ندارد"
+
+msgid "The title is the strongest on-page relevance signal and the SERP headline."
+msgstr "عنوان قوی‌ترین سیگنال ارتباط در صفحه و تیتر نتیجه جستجو است."
+
+msgid "Write a unique, descriptive title."
+msgstr "یک عنوان یکتا و توصیفی بنویسید."
+
+msgid "Title too long (truncated in SERP)"
+msgstr "عنوان بیش از حد طولانی (در نتایج بریده می‌شود)"
+
+msgid "Truncated titles hide your value proposition and lower CTR."
+msgstr "عنوان‌های بریده‌شده ارزش پیشنهادی شما را پنهان و CTR را کم می‌کنند."
+
+msgid "Keep titles under ~580px / 60 characters."
+msgstr "عنوان‌ها را زیر حدود ۵۸۰ پیکسل / ۶۰ نویسه نگه دارید."
+
+msgid "Title too short"
+msgstr "عنوان بیش از حد کوتاه"
+
+msgid "Short titles miss qualifiers searchers look for."
+msgstr "عنوان‌های کوتاه توصیف‌کننده‌هایی که جستجوگران دنبالش هستند را ندارند."
+
+msgid "Add a benefit, qualifier or year."
+msgstr "یک مزیت، توصیف‌کننده یا سال اضافه کنید."
+
+msgid "Multiple <title> tags"
+msgstr "چند تگ <title>"
+
+msgid "Usually a theme/plugin conflict."
+msgstr "معمولاً ناشی از تداخل قالب/افزونه است."
+
+msgid "Ensure only one title is output."
+msgstr "مطمئن شوید فقط یک عنوان خروجی داده می‌شود."
+
+msgid "Duplicate titles"
+msgstr "عنوان‌های تکراری"
+
+msgid "Duplicate titles make pages compete and confuse Google."
+msgstr "عنوان‌های تکراری صفحات را رقیب هم می‌کنند و گوگل را سردرگم می‌کنند."
+
+msgid "Make every title unique."
+msgstr "هر عنوان را یکتا کنید."
+
+msgid "Missing meta description"
+msgstr "توضیحات متا وجود ندارد"
+
+msgid "Google writes its own snippet, often lowering CTR."
+msgstr "گوگل خلاصه خودش را می‌نویسد که اغلب CTR را کاهش می‌دهد."
+
+msgid "Write a compelling 120–158 character description."
+msgstr "یک توضیح جذاب ۱۲۰ تا ۱۵۸ نویسه‌ای بنویسید."
+
+msgid "Meta description too short or too long"
+msgstr "توضیحات متا خیلی کوتاه یا خیلی بلند"
+
+msgid "Short descriptions under-sell; long ones get cut off."
+msgstr "توضیحات کوتاه ارزش را کامل نمی‌رسانند و بلندها بریده می‌شوند."
+
+msgid "Aim for 120–158 characters."
+msgstr "۱۲۰ تا ۱۵۸ نویسه هدف‌گذاری کنید."
+
+msgid "Duplicate meta descriptions"
+msgstr "توضیحات متای تکراری"
+
+msgid "Duplicates reduce snippet relevance."
+msgstr "تکرار، ارتباط اسنیپت را کاهش می‌دهد."
+
+msgid "Write unique descriptions."
+msgstr "توضیحات یکتا بنویسید."
+
+msgid "Missing Open Graph tags"
+msgstr "تگ‌های Open Graph وجود ندارند"
+
+msgid "Shares on social networks look broken without OG title/image."
+msgstr "بدون عنوان/تصویر OG، اشتراک‌گذاری در شبکه‌های اجتماعی ناقص به نظر می‌رسد."
+
+msgid "SEOlity can output OG tags automatically."
+msgstr "سئولیتی می‌تواند تگ‌های OG را خودکار خروجی دهد."
+
+msgid "Missing Twitter Card tags"
+msgstr "تگ‌های Twitter Card وجود ندارند"
+
+msgid "X/Twitter previews fall back to plain links."
+msgstr "پیش‌نمایش در ایکس/توییتر به لینک ساده تبدیل می‌شود."
+
+msgid "Enable Twitter Cards output."
+msgstr "خروجی Twitter Card را فعال کنید."
+
+msgid "Missing H1"
+msgstr "H1 وجود ندارد"
+
+msgid "The H1 tells users and Google what the page is about."
+msgstr "H1 به کاربران و گوگل می‌گوید صفحه درباره چیست."
+
+msgid "Ensure the theme prints the title as H1 or add one."
+msgstr "مطمئن شوید قالب عنوان را به‌صورت H1 نمایش می‌دهد یا یکی اضافه کنید."
+
+msgid "Multiple H1 headings"
+msgstr "چند عنوان H1"
+
+msgid "Not an error for Google, but a weak document outline for accessibility."
+msgstr "برای گوگل خطا نیست، اما ساختار سند را از نظر دسترس‌پذیری ضعیف می‌کند."
+
+msgid "Use one H1, then H2/H3."
+msgstr "یک H1 و سپس H2/H3 به کار ببرید."
+
+msgid "Long content without subheadings"
+msgstr "محتوای طولانی بدون زیرعنوان"
+
+msgid "Walls of text hurt scanning and passage ranking."
+msgstr "متن‌های یکپارچه طولانی، مرور سریع و رتبه‌بندی بخش‌ها را دشوار می‌کنند."
+
+msgid "Add descriptive H2/H3 sections."
+msgstr "بخش‌های توصیفی H2/H3 اضافه کنید."
+
+msgid "Heading levels skipped"
+msgstr "سطوح عنوان جاافتاده"
+
+msgid "Skipped levels break the outline for screen readers."
+msgstr "سطوح جاافتاده ساختار را برای صفحه‌خوان‌ها به هم می‌زند."
+
+msgid "Keep a logical heading hierarchy."
+msgstr "سلسله‌مراتب منطقی عنوان‌ها را حفظ کنید."
+
+msgid "Thin content"
+msgstr "محتوای کم‌عمق"
+
+msgid "Pages with little unique content rarely rank and can drag down site quality."
+msgstr "صفحات با محتوای یکتای کم به‌ندرت رتبه می‌گیرند و می‌توانند کیفیت کل سایت را پایین بیاورند."
+
+msgid "Expand with genuinely helpful information, merge with a related page, or noindex."
+msgstr "با اطلاعات واقعاً مفید گسترش دهید، با صفحه مرتبط ادغام کنید یا نوایندکس کنید."
+
+msgid "Duplicate content"
+msgstr "محتوای تکراری"
+
+msgid "Identical pages split signals; Google picks one at random."
+msgstr "صفحات یکسان سیگنال‌ها را تقسیم می‌کنند؛ گوگل یکی را تصادفی انتخاب می‌کند."
+
+msgid "Canonicalize, merge or rewrite."
+msgstr "کنونیکال، ادغام یا بازنویسی کنید."
+
+msgid "Near-duplicate content"
+msgstr "محتوای تقریباً تکراری"
+
+msgid "Very similar pages may cannibalize each other."
+msgstr "صفحات بسیار مشابه ممکن است رقیب هم شوند."
+
+msgid "Differentiate the intent of each page or consolidate."
+msgstr "هدف هر صفحه را متمایز کنید یا آن‌ها را یکی کنید."
+
+msgid "Keyword cannibalization"
+msgstr "هم‌نوع‌خواری کلمه کلیدی"
+
+msgid "Several URLs compete for the same query, diluting rankings."
+msgstr "چند URL برای یک کوئری رقابت می‌کنند و رتبه‌ها تضعیف می‌شود."
+
+msgid "Merge, redirect, differentiate or re-target."
+msgstr "ادغام، ریدایرکت، متمایزسازی یا تغییر هدف."
+
+msgid "Content may depend on JavaScript"
+msgstr "محتوا ممکن است به جاوااسکریپت وابسته باشد"
+
+msgid "Very little text in the HTML but many scripts — content rendered client-side may be indexed late or not at all."
+msgstr "متن بسیار کمی در HTML و اسکریپت‌های زیاد — محتوای رندرشده در مرورگر ممکن است دیر یا اصلاً ایندکس نشود."
+
+msgid "Server-render important content."
+msgstr "محتوای مهم را سمت سرور رندر کنید."
+
+msgid "Broken internal links"
+msgstr "لینک‌های داخلی خراب"
+
+msgid "Links to 404 pages waste crawl budget and frustrate users."
+msgstr "لینک به صفحات ۴۰۴ بودجه خزش را هدر می‌دهد و کاربران را ناامید می‌کند."
+
+msgid "Fix the link or redirect the target."
+msgstr "لینک را اصلاح یا مقصد را ریدایرکت کنید."
+
+msgid "Internal links pointing to redirects"
+msgstr "لینک‌های داخلی به ریدایرکت‌ها"
+
+msgid "Extra hops slow crawling and users."
+msgstr "پرش‌های اضافی خزش و کاربران را کند می‌کنند."
+
+msgid "Link directly to the final URL."
+msgstr "مستقیماً به URL نهایی لینک دهید."
+
+msgid "Broken external links"
+msgstr "لینک‌های خارجی خراب"
+
+msgid "Links to dead external pages hurt UX and trust."
+msgstr "لینک به صفحات خارجی ازکارافتاده تجربه کاربری و اعتماد را کاهش می‌دهد."
+
+msgid "Update or remove the outdated links."
+msgstr "لینک‌های قدیمی را به‌روز یا حذف کنید."
+
+msgid "Orphan pages (no internal links)"
+msgstr "صفحات یتیم (بدون لینک داخلی)"
+
+msgid "Pages without internal links are hard to discover and seem unimportant."
+msgstr "صفحات بدون لینک داخلی سخت کشف می‌شوند و کم‌اهمیت به نظر می‌رسند."
+
+msgid "Link to them from relevant pages (SEOlity → Internal Links)."
+msgstr "از صفحات مرتبط به آن‌ها لینک دهید (سئولیتی ← لینک‌های داخلی)."
+
+msgid "Pages deeper than 4 clicks"
+msgstr "صفحات عمیق‌تر از ۴ کلیک"
+
+msgid "Deep pages get crawled less often and receive less internal PageRank."
+msgstr "صفحات عمیق کمتر خزش می‌شوند و اعتبار داخلی کمتری می‌گیرند."
+
+msgid "Improve navigation, hubs and internal links."
+msgstr "ناوبری، صفحات هاب و لینک‌های داخلی را بهبود دهید."
+
+msgid "Excessive links on page"
+msgstr "لینک‌های بیش از حد در صفحه"
+
+msgid "Hundreds of links dilute value and overwhelm users."
+msgstr "صدها لینک ارزش را رقیق و کاربران را سردرگم می‌کند."
+
+msgid "Trim mega-menus/footers."
+msgstr "مگامنوها/فوترها را خلاصه کنید."
+
+msgid "Images without ALT text"
+msgstr "تصاویر بدون متن ALT"
+
+msgid "ALT text is required for accessibility and helps image search."
+msgstr "متن ALT برای دسترس‌پذیری ضروری است و به جستجوی تصاویر کمک می‌کند."
+
+msgid "Generate descriptive ALT text (SEOlity → Images)."
+msgstr "متن ALT توصیفی تولید کنید (سئولیتی ← تصاویر)."
+
+msgid "Broken images"
+msgstr "تصاویر خراب"
+
+msgid "Broken images look unprofessional and waste requests."
+msgstr "تصاویر خراب غیرحرفه‌ای به نظر می‌رسند و درخواست‌ها را هدر می‌دهند."
+
+msgid "Re-upload or remove the image."
+msgstr "تصویر را دوباره بارگذاری یا حذف کنید."
+
+msgid "Images without width/height"
+msgstr "تصاویر بدون عرض/ارتفاع"
+
+msgid "Missing dimensions cause layout shift (CLS)."
+msgstr "نبود ابعاد باعث جابه‌جایی چیدمان (CLS) می‌شود."
+
+msgid "Set width and height attributes."
+msgstr "ویژگی‌های width و height را تنظیم کنید."
+
+msgid "No structured data"
+msgstr "بدون داده ساختاریافته"
+
+msgid "Structured data enables rich results and helps entity understanding."
+msgstr "داده ساختاریافته نتایج غنی را ممکن می‌کند و به درک موجودیت‌ها کمک می‌کند."
+
+msgid "Enable SEOlity schema output."
+msgstr "خروجی اسکیمای سئولیتی را فعال کنید."
+
+msgid "Invalid JSON-LD"
+msgstr "JSON-LD نامعتبر"
+
+msgid "Invalid structured data is ignored by Google."
+msgstr "داده ساختاریافته نامعتبر توسط گوگل نادیده گرفته می‌شود."
+
+msgid "Fix the JSON syntax."
+msgstr "نحو JSON را اصلاح کنید."
+
+msgid "Product pages without Product schema"
+msgstr "صفحات محصول بدون اسکیمای Product"
+
+msgid "Product rich results (price, stock, rating) increase CTR."
+msgstr "نتایج غنی محصول (قیمت، موجودی، امتیاز) CTR را افزایش می‌دهند."
+
+msgid "Enable Product schema."
+msgstr "اسکیمای Product را فعال کنید."
+
+msgid "No breadcrumbs"
+msgstr "بدون مسیر راهنما (بردکرامب)"
+
+msgid "Breadcrumbs improve navigation and SERP display."
+msgstr "مسیر راهنما ناوبری و نمایش در نتایج را بهبود می‌دهد."
+
+msgid "Enable BreadcrumbList schema / breadcrumbs."
+msgstr "اسکیمای BreadcrumbList / مسیر راهنما را فعال کنید."
+
+msgid "Pages not served over HTTPS"
+msgstr "صفحات بدون HTTPS"
+
+msgid "HTTPS is a ranking signal and required for trust."
+msgstr "HTTPS یک سیگنال رتبه‌بندی و لازمه اعتماد است."
+
+msgid "Install SSL and redirect HTTP → HTTPS."
+msgstr "SSL نصب کرده و HTTP را به HTTPS ریدایرکت کنید."
+
+msgid "Mixed content (HTTP resources on HTTPS)"
+msgstr "محتوای ترکیبی (منابع HTTP در HTTPS)"
+
+msgid "Browsers block or warn on insecure resources."
+msgstr "مرورگرها منابع ناامن را مسدود می‌کنند یا هشدار می‌دهند."
+
+msgid "Load all resources over HTTPS."
+msgstr "همه منابع را از طریق HTTPS بارگذاری کنید."
+
+msgid "Missing viewport meta (not mobile-friendly)"
+msgstr "متای viewport وجود ندارد (سازگار با موبایل نیست)"
+
+msgid "Google uses mobile-first indexing."
+msgstr "گوگل از ایندکس موبایل‌محور استفاده می‌کند."
+
+msgid "Add <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">."
+msgstr "تگ <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"> را اضافه کنید."
+
+msgid "Missing html lang attribute"
+msgstr "ویژگی lang در html وجود ندارد"
+
+msgid "Helps search engines and screen readers pick the right language."
+msgstr "به موتورهای جستجو و صفحه‌خوان‌ها در تشخیص زبان درست کمک می‌کند."
+
+msgid "Set the site language in Settings → General."
+msgstr "زبان سایت را در تنظیمات ← عمومی تنظیم کنید."
+
+msgid "Invalid hreflang annotations"
+msgstr "برچسب‌های hreflang نامعتبر"
+
+msgid "Broken hreflang can show the wrong language version."
+msgstr "hreflang خراب ممکن است نسخه زبانی اشتباه را نمایش دهد."
+
+msgid "Use valid ISO codes, self-references and x-default."
+msgstr "از کدهای ISO معتبر، خودارجاعی و x-default استفاده کنید."
+
+msgid "Non-friendly URLs"
+msgstr "URLهای نامناسب"
+
+msgid "Long, parameter-heavy or uppercase URLs are harder to share and may duplicate."
+msgstr "URLهای طولانی، پرپارامتر یا با حروف بزرگ سخت‌تر به اشتراک گذاشته می‌شوند و ممکن است تکراری شوند."
+
+msgid "Use short, lowercase, hyphenated slugs (redirect old ones)."
+msgstr "از نامک‌های کوتاه، با حروف کوچک و خط‌تیره استفاده کنید (قدیمی‌ها را ریدایرکت کنید)."
+
+msgid "Slow server response (TTFB)"
+msgstr "پاسخ کند سرور (TTFB)"
+
+msgid "Slow responses hurt Core Web Vitals and crawl rate."
+msgstr "پاسخ‌های کند به Core Web Vitals و نرخ خزش آسیب می‌زنند."
+
+msgid "Enable page caching, upgrade hosting, reduce plugins."
+msgstr "کش صفحه را فعال کنید، هاست را ارتقا دهید و افزونه‌ها را کم کنید."
+
+msgid "Very large HTML document"
+msgstr "سند HTML بسیار بزرگ"
+
+msgid "Heavy HTML slows rendering on mobile."
+msgstr "HTML سنگین رندر را در موبایل کند می‌کند."
+
+msgid "Reduce inline code and DOM size."
+msgstr "کدهای درون‌خطی و اندازه DOM را کاهش دهید."
+
+msgid "Poor Core Web Vitals"
+msgstr "Core Web Vitals ضعیف"
+
+msgid "Poor LCP/INP/CLS hurt UX and are part of page experience signals."
+msgstr "LCP/INP/CLS ضعیف به تجربه کاربری آسیب می‌زند و بخشی از سیگنال‌های تجربه صفحه است."
+
+msgid "Optimize images, fonts, scripts and caching."
+msgstr "تصاویر، فونت‌ها، اسکریپت‌ها و کش را بهینه کنید."
+
+#, php-format
+msgid "%1$d media library images have no ALT text (%2$d products affected)"
+msgstr "%1$d تصویر کتابخانه رسانه متن ALT ندارند (%2$d محصول درگیر)"
+
+msgid "Images without ALT text are invisible to screen readers and Google Images."
+msgstr "تصاویر بدون ALT برای صفحه‌خوان‌ها و گوگل ایمیجز نامرئی هستند."
+
+msgid "Use Bulk Optimize ALT — SEOlity writes context-aware ALT text from product/page data."
+msgstr "از بهینه‌سازی گروهی ALT استفاده کنید — سئولیتی از داده‌های محصول/صفحه ALT متناسب می‌نویسد."
+
+#, php-format
+msgid "%d 404 URLs are linked from your own pages"
+msgstr "%d URL با خطای ۴۰۴ از صفحات خود سایت لینک شده‌اند"
+
+msgid "Visitors and crawlers keep hitting dead ends from inside your site."
+msgstr "بازدیدکنندگان و خزنده‌ها از داخل سایت به بن‌بست می‌رسند."
+
+msgid "Redirect them to the suggested targets (SEOlity → 404) and fix the source links."
+msgstr "آن‌ها را به مقاصد پیشنهادی ریدایرکت کنید (سئولیتی ← ۴۰۴) و لینک‌های مبدأ را اصلاح کنید."
+
+#, php-format
+msgid "%d queries have several of your pages competing for them"
+msgstr "برای %d کوئری چند صفحه شما با هم رقابت می‌کنند"
+
+msgid "Competing URLs split clicks and links, so none of them ranks as well as one strong page would."
+msgstr "URLهای رقیب کلیک‌ها و لینک‌ها را تقسیم می‌کنند، پس هیچ‌کدام به خوبی یک صفحه قوی رتبه نمی‌گیرند."
+
+msgid "Merge, redirect, differentiate or re-target (AI advice per query in Keywords → Cannibalization)."
+msgstr "ادغام، ریدایرکت، متمایزسازی یا تغییر هدف (مشاوره هوش مصنوعی برای هر کوئری در کلمات کلیدی ← هم‌نوع‌خواری)."
+
+#, php-format
+msgid "%1$d pages have CTR far below expected for their position (≈%2$d extra clicks/month possible)"
+msgstr "%1$d صفحه CTR بسیار کمتر از انتظار جایگاهشان دارند (امکان حدود %2$d کلیک اضافه در ماه)"
+
+msgid "Google already shows these pages, but searchers do not click — titles/descriptions don't match the intent or don't stand out."
+msgstr "گوگل این صفحات را نمایش می‌دهد اما کاربران کلیک نمی‌کنند — عنوان/توضیحات با هدف جستجو منطبق نیست یا جلب توجه نمی‌کند."
+
+msgid "Rewrite title + meta description with SEOlity (based on the real queries)."
+msgstr "عنوان و توضیحات متا را با سئولیتی بازنویسی کنید (بر اساس کوئری‌های واقعی)."
+
+#, php-format
+msgid "%d products have no short description"
+msgstr "%d محصول توضیحات کوتاه ندارند"
+
+msgid "The short description is the most visible sales copy on product pages and is often used as snippet text."
+msgstr "توضیحات کوتاه دیده‌شده‌ترین متن فروش در صفحه محصول است و اغلب به‌عنوان اسنیپت استفاده می‌شود."
+
+msgid "Generate benefit-focused short descriptions with AI Product Optimizer."
+msgstr "با بهینه‌ساز هوشمند محصول، توضیحات کوتاه مزیت‌محور تولید کنید."
+
+#, php-format
+msgid "Affected pages earn ~%d clicks / 28 days — fixing protects and grows that traffic."
+msgstr "صفحات درگیر حدود %d کلیک در ۲۸ روز دارند — رفع مشکل این ترافیک را حفظ و تقویت می‌کند."
+
+msgid "Blocks indexing or user access — fix first."
+msgstr "مانع ایندکس یا دسترسی کاربر است — اول این را رفع کنید."
+
+msgid "Likely ranking/CTR impact."
+msgstr "احتمالاً بر رتبه/CTR تأثیر دارد."
+
+msgid "Incremental quality improvement."
+msgstr "بهبود تدریجی کیفیت."
+
+msgid "Not enough search impressions to judge the effect."
+msgstr "نمایش جستجوی کافی برای قضاوت درباره اثر وجود ندارد."
+
+#, php-format
+msgid "Clicks %1$s%%, CTR %2$s%%, position %3$s vs. before; site-wide clicks changed %4$s%% in the same period (control)."
+msgstr "کلیک‌ها %1$s%%، CTR %2$s%%، جایگاه %3$s نسبت به قبل؛ کلیک‌های کل سایت در همین دوره %4$s%% تغییر کرد (گروه کنترل)."
+
+#, php-format
+msgid "Experiment had a negative effect: %s"
+msgstr "آزمایش اثر منفی داشت: %s"
+
+msgid "You can revert the change from Experiments."
+msgstr "می‌توانید تغییر را از بخش آزمایش‌ها بازگردانید."
+
+msgid "Experiment not found."
+msgstr "آزمایش پیدا نشد."
+
+#, php-format
+msgid "Changing %1$s on %2$s pages moved %3$s by %4$s on average (%5$d experiments, %6$d positive)."
+msgstr "تغییر %1$s در صفحات %2$s به‌طور میانگین %3$s را %4$s جابه‌جا کرد (%5$d آزمایش، %6$d مثبت)."
+
+msgid "Frequently asked questions"
+msgstr "سؤالات متداول"
+
+msgid "Enter your Google OAuth Client ID and Client Secret first."
+msgstr "ابتدا Client ID و Client Secret مربوط به OAuth گوگل را وارد کنید."
+
+msgid "You are not allowed to connect Search Console."
+msgstr "شما اجازه اتصال سرچ کنسول را ندارید."
+
+msgid "Google Search Console is not connected."
+msgstr "گوگل سرچ کنسول متصل نیست."
+
+msgid "Search Console connection expired"
+msgstr "اتصال سرچ کنسول منقضی شد"
+
+msgid "Google revoked access. Reconnect Search Console to keep data flowing."
+msgstr "گوگل دسترسی را لغو کرد. برای ادامه دریافت داده، سرچ کنسول را دوباره متصل کنید."
+
+msgid "Search Console is not connected."
+msgstr "سرچ کنسول متصل نیست."
+
+msgid "Pages with critical issues"
+msgstr "صفحات دارای مشکل بحرانی"
+
+msgid "Pages with high security/mobile/server issues"
+msgstr "صفحات دارای مشکلات جدی امنیت/موبایل/سرور"
+
+msgid "Status codes, redirects, HTTPS, mixed content, mobile viewport, canonical conflicts."
+msgstr "کدهای وضعیت، ریدایرکت‌ها، HTTPS، محتوای ترکیبی، viewport موبایل، تداخل کنونیکال."
+
+msgid "Average on-page score"
+msgstr "میانگین امتیاز درون‌صفحه‌ای"
+
+msgid "Thin pages"
+msgstr "صفحات کم‌عمق"
+
+msgid "Duplicate / near-duplicate pages"
+msgstr "صفحات تکراری / تقریباً تکراری"
+
+msgid "Pages with missing/duplicate title or description"
+msgstr "صفحات با عنوان یا توضیحات ناموجود/تکراری"
+
+msgid "On-page quality, depth, uniqueness and metadata."
+msgstr "کیفیت درون‌صفحه‌ای، عمق، یکتایی و متادیتا."
+
+msgid "Published pages that are indexable"
+msgstr "صفحات منتشرشده قابل ایندکس"
+
+msgid "Indexing conflicts (noindex w/ traffic, robots-blocked, bad canonicals)"
+msgstr "تداخل‌های ایندکس (نوایندکس با ترافیک، مسدود با robots، کنونیکال اشتباه)"
+
+msgid "Sitemap problems"
+msgstr "مشکلات نقشه سایت"
+
+msgid "yes"
+msgstr "بله"
+
+msgid "no"
+msgstr "خیر"
+
+msgid "Can Google crawl and index the pages you want indexed?"
+msgstr "آیا گوگل می‌تواند صفحاتی که می‌خواهید را خزش و ایندکس کند؟"
+
+msgid "Orphan pages"
+msgstr "صفحات یتیم"
+
+msgid "Pages with broken internal links"
+msgstr "صفحات دارای لینک داخلی خراب"
+
+msgid "Link graph health: discoverability, depth and broken links."
+msgstr "سلامت گراف لینک: قابلیت کشف، عمق و لینک‌های خراب."
+
+msgid "Pages without (required) structured data"
+msgstr "صفحات بدون داده ساختاریافته (الزامی)"
+
+msgid "Pages with invalid JSON-LD"
+msgstr "صفحات دارای JSON-LD نامعتبر"
+
+msgid "Structured data coverage and validity."
+msgstr "پوشش و اعتبار داده ساختاریافته."
+
+msgid "Average server response (ms)"
+msgstr "میانگین پاسخ سرور (میلی‌ثانیه)"
+
+msgid "Pages with poor Core Web Vitals"
+msgstr "صفحات با Core Web Vitals ضعیف"
+
+msgid "Slow pages (>1.5s TTFB)"
+msgstr "صفحات کند (TTFB بیش از ۱٫۵ ثانیه)"
+
+msgid "Server speed and Core Web Vitals (PageSpeed Insights)."
+msgstr "سرعت سرور و Core Web Vitals (PageSpeed Insights)."
+
+msgid "Images without ALT"
+msgstr "تصاویر بدون ALT"
+
+msgid "Generic / stuffed / duplicate ALT"
+msgstr "ALT کلی / پرکلمه / تکراری"
+
+msgid "Accessibility and image-search readiness of the media library."
+msgstr "آمادگی کتابخانه رسانه برای دسترس‌پذیری و جستجوی تصاویر."
+
+msgid "Clicks vs previous 28 days"
+msgstr "کلیک‌ها در برابر ۲۸ روز قبل"
+
+msgid "Average position change"
+msgstr "تغییر میانگین جایگاه"
+
+msgid "Pages with CTR below expectation"
+msgstr "صفحات با CTR کمتر از انتظار"
+
+msgid "Real Google performance trend (Search Console)."
+msgstr "روند واقعی عملکرد در گوگل (سرچ کنسول)."
+
+msgid "Queries in the top 10"
+msgstr "کوئری‌های در ۱۰ نتیجه اول"
+
+msgid "Cannibalized queries"
+msgstr "کوئری‌های دچار هم‌نوع‌خواری"
+
+msgid "Ranking distribution and keyword conflicts."
+msgstr "توزیع رتبه‌ها و تداخل کلمات کلیدی."
+
+msgid "Competitors monitored"
+msgstr "رقبای تحت پایش"
+
+msgid "Open content gaps"
+msgstr "شکاف‌های محتوایی باز"
+
+msgid "How much ground competitors cover that you don't."
+msgstr "رقبا چه میزان از موضوعاتی را پوشش می‌دهند که شما ندارید."
+
+msgid "Some categories have no data yet and are excluded rather than guessed (connect Search Console, run an audit, add competitors)."
+msgstr "برخی بخش‌ها هنوز داده ندارند و به‌جای حدس زدن کنار گذاشته شده‌اند (سرچ کنسول را متصل کنید، ممیزی اجرا کنید، رقبا را اضافه کنید)."
+
+msgid "No images selected."
+msgstr "تصویری انتخاب نشده است."
+
+msgid "Enter at least one seed keyword."
+msgstr "حداقل یک کلمه کلیدی پایه وارد کنید."
+
+msgid "No current cannibalization found for this query."
+msgstr "برای این کوئری هم‌نوع‌خواری فعلی پیدا نشد."
+
+msgid "Title and content are required."
+msgstr "عنوان و محتوا الزامی هستند."
+
+#, php-format
+msgid "Topically related page that already mentions \"%s\"; the target has few internal links."
+msgstr "صفحه‌ای مرتبط که از قبل به «%s» اشاره می‌کند؛ صفحه مقصد لینک داخلی کمی دارد."
+
+msgid "Run a site audit first so SEOlity knows your link graph."
+msgstr "ابتدا ممیزی سایت را اجرا کنید تا سئولیتی گراف لینک شما را بشناسد."
+
+msgid "Related page that mentions the target topic."
+msgstr "صفحه مرتبطی که به موضوع مقصد اشاره می‌کند."
+
+msgid "Suggestion not found."
+msgstr "پیشنهاد پیدا نشد."
+
+msgid "The anchor text is no longer present in the source content."
+msgstr "انکر تکست دیگر در محتوای مبدأ وجود ندارد."
+
+#, php-format
+msgid "Add internal link \"%1$s\" → %2$s"
+msgstr "افزودن لینک داخلی «%1$s» ← %2$s"
+
+msgid "Plan item not found."
+msgstr "مورد برنامه پیدا نشد."
+
+msgid "You cannot create posts."
+msgstr "شما اجازه ایجاد نوشته ندارید."
+
+msgid "SEOlity brief — replace the notes below with your own expertise, examples and sources before publishing."
+msgstr "بریف سئولیتی — پیش از انتشار، یادداشت‌های زیر را با تخصص، مثال‌ها و منابع خودتان جایگزین کنید."
+
+msgid "Every minute (SEOlity queue)"
+msgstr "هر دقیقه (صف سئولیتی)"
+
+#, php-format
+msgid "Rewrite the title & meta description of \"%s\""
+msgstr "بازنویسی عنوان و توضیحات متای «%s»"
+
+#, php-format
+msgid "This page has %1$s impressions but a %2$s%% CTR (expected ≈%3$s%% at position %4$s). Better snippet copy could bring ≈%5$d more clicks per month."
+msgstr "این صفحه %1$s نمایش اما CTR برابر %2$s%% دارد (انتظار حدود %3$s%% در جایگاه %4$s). متن بهتر در نتایج می‌تواند حدود %5$d کلیک بیشتر در ماه بیاورد."
+
+#, php-format
+msgid "Deepen the content of \"%s\" to reach page 1"
+msgstr "محتوای «%s» را برای رسیدن به صفحه اول عمیق‌تر کنید"
+
+#, php-format
+msgid "This URL ranks for %1$d queries at positions 8–20 (avg. %2$s). Improving depth, intent match and internal links usually moves such pages onto page 1."
+msgstr "این URL برای %1$d کوئری در جایگاه ۸ تا ۲۰ (میانگین %2$s) رتبه دارد. بهبود عمق، تطابق با هدف و لینک‌های داخلی معمولاً چنین صفحاتی را به صفحه اول می‌برد."
+
+#, php-format
+msgid "Investigate the traffic drop on \"%s\""
+msgstr "بررسی افت ترافیک «%s»"
+
+#, php-format
+msgid "Clicks fell %1$s%% (%2$d → %3$d) versus the previous 28 days."
+msgstr "کلیک‌ها نسبت به ۲۸ روز قبل %1$s%% کاهش یافت (%2$d ← %3$d)."
+
+msgid "The page was changed recently — check the experiment results."
+msgstr "این صفحه اخیراً تغییر کرده — نتایج آزمایش را بررسی کنید."
+
+msgid "Refresh outdated information, compare against current top results and check for cannibalization."
+msgstr "اطلاعات قدیمی را به‌روز کنید، با برترین نتایج فعلی مقایسه کنید و هم‌نوع‌خواری را بررسی کنید."
+
+#, php-format
+msgid "Resolve cannibalization for \"%s\""
+msgstr "رفع هم‌نوع‌خواری برای «%s»"
+
+#, php-format
+msgid "%d of your URLs share the impressions for this query, so none of them ranks as well as it could."
+msgstr "%d URL شما در نمایش‌های این کوئری شریک‌اند، پس هیچ‌کدام به اندازه توانشان رتبه نمی‌گیرند."
+
+#, php-format
+msgid "Add an FAQ section to \"%s\""
+msgstr "افزودن بخش سؤالات متداول به «%s»"
+
+#, php-format
+msgid "Searchers reach this page with %d question-style queries. Answering them directly improves relevance and can win FAQ/PAA visibility."
+msgstr "کاربران با %d کوئری سؤالی به این صفحه می‌رسند. پاسخ مستقیم به آن‌ها ارتباط را بهبود می‌دهد و می‌تواند جایگاه FAQ/PAA بگیرد."
+
+#, php-format
+msgid "Remove noindex from \"%s\""
+msgstr "حذف نوایندکس از «%s»"
+
+#, php-format
+msgid "The page is set to noindex but still received %d impressions in 28 days — it will disappear from Google on the next crawl."
+msgstr "صفحه نوایندکس است اما هنوز در ۲۸ روز %d نمایش داشته — در خزش بعدی از گوگل حذف خواهد شد."
+
+#, php-format
+msgid "Redirect the broken URL %s"
+msgstr "ریدایرکت URL خراب %s"
+
+#, php-format
+msgid "It returns 404 but %d of your pages still link to it."
+msgstr "خطای ۴۰۴ می‌دهد اما %d صفحه شما هنوز به آن لینک داده‌اند."
+
+#, php-format
+msgid "Best match: %s"
+msgstr "بهترین تطابق: %s"
+
+#, php-format
+msgid "Link to the orphan page \"%s\""
+msgstr "لینک دادن به صفحه یتیم «%s»"
+
+msgid "No page on your site links here, so crawlers rarely visit it and it receives no internal authority."
+msgstr "هیچ صفحه‌ای در سایت به اینجا لینک نداده، پس خزنده‌ها به‌ندرت سر می‌زنند و اعتبار داخلی نمی‌گیرد."
+
+#, php-format
+msgid "Merge or noindex the thin page \"%s\""
+msgstr "ادغام یا نوایندکس صفحه کم‌عمق «%s»"
+
+#, php-format
+msgid "Expand the thin page \"%s\""
+msgstr "گسترش صفحه کم‌عمق «%s»"
+
+#, php-format
+msgid "Only %d words and zero search impressions in 90 days. Thin pages can lower overall site quality — merge it into a stronger page (301) or noindex it."
+msgstr "فقط %d کلمه و صفر نمایش جستجو در ۹۰ روز. صفحات کم‌عمق می‌توانند کیفیت کل سایت را کاهش دهند — آن را در صفحه قوی‌تری ادغام (۳۰۱) یا نوایندکس کنید."
+
+#, php-format
+msgid "Only %d words, yet Google already shows it. Adding genuinely useful depth is likely to lift rankings."
+msgstr "فقط %d کلمه، اما گوگل همین حالا آن را نمایش می‌دهد. افزودن عمق واقعاً مفید احتمالاً رتبه را بالا می‌برد."
+
+#, php-format
+msgid "Write meta descriptions for %d pages"
+msgstr "نوشتن توضیحات متا برای %d صفحه"
+
+msgid "Without a meta description Google improvises a snippet, which usually lowers CTR."
+msgstr "بدون توضیحات متا، گوگل خودش اسنیپت می‌سازد که معمولاً CTR را کاهش می‌دهد."
+
+#, php-format
+msgid "Break %d redirect loop(s)"
+msgstr "شکستن %d حلقه ریدایرکت"
+
+msgid "Redirect loops make URLs completely inaccessible to users and Google."
+msgstr "حلقه‌های ریدایرکت URLها را برای کاربران و گوگل کاملاً غیرقابل دسترس می‌کنند."
+
+#, php-format
+msgid "Link \"%1$s\" from %2$s to %3$s"
+msgstr "لینک «%1$s» از %2$s به %3$s"
+
+#, php-format
+msgid "Optimize product \"%s\""
+msgstr "بهینه‌سازی محصول «%s»"
+
+msgid "Product page has not been analyzed yet and may lack descriptions, meta or ALT text."
+msgstr "صفحه محصول هنوز تحلیل نشده و ممکن است توضیحات، متا یا ALT نداشته باشد."
+
+#, php-format
+msgid "On-page score is %d/100 — weak descriptions, keyword coverage or meta tags."
+msgstr "امتیاز درون‌صفحه‌ای %d/100 است — توضیحات، پوشش کلمات کلیدی یا متاتگ‌ها ضعیف هستند."
+
+#, php-format
+msgid "Strengthen category \"%s\""
+msgstr "تقویت دسته‌بندی «%s»"
+
+#, php-format
+msgid "This category earns %s impressions but has little or no descriptive content. A helpful intro, buying guidance and FAQs improve relevance."
+msgstr "این دسته‌بندی %s نمایش دارد اما محتوای توصیفی کمی دارد یا اصلاً ندارد. مقدمه مفید، راهنمای خرید و سؤالات متداول ارتباط را بهبود می‌دهد."
+
+#, php-format
+msgid "Create \"%1$s\" (gap vs. %2$s)"
+msgstr "ایجاد «%1$s» (شکاف نسبت به %2$s)"
+
+#, php-format
+msgid "Flatten %d redirect chain(s)"
+msgstr "صاف کردن %d زنجیره ریدایرکت"
+
+msgid "Each extra hop slows users and crawlers; point old URLs straight to their final destination."
+msgstr "هر پرش اضافه کاربران و خزنده‌ها را کند می‌کند؛ URLهای قدیمی را مستقیم به مقصد نهایی هدایت کنید."
+
+msgid "Recommendation not found."
+msgstr "پیشنهاد پیدا نشد."
+
+msgid "Higher CTR at the same rankings → more clicks within 2–4 weeks."
+msgstr "CTR بالاتر با همان رتبه‌ها ← کلیک بیشتر طی ۲ تا ۴ هفته."
+
+msgid "Better rankings for page-2 queries within 4–8 weeks."
+msgstr "رتبه بهتر برای کوئری‌های صفحه دوم طی ۴ تا ۸ هفته."
+
+msgid "The page stays in / returns to Google's index."
+msgstr "صفحه در ایندکس گوگل می‌ماند / به آن بازمی‌گردد."
+
+msgid "Recovered link equity and fewer dead ends for users."
+msgstr "بازیابی اعتبار لینک و بن‌بست کمتر برای کاربران."
+
+msgid "Faster discovery, more internal authority, improved rankings."
+msgstr "کشف سریع‌تر، اعتبار داخلی بیشتر، رتبه بهتر."
+
+msgid "One stronger URL ranks higher for the contested query."
+msgstr "یک URL قوی‌تر برای کوئری مورد رقابت رتبه بالاتری می‌گیرد."
+
+msgid "Better coverage of question queries; potential PAA visibility."
+msgstr "پوشش بهتر کوئری‌های سؤالی؛ احتمال حضور در «سؤالات مرتبط»."
+
+msgid "More relevance and authority for the target page."
+msgstr "ارتباط و اعتبار بیشتر برای صفحه مقصد."
+
+msgid "New rankings for topics competitors already win."
+msgstr "رتبه‌های جدید در موضوعاتی که رقبا اکنون برنده آن هستند."
+
+msgid "Improved SEO quality for the affected URLs."
+msgstr "بهبود کیفیت سئو برای URLهای درگیر."
+
+msgid "Invalid redirect type."
+msgstr "نوع ریدایرکت نامعتبر است."
+
+msgid "Invalid regular expression."
+msgstr "عبارت باقاعده نامعتبر است."
+
+msgid "Target URL is required."
+msgstr "URL مقصد الزامی است."
+
+msgid "Source and target are the same."
+msgstr "مبدأ و مقصد یکسان هستند."
+
+msgid "This redirect would create a loop."
+msgstr "این ریدایرکت یک حلقه ایجاد می‌کند."
+
+msgid "Redirect not found."
+msgstr "ریدایرکت پیدا نشد."
+
+msgid "Entry not found."
+msgstr "مورد پیدا نشد."
+
+#, php-format
+msgid "%1$s %2$s SEO report %3$s – %4$s"
+msgstr "گزارش سئوی %2$s %1$s از %3$s تا %4$s"
+
+msgid "Report not found."
+msgstr "گزارش پیدا نشد."
+
+msgid "Print / Save as PDF"
+msgstr "چاپ / ذخیره به‌صورت PDF"
+
+msgid "Health score"
+msgstr "امتیاز سلامت"
+
+msgid "Clicks"
+msgstr "کلیک‌ها"
+
+msgid "Impressions"
+msgstr "نمایش‌ها"
+
+msgid "Avg. position"
+msgstr "میانگین جایگاه"
+
+msgid "Top pages"
+msgstr "برترین صفحات"
+
+msgid "Page"
+msgstr "صفحه"
+
+msgid "Position"
+msgstr "جایگاه"
+
+msgid "Top queries"
+msgstr "برترین کوئری‌ها"
+
+msgid "Query"
+msgstr "کوئری"
+
+msgid "Issues"
+msgstr "مشکلات"
+
+#, php-format
+msgid "%1$d new issues, %2$d fixed in this period."
+msgstr "در این دوره %1$d مشکل جدید و %2$d مورد رفع‌شده."
+
+msgid "Diagnosis"
+msgstr "تشخیص"
+
+msgid "Priority"
+msgstr "اولویت"
+
+msgid "Improvements & AI changes"
+msgstr "بهبودها و تغییرات هوش مصنوعی"
+
+#, php-format
+msgid "%1$d changes applied, %2$d reverted."
+msgstr "%1$d تغییر اعمال و %2$d مورد بازگردانده شد."
+
+msgid "Experiment"
+msgstr "آزمایش"
+
+msgid "Outcome"
+msgstr "نتیجه"
+
+msgid "Why"
+msgstr "چرا"
+
+msgid "Competitor"
+msgstr "رقیب"
+
+msgid "Pages"
+msgstr "صفحات"
+
+msgid "New"
+msgstr "جدید"
+
+msgid "Summary"
+msgstr "خلاصه"
+
+msgid "Recommended next actions"
+msgstr "اقدامات پیشنهادی بعدی"
+
+msgid "Product image without ALT → Generate ALT"
+msgstr "تصویر محصول بدون ALT ← تولید ALT"
+
+#, php-format
+msgid "CTR < 1% with > 500 impressions → Rewrite title + meta"
+msgstr "CTR کمتر از ۱٪ با بیش از ۵۰۰ نمایش ← بازنویسی عنوان + متا"
+
+msgid "New post published → Suggest internal links"
+msgstr "انتشار نوشته جدید ← پیشنهاد لینک داخلی"
+
+msgid "Published without meta description → Write one"
+msgstr "انتشار بدون توضیحات متا ← نوشتن آن"
+
+msgid "Uploaded image → Generate ALT"
+msgstr "بارگذاری تصویر ← تولید ALT"
+
+msgid "Ranking 8–20 → Recommend content refresh"
+msgstr "رتبه ۸ تا ۲۰ ← پیشنهاد به‌روزرسانی محتوا"
+
+msgid "Rule needs a name and a valid trigger."
+msgstr "قانون به نام و محرک معتبر نیاز دارد."
+
+msgid "Add at least one action."
+msgstr "حداقل یک اقدام اضافه کنید."
+
+#, php-format
+msgid "Rule matched: %1$s (%2$s)"
+msgstr "قانون منطبق شد: %1$s (%2$s)"
+
+#, php-format
+msgid "%1$s: %2$s"
+msgstr "%1$s: %2$s"
+
+msgid "Matched your automation rule."
+msgstr "با قانون اتوماسیون شما منطبق شد."
+
+msgid "Home"
+msgstr "خانه"
+
+#, php-format
+msgid "%1$s is missing required property \"%2$s\"."
+msgstr "در %1$s ویژگی الزامی «%2$s» وجود ندارد."
+
+#, php-format
+msgid "%1$s is missing recommended property \"%2$s\"."
+msgstr "در %1$s ویژگی توصیه‌شده «%2$s» وجود ندارد."
+
+msgid "Product needs offers, review or aggregateRating to be eligible for rich results."
+msgstr "برای واجد شرایط بودن نتایج غنی، Product به offers، review یا aggregateRating نیاز دارد."
+
+msgid "ratingValue exceeds bestRating."
+msgstr "ratingValue از bestRating بیشتر است."
+
+msgid "Only URLs of this site can be checked."
+msgstr "فقط URLهای همین سایت قابل بررسی هستند."
+
+msgid "Product page without Product schema — enable WooCommerce structured data or SEOlity schema."
+msgstr "صفحه محصول بدون اسکیمای Product — داده ساختاریافته ووکامرس یا اسکیمای سئولیتی را فعال کنید."
+
+msgid "Blog post without Article/BlogPosting schema."
+msgstr "نوشته وبلاگ بدون اسکیمای Article/BlogPosting."
+
+#, php-format
+msgid "Page contains %d question headings — FAQ schema could describe them."
+msgstr "صفحه %d عنوان سؤالی دارد — اسکیمای FAQ می‌تواند آن‌ها را توصیف کند."
+
+msgid "Add BreadcrumbList schema."
+msgstr "اسکیمای BreadcrumbList را اضافه کنید."
+
+msgid "Homepage has no Organization/LocalBusiness entity — important for the Knowledge Panel and E-E-A-T."
+msgstr "صفحه اصلی موجودیت Organization/LocalBusiness ندارد — برای پنل دانش و E-E-A-T مهم است."
+
+msgid "GitHub storage is not configured."
+msgstr "ذخیره‌سازی گیت‌هاب تنظیم نشده است."
+
+msgid "Repository must look like owner/name."
+msgstr "مخزن باید به شکل owner/name باشد."
+
+msgid "robots.txt is empty or missing. That allows all crawling, but you lose the chance to block crawl waste and reference your sitemap."
+msgstr "robots.txt خالی یا ناموجود است. همه خزش‌ها مجازند، اما فرصت جلوگیری از هدررفت خزش و معرفی نقشه سایت را از دست می‌دهید."
+
+msgid "WordPress \"Discourage search engines\" is ON — the whole site is asking not to be indexed."
+msgstr "گزینه «موتورهای جستجو را از ایندکس این سایت منصرف کن» در وردپرس فعال است — کل سایت درخواست عدم ایندکس دارد."
+
+msgid "The homepage is blocked for Googlebot."
+msgstr "صفحه اصلی برای Googlebot مسدود است."
+
+msgid "uploads (images)"
+msgstr "آپلودها (تصاویر)"
+
+msgid "core JavaScript"
+msgstr "جاوااسکریپت هسته"
+
+msgid "theme CSS"
+msgstr "CSS قالب"
+
+#, php-format
+msgid "Blocking %s prevents Google from rendering pages correctly."
+msgstr "مسدود کردن %s مانع رندر صحیح صفحات توسط گوگل می‌شود."
+
+msgid "admin-ajax.php is blocked; some themes load content through it. WordPress default allows it."
+msgstr "admin-ajax.php مسدود است؛ برخی قالب‌ها محتوا را از طریق آن بارگذاری می‌کنند. پیش‌فرض وردپرس آن را مجاز می‌داند."
+
+msgid "Crawl-delay is ignored by Google (manage crawl rate in Search Console instead)."
+msgstr "Crawl-delay توسط گوگل نادیده گرفته می‌شود (نرخ خزش را در سرچ کنسول مدیریت کنید)."
+
+#, php-format
+msgid "Unknown directive \"%s\" will be ignored."
+msgstr "دستور ناشناخته «%s» نادیده گرفته می‌شود."
+
+#, php-format
+msgid "Line %1$d could not be parsed: %2$s"
+msgstr "خط %1$d قابل تجزیه نبود: %2$s"
+
+msgid "Add a Sitemap: line pointing to your XML sitemap."
+msgstr "یک خط Sitemap: با اشاره به نقشه سایت XML اضافه کنید."
+
+msgid "internal search results"
+msgstr "نتایج جستجوی داخلی"
+
+msgid "add-to-cart URLs"
+msgstr "URLهای افزودن به سبد"
+
+msgid "sorting parameters"
+msgstr "پارامترهای مرتب‌سازی"
+
+msgid "layered-nav filter parameters"
+msgstr "پارامترهای فیلتر لایه‌ای"
+
+msgid "cart page"
+msgstr "صفحه سبد خرید"
+
+msgid "checkout page"
+msgstr "صفحه تسویه حساب"
+
+msgid "account pages"
+msgstr "صفحات حساب کاربری"
+
+#, php-format
+msgid "Consider blocking %1$s to save crawl budget: Disallow: %2$s"
+msgstr "برای صرفه‌جویی در بودجه خزش، مسدود کردن %1$s را در نظر بگیرید: Disallow: %2$s"
+
+msgid "Invalid XML"
+msgstr "XML نامعتبر"
+
+msgid "No sitemap found. Enable SEOlity sitemap enhancements (or your SEO plugin sitemap) and submit it in Search Console."
+msgstr "نقشه سایتی پیدا نشد. بهبودهای نقشه سایت سئولیتی (یا نقشه سایت افزونه سئو) را فعال و در سرچ کنسول ثبت کنید."
+
+#, php-format
+msgid "Remove %1$d URL(s) from the sitemap (%2$s). Sitemaps should only contain canonical, indexable 200 pages."
+msgstr "%1$d URL را از نقشه سایت حذف کنید (%2$s). نقشه سایت فقط باید شامل صفحات کنونیکال، قابل ایندکس و با کد ۲۰۰ باشد."
+
+#, php-format
+msgid "%d indexable published page(s) are not in any sitemap."
+msgstr "%d صفحه منتشرشده قابل ایندکس در هیچ نقشه سایتی نیست."
+
+#, php-format
+msgid "Sitemap %s has no <lastmod> values — accurate lastmod helps Google prioritize recrawls."
+msgstr "نقشه سایت %s مقدار <lastmod> ندارد — lastmod دقیق به گوگل در اولویت‌بندی خزش مجدد کمک می‌کند."
+
+#, php-format
+msgid "Sitemap %s exceeds 50,000 URLs and will be rejected."
+msgstr "نقشه سایت %s بیش از ۵۰٬۰۰۰ URL دارد و رد خواهد شد."
+
+msgid "Product not found (is WooCommerce active?)."
+msgstr "محصول پیدا نشد (آیا ووکامرس فعال است؟)."
+
+msgid "ALT generated from product data."
+msgstr "ALT از داده‌های محصول تولید شد."
+
+#, php-format
+msgid "%d very similar product(s) may compete for the same keywords — differentiate titles/descriptions or canonicalize variants."
+msgstr "%d محصول بسیار مشابه ممکن است برای کلمات کلیدی یکسان رقابت کنند — عنوان/توضیحات را متمایز کنید یا نسخه‌ها را کنونیکال کنید."
+
+msgid "SEOlity requires PHP 7.4 or newer."
+msgstr "سئولیتی به PHP نسخه ۷٫۴ یا جدیدتر نیاز دارد."
+
+msgid "Nothing here yet"
+msgstr "هنوز چیزی اینجا نیست"
+
+msgid "Previous"
+msgstr "قبلی"
+
+#, php-format
+msgid "Page %1$s of %2$s"
+msgstr "صفحه %1$s از %2$s"
+
+msgid "Next"
+msgstr "بعدی"
+
+msgid "Create redirect"
+msgstr "ایجاد ریدایرکت"
+
+msgid "From"
+msgstr "از"
+
+msgid "To"
+msgstr "به"
+
+msgid "Cancel"
+msgstr "انصراف"
+
+msgid "Create 301 redirect"
+msgstr "ایجاد ریدایرکت ۳۰۱"
+
+msgid "Redirect created."
+msgstr "ریدایرکت ایجاد شد."
+
+msgid "Suggestions are ready for review."
+msgstr "پیشنهادها آماده بررسی هستند."
+
+#, php-format
+msgid "%s items queued for background AI processing."
+msgstr "%s مورد برای پردازش هوش مصنوعی در پس‌زمینه در صف قرار گرفت."
+
+#, php-format
+msgid "%s redirect chains fixed."
+msgstr "%s زنجیره ریدایرکت اصلاح شد."
+
+msgid "Added to the content planner."
+msgstr "به برنامه‌ریز محتوا اضافه شد."
+
+msgid "Impact"
+msgstr "تأثیر"
+
+msgid "Effort"
+msgstr "زحمت"
+
+msgid "Confidence"
+msgstr "اطمینان"
+
+msgid "Do it"
+msgstr "انجامش بده"
+
+msgid "Why?"
+msgstr "چرا؟"
+
+msgid "Mark as done"
+msgstr "علامت‌گذاری به‌عنوان انجام‌شده"
+
+msgid "Dismiss"
+msgstr "رد کردن"
+
+msgid "SEOlity navigation"
+msgstr "ناوبری سئولیتی"
+
+msgid "Toggle dark mode"
+msgstr "تغییر حالت تاریک"
+
+msgid "AI SEO Intelligence for WordPress"
+msgstr "هوش سئوی مبتنی بر هوش مصنوعی برای وردپرس"
+
+msgid "Menu"
+msgstr "منو"
+
+msgid "Manual approval"
+msgstr "تأیید دستی"
+
+msgid "Semi-automatic"
+msgstr "نیمه‌خودکار"
+
+msgid "Autonomous"
+msgstr "خودمختار"
+
+msgid "AI connected"
+msgstr "هوش مصنوعی متصل است"
+
+msgid "AI not configured"
+msgstr "هوش مصنوعی تنظیم نشده"
+
+msgid "Search Console connected"
+msgstr "سرچ کنسول متصل است"
+
+msgid "Search Console not connected"
+msgstr "سرچ کنسول متصل نیست"
+
+#, php-format
+msgid "%s changes awaiting review"
+msgstr "%s تغییر در انتظار بررسی"
+
+msgid "Google Search Console connected. Now choose a property."
+msgstr "گوگل سرچ کنسول متصل شد. حالا یک پراپرتی انتخاب کنید."
+
+msgid "Google access was denied."
+msgstr "دسترسی گوگل رد شد."
+
+msgid "The connection link expired. Please try again."
+msgstr "لینک اتصال منقضی شد. لطفاً دوباره تلاش کنید."
+
+msgid "Google did not return a refresh token. Remove SEOlity from your Google account permissions and connect again."
+msgstr "گوگل توکن تمدید را برنگرداند. سئولیتی را از دسترسی‌های حساب گوگل خود حذف کرده و دوباره متصل شوید."
+
+msgid "Your SEO command center: health, traffic, opportunities and AI activity."
+msgstr "مرکز فرماندهی سئوی شما: سلامت، ترافیک، فرصت‌ها و فعالیت هوش مصنوعی."
+
+msgid "SEO Health Score"
+msgstr "امتیاز سلامت سئو"
+
+msgid "Why this score?"
+msgstr "چرا این امتیاز؟"
+
+msgid "Organic clicks"
+msgstr "کلیک‌های ارگانیک"
+
+msgid "Connect Search Console"
+msgstr "اتصال سرچ کنسول"
+
+msgid "CTR"
+msgstr "نرخ کلیک (CTR)"
+
+msgid "Indexable pages"
+msgstr "صفحات قابل ایندکس"
+
+#, php-format
+msgid "%s crawled"
+msgstr "%s خزش‌شده"
+
+msgid "Critical issues"
+msgstr "مشکلات بحرانی"
+
+msgid "High priority opportunities"
+msgstr "فرصت‌های با اولویت بالا"
+
+msgid "Optimization opportunities"
+msgstr "فرصت‌های بهینه‌سازی"
+
+msgid "Improvements"
+msgstr "بهبودها"
+
+msgid "No recommendations yet"
+msgstr "هنوز پیشنهادی وجود ندارد"
+
+msgid "Run a site audit and connect Search Console — SEOlity will tell you exactly what to do."
+msgstr "یک ممیزی سایت اجرا کنید و سرچ کنسول را متصل کنید؛ سئولیتی دقیقاً به شما می‌گوید چه کاری انجام دهید."
+
+msgid "See all"
+msgstr "مشاهده همه"
+
+msgid "Click & impression trend"
+msgstr "روند کلیک و نمایش"
+
+msgid "No Search Console data"
+msgstr "داده‌ای از سرچ کنسول نیست"
+
+msgid "Connect Google Search Console to see real traffic."
+msgstr "برای دیدن ترافیک واقعی، گوگل سرچ کنسول را متصل کنید."
+
+msgid "Connect"
+msgstr "اتصال"
+
+msgid "Errors"
+msgstr "خطاها"
+
+msgid "Critical"
+msgstr "بحرانی"
+
+msgid "High"
+msgstr "بالا"
+
+msgid "Medium"
+msgstr "متوسط"
+
+msgid "Low"
+msgstr "پایین"
+
+msgid "Open audit"
+msgstr "باز کردن ممیزی"
+
+msgid "Running"
+msgstr "در حال اجرا"
+
+msgid "Positive"
+msgstr "مثبت"
+
+msgid "Negative"
+msgstr "منفی"
+
+msgid "Neutral"
+msgstr "خنثی"
+
+msgid "Details"
+msgstr "جزئیات"
+
+msgid "AI actions"
+msgstr "اقدامات هوش مصنوعی"
+
+msgid "Applied (30 days)"
+msgstr "اعمال‌شده (۳۰ روز)"
+
+msgid "Awaiting review"
+msgstr "در انتظار بررسی"
+
+msgid "Review"
+msgstr "بررسی"
+
+msgid "All quiet"
+msgstr "همه‌چیز آرام است"
+
+msgid "No new alerts."
+msgstr "هشدار جدیدی نیست."
+
+msgid "All alerts"
+msgstr "همه هشدارها"
+
+msgid "Competitor status"
+msgstr "وضعیت رقبا"
+
+msgid "New pages"
+msgstr "صفحات جدید"
+
+msgid "Last analyzed"
+msgstr "آخرین تحلیل"
+
+msgid "No competitors yet"
+msgstr "هنوز رقیبی اضافه نشده"
+
+msgid "Add competitors to monitor their content and find gaps."
+msgstr "رقبا را اضافه کنید تا محتوایشان پایش و شکاف‌ها پیدا شوند."
+
+msgid "Add competitor"
+msgstr "افزودن رقیب"
+
+msgid "Connect an AI provider"
+msgstr "اتصال ارائه‌دهنده هوش مصنوعی"
+
+msgid "Add an API key (Anthropic, OpenAI, Gemini, OpenRouter) or a local LLM."
+msgstr "یک کلید API (Anthropic، OpenAI، Gemini، OpenRouter) یا مدل زبانی محلی اضافه کنید."
+
+msgid "Connect Google Search Console"
+msgstr "اتصال گوگل سرچ کنسول"
+
+msgid "Real clicks, impressions and queries power every recommendation."
+msgstr "کلیک‌ها، نمایش‌ها و کوئری‌های واقعی پشتوانه هر پیشنهاد هستند."
+
+msgid "Run your first site audit"
+msgstr "اولین ممیزی سایت را اجرا کنید"
+
+msgid "SEOlity crawls your site in the background without slowing it down."
+msgstr "سئولیتی سایت شما را در پس‌زمینه و بدون کند کردن آن خزش می‌کند."
+
+msgid "Add competitors"
+msgstr "افزودن رقبا"
+
+msgid "Monitor competitor content and discover gaps."
+msgstr "محتوای رقبا را پایش کنید و شکاف‌ها را کشف کنید."
+
+msgid "Get started"
+msgstr "شروع کنید"
+
+msgid "Start"
+msgstr "شروع"
+
+msgid "No briefing yet"
+msgstr "هنوز گزارش روزانه‌ای نیست"
+
+msgid "Your daily SEO briefing is generated every morning."
+msgstr "گزارش روزانه سئوی شما هر صبح تولید می‌شود."
+
+msgid "Generate now"
+msgstr "همین حالا تولید کن"
+
+msgid "Do today"
+msgstr "امروز انجام دهید"
+
+msgid "Today's SEO Briefing"
+msgstr "گزارش سئوی امروز"
+
+msgid "What Should I Do Today?"
+msgstr "امروز چه کاری انجام دهم؟"
+
+msgid "AI-prioritized actions ranked by impact, effort and confidence. Every suggestion explains itself — click “Why?”."
+msgstr "اقداماتی که هوش مصنوعی بر اساس تأثیر، زحمت و اطمینان اولویت‌بندی کرده است. هر پیشنهاد دلیل خود را توضیح می‌دهد؛ روی «چرا؟» کلیک کنید."
+
+msgid "Refresh recommendations"
+msgstr "به‌روزرسانی پیشنهادها"
+
+msgid "Refreshing in the background — reload in a minute."
+msgstr "در حال به‌روزرسانی در پس‌زمینه؛ یک دقیقه دیگر صفحه را تازه کنید."
+
+msgid "All"
+msgstr "همه"
+
+#, php-format
+msgid "%s AI changes are waiting for your approval."
+msgstr "%s تغییر هوش مصنوعی منتظر تأیید شماست."
+
+msgid "Review now"
+msgstr "همین حالا بررسی کن"
+
+msgid "Nothing to do here"
+msgstr "اینجا کاری برای انجام نیست"
+
+msgid "Great job — or SEOlity needs more data (audit + Search Console)."
+msgstr "عالی است؛ یا سئولیتی به داده بیشتری (ممیزی + سرچ کنسول) نیاز دارد."
+
+msgid "Ask anything about your site. Answers are grounded in your real Search Console, audit, competitor and experiment data."
+msgstr "هر سؤالی درباره سایت خود بپرسید. پاسخ‌ها بر اساس داده‌های واقعی سرچ کنسول، ممیزی، رقبا و آزمایش‌های شماست."
+
+msgid "New conversation"
+msgstr "گفتگوی جدید"
+
+msgid "e.g. Why did my organic sales drop this month?"
+msgstr "مثلاً: چرا فروش ارگانیک من این ماه کم شده؟"
+
+msgid "Send"
+msgstr "ارسال"
+
+msgid "Why has my organic traffic dropped?"
+msgstr "چرا ترافیک ارگانیک من کم شده؟"
+
+msgid "Why does this product not rank?"
+msgstr "چرا این محصول رتبه نمی‌گیرد؟"
+
+msgid "Which pages should I optimize today?"
+msgstr "کدام صفحات را باید امروز بهینه کنم؟"
+
+msgid "What did my competitor do recently?"
+msgstr "رقیب من اخیراً چه کاری انجام داده؟"
+
+msgid "Why does this page have a low CTR?"
+msgstr "چرا این صفحه CTR پایینی دارد؟"
+
+msgid "Should I redirect this URL?"
+msgstr "این URL را ریدایرکت کنم؟"
+
+msgid "Data used"
+msgstr "داده‌های استفاده‌شده"
+
+msgid "Analyzing your data…"
+msgstr "در حال تحلیل داده‌های شما…"
+
+msgid "Hi! I am your AI SEO strategist. Ask me about traffic, rankings, products, competitors or what to do next."
+msgstr "سلام! من استراتژیست سئوی هوش مصنوعی شما هستم. درباره ترافیک، رتبه‌ها، محصولات، رقبا یا قدم بعدی از من بپرسید."
+
+msgid "Recent conversations"
+msgstr "گفتگوهای اخیر"
+
+msgid "Every change is previewed, approved, logged and versioned. Nothing destructive happens without your approval unless you enable Autonomous mode."
+msgstr "هر تغییر پیش‌نمایش، تأیید، ثبت و نسخه‌بندی می‌شود. هیچ تغییر مخربی بدون تأیید شما انجام نمی‌شود مگر اینکه حالت خودمختار را فعال کنید."
+
+msgid "All statuses"
+msgstr "همه وضعیت‌ها"
+
+msgid "Pending approval"
+msgstr "در انتظار تأیید"
+
+msgid "Applied"
+msgstr "اعمال‌شده"
+
+msgid "Rejected"
+msgstr "ردشده"
+
+msgid "Reverted"
+msgstr "بازگردانده‌شده"
+
+msgid "Apply all in this batch"
+msgstr "اعمال همه موارد این دسته"
+
+msgid "Reject all"
+msgstr "رد همه"
+
+msgid "Item"
+msgstr "مورد"
+
+msgid "After"
+msgstr "بعد"
+
+msgid "Risk"
+msgstr "ریسک"
+
+msgid "Status"
+msgstr "وضعیت"
+
+msgid "Source"
+msgstr "منبع"
+
+msgid "Score"
+msgstr "امتیاز"
+
+msgid "Date"
+msgstr "تاریخ"
+
+msgid "View"
+msgstr "مشاهده"
+
+msgid "History"
+msgstr "تاریخچه"
+
+msgid "No changes"
+msgstr "تغییری وجود ندارد"
+
+msgid "AI suggestions you generate will appear here for approval."
+msgstr "پیشنهادهای هوش مصنوعی که تولید می‌کنید برای تأیید اینجا نمایش داده می‌شوند."
+
+msgid "Internal link suggestions"
+msgstr "پیشنهادهای لینک داخلی"
+
+msgid "No good link opportunities found"
+msgstr "فرصت مناسبی برای لینک پیدا نشد"
+
+msgid "SEOlity only suggests links whose anchor text already exists in the source content."
+msgstr "سئولیتی فقط لینک‌هایی را پیشنهاد می‌دهد که انکر تکست آن‌ها از قبل در محتوای مبدأ وجود دارد."
+
+msgid "Anchor"
+msgstr "انکر تکست"
+
+msgid "Target"
+msgstr "مقصد"
+
+msgid "Relevance"
+msgstr "ارتباط"
+
+msgid "Reason"
+msgstr "دلیل"
+
+msgid "Apply"
+msgstr "اعمال"
+
+#, php-format
+msgid "Cannibalization: %s"
+msgstr "هم‌نوع‌خواری: %s"
+
+msgid "Merge"
+msgstr "ادغام"
+
+msgid "Redirect"
+msgstr "ریدایرکت"
+
+msgid "Differentiate"
+msgstr "متمایزسازی"
+
+msgid "Internal link"
+msgstr "لینک داخلی"
+
+msgid "Change keyword target"
+msgstr "تغییر کلمه کلیدی هدف"
+
+msgid "No action"
+msgstr "بدون اقدام"
+
+msgid "Recommended action"
+msgstr "اقدام پیشنهادی"
+
+msgid "Primary URL"
+msgstr "URL اصلی"
+
+msgid "Share"
+msgstr "سهم"
+
+#, php-format
+msgid "Redirect %s → primary"
+msgstr "ریدایرکت %s ← اصلی"
+
+#, php-format
+msgid "Create a 301 redirect from %1$s to %2$s?"
+msgstr "ریدایرکت ۳۰۱ از %1$s به %2$s ایجاد شود؟"
+
+msgid "SEO Score Before"
+msgstr "امتیاز سئو قبل"
+
+msgid "SEO Score After"
+msgstr "امتیاز سئو بعد"
+
+msgid "Proposed changes"
+msgstr "تغییرات پیشنهادی"
+
+msgid "Field"
+msgstr "فیلد"
+
+msgid "Image ALT"
+msgstr "متن جایگزین تصویر (ALT)"
+
+msgid "Preview"
+msgstr "پیش‌نمایش"
+
+msgid "Applied."
+msgstr "اعمال شد."
+
+msgid "Focus"
+msgstr "کانونی"
+
+msgid "Secondary"
+msgstr "ثانویه"
+
+msgid "Long-tail"
+msgstr "دم‌بلند"
+
+msgid "Semantic"
+msgstr "معنایی"
+
+msgid "Benefits"
+msgstr "مزایا"
+
+msgid "Content weaknesses"
+msgstr "نقاط ضعف محتوا"
+
+msgid "Missing attributes"
+msgstr "ویژگی‌های ناقص"
+
+msgid "Suggested categories"
+msgstr "دسته‌بندی‌های پیشنهادی"
+
+msgid "Suggested tags"
+msgstr "برچسب‌های پیشنهادی"
+
+msgid "CTA ideas"
+msgstr "ایده‌های فراخوان به اقدام (CTA)"
+
+msgid "Competitor gaps"
+msgstr "شکاف‌ها نسبت به رقبا"
+
+msgid "Internal link ideas"
+msgstr "ایده‌های لینک داخلی"
+
+msgid "Apply all"
+msgstr "اعمال همه"
+
+msgid "All changes applied."
+msgstr "همه تغییرات اعمال شد."
+
+msgid "Save the item first."
+msgstr "ابتدا مورد را ذخیره کنید."
+
+msgid "Writing FAQs from your content and real question queries…"
+msgstr "در حال نوشتن سؤالات متداول از محتوا و کوئری‌های سؤالی واقعی شما…"
+
+msgid "Run a site audit so SEOlity knows your pages, then try again."
+msgstr "یک ممیزی سایت اجرا کنید تا سئولیتی صفحات شما را بشناسد، سپس دوباره تلاش کنید."
+
+msgid "The anchor text was not found in the current editor content."
+msgstr "انکر تکست در محتوای فعلی ویرایشگر پیدا نشد."
+
+msgid "Inserted"
+msgstr "درج شد"
+
+msgid "Link inserted. Save the post to keep it."
+msgstr "لینک درج شد. برای ماندگاری، نوشته را ذخیره کنید."
+
+msgid "Insert link"
+msgstr "درج لینک"
+
+msgid "Analyzing product data, queries and competitors…"
+msgstr "در حال تحلیل داده‌های محصول، کوئری‌ها و رقبا…"
+
+msgid "Inserted into the editor. Save the product to keep it."
+msgstr "در ویرایشگر درج شد. برای ماندگاری، محصول را ذخیره کنید."
+
+msgid "Insert into editor"
+msgstr "درج در ویرایشگر"
+
+msgid "Google will generate a snippet from your content. Write a description to control it."
+msgstr "گوگل از محتوای شما یک خلاصه می‌سازد. برای کنترل آن، توضیحات بنویسید."
+
+msgid "Select a Text Editor or Heading widget first."
+msgstr "ابتدا یک ویجت ویرایشگر متن یا عنوان را انتخاب کنید."
+
+msgid "Analyzing…"
+msgstr "در حال تحلیل…"
+
+msgid "Keyword coverage"
+msgstr "پوشش کلمه کلیدی"
+
+msgid "Search intent match"
+msgstr "تطابق با هدف جستجو"
+
+msgid "Readability"
+msgstr "خوانایی"
+
+msgid "Content depth"
+msgstr "عمق محتوا"
+
+msgid "Words"
+msgstr "کلمات"
+
+msgid "Optimize short description"
+msgstr "بهینه‌سازی توضیحات کوتاه"
+
+msgid "Optimize excerpt"
+msgstr "بهینه‌سازی چکیده"
+
+msgid "Live SEO analysis"
+msgstr "تحلیل زنده سئو"
+
+msgid "Approval workflow, SEO rules engine, background queue and the full audit log."
+msgstr "گردش‌کار تأیید، موتور قوانین سئو، صف پس‌زمینه و گزارش کامل رویدادها."
+
+msgid "Approval workflow"
+msgstr "گردش‌کار تأیید"
+
+msgid "Rules"
+msgstr "قوانین"
+
+msgid "Background queue"
+msgstr "صف پس‌زمینه"
+
+msgid "Audit log"
+msgstr "گزارش رویدادها"
+
+msgid "Manual"
+msgstr "دستی"
+
+msgid "Every change needs your approval (recommended to start)."
+msgstr "هر تغییر به تأیید شما نیاز دارد (برای شروع توصیه می‌شود)."
+
+msgid "Semi-Automatic"
+msgstr "نیمه‌خودکار"
+
+msgid "Low-risk changes (ALT text, meta descriptions, focus keywords) are applied automatically; everything else waits for approval."
+msgstr "تغییرات کم‌ریسک (متن ALT، توضیحات متا، کلمات کلیدی کانونی) خودکار اعمال می‌شوند؛ بقیه منتظر تأیید می‌مانند."
+
+msgid "AI acts within your rules: low and medium-risk changes are applied automatically. High-risk changes (content, titles, slugs, noindex, redirects) always need approval."
+msgstr "هوش مصنوعی در چارچوب قوانین شما عمل می‌کند: تغییرات کم و متوسط‌ریسک خودکار اعمال می‌شوند. تغییرات پرریسک (محتوا، عناوین، نامک، نوایندکس، ریدایرکت) همیشه نیاز به تأیید دارند."
+
+msgid "Approval mode updated."
+msgstr "حالت تأیید به‌روزرسانی شد."
+
+msgid "All changes — automatic or manual — are logged, versioned and can be undone."
+msgstr "همه تغییرات، خودکار یا دستی، ثبت و نسخه‌بندی می‌شوند و قابل بازگشت هستند."
+
+msgid "Post type"
+msgstr "نوع نوشته"
+
+msgid "Has image without ALT"
+msgstr "دارای تصویر بدون ALT"
+
+msgid "Meta description missing"
+msgstr "توضیحات متا وجود ندارد"
+
+msgid "SEO title length >"
+msgstr "طول عنوان سئو >"
+
+msgid "SEO score <"
+msgstr "امتیاز سئو <"
+
+msgid "Word count <"
+msgstr "تعداد کلمات <"
+
+#, php-format
+msgid "CTR % <"
+msgstr "درصد CTR <"
+
+msgid "Impressions (28d) >"
+msgstr "نمایش‌ها (۲۸ روز) >"
+
+msgid "Position >"
+msgstr "جایگاه >"
+
+msgid "Position <"
+msgstr "جایگاه <"
+
+msgid "Has FAQ"
+msgstr "دارای سؤالات متداول"
+
+msgid "Product without short description"
+msgstr "محصول بدون توضیحات کوتاه"
+
+msgid "Internal links <"
+msgstr "لینک‌های داخلی <"
+
+msgid "Generate ALT"
+msgstr "تولید ALT"
+
+msgid "Analyze & rewrite title + meta"
+msgstr "تحلیل و بازنویسی عنوان + متا"
+
+msgid "Suggest internal links"
+msgstr "پیشنهاد لینک داخلی"
+
+msgid "Propose noindex"
+msgstr "پیشنهاد نوایندکس"
+
+msgid "Send alert"
+msgstr "ارسال هشدار"
+
+msgid "Create recommendation"
+msgstr "ایجاد پیشنهاد"
+
+msgid "Content published"
+msgstr "محتوا منتشر شد"
+
+msgid "Content updated"
+msgstr "محتوا به‌روزرسانی شد"
+
+msgid "Image uploaded"
+msgstr "تصویر بارگذاری شد"
+
+msgid "Daily check"
+msgstr "بررسی روزانه"
+
+msgid "New rule"
+msgstr "قانون جدید"
+
+msgid "Templates:"
+msgstr "الگوها:"
+
+msgid "Rule"
+msgstr "قانون"
+
+msgid "IF"
+msgstr "اگر"
+
+msgid "THEN"
+msgstr "آنگاه"
+
+msgid "Trigger"
+msgstr "محرک"
+
+msgid "Mode"
+msgstr "حالت"
+
+msgid "Auto (within approval mode)"
+msgstr "خودکار (در چارچوب حالت تأیید)"
+
+msgid "Suggest only"
+msgstr "فقط پیشنهاد"
+
+msgid "Runs"
+msgstr "اجراها"
+
+msgid "Last run"
+msgstr "آخرین اجرا"
+
+msgid "Edit"
+msgstr "ویرایش"
+
+msgid "Delete this rule?"
+msgstr "این قانون حذف شود؟"
+
+msgid "Delete"
+msgstr "حذف"
+
+msgid "No rules yet"
+msgstr "هنوز قانونی وجود ندارد"
+
+msgid "Example: IF product has image without ALT THEN generate ALT."
+msgstr "مثال: اگر محصول تصویر بدون ALT دارد، آنگاه ALT تولید کن."
+
+msgid "Edit rule"
+msgstr "ویرایش قانون"
+
+msgid "Name"
+msgstr "نام"
+
+msgid "When"
+msgstr "زمان"
+
+msgid "IF (all conditions)"
+msgstr "اگر (همه شرط‌ها)"
+
+msgid "Condition"
+msgstr "شرط"
+
+msgid "Save rule"
+msgstr "ذخیره قانون"
+
+msgid "Pending"
+msgstr "در انتظار"
+
+msgid "Done (3 days)"
+msgstr "انجام‌شده (۳ روز)"
+
+msgid "Failed"
+msgstr "ناموفق"
+
+msgid "Run queue now"
+msgstr "اجرای صف همین حالا"
+
+#, php-format
+msgid "%s jobs processed."
+msgstr "%s کار پردازش شد."
+
+msgid "Retry failed"
+msgstr "تلاش مجدد ناموفق‌ها"
+
+msgid "Next cron tick"
+msgstr "اجرای بعدی کران"
+
+msgid "Tip: for busy or low-traffic sites, add a real system cron that runs “wp seolity queue run” (or hits wp-cron.php) every minute."
+msgstr "نکته: برای سایت‌های پرترافیک یا کم‌ترافیک، یک کران واقعی سیستم اضافه کنید که هر دقیقه «wp seolity queue run» را اجرا کند (یا wp-cron.php را فراخوانی کند)."
+
+msgid "Job"
+msgstr "کار"
+
+msgid "Attempts"
+msgstr "تلاش‌ها"
+
+msgid "Error"
+msgstr "خطا"
+
+msgid "Created"
+msgstr "ایجاد"
+
+msgid "User"
+msgstr "کاربر"
+
+msgid "System"
+msgstr "سیستم"
+
+msgid "Action"
+msgstr "اقدام"
+
+msgid "Object"
+msgstr "شیء"
+
+msgid "SEO Knowledge Base"
+msgstr "پایگاه دانش سئو"
+
+msgid "Curated Persian & English SEO best practices that ground every AI answer. Synced from GitHub, where a scheduled workflow distils the best Iranian and international SEO documentation."
+msgstr "بهترین روش‌های منتخب سئو به فارسی و انگلیسی که پشتوانه هر پاسخ هوش مصنوعی هستند. از گیت‌هاب همگام می‌شود؛ جایی که یک گردش‌کار زمان‌بندی‌شده بهترین مستندات سئوی ایرانی و بین‌المللی را خلاصه و استخراج می‌کند."
+
+msgid "Sync from GitHub"
+msgstr "همگام‌سازی از گیت‌هاب"
+
+#, php-format
+msgid "Synced: %1$s bundled, %2$s from GitHub."
+msgstr "همگام شد: %1$s داخلی، %2$s از گیت‌هاب."
+
+msgid "Repository"
+msgstr "مخزن"
+
+msgid "Last sync"
+msgstr "آخرین همگام‌سازی"
+
+msgid "Title"
+msgstr "عنوان"
+
+msgid "topic"
+msgstr "موضوع"
+
+msgid "Your own SEO rule, brand guideline or lesson learned…"
+msgstr "قانون سئو، راهنمای برند یا تجربه‌ای که آموخته‌اید…"
+
+msgid "Add your own knowledge"
+msgstr "دانش خودتان را اضافه کنید"
+
+msgid "Also commit it to the GitHub knowledge repository"
+msgstr "در مخزن دانش گیت‌هاب هم ثبت شود"
+
+msgid "Save note"
+msgstr "ذخیره یادداشت"
+
+msgid "Knowledge saved."
+msgstr "دانش ذخیره شد."
+
+msgid "Save settings"
+msgstr "ذخیره تنظیمات"
+
+msgid "Settings saved."
+msgstr "تنظیمات ذخیره شد."
+
+msgid "(saved — enter a new value to replace)"
+msgstr "(ذخیره‌شده — برای جایگزینی مقدار جدید وارد کنید)"
+
+msgid "Save"
+msgstr "ذخیره"
+
+msgid "(saved)"
+msgstr "(ذخیره‌شده)"
+
+msgid "Saved securely (encrypted)."
+msgstr "به‌صورت امن (رمزنگاری‌شده) ذخیره شد."
+
+msgid "Remove"
+msgstr "حذف"
+
+msgid "Removed."
+msgstr "حذف شد."
+
+msgid "Write-only: secrets are encrypted on the server and never sent back to the browser."
+msgstr "فقط‌نوشتنی: اطلاعات محرمانه روی سرور رمزنگاری می‌شوند و هرگز به مرورگر برگردانده نمی‌شوند."
+
+msgid "configured"
+msgstr "تنظیم‌شده"
+
+msgid "not configured"
+msgstr "تنظیم‌نشده"
+
+msgid "Test"
+msgstr "آزمایش"
+
+#, php-format
+msgid "Connection OK — model %s"
+msgstr "اتصال برقرار است — مدل %s"
+
+msgid "Encryption"
+msgstr "رمزنگاری"
+
+msgid "For maximum security define SEOLITY_ENCRYPTION_KEY in wp-config.php. You can also define any secret as a constant, e.g. SEOLITY_ANTHROPIC_API_KEY."
+msgstr "برای بیشترین امنیت، SEOLITY_ENCRYPTION_KEY را در wp-config.php تعریف کنید. هر کلید محرمانه را هم می‌توانید به‌صورت ثابت تعریف کنید، مثلاً SEOLITY_ANTHROPIC_API_KEY."
+
+msgid "AI usage this month"
+msgstr "مصرف هوش مصنوعی در این ماه"
+
+msgid "Spend (est.)"
+msgstr "هزینه (تخمینی)"
+
+msgid "Budget"
+msgstr "بودجه"
+
+msgid "unlimited"
+msgstr "نامحدود"
+
+msgid "Requests (30d)"
+msgstr "درخواست‌ها (۳۰ روز)"
+
+msgid "Task"
+msgstr "وظیفه"
+
+msgid "Requests"
+msgstr "درخواست‌ها"
+
+msgid "Tokens in/out"
+msgstr "توکن ورودی/خروجی"
+
+msgid "Cost"
+msgstr "هزینه"
+
+msgid "GitHub data storage"
+msgstr "ذخیره‌سازی داده در گیت‌هاب"
+
+msgid "Cold data (old Search Console rows, audit logs, reports, change history backups, crawl snapshots, config) is committed to your private GitHub repository and pruned locally, keeping your hosting database small. SEOlity reads it back when needed."
+msgstr "داده‌های قدیمی (ردیف‌های قدیمی سرچ کنسول، گزارش رویدادها، گزارش‌ها، پشتیبان تاریخچه تغییرات، تصاویر لحظه‌ای خزش، پیکربندی) در مخزن خصوصی گیت‌هاب شما ثبت و از دیتابیس محلی حذف می‌شوند تا دیتابیس هاست سبک بماند. سئولیتی در صورت نیاز آن‌ها را بازمی‌خواند."
+
+msgid "SEOlity tables size"
+msgstr "حجم جدول‌های سئولیتی"
+
+msgid "GSC rows (local)"
+msgstr "ردیف‌های سرچ کنسول (محلی)"
+
+msgid "Last archive"
+msgstr "آخرین بایگانی"
+
+#, php-format
+msgid "%s files"
+msgstr "%s فایل"
+
+msgid "Test repository access"
+msgstr "آزمایش دسترسی مخزن"
+
+msgid "private"
+msgstr "خصوصی"
+
+msgid "PUBLIC — use a private repo!"
+msgstr "عمومی — از مخزن خصوصی استفاده کنید!"
+
+msgid "write access"
+msgstr "دسترسی نوشتن"
+
+msgid "read only"
+msgstr "فقط خواندنی"
+
+msgid "Archive now"
+msgstr "همین حالا بایگانی کن"
+
+#, php-format
+msgid "Archived %s files to GitHub."
+msgstr "%s فایل در گیت‌هاب بایگانی شد."
+
+msgid "Restore archived Search Console data:"
+msgstr "بازیابی داده‌های بایگانی‌شده سرچ کنسول:"
+
+msgid "Restore"
+msgstr "بازیابی"
+
+#, php-format
+msgid "Restored %1$s rows from %2$s days."
+msgstr "%1$s ردیف از %2$s روز بازیابی شد."
+
+msgid "SEO engine detected"
+msgstr "موتور سئوی شناسایی‌شده"
+
+msgid "when another SEO plugin is active, SEOlity writes titles/descriptions into it and does not duplicate head tags."
+msgstr "وقتی افزونه سئوی دیگری فعال است، سئولیتی عنوان/توضیحات را در آن می‌نویسد و تگ‌های head را تکرار نمی‌کند."
+
+msgid "Competitor Intelligence"
+msgstr "هوش رقابتی"
+
+msgid "SEOlity monitors competitor sitemaps and pages (politely, respecting robots.txt), tracks new content and finds content gaps."
+msgstr "سئولیتی نقشه‌سایت و صفحات رقبا را (با رعایت ادب و robots.txt) پایش می‌کند، محتوای جدید را دنبال کرده و شکاف‌های محتوایی را پیدا می‌کند."
+
+msgid "Daily"
+msgstr "روزانه"
+
+msgid "Weekly"
+msgstr "هفتگی"
+
+msgid "Monthly"
+msgstr "ماهانه"
+
+msgid "Add"
+msgstr "افزودن"
+
+msgid "Competitor added. First analysis is running in the background."
+msgstr "رقیب اضافه شد. اولین تحلیل در پس‌زمینه در حال اجراست."
+
+msgid "Add 2–5 real SEO competitors (sites that rank for your keywords)."
+msgstr "۲ تا ۵ رقیب واقعی سئو (سایت‌هایی که برای کلمات کلیدی شما رتبه دارند) اضافه کنید."
+
+msgid "Pages analyzed"
+msgstr "صفحات تحلیل‌شده"
+
+#, php-format
+msgid "%s known"
+msgstr "%s شناخته‌شده"
+
+msgid "Avg. words"
+msgstr "میانگین کلمات"
+
+msgid "Pages with FAQ"
+msgstr "صفحات دارای سؤالات متداول"
+
+msgid "Where they are stronger"
+msgstr "نقاط قوت آن‌ها"
+
+msgid "Opportunities for you"
+msgstr "فرصت‌های شما"
+
+msgid "Threats"
+msgstr "تهدیدها"
+
+msgid "Recommended actions"
+msgstr "اقدامات پیشنهادی"
+
+msgid "AI summary will appear after the analysis finishes (requires an AI provider)."
+msgstr "خلاصه هوش مصنوعی پس از پایان تحلیل نمایش داده می‌شود (نیازمند ارائه‌دهنده هوش مصنوعی)."
+
+msgid "Content sections"
+msgstr "بخش‌های محتوایی"
+
+msgid "Content gap"
+msgstr "شکاف محتوایی"
+
+msgid "Analyze now"
+msgstr "همین حالا تحلیل کن"
+
+msgid "Analysis queued."
+msgstr "تحلیل در صف قرار گرفت."
+
+msgid "Remove this competitor and its data?"
+msgstr "این رقیب و داده‌هایش حذف شوند؟"
+
+msgid "Content gap opportunities"
+msgstr "فرصت‌های شکاف محتوایی"
+
+msgid "Keyword"
+msgstr "کلمه کلیدی"
+
+msgid "Suggested page"
+msgstr "صفحه پیشنهادی"
+
+msgid "Brief"
+msgstr "بریف"
+
+msgid "Outline"
+msgstr "ساختار"
+
+msgid "Filter…"
+msgstr "فیلتر…"
+
+msgid "First seen"
+msgstr "اولین مشاهده"
+
+msgid "SEO Experiments"
+msgstr "آزمایش‌های سئو"
+
+msgid "Every applied change becomes an experiment: equal before/after windows, adjusted by the site-wide trend (control), judged Positive / Negative / Neutral / Inconclusive."
+msgstr "هر تغییر اعمال‌شده به یک آزمایش تبدیل می‌شود: بازه‌های برابر قبل/بعد، تعدیل‌شده با روند کل سایت (گروه کنترل)، با نتیجه مثبت / منفی / خنثی / نامشخص."
+
+msgid "Evaluate now"
+msgstr "همین حالا ارزیابی کن"
+
+msgid "Evaluation queued."
+msgstr "ارزیابی در صف قرار گرفت."
+
+msgid "Inconclusive"
+msgstr "نامشخص"
+
+msgid "Site-Specific SEO Intelligence"
+msgstr "هوش سئوی اختصاصی سایت"
+
+msgid "win rate"
+msgstr "نرخ موفقیت"
+
+msgid "Learning in progress"
+msgstr "در حال یادگیری"
+
+msgid "After a few experiments are evaluated, SEOlity learns which changes work best on your site and uses it in every AI suggestion."
+msgstr "پس از ارزیابی چند آزمایش، سئولیتی یاد می‌گیرد کدام تغییرات روی سایت شما بهتر جواب می‌دهد و از آن در همه پیشنهادهای هوش مصنوعی استفاده می‌کند."
+
+msgid "Change"
+msgstr "تغییر"
+
+msgid "Before → After"
+msgstr "قبل ← بعد"
+
+#, php-format
+msgid "Window: %s days"
+msgstr "بازه: %s روز"
+
+msgid "Started"
+msgstr "شروع"
+
+msgid "Revert"
+msgstr "بازگردانی"
+
+msgid "Revert all changes made in this experiment?"
+msgstr "همه تغییرات این آزمایش بازگردانده شوند؟"
+
+msgid "Reverted."
+msgstr "بازگردانده شد."
+
+msgid "No experiments yet"
+msgstr "هنوز آزمایشی وجود ندارد"
+
+msgid "Apply an AI change to a page that gets search traffic — SEOlity measures the result automatically."
+msgstr "یک تغییر هوش مصنوعی را روی صفحه‌ای با ترافیک جستجو اعمال کنید؛ سئولیتی نتیجه را خودکار اندازه می‌گیرد."
+
+msgid "Redirect Manager"
+msgstr "مدیریت ریدایرکت"
+
+msgid "301 / 302 / 307 / 410 / 451, regex, bulk import/export, chain & loop detection, hit tracking."
+msgstr "۳۰۱ / ۳۰۲ / ۳۰۷ / ۴۱۰ / ۴۵۱، عبارت باقاعده، ورود/خروج گروهی، تشخیص زنجیره و حلقه، شمارش بازدید."
+
+msgid "Export CSV"
+msgstr "خروجی CSV"
+
+msgid "or"
+msgstr "یا"
+
+msgid "Permanent"
+msgstr "دائمی"
+
+msgid "Temporary"
+msgstr "موقت"
+
+msgid "Gone"
+msgstr "حذف‌شده"
+
+msgid "Add redirect"
+msgstr "افزودن ریدایرکت"
+
+msgid "Regex"
+msgstr "عبارت باقاعده"
+
+msgid "Bulk import"
+msgstr "ورود گروهی"
+
+msgid "Bulk import (CSV)"
+msgstr "ورود گروهی (CSV)"
+
+msgid "Import"
+msgstr "ورود"
+
+#, php-format
+msgid "%s redirects imported."
+msgstr "%s ریدایرکت وارد شد."
+
+#, php-format
+msgid "%s lines had errors."
+msgstr "%s خط خطا داشت."
+
+msgid "Search redirects…"
+msgstr "جستجوی ریدایرکت‌ها…"
+
+#, php-format
+msgid "%s redirect chains/loops detected."
+msgstr "%s زنجیره/حلقه ریدایرکت شناسایی شد."
+
+msgid "Flatten chains"
+msgstr "صاف کردن زنجیره‌ها"
+
+msgid "Type"
+msgstr "نوع"
+
+msgid "Hits"
+msgstr "بازدیدها"
+
+msgid "Last used"
+msgstr "آخرین استفاده"
+
+msgid "Origin"
+msgstr "منشأ"
+
+msgid "Active"
+msgstr "فعال"
+
+msgid "Delete this redirect?"
+msgstr "این ریدایرکت حذف شود؟"
+
+msgid "No redirects yet"
+msgstr "هنوز ریدایرکتی وجود ندارد"
+
+msgid "Every 404 is logged with referrer and hits; SEOlity suggests the best redirect target (slug similarity + AI)."
+msgstr "هر خطای ۴۰۴ با ارجاع‌دهنده و تعداد بازدید ثبت می‌شود؛ سئولیتی بهترین مقصد ریدایرکت را پیشنهاد می‌دهد (شباهت نامک + هوش مصنوعی)."
+
+msgid "Suggest targets"
+msgstr "پیشنهاد مقصد"
+
+msgid "Computing suggestions in the background."
+msgstr "در حال محاسبه پیشنهادها در پس‌زمینه."
+
+msgid "Open 404s"
+msgstr "۴۰۴های باز"
+
+msgid "Hits (7 days)"
+msgstr "بازدیدها (۷ روز)"
+
+msgid "New (24h)"
+msgstr "جدید (۲۴ ساعت)"
+
+msgid "With referrer"
+msgstr "دارای ارجاع‌دهنده"
+
+msgid "Open"
+msgstr "باز"
+
+msgid "Redirected"
+msgstr "ریدایرکت‌شده"
+
+msgid "Ignored"
+msgstr "نادیده‌گرفته‌شده"
+
+msgid "URL"
+msgstr "آدرس (URL)"
+
+msgid "Referrer"
+msgstr "ارجاع‌دهنده"
+
+msgid "Last seen"
+msgstr "آخرین مشاهده"
+
+msgid "Suggested redirect"
+msgstr "ریدایرکت پیشنهادی"
+
+msgid "no good match"
+msgstr "مورد مناسبی نیست"
+
+msgid "pending"
+msgstr "در انتظار"
+
+msgid "410 Gone"
+msgstr "۴۱۰ حذف‌شده"
+
+msgid "Marked as gone (410)."
+msgstr "به‌عنوان حذف‌شده (۴۱۰) علامت‌گذاری شد."
+
+msgid "Ignore"
+msgstr "نادیده بگیر"
+
+msgid "No 404 errors logged"
+msgstr "خطای ۴۰۴ ثبت نشده"
+
+msgid "Schema Intelligence"
+msgstr "هوش اسکیما"
+
+msgid "Validate Product, Article, FAQ, Breadcrumb, Organization, LocalBusiness, Review, AggregateRating, WebSite, WebPage and Person markup; find missing opportunities."
+msgstr "اعتبارسنجی نشانه‌گذاری‌های Product، Article، FAQ، Breadcrumb، Organization، LocalBusiness، Review، AggregateRating، WebSite، WebPage و Person و یافتن فرصت‌های از دست رفته."
+
+msgid "Validate a URL"
+msgstr "اعتبارسنجی یک URL"
+
+msgid "Check structured data"
+msgstr "بررسی داده ساختاریافته"
+
+msgid "Types found"
+msgstr "انواع یافت‌شده"
+
+#, php-format
+msgid "%s JSON-LD blocks contain invalid JSON."
+msgstr "%s بلوک JSON-LD دارای JSON نامعتبر است."
+
+msgid "No required properties missing."
+msgstr "هیچ ویژگی الزامی‌ای جا نیفتاده است."
+
+#, php-format
+msgid "Warnings (%s)"
+msgstr "هشدارها (%s)"
+
+msgid "Opportunities"
+msgstr "فرصت‌ها"
+
+msgid "Raw JSON-LD"
+msgstr "JSON-LD خام"
+
+msgid "Schema coverage"
+msgstr "پوشش اسکیما"
+
+#, php-format
+msgid "%1$s of %2$s indexable pages have no structured data."
+msgstr "%1$s از %2$s صفحه قابل ایندکس داده ساختاریافته ندارند."
+
+msgid "Schema issues"
+msgstr "مشکلات اسکیما"
+
+msgid "Issue"
+msgstr "مشکل"
+
+msgid "No schema issues"
+msgstr "مشکلی در اسکیما نیست"
+
+msgid "SEOlity outputs Organization, WebSite, WebPage, Breadcrumb and Article schema."
+msgstr "سئولیتی اسکیماهای Organization، WebSite، WebPage، Breadcrumb و Article را خروجی می‌دهد."
+
+msgid "Another SEO plugin outputs your main schema; SEOlity adds FAQ schema only."
+msgstr "افزونه سئوی دیگری اسکیمای اصلی را خروجی می‌دهد؛ سئولیتی فقط اسکیمای FAQ اضافه می‌کند."
+
+msgid "Pages with SEOlity FAQ schema"
+msgstr "صفحات دارای اسکیمای FAQ سئولیتی"
+
+msgid "Organization settings"
+msgstr "تنظیمات سازمان"
+
+msgid "Sitemap Intelligence"
+msgstr "هوش نقشه سایت"
+
+msgid "Checks every sitemap URL against crawl data: 404s, redirects, noindex and canonicalized URLs, missing important pages and lastmod quality."
+msgstr "هر URL نقشه سایت را با داده‌های خزش بررسی می‌کند: ۴۰۴ها، ریدایرکت‌ها، نوایندکس و کنونیکال‌شده‌ها، صفحات مهم جاافتاده و کیفیت lastmod."
+
+msgid "Re-check"
+msgstr "بررسی مجدد"
+
+msgid "Sitemaps"
+msgstr "نقشه‌های سایت"
+
+msgid "URLs in sitemaps"
+msgstr "URLهای نقشه سایت"
+
+msgid "Problem URLs"
+msgstr "URLهای مشکل‌دار"
+
+msgid "Missing important pages"
+msgstr "صفحات مهم جاافتاده"
+
+msgid "Recommendations"
+msgstr "پیشنهادها"
+
+msgid "Entries"
+msgstr "ورودی‌ها"
+
+msgid "Submit to Google"
+msgstr "ارسال به گوگل"
+
+msgid "Sitemap submitted to Search Console."
+msgstr "نقشه سایت به سرچ کنسول ارسال شد."
+
+msgid "Search Console sitemap status"
+msgstr "وضعیت نقشه سایت در سرچ کنسول"
+
+msgid "Last downloaded"
+msgstr "آخرین دریافت"
+
+msgid "Warnings"
+msgstr "هشدارها"
+
+msgid "Remove from sitemap"
+msgstr "حذف از نقشه سایت"
+
+msgid "Sitemap is clean"
+msgstr "نقشه سایت تمیز است"
+
+msgid "Add to sitemap (indexable pages missing)"
+msgstr "افزودن به نقشه سایت (صفحات قابل ایندکس جاافتاده)"
+
+msgid "Inlinks"
+msgstr "لینک‌های ورودی"
+
+msgid "Nothing missing"
+msgstr "چیزی جا نیفتاده"
+
+msgid "Robots.txt Intelligence"
+msgstr "هوش Robots.txt"
+
+msgid "Google-compatible rule matching, blocked important URLs, crawl-waste detection and a safe editor with live testing."
+msgstr "تطبیق قوانین سازگار با گوگل، URLهای مهم مسدودشده، تشخیص هدررفت بودجه خزش و ویرایشگر امن با آزمایش زنده."
+
+msgid "A physical robots.txt file exists in your web root; WordPress (and SEOlity) cannot override it. Edit or delete that file."
+msgstr "یک فایل فیزیکی robots.txt در ریشه سایت وجود دارد؛ وردپرس (و سئولیتی) نمی‌تواند آن را بازنویسی کند. آن فایل را ویرایش یا حذف کنید."
+
+msgid "Editor"
+msgstr "ویرایشگر"
+
+msgid "Serve this content as robots.txt (virtual)"
+msgstr "این محتوا به‌عنوان robots.txt ارائه شود (مجازی)"
+
+msgid "robots.txt saved."
+msgstr "robots.txt ذخیره شد."
+
+msgid "Load suggested"
+msgstr "بارگذاری پیشنهادی"
+
+msgid "Test URL"
+msgstr "آزمایش URL"
+
+msgid "allowed"
+msgstr "مجاز"
+
+msgid "blocked"
+msgstr "مسدود"
+
+msgid "No issues"
+msgstr "مشکلی نیست"
+
+msgid "Crawl-waste suggestions"
+msgstr "پیشنهادهای جلوگیری از هدررفت خزش"
+
+msgid "Nothing to suggest"
+msgstr "پیشنهادی نیست"
+
+msgid "Important URLs blocked"
+msgstr "URLهای مهم مسدودشده"
+
+msgid "SEO Reports"
+msgstr "گزارش‌های سئو"
+
+msgid "Daily, weekly and monthly reports with traffic, rankings, issues, improvements, competitors, AI changes and recommendations — white-label ready."
+msgstr "گزارش‌های روزانه، هفتگی و ماهانه با ترافیک، رتبه‌ها، مشکلات، بهبودها، رقبا، تغییرات هوش مصنوعی و پیشنهادها — آماده برندسازی اختصاصی."
+
+msgid "Generate report"
+msgstr "تولید گزارش"
+
+msgid "Generate"
+msgstr "تولید"
+
+msgid "Report generated."
+msgstr "گزارش تولید شد."
+
+msgid "Schedule & recipients"
+msgstr "زمان‌بندی و گیرندگان"
+
+msgid "Report"
+msgstr "گزارش"
+
+msgid "Period"
+msgstr "دوره"
+
+msgid "Storage"
+msgstr "ذخیره‌سازی"
+
+msgid "Local"
+msgstr "محلی"
+
+msgid "Export"
+msgstr "خروجی"
+
+msgid "View / PDF"
+msgstr "مشاهده / PDF"
+
+msgid "Email"
+msgstr "ایمیل"
+
+msgid "Report sent."
+msgstr "گزارش ارسال شد."
+
+msgid "No recipients configured."
+msgstr "گیرنده‌ای تنظیم نشده."
+
+msgid "No reports yet"
+msgstr "هنوز گزارشی وجود ندارد"
+
+msgid "AI Alerts"
+msgstr "هشدارهای هوشمند"
+
+msgid "Ranking, traffic, CTR and indexing drops, new 404s, lost/new keywords, deindexed pages, sitemap & Core Web Vitals problems, competitor growth."
+msgstr "افت رتبه، ترافیک، CTR و ایندکس، ۴۰۴های جدید، کلمات کلیدی ازدست‌رفته/جدید، صفحات حذف‌شده از ایندکس، مشکلات نقشه سایت و Core Web Vitals، رشد رقبا."
+
+msgid "Mark all as read"
+msgstr "علامت‌گذاری همه به‌عنوان خوانده‌شده"
+
+msgid "No alerts"
+msgstr "هشداری نیست"
+
+msgid "SEOlity checks for important changes every hour."
+msgstr "سئولیتی هر ساعت تغییرات مهم را بررسی می‌کند."
+
+msgid "Site Audit & SEO Doctor"
+msgstr "ممیزی سایت و دکتر سئو"
+
+msgid "Full crawl of your site with 60+ checks. The SEO Doctor explains what is wrong, why it matters, where, and how to fix it."
+msgstr "خزش کامل سایت با بیش از ۶۰ بررسی. دکتر سئو توضیح می‌دهد چه مشکلی هست، چرا مهم است، کجاست و چطور رفع می‌شود."
+
+msgid "Start full audit"
+msgstr "شروع ممیزی کامل"
+
+msgid "Audit started in the background."
+msgstr "ممیزی در پس‌زمینه شروع شد."
+
+msgid "Incremental"
+msgstr "افزایشی"
+
+msgid "Incremental audit queued."
+msgstr "ممیزی افزایشی در صف قرار گرفت."
+
+msgid "No audit yet"
+msgstr "هنوز ممیزی انجام نشده"
+
+msgid "Start your first audit — it runs in the background and never slows down your visitors."
+msgstr "اولین ممیزی را شروع کنید؛ در پس‌زمینه اجرا می‌شود و هرگز سایت را برای بازدیدکنندگان کند نمی‌کند."
+
+msgid "Audit in progress"
+msgstr "ممیزی در حال انجام"
+
+#, php-format
+msgid "Phase: %1$s · %2$s of %3$s URLs"
+msgstr "مرحله: %1$s · %2$s از %3$s URL"
+
+#, php-format
+msgid "Last audit: %1$s · %2$s URLs crawled"
+msgstr "آخرین ممیزی: %1$s · %2$s URL خزش شد"
+
+msgid "SEO Doctor"
+msgstr "دکتر سئو"
+
+msgid "All issues"
+msgstr "همه مشکلات"
+
+msgid "URL explorer"
+msgstr "کاوشگر URL"
+
+msgid "Core Web Vitals"
+msgstr "Core Web Vitals"
+
+msgid "Your site looks healthy"
+msgstr "سایت شما سالم به نظر می‌رسد"
+
+msgid "No open diagnoses. Keep monitoring with scheduled audits."
+msgstr "تشخیص بازی وجود ندارد. با ممیزی‌های زمان‌بندی‌شده به پایش ادامه دهید."
+
+msgid "AI can fix"
+msgstr "قابل اصلاح با هوش مصنوعی"
+
+msgid "Manual fix"
+msgstr "اصلاح دستی"
+
+msgid "Why is it a problem?"
+msgstr "چرا مشکل است؟"
+
+msgid "Likely impact"
+msgstr "تأثیر احتمالی"
+
+msgid "How to fix"
+msgstr "راه‌حل"
+
+msgid "Where"
+msgstr "کجا"
+
+msgid "Fix it"
+msgstr "اصلاحش کن"
+
+msgid "Show affected URLs"
+msgstr "نمایش URLهای درگیر"
+
+msgid "Grade"
+msgstr "رتبه"
+
+msgid "Weight"
+msgstr "وزن"
+
+msgid "Excluded (no data yet)"
+msgstr "مستثنا (هنوز داده‌ای نیست)"
+
+msgid "All severities"
+msgstr "همه سطوح"
+
+msgid "Info"
+msgstr "اطلاعات"
+
+msgid "All categories"
+msgstr "همه دسته‌ها"
+
+msgid "Fixed"
+msgstr "رفع‌شده"
+
+msgid "Site-wide"
+msgstr "کل سایت"
+
+msgid "Severity"
+msgstr "شدت"
+
+msgid "AI fix"
+msgstr "اصلاح هوشمند"
+
+msgid "Find links"
+msgstr "یافتن لینک"
+
+msgid "No issues found"
+msgstr "مشکلی یافت نشد"
+
+msgid "Filter URLs…"
+msgstr "فیلتر URLها…"
+
+msgid "Most linked"
+msgstr "بیشترین لینک"
+
+msgid "Word count"
+msgstr "تعداد کلمات"
+
+msgid "Slowest"
+msgstr "کندترین"
+
+msgid "Deepest"
+msgstr "عمیق‌ترین"
+
+msgid "Status code"
+msgstr "کد وضعیت"
+
+msgid "Indexable"
+msgstr "قابل ایندکس"
+
+msgid "Depth"
+msgstr "عمق"
+
+msgid "Response"
+msgstr "پاسخ"
+
+msgid "Test with PageSpeed Insights"
+msgstr "آزمایش با PageSpeed Insights"
+
+#, php-format
+msgid "Performance score: %s"
+msgstr "امتیاز عملکرد: %s"
+
+msgid "(field)"
+msgstr "(داده واقعی)"
+
+msgid "Top opportunities"
+msgstr "مهم‌ترین فرصت‌ها"
+
+msgid "Tested"
+msgstr "آزمایش‌شده"
+
+msgid "No PageSpeed data yet"
+msgstr "هنوز داده PageSpeed نیست"
+
+msgid "SEOlity tests your most important pages daily (10 per day)."
+msgstr "سئولیتی مهم‌ترین صفحات شما را روزانه آزمایش می‌کند (۱۰ صفحه در روز)."
+
+msgid "Search Console Analytics"
+msgstr "تحلیل سرچ کنسول"
+
+msgid "Real Google data, analyzed deeper than Search Console itself."
+msgstr "داده‌های واقعی گوگل، عمیق‌تر از خود سرچ کنسول تحلیل‌شده."
+
+msgid "Search Console is not connected"
+msgstr "سرچ کنسول متصل نیست"
+
+msgid "Ask an administrator to connect Google Search Console."
+msgstr "از مدیر سایت بخواهید گوگل سرچ کنسول را متصل کند."
+
+msgid "Step 1 — Google OAuth client"
+msgstr "مرحله ۱ — کلاینت OAuth گوگل"
+
+msgid "Open Google Cloud Console → APIs & Services → enable “Google Search Console API”."
+msgstr "Google Cloud Console را باز کنید ← APIs & Services ← «Google Search Console API» را فعال کنید."
+
+msgid "Create OAuth client ID → type “Web application”."
+msgstr "یک OAuth client ID بسازید ← نوع «Web application»."
+
+msgid "Add the Authorized redirect URI below (exactly)."
+msgstr "Authorized redirect URI زیر را (دقیقاً) اضافه کنید."
+
+msgid "Paste the Client ID and Client Secret here."
+msgstr "Client ID و Client Secret را اینجا وارد کنید."
+
+msgid "Authorized redirect URI"
+msgstr "آدرس بازگشت مجاز (Redirect URI)"
+
+msgid "Copy"
+msgstr "کپی"
+
+msgid "Copied."
+msgstr "کپی شد."
+
+msgid "Client ID"
+msgstr "شناسه کلاینت (Client ID)"
+
+msgid "Client secret"
+msgstr "کلید محرمانه کلاینت (Client Secret)"
+
+msgid "Stored encrypted. Never shown again or sent to the browser."
+msgstr "رمزنگاری‌شده ذخیره می‌شود. دیگر نمایش داده نمی‌شود و به مرورگر ارسال نمی‌شود."
+
+msgid "Save credentials"
+msgstr "ذخیره اطلاعات اتصال"
+
+msgid "Saved."
+msgstr "ذخیره شد."
+
+msgid "Step 2 — Connect your Google account"
+msgstr "مرحله ۲ — اتصال حساب گوگل"
+
+msgid "SEOlity requests read-only access (webmasters.readonly). You can revoke it anytime."
+msgstr "سئولیتی فقط دسترسی خواندنی (webmasters.readonly) درخواست می‌کند. هر زمان بخواهید می‌توانید آن را لغو کنید."
+
+msgid "Reconnect Google account"
+msgstr "اتصال مجدد حساب گوگل"
+
+msgid "Connect Google account"
+msgstr "اتصال حساب گوگل"
+
+msgid "Step 3 — Choose a property"
+msgstr "مرحله ۳ — انتخاب پراپرتی"
+
+msgid "No verified properties"
+msgstr "پراپرتی تأییدشده‌ای نیست"
+
+msgid "Verify your site in Google Search Console first."
+msgstr "ابتدا سایت خود را در گوگل سرچ کنسول تأیید کنید."
+
+msgid "matches this site"
+msgstr "مطابق این سایت"
+
+msgid "Use this property"
+msgstr "استفاده از این پراپرتی"
+
+msgid "Property selected. Importing data in the background…"
+msgstr "پراپرتی انتخاب شد. در حال وارد کردن داده‌ها در پس‌زمینه…"
+
+msgid "Last 7 days"
+msgstr "۷ روز گذشته"
+
+msgid "Last 28 days"
+msgstr "۲۸ روز گذشته"
+
+msgid "Last 3 months"
+msgstr "۳ ماه گذشته"
+
+msgid "Last 6 months"
+msgstr "۶ ماه گذشته"
+
+msgid "Last 12 months"
+msgstr "۱۲ ماه گذشته"
+
+msgid "rows"
+msgstr "ردیف"
+
+msgid "Sync now"
+msgstr "همگام‌سازی همین حالا"
+
+msgid "Sync queued."
+msgstr "همگام‌سازی در صف قرار گرفت."
+
+msgid "Change property"
+msgstr "تغییر پراپرتی"
+
+msgid "Select"
+msgstr "انتخاب"
+
+msgid "Disconnect"
+msgstr "قطع اتصال"
+
+msgid "Disconnect Google Search Console? Stored data stays until you change property."
+msgstr "اتصال گوگل سرچ کنسول قطع شود؟ داده‌های ذخیره‌شده تا زمان تغییر پراپرتی باقی می‌مانند."
+
+msgid "Importing your Search Console data… the first import can take a few minutes."
+msgstr "در حال وارد کردن داده‌های سرچ کنسول… اولین ورود ممکن است چند دقیقه طول بکشد."
+
+msgid "Average position"
+msgstr "میانگین جایگاه"
+
+msgid "Trend"
+msgstr "روند"
+
+msgid "Click Trend"
+msgstr "روند کلیک"
+
+msgid "Impression Trend"
+msgstr "روند نمایش"
+
+msgid "CTR Trend"
+msgstr "روند CTR"
+
+msgid "Average Position"
+msgstr "میانگین جایگاه"
+
+msgid "Top Queries"
+msgstr "برترین کوئری‌ها"
+
+msgid "Top Pages"
+msgstr "برترین صفحات"
+
+msgid "Winners & Losers"
+msgstr "برندگان و بازندگان"
+
+msgid "New & Lost Keywords"
+msgstr "کلمات کلیدی جدید و ازدست‌رفته"
+
+msgid "Rising & Declining Pages"
+msgstr "صفحات در حال رشد و افت"
+
+msgid "Ranking Distribution"
+msgstr "توزیع رتبه‌ها"
+
+msgid "Countries & Devices"
+msgstr "کشورها و دستگاه‌ها"
+
+msgid "Queries"
+msgstr "کوئری‌ها"
+
+msgid "Click change"
+msgstr "تغییر کلیک"
+
+msgid "CTR Opportunities"
+msgstr "فرصت‌های CTR"
+
+msgid "Pages with many impressions whose CTR is far below what their position should earn. Rewriting title + description is usually the fastest win."
+msgstr "صفحاتی با نمایش زیاد که CTR آن‌ها بسیار کمتر از انتظار جایگاهشان است. بازنویسی عنوان و توضیحات معمولاً سریع‌ترین برد است."
+
+msgid "Potential clicks"
+msgstr "کلیک‌های بالقوه"
+
+msgid "Insight"
+msgstr "بینش"
+
+#, php-format
+msgid "This page has %1$s impressions but a low CTR; improving the title and meta description has high growth potential."
+msgstr "این صفحه %1$s نمایش دارد اما CTR آن پایین است؛ اگر عنوان و توضیحات متا اصلاح شود، فرصت رشد بالایی دارد."
+
+msgid "Fix with AI"
+msgstr "اصلاح با هوش مصنوعی"
+
+msgid "No CTR opportunities"
+msgstr "فرصت CTR وجود ندارد"
+
+msgid "Position Opportunities"
+msgstr "فرصت‌های جایگاه"
+
+msgid "URLs ranking for several keywords on positions 8–20 — improving content depth and internal links can push them onto page 1."
+msgstr "URLهایی که برای چند کلمه کلیدی در جایگاه ۸ تا ۲۰ هستند؛ بهبود عمق محتوا و لینک‌سازی داخلی می‌تواند آن‌ها را به صفحه اول برساند."
+
+msgid "Keywords at 8–20"
+msgstr "کلمات کلیدی در جایگاه ۸–۲۰"
+
+#, php-format
+msgid "This URL ranks for %1$s keywords in positions 8–20; improving content depth is likely worth it."
+msgstr "این URL برای %1$s کلمه کلیدی در جایگاه ۸ تا ۲۰ قرار دارد و با بهبود عمق محتوا احتمالاً ارزش بهینه‌سازی دارد."
+
+msgid "No position opportunities"
+msgstr "فرصت جایگاهی وجود ندارد"
+
+msgid "Winners"
+msgstr "برندگان"
+
+msgid "Losers"
+msgstr "بازندگان"
+
+msgid "New Keywords"
+msgstr "کلمات کلیدی جدید"
+
+msgid "Lost Keywords"
+msgstr "کلمات کلیدی ازدست‌رفته"
+
+msgid "Rising Pages"
+msgstr "صفحات در حال رشد"
+
+msgid "Declining Pages"
+msgstr "صفحات در حال افت"
+
+msgid "New Pages"
+msgstr "صفحات جدید"
+
+msgid "This URL is not mapped to a WordPress object yet. Run a site audit first."
+msgstr "این URL هنوز به محتوایی در وردپرس نگاشت نشده. ابتدا ممیزی سایت را اجرا کنید."
+
+msgid "Devices"
+msgstr "دستگاه‌ها"
+
+msgid "Countries"
+msgstr "کشورها"
+
+msgid "Search Appearance"
+msgstr "ظاهر در جستجو"
+
+msgid "No data"
+msgstr "داده‌ای نیست"
+
+msgid "Keyword Intelligence"
+msgstr "هوش کلمات کلیدی"
+
+msgid "Your keyword universe from Search Console + AI research, with intent, opportunity scores, URL mapping and cannibalization detection."
+msgstr "مجموعه کلمات کلیدی شما از سرچ کنسول و تحقیق هوش مصنوعی، همراه با هدف جستجو، امتیاز فرصت، نگاشت به URL و تشخیص هم‌نوع‌خواری."
+
+msgid "Sync from Search Console"
+msgstr "همگام‌سازی از سرچ کنسول"
+
+msgid "Keyword Research"
+msgstr "تحقیق کلمات کلیدی"
+
+msgid "Cannibalization"
+msgstr "هم‌نوع‌خواری (Cannibalization)"
+
+msgid "Keyword Mapping"
+msgstr "نگاشت کلمات کلیدی"
+
+msgid "Search keywords…"
+msgstr "جستجوی کلمات کلیدی…"
+
+msgid "Add keywords (comma separated)"
+msgstr "افزودن کلمات کلیدی (جداشده با کاما)"
+
+msgid "All intents"
+msgstr "همه اهداف"
+
+msgid "Informational"
+msgstr "اطلاعاتی"
+
+msgid "Commercial"
+msgstr "تجاری"
+
+msgid "Transactional"
+msgstr "تراکنشی"
+
+msgid "Navigational"
+msgstr "ناوبری"
+
+msgid "All types"
+msgstr "همه انواع"
+
+msgid "Head"
+msgstr "اصلی (Head)"
+
+msgid "Questions"
+msgstr "سؤالات"
+
+msgid "Entities"
+msgstr "موجودیت‌ها"
+
+msgid "Intent"
+msgstr "هدف جستجو"
+
+msgid "Opportunity"
+msgstr "فرصت"
+
+msgid "Difficulty (est.)"
+msgstr "سختی (تخمینی)"
+
+msgid "Target URL"
+msgstr "URL هدف"
+
+msgid "unmapped"
+msgstr "نگاشت‌نشده"
+
+msgid "Track"
+msgstr "پیگیری"
+
+msgid "No keywords yet"
+msgstr "هنوز کلمه کلیدی وجود ندارد"
+
+msgid "Connect Search Console or run keyword research."
+msgstr "سرچ کنسول را متصل کنید یا تحقیق کلمات کلیدی انجام دهید."
+
+msgid "Seed keywords, one per line (e.g. espresso machine, coffee grinder)"
+msgstr "کلمات کلیدی پایه، هر خط یکی (مثلاً اسپرسوساز، آسیاب قهوه)"
+
+msgid "Market / language (optional), e.g. Iran – Persian"
+msgstr "بازار / زبان (اختیاری)، مثلاً ایران – فارسی"
+
+msgid "Research keywords"
+msgstr "تحقیق کلمات کلیدی"
+
+msgid "Expanding seeds with AI and your Search Console data…"
+msgstr "در حال گسترش کلمات پایه با هوش مصنوعی و داده‌های سرچ کنسول…"
+
+msgid "Clusters"
+msgstr "خوشه‌ها"
+
+msgid "Keyword → URL mapping"
+msgstr "نگاشت کلمه کلیدی ← URL"
+
+msgid "New page?"
+msgstr "صفحه جدید؟"
+
+msgid "new"
+msgstr "جدید"
+
+msgid "Queries where several of your URLs share impressions. SEOlity can suggest merge, redirect, differentiate, internal linking or changing the keyword target."
+msgstr "کوئری‌هایی که چند URL شما در نمایش‌های آن شریک‌اند. سئولیتی می‌تواند ادغام، ریدایرکت، متمایزسازی، لینک داخلی یا تغییر کلمه هدف را پیشنهاد دهد."
+
+msgid "Competing URLs"
+msgstr "URLهای رقیب"
+
+msgid "AI advice"
+msgstr "مشاوره هوش مصنوعی"
+
+msgid "No cannibalization detected"
+msgstr "هم‌نوع‌خواری شناسایی نشد"
+
+msgid "Requires Search Console data."
+msgstr "به داده‌های سرچ کنسول نیاز دارد."
+
+msgid "Keywords by URL"
+msgstr "کلمات کلیدی بر اساس URL"
+
+msgid "Unmapped keywords (content opportunities)"
+msgstr "کلمات کلیدی نگاشت‌نشده (فرصت‌های محتوایی)"
+
+msgid "Inventory with SEO scores, AI optimization, content planner, topic clusters and bulk AI."
+msgstr "فهرست محتوا با امتیاز سئو، بهینه‌سازی هوشمند، برنامه‌ریز محتوا، خوشه‌های موضوعی و عملیات گروهی هوش مصنوعی."
+
+msgid "Inventory"
+msgstr "فهرست محتوا"
+
+msgid "Content Planner"
+msgstr "برنامه‌ریز محتوا"
+
+msgid "Topic Clusters"
+msgstr "خوشه‌های موضوعی"
+
+msgid "Bulk AI"
+msgstr "عملیات گروهی هوش مصنوعی"
+
+msgid "Search…"
+msgstr "جستجو…"
+
+msgid "Posts, pages & products"
+msgstr "نوشته‌ها، برگه‌ها و محصولات"
+
+msgid "Categories & tags"
+msgstr "دسته‌ها و برچسب‌ها"
+
+msgid "Title problems"
+msgstr "مشکلات عنوان"
+
+msgid "Meta description problems"
+msgstr "مشکلات توضیحات متا"
+
+msgid "H1 problems"
+msgstr "مشکلات H1"
+
+msgid "Low SEO score"
+msgstr "امتیاز سئوی پایین"
+
+msgid "No focus keyword"
+msgstr "بدون کلمه کلیدی کانونی"
+
+msgid "(no title)"
+msgstr "(بدون عنوان)"
+
+msgid "Meta"
+msgstr "متا"
+
+msgid "title"
+msgstr "عنوان"
+
+msgid "description"
+msgstr "توضیحات"
+
+msgid "Optimize"
+msgstr "بهینه‌سازی"
+
+#, php-format
+msgid "%s pending"
+msgstr "%s در انتظار"
+
+msgid "Focus (optional): topic, product line, season…"
+msgstr "تمرکز (اختیاری): موضوع، خط محصول، فصل…"
+
+msgid "Generate calendar"
+msgstr "تولید تقویم محتوا"
+
+#, php-format
+msgid "%s items planned."
+msgstr "%s مورد برنامه‌ریزی شد."
+
+msgid "Topic"
+msgstr "موضوع"
+
+msgid "Planned"
+msgstr "برنامه‌ریزی‌شده"
+
+msgid "In progress"
+msgstr "در حال انجام"
+
+msgid "Published"
+msgstr "منتشرشده"
+
+msgid "Skipped"
+msgstr "ردشده"
+
+msgid "Edit draft"
+msgstr "ویرایش پیش‌نویس"
+
+msgid "Create draft with brief"
+msgstr "ایجاد پیش‌نویس با بریف"
+
+msgid "No planned content"
+msgstr "محتوای برنامه‌ریزی‌شده‌ای نیست"
+
+msgid "Generate an AI content calendar from your keyword gaps, competitor gaps and topic clusters."
+msgstr "یک تقویم محتوای هوشمند از شکاف‌های کلمات کلیدی، شکاف‌های رقبا و خوشه‌های موضوعی خود بسازید."
+
+msgid "Rebuild clusters"
+msgstr "بازسازی خوشه‌ها"
+
+msgid "Building clusters in the background."
+msgstr "در حال ساخت خوشه‌ها در پس‌زمینه."
+
+msgid "No topic clusters yet"
+msgstr "هنوز خوشه موضوعی وجود ندارد"
+
+msgid "SEOlity groups your pages into Pillar → Cluster → Supporting content and finds topic gaps."
+msgstr "سئولیتی صفحات شما را به صفحه ستون ← خوشه ← محتوای پشتیبان گروه‌بندی کرده و شکاف‌های موضوعی را پیدا می‌کند."
+
+msgid "coverage"
+msgstr "پوشش"
+
+msgid "Pillar page"
+msgstr "صفحه ستون (Pillar)"
+
+msgid "not linked with pillar"
+msgstr "به صفحه ستون لینک نشده"
+
+msgid "Topic gaps"
+msgstr "شکاف‌های موضوعی"
+
+msgid "Optimize titles & meta descriptions"
+msgstr "بهینه‌سازی عنوان‌ها و توضیحات متا"
+
+msgid "Optimize posts content"
+msgstr "بهینه‌سازی محتوای نوشته‌ها"
+
+msgid "Optimize categories"
+msgstr "بهینه‌سازی دسته‌بندی‌ها"
+
+msgid "Generate FAQs"
+msgstr "تولید سؤالات متداول"
+
+msgid "Generate internal links"
+msgstr "تولید لینک‌های داخلی"
+
+msgid "Fix missing H1 (empty titles)"
+msgstr "رفع H1 جاافتاده (عنوان‌های خالی)"
+
+msgid "Optimize products"
+msgstr "بهینه‌سازی محصولات"
+
+msgid "Optimize image ALT"
+msgstr "بهینه‌سازی ALT تصاویر"
+
+msgid "Pages with missing/weak meta"
+msgstr "صفحات با متای ناقص/ضعیف"
+
+msgid "Pages with title problems"
+msgstr "صفحات دارای مشکل عنوان"
+
+msgid "Latest content"
+msgstr "آخرین محتواها"
+
+#, php-format
+msgid "%s items selected. Each item is processed as a separate background job; results arrive as pending changes (or auto-apply per your approval mode)."
+msgstr "%s مورد انتخاب شد. هر مورد به‌صورت یک کار جداگانه در پس‌زمینه پردازش می‌شود؛ نتایج به‌صورت تغییرات در انتظار تأیید ثبت می‌شوند (یا بسته به حالت تأیید، خودکار اعمال می‌شوند)."
+
+msgid "Run bulk AI"
+msgstr "اجرای عملیات گروهی هوش مصنوعی"
+
+msgid "AI Product SEO"
+msgstr "سئوی هوشمند محصولات"
+
+msgid "WooCommerce product optimization: titles, descriptions, meta, keywords, FAQ, ALT, tags, schema and cannibalization — grounded in real product data."
+msgstr "بهینه‌سازی محصولات ووکامرس: عنوان، توضیحات، متا، کلمات کلیدی، سؤالات متداول، ALT، برچسب‌ها، اسکیما و هم‌نوع‌خواری — بر پایه داده‌های واقعی محصول."
+
+msgid "Search products…"
+msgstr "جستجوی محصولات…"
+
+msgid "All products"
+msgstr "همه محصولات"
+
+msgid "No short description"
+msgstr "بدون توضیحات کوتاه"
+
+msgid "Bulk optimize selected"
+msgstr "بهینه‌سازی گروهی موارد انتخابی"
+
+msgid "Select products first."
+msgstr "ابتدا محصولات را انتخاب کنید."
+
+msgid "WooCommerce is not active"
+msgstr "ووکامرس فعال نیست"
+
+msgid "Product"
+msgstr "محصول"
+
+msgid "no focus keyword"
+msgstr "بدون کلمه کلیدی کانونی"
+
+msgid "Short desc."
+msgstr "توضیح کوتاه"
+
+msgid "missing"
+msgstr "ناموجود"
+
+msgid "Description words"
+msgstr "کلمات توضیحات"
+
+msgid "AI Image SEO"
+msgstr "سئوی هوشمند تصاویر"
+
+msgid "Detect missing, generic, duplicate or stuffed ALT text and bad filenames; generate context-aware ALT from page, product and nearby text."
+msgstr "شناسایی ALTهای ناموجود، کلی، تکراری یا پر از کلمه کلیدی و نام فایل‌های نامناسب؛ تولید ALT متناسب با صفحه، محصول و متن اطراف."
+
+msgid "Scan media library"
+msgstr "اسکن کتابخانه رسانه"
+
+msgid "Scan queued."
+msgstr "اسکن در صف قرار گرفت."
+
+msgid "Missing ALT"
+msgstr "ALT ناموجود"
+
+msgid "Generic ALT"
+msgstr "ALT کلی"
+
+msgid "Duplicate ALT"
+msgstr "ALT تکراری"
+
+msgid "Keyword stuffing"
+msgstr "انباشت کلمه کلیدی"
+
+msgid "Filename as ALT"
+msgstr "نام فایل به‌جای ALT"
+
+msgid "ALT too long"
+msgstr "ALT بیش از حد طولانی"
+
+msgid "Bad filename"
+msgstr "نام فایل نامناسب"
+
+msgid "“Image of…” prefix"
+msgstr "پیشوند «تصویر…»"
+
+#, php-format
+msgid "%1$s images indexed · last scan %2$s"
+msgstr "%1$s تصویر نمایه شد · آخرین اسکن %2$s"
+
+msgid "Select all"
+msgstr "انتخاب همه"
+
+msgid "Generate ALT for selected"
+msgstr "تولید ALT برای موارد انتخابی"
+
+msgid "Select images first."
+msgstr "ابتدا تصاویر را انتخاب کنید."
+
+msgid "Generated ALT text"
+msgstr "متن ALT تولیدشده"
+
+msgid "Image"
+msgstr "تصویر"
+
+msgid "Caption"
+msgstr "زیرنویس"
+
+msgid "ALT text applied."
+msgstr "متن ALT اعمال شد."
+
+msgid "No images with this issue"
+msgstr "تصویری با این مشکل نیست"
+
+msgid "No ALT"
+msgstr "بدون ALT"
+
+msgid "Internal Linking AI"
+msgstr "لینک‌سازی داخلی هوشمند"
+
+msgid "Suggestions use anchors that already exist in your text, so links are added without rewriting. Every link is a reviewable, revertible change."
+msgstr "پیشنهادها از انکرهایی استفاده می‌کنند که از قبل در متن شما وجود دارند تا لینک بدون بازنویسی اضافه شود. هر لینک یک تغییر قابل بررسی و بازگشت است."
+
+msgid "Find new opportunities"
+msgstr "یافتن فرصت‌های جدید"
+
+msgid "Analyzing your link graph in the background."
+msgstr "در حال تحلیل گراف لینک‌ها در پس‌زمینه."
+
+msgid "Avg. internal links per page"
+msgstr "میانگین لینک داخلی هر صفحه"
+
+msgid "Suggestions"
+msgstr "پیشنهادها"
+
+#, php-format
+msgid "%s internal links today"
+msgstr "اکنون %s لینک داخلی"
+
+msgid "No suggestions yet"
+msgstr "هنوز پیشنهادی نیست"
+
+msgid "Run a site audit, then click “Find new opportunities”."
+msgstr "یک ممیزی سایت اجرا کنید و سپس روی «یافتن فرصت‌های جدید» کلیک کنید."
+
+msgid "Most linked pages"
+msgstr "پرلینک‌ترین صفحات"
+
+msgid "Something went wrong."
+msgstr "مشکلی پیش آمد."
+
+msgid "Close"
+msgstr "بستن"
+
+msgid "Please confirm"
+msgstr "لطفاً تأیید کنید"
+
+msgid "Confirm"
+msgstr "تأیید"
+
+msgid "Loading…"
+msgstr "در حال بارگذاری…"
+
+msgid "Preview change"
+msgstr "پیش‌نمایش تغییر"
+
+msgid "Before / After"
+msgstr "قبل / بعد"
+
+msgid "BEFORE"
+msgstr "قبل"
+
+msgid "AFTER"
+msgstr "بعد"
+
+msgid "Compare"
+msgstr "مقایسه"
+
+msgid "SEO score"
+msgstr "امتیاز سئو"
+
+msgid "Generated by"
+msgstr "تولیدشده توسط"
+
+msgid "Change rejected."
+msgstr "تغییر رد شد."
+
+msgid "Reject"
+msgstr "رد"
+
+msgid "Change applied. You can undo it anytime from version history."
+msgstr "تغییر اعمال شد. هر زمان بخواهید از تاریخچه نسخه‌ها می‌توانید آن را بازگردانید."
+
+msgid "Change reverted."
+msgstr "تغییر بازگردانده شد."
+
+msgid "Undo"
+msgstr "بازگردانی"
+
+msgid "No changes yet"
+msgstr "هنوز تغییری ثبت نشده"
+
+msgid "Every change SEOlity makes is versioned here and can be restored."
+msgstr "هر تغییری که سئولیتی انجام می‌دهد اینجا نسخه‌بندی می‌شود و قابل بازیابی است."
+
+msgid "Version"
+msgstr "نسخه"
+
+msgid "Restore this version as the current value?"
+msgstr "این نسخه به‌عنوان مقدار فعلی بازیابی شود؟"
+
+msgid "Version restored."
+msgstr "نسخه بازیابی شد."
+
+msgid "What did SEOlity find?"
+msgstr "سئولیتی چه چیزی پیدا کرد؟"
+
+msgid "Why is this suggested?"
+msgstr "چرا این پیشنهاد شده است؟"
+
+msgid "Expected result"
+msgstr "نتیجه مورد انتظار"
+
+msgid "Scores"
+msgstr "امتیازها"
+
+msgid "What worked on this site before"
+msgstr "آنچه قبلاً در این سایت جواب داده است"
+
+msgid "Focus keyword (optional — SEOlity can pick it from Search Console)"
+msgstr "کلمه کلیدی کانونی (اختیاری — سئولیتی می‌تواند آن را از سرچ کنسول انتخاب کند)"
+
+msgid "Goal (optional), e.g. rank for “buy espresso machine”, improve conversions…"
+msgstr "هدف (اختیاری)، مثلاً رتبه گرفتن برای «خرید اسپرسوساز»، افزایش نرخ تبدیل…"
+
+msgid "Analyze & optimize"
+msgstr "تحلیل و بهینه‌سازی"
+
+msgid "SEOlity analyzes your text, the real queries you rank for and SEO best practices, then proposes an improved version. Nothing changes until you apply it."
+msgstr "سئولیتی متن شما، کوئری‌های واقعی که برایشان رتبه دارید و بهترین روش‌های سئو را تحلیل می‌کند و نسخه بهبودیافته‌ای پیشنهاد می‌دهد. تا زمانی که اعمال نکنید، چیزی تغییر نمی‌کند."
+
+msgid "Analyzing current content…"
+msgstr "در حال تحلیل محتوای فعلی…"
+
+msgid "Reading Search Console queries…"
+msgstr "در حال خواندن کوئری‌های سرچ کنسول…"
+
+msgid "Consulting the SEO knowledge base…"
+msgstr "در حال مراجعه به پایگاه دانش سئو…"
+
+msgid "Writing the optimized version…"
+msgstr "در حال نوشتن نسخه بهینه…"
+
+msgid "Scoring before vs. after…"
+msgstr "در حال امتیازدهی قبل و بعد…"
+
+msgid "Working… this can take up to a minute."
+msgstr "در حال کار… ممکن است تا یک دقیقه طول بکشد."
+
+msgid "Open settings"
+msgstr "باز کردن تنظیمات"
+
+msgid "Semantic coverage"
+msgstr "پوشش معنایی"
+
+msgid "Entity coverage"
+msgstr "پوشش موجودیت‌ها"
+
+msgid "Semantic terms"
+msgstr "اصطلاحات معنایی"
+
+msgid "What changed and why"
+msgstr "چه چیزی و چرا تغییر کرد"
+
+msgid "Information gain"
+msgstr "ارزش اطلاعاتی افزوده"
+
+msgid "Please review:"
+msgstr "لطفاً بررسی کنید:"
+
+msgid "Also suggested"
+msgstr "همچنین پیشنهاد می‌شود"
+
+msgid "AI Suggested"
+msgstr "پیشنهاد هوش مصنوعی"
+
+msgid "Original"
+msgstr "اصلی"
+
+msgid "Edit HTML"
+msgstr "ویرایش HTML"
+
+msgid "Model"
+msgstr "مدل"
+
+msgid "Knowledge"
+msgstr "دانش"
+
+msgid "Suggestion rejected."
+msgstr "پیشنهاد رد شد."
+
+msgid "Applied. Undo anytime from version history."
+msgstr "اعمال شد. هر زمان از تاریخچه نسخه‌ها قابل بازگشت است."
+
+msgid "Apply to editor"
+msgstr "اعمال در ویرایشگر"
+
+msgid "Apply changes"
+msgstr "اعمال تغییرات"
+
+msgid "Analyzing real search queries…"
+msgstr "در حال تحلیل کوئری‌های واقعی جستجو…"
+
+msgid "Google preview"
+msgstr "پیش‌نمایش گوگل"
+
+msgid "Title & description applied."
+msgstr "عنوان و توضیحات اعمال شد."
+
+msgid "Short description"
+msgstr "توضیحات کوتاه"
+
+msgid "URL slug"
+msgstr "نامک URL"
+
+msgid "FAQ"
+msgstr "سؤالات متداول"
+
+msgid "Image title"
+msgstr "عنوان تصویر"
+
+msgid "Category description"
+msgstr "توضیحات دسته‌بندی"
+
+msgid "Author bio"
+msgstr "زندگی‌نامه نویسنده"
+
+msgid "Noindex"
+msgstr "نوایندکس"
+
+msgid "Nofollow"
+msgstr "نوفالو"
+
+msgid "Canonical URL"
+msgstr "URL کنونیکال"
+
+msgid "Product tags"
+msgstr "برچسب‌های محصول"
+
+msgid "robots.txt"
+msgstr ""
+
+msgid "Approval mode"
+msgstr "حالت تأیید"
+
+msgid "Interface language"
+msgstr "زبان رابط کاربری"
+
+msgid "Brand name (white label)"
+msgstr "نام برند (وایت‌لیبل)"
+
+msgid "Brand logo URL"
+msgstr "آدرس لوگوی برند"
+
+msgid "Brand color"
+msgstr "رنگ برند"
+
+msgid "Output SEO tags on the frontend"
+msgstr "نمایش تگ‌های سئو در سایت"
+
+msgid "Title separator"
+msgstr "جداکننده عنوان"
+
+msgid "AI provider"
+msgstr "ارائه‌دهنده هوش مصنوعی"
+
+msgid "OpenAI model"
+msgstr "مدل OpenAI"
+
+msgid "Anthropic model"
+msgstr "مدل Anthropic"
+
+msgid "Gemini model"
+msgstr "مدل Gemini"
+
+msgid "OpenRouter model"
+msgstr "مدل OpenRouter"
+
+msgid "Ollama model"
+msgstr "مدل Ollama"
+
+msgid "Custom model"
+msgstr "مدل سفارشی"
+
+msgid "Reasoning effort (Claude)"
+msgstr "میزان استدلال (Claude)"
+
+msgid "Ollama URL"
+msgstr "آدرس Ollama"
+
+msgid "Custom API base URL"
+msgstr "آدرس پایه API سفارشی"
+
+msgid "Max output tokens"
+msgstr "حداکثر توکن خروجی"
+
+msgid "Request timeout (s)"
+msgstr "مهلت درخواست (ثانیه)"
+
+msgid "Monthly AI budget (USD, 0 = unlimited)"
+msgstr "بودجه ماهانه هوش مصنوعی (دلار، ۰ = نامحدود)"
+
+msgid "Cache AI answers (hours)"
+msgstr "کش پاسخ‌های هوش مصنوعی (ساعت)"
+
+msgid "Content language"
+msgstr "زبان محتوا"
+
+msgid "Brand voice & editorial rules"
+msgstr "لحن برند و قوانین نگارشی"
+
+msgid "Use the SEO knowledge base in prompts"
+msgstr "استفاده از پایگاه دانش سئو در پرامپت‌ها"
+
+msgid "Initial import (days)"
+msgstr "ورود اولیه (روز)"
+
+msgid "Rows per API call"
+msgstr "ردیف در هر فراخوانی API"
+
+msgid "Max URLs per crawl"
+msgstr "حداکثر URL در هر خزش"
+
+msgid "Parallel requests per batch"
+msgstr "درخواست‌های موازی در هر دسته"
+
+msgid "Check external links"
+msgstr "بررسی لینک‌های خارجی"
+
+msgid "Full audit frequency"
+msgstr "تناوب ممیزی کامل"
+
+msgid "Thin content threshold (words)"
+msgstr "آستانه محتوای کم‌عمق (کلمه)"
+
+msgid "Max pages per competitor"
+msgstr "حداکثر صفحه برای هر رقیب"
+
+msgid "Alert email"
+msgstr "ایمیل هشدار"
+
+msgid "Email high-priority alerts"
+msgstr "ارسال ایمیل هشدارهای مهم"
+
+#, php-format
+msgid "Drop alert threshold (%)"
+msgstr "آستانه هشدار افت (%)"
+
+msgid "Scheduled report"
+msgstr "گزارش زمان‌بندی‌شده"
+
+msgid "Report recipients (one per line)"
+msgstr "گیرندگان گزارش (هر خط یکی)"
+
+msgid "Enhance WordPress sitemaps"
+msgstr "بهبود نقشه‌های سایت وردپرس"
+
+msgid "Exclude post types from sitemap"
+msgstr "حذف انواع نوشته از نقشه سایت"
+
+msgid "Serve custom robots.txt"
+msgstr "ارائه robots.txt سفارشی"
+
+msgid "Enable redirects"
+msgstr "فعال‌سازی ریدایرکت‌ها"
+
+msgid "Log 404 errors"
+msgstr "ثبت خطاهای ۴۰۴"
+
+msgid "Log 404s from bots"
+msgstr "ثبت ۴۰۴های ربات‌ها"
+
+msgid "Data retention (days)"
+msgstr "نگهداری داده (روز)"
+
+msgid "Output structured data"
+msgstr "خروجی داده ساختاریافته"
+
+msgid "Entity type"
+msgstr "نوع موجودیت"
+
+msgid "Organization / person name"
+msgstr "نام سازمان / شخص"
+
+msgid "Logo URL"
+msgstr "آدرس لوگو"
+
+msgid "Phone"
+msgstr "تلفن"
+
+msgid "Address"
+msgstr "آدرس"
+
+msgid "Social profiles (sameAs, one per line)"
+msgstr "پروفایل‌های اجتماعی (sameAs، هر خط یکی)"
+
+msgid "Experiment window (days)"
+msgstr "بازه آزمایش (روز)"
+
+msgid "Knowledge repository (owner/repo)"
+msgstr "مخزن دانش (owner/repo)"
+
+msgid "Knowledge branch"
+msgstr "شاخه دانش"
+
+msgid "Knowledge folder"
+msgstr "پوشه دانش"
+
+msgid "Sync knowledge daily"
+msgstr "همگام‌سازی روزانه دانش"
+
+msgid "Contribute anonymized learnings to GitHub"
+msgstr "ارسال یافته‌های ناشناس به گیت‌هاب"
+
+msgid "Enable GitHub data storage"
+msgstr "فعال‌سازی ذخیره‌سازی داده در گیت‌هاب"
+
+msgid "Data repository (owner/repo, private!)"
+msgstr "مخزن داده (owner/repo، خصوصی!)"
+
+msgid "Data branch"
+msgstr "شاخه داده"
+
+msgid "Data folder"
+msgstr "پوشه داده"
+
+msgid "Archive data older than (days)"
+msgstr "بایگانی داده‌های قدیمی‌تر از (روز)"
+
+msgid "Delete archived rows from the WordPress database"
+msgstr "حذف ردیف‌های بایگانی‌شده از دیتابیس وردپرس"
+
+msgid "Anonymize IP addresses"
+msgstr "ناشناس‌سازی آدرس‌های IP"
+
+msgid "Delete all data on uninstall"
+msgstr "حذف همه داده‌ها هنگام حذف افزونه"
+
+msgid "General"
+msgstr "عمومی"
+
+msgid "Crawler & audits"
+msgstr "خزنده و ممیزی‌ها"
+
+msgid "Alerts & reports"
+msgstr "هشدارها و گزارش‌ها"
+
+msgid "Technical SEO"
+msgstr "سئوی فنی"
+
+msgid "Schema & entity"
+msgstr "اسکیما و موجودیت"
+
+msgid "GitHub (knowledge & storage)"
+msgstr "گیت‌هاب (دانش و ذخیره‌سازی)"
+
+msgid "Privacy & data"
+msgstr "حریم خصوصی و داده"
+
+msgid "Anthropic API key"
+msgstr "کلید API انتروپیک"
+
+msgid "OpenAI API key"
+msgstr "کلید API اوپن‌ای‌آی"
+
+msgid "Google Gemini API key"
+msgstr "کلید API گوگل جمینای"
+
+msgid "OpenRouter API key"
+msgstr "کلید API اوپن‌روتر"
+
+msgid "Custom API key"
+msgstr "کلید API سفارشی"
+
+msgid "PageSpeed Insights API key (optional)"
+msgstr "کلید API پیج‌اسپید (اختیاری)"
+
+msgid "SERP data API key (optional)"
+msgstr "کلید API داده‌های SERP (اختیاری)"
+
+msgid "GitHub fine-grained token (Contents: read & write on the chosen repos only)"
+msgstr "توکن دقیق گیت‌هاب (فقط دسترسی Contents: خواندن و نوشتن روی مخازن انتخاب‌شده)"
+
+msgid "manual"
+msgstr "دستی"
+
+msgid "semi"
+msgstr "نیمه‌خودکار"
+
+msgid "autonomous"
+msgstr "خودمختار"
+
+msgid "auto"
+msgstr "خودکار"
+
+msgid "on"
+msgstr "روشن"
+
+msgid "off"
+msgstr "خاموش"
+
+msgid "fa"
+msgstr "فارسی"
+
+msgid "en"
+msgstr "انگلیسی"
+
+msgid "ar"
+msgstr "عربی"
+
+msgid "tr"
+msgstr "ترکی"
+
+msgid "de"
+msgstr "آلمانی"
+
+msgid "fr"
+msgstr "فرانسوی"
+
+msgid "es"
+msgstr "اسپانیایی"
+
+msgid "low"
+msgstr "کم"
+
+msgid "medium"
+msgstr "متوسط"
+
+msgid "high"
+msgstr "زیاد"
+
+msgid "xhigh"
+msgstr "خیلی زیاد"
+
+msgid "max"
+msgstr "حداکثر"
+
+msgid "daily"
+msgstr "روزانه"
+
+msgid "weekly"
+msgstr "هفتگی"
+
+msgid "monthly"
+msgstr "ماهانه"
+
+msgid "none"
+msgstr "هیچ"
+
+msgid "Organization"
+msgstr "سازمان"
+
+msgid "LocalBusiness"
+msgstr "کسب‌وکار محلی"
+
+msgid "Person"
+msgstr "شخص"
+
+msgid "OnlineStore"
+msgstr "فروشگاه آنلاین"
+
+msgid "applied"
+msgstr "اعمال‌شده"
+
+msgid "applied_editor"
+msgstr "اعمال‌شده در ویرایشگر"
+
+msgid "rejected"
+msgstr "ردشده"
+
+msgid "reverted"
+msgstr "بازگردانده‌شده"
+
+msgid "superseded"
+msgstr "جایگزین‌شده"
+
+msgid "running"
+msgstr "در حال اجرا"
+
+msgid "evaluated"
+msgstr "ارزیابی‌شده"
+
+msgid "cancelled"
+msgstr "لغوشده"
+
+msgid "done"
+msgstr "انجام‌شده"
+
+msgid "failed"
+msgstr "ناموفق"
+
+msgid "open"
+msgstr "باز"
+
+msgid "ignored"
+msgstr "نادیده‌گرفته"
+
+msgid "fixed"
+msgstr "رفع‌شده"
+
+msgid "redirected"
+msgstr "ریدایرکت‌شده"
+
+msgid "planned"
+msgstr "برنامه‌ریزی‌شده"
+
+msgid "in_progress"
+msgstr "در حال انجام"
+
+msgid "published"
+msgstr "منتشرشده"
+
+msgid "skipped"
+msgstr "ردشده"
+
+msgid "ai"
+msgstr "هوش مصنوعی"
+
+msgid "rule"
+msgstr "قانون"
+
+msgid "revert"
+msgstr "بازگردانی"
+
+msgid "restore"
+msgstr "بازیابی"
+
+msgid "recommendation"
+msgstr "پیشنهاد"
+
+msgid "internal_link"
+msgstr "لینک داخلی"
+
+msgid "import"
+msgstr "ورود"
+
+msgid "slug_change"
+msgstr "تغییر نامک"
+
+msgid "404_monitor"
+msgstr "پایشگر ۴۰۴"
+
+msgid "informational"
+msgstr "اطلاعاتی"
+
+msgid "commercial"
+msgstr "تجاری"
+
+msgid "transactional"
+msgstr "تراکنشی"
+
+msgid "navigational"
+msgstr "ناوبری"
+
+msgid "head"
+msgstr "اصلی"
+
+msgid "long_tail"
+msgstr "دم‌بلند"
+
+msgid "question"
+msgstr "سؤالی"
+
+msgid "semantic"
+msgstr "معنایی"
+
+msgid "entity"
+msgstr "موجودیت"
+
+msgid "positive"
+msgstr "مثبت"
+
+msgid "negative"
+msgstr "منفی"
+
+msgid "neutral"
+msgstr "خنثی"
+
+msgid "inconclusive"
+msgstr "نامشخص"
+
+msgid "post"
+msgstr "نوشته"
+
+msgid "term"
+msgstr "دسته/برچسب"
+
+msgid "user"
+msgstr "کاربر"
+
+msgid "attachment"
+msgstr "رسانه"
+
+msgid "site"
+msgstr "سایت"
+
+msgid "publish"
+msgstr "منتشرشده"
+
+msgid "draft"
+msgstr "پیش‌نویس"
+
+msgid "future"
+msgstr "زمان‌بندی‌شده"
+
+msgid "crawling"
+msgstr "در حال خزش"
+
+msgid "seeding"
+msgstr "آماده‌سازی فهرست"
+
+msgid "analyzing"
+msgstr "در حال تحلیل"
+
+msgid "missing_topic"
+msgstr "موضوع جاافتاده"
+
+msgid "missing_page"
+msgstr "صفحه جاافتاده"
+
+msgid "weak_page"
+msgstr "صفحه ضعیف"
+
+msgid "noindex"
+msgstr "نوایندکس"
+
+msgid "redirect"
+msgstr "ریدایرکت"
+
+msgid "canonicalized"
+msgstr "کنونیکال‌شده"
+
+msgid "error_404"
+msgstr "خطای ۴۰۴"
+
+msgid "error_410"
+msgstr "خطای ۴۱۰"
+
+msgid "error_500"
+msgstr "خطای ۵۰۰"
+
+msgid "Indexation"
+msgstr "ایندکس‌پذیری"
+
+msgid "Links"
+msgstr "لینک‌ها"
+
+msgid "Performance"
+msgstr "عملکرد"
+
+msgid "Security"
+msgstr "امنیت"
+
+msgid "Mobile"
+msgstr "موبایل"
+
+msgid "International"
+msgstr "بین‌المللی"
+
+msgid "Technical"
+msgstr "فنی"
+
+msgid "Gsc"
+msgstr "سرچ کنسول"
+
+msgid "instock"
+msgstr "موجود"
+
+msgid "outofstock"
+msgstr "ناموجود"
+
+msgid "onbackorder"
+msgstr "پیش‌سفارش"
+
+#, php-format
+msgid "%d published page is blocked by robots.txt."
+msgid_plural "%d published pages are blocked by robots.txt."
+msgstr[0] "%d صفحه منتشرشده توسط robots.txt مسدود هستند."

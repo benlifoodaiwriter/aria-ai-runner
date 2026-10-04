@@ -1,0 +1,4830 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: SEOlity 1.0.0\n"
+"POT-Creation-Date: 2026-10-04 09:44+0000\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Domain: seolity\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#, php-format
+msgid "%1$s request failed: %2$s"
+msgstr ""
+
+#, php-format
+msgid "%1$s API error (%2$d): %3$s"
+msgstr ""
+
+msgid "AI provider returned a non-JSON response."
+msgstr ""
+
+msgid "No AI provider is configured. Add an API key in SEOlity → Settings → AI."
+msgstr ""
+
+msgid "Monthly AI budget reached. Increase it in Settings or wait until next month."
+msgstr ""
+
+msgid "The AI response did not match the expected structure. Please try again."
+msgstr ""
+
+#, php-format
+msgid "Possible keyword stuffing: focus keyword density %s%%."
+msgstr ""
+
+msgid "Generated content contains hidden-text styling — removed is recommended."
+msgstr ""
+
+#, php-format
+msgid "%d original link(s) were removed — review before applying."
+msgstr ""
+
+#, php-format
+msgid "New external link added: %s — verify it exists and is appropriate."
+msgstr ""
+
+#, php-format
+msgid "Shortcode [%s] is missing from the optimized version."
+msgstr ""
+
+#, php-format
+msgid "New figure \"%s\" not found in original — verify accuracy."
+msgstr ""
+
+msgid "The model declined this request."
+msgstr ""
+
+msgid "Custom (OpenAI-compatible)"
+msgstr ""
+
+msgid "Custom AI endpoint URL is not allowed."
+msgstr ""
+
+msgid "Gemini blocked this response for safety reasons."
+msgstr ""
+
+msgid "Local LLM (Ollama)"
+msgstr ""
+
+msgid "Dashboard"
+msgstr ""
+
+msgid "AI Action Center"
+msgstr ""
+
+msgid "AI SEO Chat"
+msgstr ""
+
+msgid "Site Audit"
+msgstr ""
+
+msgid "Search Console"
+msgstr ""
+
+msgid "Keywords"
+msgstr ""
+
+msgid "Content"
+msgstr ""
+
+msgid "Products"
+msgstr ""
+
+msgid "Images"
+msgstr ""
+
+msgid "Internal Links"
+msgstr ""
+
+msgid "Competitors"
+msgstr ""
+
+msgid "Experiments"
+msgstr ""
+
+msgid "AI Changes"
+msgstr ""
+
+msgid "Redirects"
+msgstr ""
+
+msgid "404 Monitor"
+msgstr ""
+
+msgid "Schema"
+msgstr ""
+
+msgid "Sitemap"
+msgstr ""
+
+msgid "Robots.txt"
+msgstr ""
+
+msgid "Reports"
+msgstr ""
+
+msgid "Alerts"
+msgstr ""
+
+msgid "Automation"
+msgstr ""
+
+msgid "Knowledge Base"
+msgstr ""
+
+msgid "Settings"
+msgstr ""
+
+msgid "You are not allowed to access this page."
+msgstr ""
+
+msgid "SEOlity requires JavaScript."
+msgstr ""
+
+msgid "Forbidden"
+msgstr ""
+
+msgid "Analyze this page"
+msgstr ""
+
+msgid "SEO Health"
+msgstr ""
+
+#, php-format
+msgid "%1$d critical and %2$d high-priority actions waiting."
+msgstr ""
+
+msgid "What should I do today?"
+msgstr ""
+
+msgid "Optimize with SEOlity AI"
+msgstr ""
+
+msgid "SEO score (live)"
+msgstr ""
+
+msgid "Focus keyword"
+msgstr ""
+
+msgid "e.g. espresso machine for home"
+msgstr ""
+
+msgid "SEO title"
+msgstr ""
+
+msgid "Meta description"
+msgstr ""
+
+msgid "Noindex this page"
+msgstr ""
+
+#, php-format
+msgid "SEO title & description are managed by %s. SEOlity AI reads and writes them there."
+msgstr ""
+
+msgid "Optimize content"
+msgstr ""
+
+msgid "AI title & description"
+msgstr ""
+
+msgid "Generate FAQ"
+msgstr ""
+
+msgid "Internal links"
+msgstr ""
+
+msgid "AI Product Optimizer"
+msgstr ""
+
+msgid "Version history"
+msgstr ""
+
+msgid "Noindex this archive"
+msgstr ""
+
+msgid "Tip: an author bio with real credentials and experience strengthens E-E-A-T. Use “Optimize with SEOlity AI” next to the biography field."
+msgstr ""
+
+#, php-format
+msgid "Organic clicks dropped %1$s%% week over week"
+msgstr ""
+
+#, php-format
+msgid "Clicks went from %2$d to %3$d (last 7 days vs previous 7). Check the Losers report and recent changes."
+msgstr ""
+
+#, php-format
+msgid "Site CTR dropped %s%% week over week"
+msgstr ""
+
+msgid "Impressions held but fewer people click — SERP features, competitor snippets or title changes may be the cause."
+msgstr ""
+
+#, php-format
+msgid "Average position worsened by %s"
+msgstr ""
+
+msgid "Rankings fell across the site — check for algorithm updates, technical problems or lost pages."
+msgstr ""
+
+#, php-format
+msgid "Page lost all organic clicks: %s"
+msgstr ""
+
+msgid "This page went from steady traffic to zero — it may be deindexed, broken, redirected or noindexed."
+msgstr ""
+
+#, php-format
+msgid "Lost keyword: \"%s\""
+msgstr ""
+
+#, php-format
+msgid "It had %1$d impressions at position %2$s and no longer appears."
+msgstr ""
+
+#, php-format
+msgid "New keyword gaining visibility: \"%s\""
+msgstr ""
+
+#, php-format
+msgid "%1$d impressions at position %2$s — consider strengthening the ranking page."
+msgstr ""
+
+#, php-format
+msgid "New 404 getting hits: %s"
+msgstr ""
+
+#, php-format
+msgid "%d hits since it first appeared. Redirect it to the suggested target."
+msgstr ""
+
+#, php-format
+msgid "%d published pages became noindex in the last 24h"
+msgstr ""
+
+msgid "A setting, plugin or theme change may be hiding pages from Google."
+msgstr ""
+
+#, php-format
+msgid "%1$s published %2$d new pages"
+msgstr ""
+
+msgid "Review their new content and the content-gap report."
+msgstr ""
+
+msgid "Focus keyword appears in the SEO title."
+msgstr ""
+
+msgid "Add the focus keyword to the SEO title, ideally near the beginning."
+msgstr ""
+
+msgid "Focus keyword appears in the meta description."
+msgstr ""
+
+msgid "Mention the focus keyword naturally in the meta description (Google bolds matching terms)."
+msgstr ""
+
+msgid "Focus keyword is used in the introduction."
+msgstr ""
+
+msgid "Use the focus keyword (or a close variant) in the first paragraph."
+msgstr ""
+
+msgid "Focus keyword appears in a subheading."
+msgstr ""
+
+msgid "Use the focus keyword or a variant in at least one H2/H3."
+msgstr ""
+
+msgid "URL slug reflects the topic."
+msgstr ""
+
+msgid "The URL slug does not contain the focus keyword (only change slugs of new pages, or add a redirect)."
+msgstr ""
+
+#, php-format
+msgid "Keyword density is %s%% — this looks like keyword stuffing. Use synonyms and natural language."
+msgstr ""
+
+#, php-format
+msgid "Focus keyword used %d time(s). Make sure the main topic is clearly covered."
+msgstr ""
+
+#, php-format
+msgid "Natural keyword usage (%s%%)."
+msgstr ""
+
+msgid "At least one image ALT describes the topic."
+msgstr ""
+
+msgid "Describe at least one relevant image with an ALT that relates to the topic."
+msgstr ""
+
+msgid "No focus keyword set — SEOlity can suggest one from Search Console data."
+msgstr ""
+
+msgid "SEO title is missing."
+msgstr ""
+
+#, php-format
+msgid "SEO title is short (%d chars). Use the space to add a benefit or qualifier."
+msgstr ""
+
+#, php-format
+msgid "SEO title may be truncated in Google (~%dpx, limit ≈580px)."
+msgstr ""
+
+msgid "SEO title length is good."
+msgstr ""
+
+msgid "Meta description is missing — Google will pick a random snippet."
+msgstr ""
+
+#, php-format
+msgid "Meta description is short (%d chars). Aim for 120–160."
+msgstr ""
+
+#, php-format
+msgid "Meta description is long (%d chars) and will be truncated."
+msgstr ""
+
+msgid "Meta description length is good."
+msgstr ""
+
+msgid "Content contains more than one H1. Themes usually output the title as H1 — use H2 inside content."
+msgstr ""
+
+msgid "Content is structured with subheadings."
+msgstr ""
+
+msgid "Break the content into sections with descriptive H2/H3 headings."
+msgstr ""
+
+msgid "Heading levels are skipped (e.g. H2 → H4). Keep a logical hierarchy for accessibility."
+msgstr ""
+
+#, php-format
+msgid "%d internal link(s) found."
+msgstr ""
+
+msgid "Add internal links to related pages to help users and crawlers."
+msgstr ""
+
+msgid "Cites external sources."
+msgstr ""
+
+msgid "Consider citing authoritative sources (supports E-E-A-T)."
+msgstr ""
+
+#, php-format
+msgid "%d image(s) have no ALT text."
+msgstr ""
+
+msgid "All images have ALT text."
+msgstr ""
+
+msgid "No images — visuals improve engagement and can rank in Image Search."
+msgstr ""
+
+msgid "Text is easy to read."
+msgstr ""
+
+msgid "Shorten long sentences and paragraphs; use lists for steps and specs."
+msgstr ""
+
+#, php-format
+msgid "%1$d words (recommended ≥ %2$d for this type) — depth score reflects coverage, structure and supporting elements, not length alone."
+msgstr ""
+
+#, php-format
+msgid "Covers %1$d of %2$d related terms/subtopics."
+msgstr ""
+
+#, php-format
+msgid "Mentions %1$d of %2$d key entities."
+msgstr ""
+
+#, php-format
+msgid "Content format vs. \"%s\" search intent."
+msgstr ""
+
+msgid "Several sentences are repeated — remove boilerplate to increase information gain."
+msgstr ""
+
+msgid "Unexpected error."
+msgstr ""
+
+msgid "You are not allowed to edit this item."
+msgstr ""
+
+msgid "Change not found."
+msgstr ""
+
+msgid "Only URLs of this site can be tested."
+msgstr ""
+
+msgid "This property is not available for the connected account."
+msgstr ""
+
+msgid "You are not allowed to edit this product."
+msgstr ""
+
+msgid "Unknown secret."
+msgstr ""
+
+msgid "Dates must be YYYY-MM-DD."
+msgstr ""
+
+#, php-format
+msgid "%1$s clicks this week (%2$s%%)"
+msgstr ""
+
+#, php-format
+msgid "Impressions %3$s, avg. position %4$s."
+msgstr ""
+
+#, php-format
+msgid "Rising: %1$s (+%2$d clicks)"
+msgstr ""
+
+#, php-format
+msgid "Falling: %1$s (%2$d clicks)"
+msgstr ""
+
+#, php-format
+msgid "%d new issue types detected in the last audit"
+msgstr ""
+
+#, php-format
+msgid "Experiment \"%1$s\": %2$s"
+msgstr ""
+
+#, php-format
+msgid "Organic clicks %s%% week over week"
+msgstr ""
+
+msgid "Your daily SEO briefing"
+msgstr ""
+
+#, php-format
+msgid "Health score %1$s. %2$d prioritized actions are waiting, %3$d AI changes need your review."
+msgstr ""
+
+msgid "Please type a question."
+msgstr ""
+
+msgid "Enter a valid domain, e.g. example.com"
+msgstr ""
+
+msgid "This domain does not resolve to a public address."
+msgstr ""
+
+msgid "Competitor not found."
+msgstr ""
+
+msgid "This field cannot be changed by SEOlity."
+msgstr ""
+
+msgid "Object not found."
+msgstr ""
+
+msgid "Suggested value is identical to the current value."
+msgstr ""
+
+msgid "Could not store the change."
+msgstr ""
+
+msgid "This change is no longer pending."
+msgstr ""
+
+msgid "Only applied changes can be reverted."
+msgstr ""
+
+#, php-format
+msgid "A page with organic traffic was trashed: %s"
+msgstr ""
+
+#, php-format
+msgid "It received %1$d clicks in the last 28 days and has %2$d internal links. Add a 301 redirect to the closest relevant page to keep its value."
+msgstr ""
+
+msgid "FAQ must be valid JSON."
+msgstr ""
+
+msgid "Term not found."
+msgstr ""
+
+msgid "There is no content to optimize yet. Write a draft or use \"Generate\"."
+msgstr ""
+
+msgid "Unknown bulk task."
+msgstr ""
+
+msgid "FAQ generated from page content and real question queries."
+msgstr ""
+
+msgid "Page has an empty title, so no H1 / title tag is generated."
+msgstr ""
+
+msgid "SEOlity Client"
+msgstr ""
+
+msgid "Pages returning 4xx errors"
+msgstr ""
+
+msgid "Broken pages waste crawl budget, lose link equity and frustrate users."
+msgstr ""
+
+msgid "Restore the page or 301-redirect it to the closest relevant URL; update internal links."
+msgstr ""
+
+msgid "Pages returning server errors (5xx)"
+msgstr ""
+
+msgid "Repeated 5xx responses make Google crawl less and can drop pages from the index."
+msgstr ""
+
+msgid "Check PHP error logs, hosting resources and plugin conflicts."
+msgstr ""
+
+msgid "Temporary (302/307) redirects"
+msgstr ""
+
+msgid "Temporary redirects signal the move is not permanent; signals may not consolidate."
+msgstr ""
+
+msgid "Use 301 for permanent moves."
+msgstr ""
+
+msgid "Redirect chains"
+msgstr ""
+
+msgid "Each hop adds latency and Google may stop following long chains."
+msgstr ""
+
+msgid "Point the first URL directly at the final destination."
+msgstr ""
+
+msgid "Redirect loops"
+msgstr ""
+
+msgid "Loops make pages completely inaccessible."
+msgstr ""
+
+msgid "Break the loop by fixing or deleting one of the redirects."
+msgstr ""
+
+msgid "Noindex pages"
+msgstr ""
+
+msgid "These pages are excluded from Google. That is fine for utility pages but harmful for pages meant to rank."
+msgstr ""
+
+msgid "Confirm each noindex is intentional."
+msgstr ""
+
+msgid "Noindex pages that still earn search impressions"
+msgstr ""
+
+msgid "A page Google still shows is set to noindex — traffic will be lost when Google re-crawls it."
+msgstr ""
+
+msgid "Remove noindex if the page should rank."
+msgstr ""
+
+msgid "Noindex URLs listed in the XML sitemap"
+msgstr ""
+
+msgid "Conflicting signals: the sitemap asks Google to index a page that says noindex."
+msgstr ""
+
+msgid "Remove these URLs from the sitemap or remove the noindex."
+msgstr ""
+
+msgid "Published pages blocked by robots.txt"
+msgstr ""
+
+msgid "Google cannot crawl blocked pages, so their content cannot rank."
+msgstr ""
+
+msgid "Adjust robots.txt rules (SEOlity → Robots)."
+msgstr ""
+
+msgid "Pages with meta nofollow"
+msgstr ""
+
+msgid "Links on these pages pass no signals to the rest of the site."
+msgstr ""
+
+msgid "Remove nofollow unless intentional."
+msgstr ""
+
+msgid "Missing canonical tag"
+msgstr ""
+
+msgid "Without a canonical, URL variants (parameters, trailing slashes) can be indexed as duplicates."
+msgstr ""
+
+msgid "Add a self-referencing canonical."
+msgstr ""
+
+msgid "Multiple canonical tags"
+msgstr ""
+
+msgid "Google ignores conflicting canonicals."
+msgstr ""
+
+msgid "Make sure only one plugin/theme outputs a canonical."
+msgstr ""
+
+msgid "Relative or invalid canonical URL"
+msgstr ""
+
+msgid "Canonicals should be absolute URLs."
+msgstr ""
+
+msgid "Use the absolute URL."
+msgstr ""
+
+msgid "Canonical points to a redirect or error page"
+msgstr ""
+
+msgid "Google will likely ignore it and may choose another canonical."
+msgstr ""
+
+msgid "Point the canonical at a 200, indexable URL."
+msgstr ""
+
+msgid "Canonicalized to another URL"
+msgstr ""
+
+msgid "This URL declares another URL as the primary version."
+msgstr ""
+
+msgid "Verify the canonical target is correct."
+msgstr ""
+
+msgid "No XML sitemap found"
+msgstr ""
+
+msgid "Sitemaps help Google discover and prioritize URLs."
+msgstr ""
+
+msgid "Enable SEOlity sitemaps or your SEO plugin sitemap and submit it in GSC."
+msgstr ""
+
+msgid "Sitemap lists redirects or broken URLs"
+msgstr ""
+
+msgid "Sitemaps should only list canonical, 200, indexable URLs."
+msgstr ""
+
+msgid "Exclude these URLs from the sitemap."
+msgstr ""
+
+msgid "robots.txt does not reference the sitemap"
+msgstr ""
+
+msgid "Listing the sitemap in robots.txt helps all crawlers find it."
+msgstr ""
+
+msgid "Add a Sitemap: line."
+msgstr ""
+
+msgid "Missing title tag"
+msgstr ""
+
+msgid "The title is the strongest on-page relevance signal and the SERP headline."
+msgstr ""
+
+msgid "Write a unique, descriptive title."
+msgstr ""
+
+msgid "Title too long (truncated in SERP)"
+msgstr ""
+
+msgid "Truncated titles hide your value proposition and lower CTR."
+msgstr ""
+
+msgid "Keep titles under ~580px / 60 characters."
+msgstr ""
+
+msgid "Title too short"
+msgstr ""
+
+msgid "Short titles miss qualifiers searchers look for."
+msgstr ""
+
+msgid "Add a benefit, qualifier or year."
+msgstr ""
+
+msgid "Multiple <title> tags"
+msgstr ""
+
+msgid "Usually a theme/plugin conflict."
+msgstr ""
+
+msgid "Ensure only one title is output."
+msgstr ""
+
+msgid "Duplicate titles"
+msgstr ""
+
+msgid "Duplicate titles make pages compete and confuse Google."
+msgstr ""
+
+msgid "Make every title unique."
+msgstr ""
+
+msgid "Missing meta description"
+msgstr ""
+
+msgid "Google writes its own snippet, often lowering CTR."
+msgstr ""
+
+msgid "Write a compelling 120–158 character description."
+msgstr ""
+
+msgid "Meta description too short or too long"
+msgstr ""
+
+msgid "Short descriptions under-sell; long ones get cut off."
+msgstr ""
+
+msgid "Aim for 120–158 characters."
+msgstr ""
+
+msgid "Duplicate meta descriptions"
+msgstr ""
+
+msgid "Duplicates reduce snippet relevance."
+msgstr ""
+
+msgid "Write unique descriptions."
+msgstr ""
+
+msgid "Missing Open Graph tags"
+msgstr ""
+
+msgid "Shares on social networks look broken without OG title/image."
+msgstr ""
+
+msgid "SEOlity can output OG tags automatically."
+msgstr ""
+
+msgid "Missing Twitter Card tags"
+msgstr ""
+
+msgid "X/Twitter previews fall back to plain links."
+msgstr ""
+
+msgid "Enable Twitter Cards output."
+msgstr ""
+
+msgid "Missing H1"
+msgstr ""
+
+msgid "The H1 tells users and Google what the page is about."
+msgstr ""
+
+msgid "Ensure the theme prints the title as H1 or add one."
+msgstr ""
+
+msgid "Multiple H1 headings"
+msgstr ""
+
+msgid "Not an error for Google, but a weak document outline for accessibility."
+msgstr ""
+
+msgid "Use one H1, then H2/H3."
+msgstr ""
+
+msgid "Long content without subheadings"
+msgstr ""
+
+msgid "Walls of text hurt scanning and passage ranking."
+msgstr ""
+
+msgid "Add descriptive H2/H3 sections."
+msgstr ""
+
+msgid "Heading levels skipped"
+msgstr ""
+
+msgid "Skipped levels break the outline for screen readers."
+msgstr ""
+
+msgid "Keep a logical heading hierarchy."
+msgstr ""
+
+msgid "Thin content"
+msgstr ""
+
+msgid "Pages with little unique content rarely rank and can drag down site quality."
+msgstr ""
+
+msgid "Expand with genuinely helpful information, merge with a related page, or noindex."
+msgstr ""
+
+msgid "Duplicate content"
+msgstr ""
+
+msgid "Identical pages split signals; Google picks one at random."
+msgstr ""
+
+msgid "Canonicalize, merge or rewrite."
+msgstr ""
+
+msgid "Near-duplicate content"
+msgstr ""
+
+msgid "Very similar pages may cannibalize each other."
+msgstr ""
+
+msgid "Differentiate the intent of each page or consolidate."
+msgstr ""
+
+msgid "Keyword cannibalization"
+msgstr ""
+
+msgid "Several URLs compete for the same query, diluting rankings."
+msgstr ""
+
+msgid "Merge, redirect, differentiate or re-target."
+msgstr ""
+
+msgid "Content may depend on JavaScript"
+msgstr ""
+
+msgid "Very little text in the HTML but many scripts — content rendered client-side may be indexed late or not at all."
+msgstr ""
+
+msgid "Server-render important content."
+msgstr ""
+
+msgid "Broken internal links"
+msgstr ""
+
+msgid "Links to 404 pages waste crawl budget and frustrate users."
+msgstr ""
+
+msgid "Fix the link or redirect the target."
+msgstr ""
+
+msgid "Internal links pointing to redirects"
+msgstr ""
+
+msgid "Extra hops slow crawling and users."
+msgstr ""
+
+msgid "Link directly to the final URL."
+msgstr ""
+
+msgid "Broken external links"
+msgstr ""
+
+msgid "Links to dead external pages hurt UX and trust."
+msgstr ""
+
+msgid "Update or remove the outdated links."
+msgstr ""
+
+msgid "Orphan pages (no internal links)"
+msgstr ""
+
+msgid "Pages without internal links are hard to discover and seem unimportant."
+msgstr ""
+
+msgid "Link to them from relevant pages (SEOlity → Internal Links)."
+msgstr ""
+
+msgid "Pages deeper than 4 clicks"
+msgstr ""
+
+msgid "Deep pages get crawled less often and receive less internal PageRank."
+msgstr ""
+
+msgid "Improve navigation, hubs and internal links."
+msgstr ""
+
+msgid "Excessive links on page"
+msgstr ""
+
+msgid "Hundreds of links dilute value and overwhelm users."
+msgstr ""
+
+msgid "Trim mega-menus/footers."
+msgstr ""
+
+msgid "Images without ALT text"
+msgstr ""
+
+msgid "ALT text is required for accessibility and helps image search."
+msgstr ""
+
+msgid "Generate descriptive ALT text (SEOlity → Images)."
+msgstr ""
+
+msgid "Broken images"
+msgstr ""
+
+msgid "Broken images look unprofessional and waste requests."
+msgstr ""
+
+msgid "Re-upload or remove the image."
+msgstr ""
+
+msgid "Images without width/height"
+msgstr ""
+
+msgid "Missing dimensions cause layout shift (CLS)."
+msgstr ""
+
+msgid "Set width and height attributes."
+msgstr ""
+
+msgid "No structured data"
+msgstr ""
+
+msgid "Structured data enables rich results and helps entity understanding."
+msgstr ""
+
+msgid "Enable SEOlity schema output."
+msgstr ""
+
+msgid "Invalid JSON-LD"
+msgstr ""
+
+msgid "Invalid structured data is ignored by Google."
+msgstr ""
+
+msgid "Fix the JSON syntax."
+msgstr ""
+
+msgid "Product pages without Product schema"
+msgstr ""
+
+msgid "Product rich results (price, stock, rating) increase CTR."
+msgstr ""
+
+msgid "Enable Product schema."
+msgstr ""
+
+msgid "No breadcrumbs"
+msgstr ""
+
+msgid "Breadcrumbs improve navigation and SERP display."
+msgstr ""
+
+msgid "Enable BreadcrumbList schema / breadcrumbs."
+msgstr ""
+
+msgid "Pages not served over HTTPS"
+msgstr ""
+
+msgid "HTTPS is a ranking signal and required for trust."
+msgstr ""
+
+msgid "Install SSL and redirect HTTP → HTTPS."
+msgstr ""
+
+msgid "Mixed content (HTTP resources on HTTPS)"
+msgstr ""
+
+msgid "Browsers block or warn on insecure resources."
+msgstr ""
+
+msgid "Load all resources over HTTPS."
+msgstr ""
+
+msgid "Missing viewport meta (not mobile-friendly)"
+msgstr ""
+
+msgid "Google uses mobile-first indexing."
+msgstr ""
+
+msgid "Add <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">."
+msgstr ""
+
+msgid "Missing html lang attribute"
+msgstr ""
+
+msgid "Helps search engines and screen readers pick the right language."
+msgstr ""
+
+msgid "Set the site language in Settings → General."
+msgstr ""
+
+msgid "Invalid hreflang annotations"
+msgstr ""
+
+msgid "Broken hreflang can show the wrong language version."
+msgstr ""
+
+msgid "Use valid ISO codes, self-references and x-default."
+msgstr ""
+
+msgid "Non-friendly URLs"
+msgstr ""
+
+msgid "Long, parameter-heavy or uppercase URLs are harder to share and may duplicate."
+msgstr ""
+
+msgid "Use short, lowercase, hyphenated slugs (redirect old ones)."
+msgstr ""
+
+msgid "Slow server response (TTFB)"
+msgstr ""
+
+msgid "Slow responses hurt Core Web Vitals and crawl rate."
+msgstr ""
+
+msgid "Enable page caching, upgrade hosting, reduce plugins."
+msgstr ""
+
+msgid "Very large HTML document"
+msgstr ""
+
+msgid "Heavy HTML slows rendering on mobile."
+msgstr ""
+
+msgid "Reduce inline code and DOM size."
+msgstr ""
+
+msgid "Poor Core Web Vitals"
+msgstr ""
+
+msgid "Poor LCP/INP/CLS hurt UX and are part of page experience signals."
+msgstr ""
+
+msgid "Optimize images, fonts, scripts and caching."
+msgstr ""
+
+#, php-format
+msgid "%1$d media library images have no ALT text (%2$d products affected)"
+msgstr ""
+
+msgid "Images without ALT text are invisible to screen readers and Google Images."
+msgstr ""
+
+msgid "Use Bulk Optimize ALT — SEOlity writes context-aware ALT text from product/page data."
+msgstr ""
+
+#, php-format
+msgid "%d 404 URLs are linked from your own pages"
+msgstr ""
+
+msgid "Visitors and crawlers keep hitting dead ends from inside your site."
+msgstr ""
+
+msgid "Redirect them to the suggested targets (SEOlity → 404) and fix the source links."
+msgstr ""
+
+#, php-format
+msgid "%d queries have several of your pages competing for them"
+msgstr ""
+
+msgid "Competing URLs split clicks and links, so none of them ranks as well as one strong page would."
+msgstr ""
+
+msgid "Merge, redirect, differentiate or re-target (AI advice per query in Keywords → Cannibalization)."
+msgstr ""
+
+#, php-format
+msgid "%1$d pages have CTR far below expected for their position (≈%2$d extra clicks/month possible)"
+msgstr ""
+
+msgid "Google already shows these pages, but searchers do not click — titles/descriptions don't match the intent or don't stand out."
+msgstr ""
+
+msgid "Rewrite title + meta description with SEOlity (based on the real queries)."
+msgstr ""
+
+#, php-format
+msgid "%d products have no short description"
+msgstr ""
+
+msgid "The short description is the most visible sales copy on product pages and is often used as snippet text."
+msgstr ""
+
+msgid "Generate benefit-focused short descriptions with AI Product Optimizer."
+msgstr ""
+
+#, php-format
+msgid "Affected pages earn ~%d clicks / 28 days — fixing protects and grows that traffic."
+msgstr ""
+
+msgid "Blocks indexing or user access — fix first."
+msgstr ""
+
+msgid "Likely ranking/CTR impact."
+msgstr ""
+
+msgid "Incremental quality improvement."
+msgstr ""
+
+msgid "Not enough search impressions to judge the effect."
+msgstr ""
+
+#, php-format
+msgid "Clicks %1$s%%, CTR %2$s%%, position %3$s vs. before; site-wide clicks changed %4$s%% in the same period (control)."
+msgstr ""
+
+#, php-format
+msgid "Experiment had a negative effect: %s"
+msgstr ""
+
+msgid "You can revert the change from Experiments."
+msgstr ""
+
+msgid "Experiment not found."
+msgstr ""
+
+#, php-format
+msgid "Changing %1$s on %2$s pages moved %3$s by %4$s on average (%5$d experiments, %6$d positive)."
+msgstr ""
+
+msgid "Frequently asked questions"
+msgstr ""
+
+msgid "Enter your Google OAuth Client ID and Client Secret first."
+msgstr ""
+
+msgid "You are not allowed to connect Search Console."
+msgstr ""
+
+msgid "Google Search Console is not connected."
+msgstr ""
+
+msgid "Search Console connection expired"
+msgstr ""
+
+msgid "Google revoked access. Reconnect Search Console to keep data flowing."
+msgstr ""
+
+msgid "Search Console is not connected."
+msgstr ""
+
+msgid "Pages with critical issues"
+msgstr ""
+
+msgid "Pages with high security/mobile/server issues"
+msgstr ""
+
+msgid "Status codes, redirects, HTTPS, mixed content, mobile viewport, canonical conflicts."
+msgstr ""
+
+msgid "Average on-page score"
+msgstr ""
+
+msgid "Thin pages"
+msgstr ""
+
+msgid "Duplicate / near-duplicate pages"
+msgstr ""
+
+msgid "Pages with missing/duplicate title or description"
+msgstr ""
+
+msgid "On-page quality, depth, uniqueness and metadata."
+msgstr ""
+
+msgid "Published pages that are indexable"
+msgstr ""
+
+msgid "Indexing conflicts (noindex w/ traffic, robots-blocked, bad canonicals)"
+msgstr ""
+
+msgid "Sitemap problems"
+msgstr ""
+
+msgid "yes"
+msgstr ""
+
+msgid "no"
+msgstr ""
+
+msgid "Can Google crawl and index the pages you want indexed?"
+msgstr ""
+
+msgid "Orphan pages"
+msgstr ""
+
+msgid "Pages with broken internal links"
+msgstr ""
+
+msgid "Link graph health: discoverability, depth and broken links."
+msgstr ""
+
+msgid "Pages without (required) structured data"
+msgstr ""
+
+msgid "Pages with invalid JSON-LD"
+msgstr ""
+
+msgid "Structured data coverage and validity."
+msgstr ""
+
+msgid "Average server response (ms)"
+msgstr ""
+
+msgid "Pages with poor Core Web Vitals"
+msgstr ""
+
+msgid "Slow pages (>1.5s TTFB)"
+msgstr ""
+
+msgid "Server speed and Core Web Vitals (PageSpeed Insights)."
+msgstr ""
+
+msgid "Images without ALT"
+msgstr ""
+
+msgid "Generic / stuffed / duplicate ALT"
+msgstr ""
+
+msgid "Accessibility and image-search readiness of the media library."
+msgstr ""
+
+msgid "Clicks vs previous 28 days"
+msgstr ""
+
+msgid "Average position change"
+msgstr ""
+
+msgid "Pages with CTR below expectation"
+msgstr ""
+
+msgid "Real Google performance trend (Search Console)."
+msgstr ""
+
+msgid "Queries in the top 10"
+msgstr ""
+
+msgid "Cannibalized queries"
+msgstr ""
+
+msgid "Ranking distribution and keyword conflicts."
+msgstr ""
+
+msgid "Competitors monitored"
+msgstr ""
+
+msgid "Open content gaps"
+msgstr ""
+
+msgid "How much ground competitors cover that you don't."
+msgstr ""
+
+msgid "Some categories have no data yet and are excluded rather than guessed (connect Search Console, run an audit, add competitors)."
+msgstr ""
+
+msgid "No images selected."
+msgstr ""
+
+msgid "Enter at least one seed keyword."
+msgstr ""
+
+msgid "No current cannibalization found for this query."
+msgstr ""
+
+msgid "Title and content are required."
+msgstr ""
+
+#, php-format
+msgid "Topically related page that already mentions \"%s\"; the target has few internal links."
+msgstr ""
+
+msgid "Run a site audit first so SEOlity knows your link graph."
+msgstr ""
+
+msgid "Related page that mentions the target topic."
+msgstr ""
+
+msgid "Suggestion not found."
+msgstr ""
+
+msgid "The anchor text is no longer present in the source content."
+msgstr ""
+
+#, php-format
+msgid "Add internal link \"%1$s\" → %2$s"
+msgstr ""
+
+msgid "Plan item not found."
+msgstr ""
+
+msgid "You cannot create posts."
+msgstr ""
+
+msgid "SEOlity brief — replace the notes below with your own expertise, examples and sources before publishing."
+msgstr ""
+
+msgid "Every minute (SEOlity queue)"
+msgstr ""
+
+#, php-format
+msgid "Rewrite the title & meta description of \"%s\""
+msgstr ""
+
+#, php-format
+msgid "This page has %1$s impressions but a %2$s%% CTR (expected ≈%3$s%% at position %4$s). Better snippet copy could bring ≈%5$d more clicks per month."
+msgstr ""
+
+#, php-format
+msgid "Deepen the content of \"%s\" to reach page 1"
+msgstr ""
+
+#, php-format
+msgid "This URL ranks for %1$d queries at positions 8–20 (avg. %2$s). Improving depth, intent match and internal links usually moves such pages onto page 1."
+msgstr ""
+
+#, php-format
+msgid "Investigate the traffic drop on \"%s\""
+msgstr ""
+
+#, php-format
+msgid "Clicks fell %1$s%% (%2$d → %3$d) versus the previous 28 days."
+msgstr ""
+
+msgid "The page was changed recently — check the experiment results."
+msgstr ""
+
+msgid "Refresh outdated information, compare against current top results and check for cannibalization."
+msgstr ""
+
+#, php-format
+msgid "Resolve cannibalization for \"%s\""
+msgstr ""
+
+#, php-format
+msgid "%d of your URLs share the impressions for this query, so none of them ranks as well as it could."
+msgstr ""
+
+#, php-format
+msgid "Add an FAQ section to \"%s\""
+msgstr ""
+
+#, php-format
+msgid "Searchers reach this page with %d question-style queries. Answering them directly improves relevance and can win FAQ/PAA visibility."
+msgstr ""
+
+#, php-format
+msgid "Remove noindex from \"%s\""
+msgstr ""
+
+#, php-format
+msgid "The page is set to noindex but still received %d impressions in 28 days — it will disappear from Google on the next crawl."
+msgstr ""
+
+#, php-format
+msgid "Redirect the broken URL %s"
+msgstr ""
+
+#, php-format
+msgid "It returns 404 but %d of your pages still link to it."
+msgstr ""
+
+#, php-format
+msgid "Best match: %s"
+msgstr ""
+
+#, php-format
+msgid "Link to the orphan page \"%s\""
+msgstr ""
+
+msgid "No page on your site links here, so crawlers rarely visit it and it receives no internal authority."
+msgstr ""
+
+#, php-format
+msgid "Merge or noindex the thin page \"%s\""
+msgstr ""
+
+#, php-format
+msgid "Expand the thin page \"%s\""
+msgstr ""
+
+#, php-format
+msgid "Only %d words and zero search impressions in 90 days. Thin pages can lower overall site quality — merge it into a stronger page (301) or noindex it."
+msgstr ""
+
+#, php-format
+msgid "Only %d words, yet Google already shows it. Adding genuinely useful depth is likely to lift rankings."
+msgstr ""
+
+#, php-format
+msgid "Write meta descriptions for %d pages"
+msgstr ""
+
+msgid "Without a meta description Google improvises a snippet, which usually lowers CTR."
+msgstr ""
+
+#, php-format
+msgid "Break %d redirect loop(s)"
+msgstr ""
+
+msgid "Redirect loops make URLs completely inaccessible to users and Google."
+msgstr ""
+
+#, php-format
+msgid "Link \"%1$s\" from %2$s to %3$s"
+msgstr ""
+
+#, php-format
+msgid "Optimize product \"%s\""
+msgstr ""
+
+msgid "Product page has not been analyzed yet and may lack descriptions, meta or ALT text."
+msgstr ""
+
+#, php-format
+msgid "On-page score is %d/100 — weak descriptions, keyword coverage or meta tags."
+msgstr ""
+
+#, php-format
+msgid "Strengthen category \"%s\""
+msgstr ""
+
+#, php-format
+msgid "This category earns %s impressions but has little or no descriptive content. A helpful intro, buying guidance and FAQs improve relevance."
+msgstr ""
+
+#, php-format
+msgid "Create \"%1$s\" (gap vs. %2$s)"
+msgstr ""
+
+#, php-format
+msgid "Flatten %d redirect chain(s)"
+msgstr ""
+
+msgid "Each extra hop slows users and crawlers; point old URLs straight to their final destination."
+msgstr ""
+
+msgid "Recommendation not found."
+msgstr ""
+
+msgid "Higher CTR at the same rankings → more clicks within 2–4 weeks."
+msgstr ""
+
+msgid "Better rankings for page-2 queries within 4–8 weeks."
+msgstr ""
+
+msgid "The page stays in / returns to Google's index."
+msgstr ""
+
+msgid "Recovered link equity and fewer dead ends for users."
+msgstr ""
+
+msgid "Faster discovery, more internal authority, improved rankings."
+msgstr ""
+
+msgid "One stronger URL ranks higher for the contested query."
+msgstr ""
+
+msgid "Better coverage of question queries; potential PAA visibility."
+msgstr ""
+
+msgid "More relevance and authority for the target page."
+msgstr ""
+
+msgid "New rankings for topics competitors already win."
+msgstr ""
+
+msgid "Improved SEO quality for the affected URLs."
+msgstr ""
+
+msgid "Invalid redirect type."
+msgstr ""
+
+msgid "Invalid regular expression."
+msgstr ""
+
+msgid "Target URL is required."
+msgstr ""
+
+msgid "Source and target are the same."
+msgstr ""
+
+msgid "This redirect would create a loop."
+msgstr ""
+
+msgid "Redirect not found."
+msgstr ""
+
+msgid "Entry not found."
+msgstr ""
+
+#, php-format
+msgid "%1$s %2$s SEO report %3$s – %4$s"
+msgstr ""
+
+msgid "Report not found."
+msgstr ""
+
+msgid "Print / Save as PDF"
+msgstr ""
+
+msgid "Health score"
+msgstr ""
+
+msgid "Clicks"
+msgstr ""
+
+msgid "Impressions"
+msgstr ""
+
+msgid "Avg. position"
+msgstr ""
+
+msgid "Top pages"
+msgstr ""
+
+msgid "Page"
+msgstr ""
+
+msgid "Position"
+msgstr ""
+
+msgid "Top queries"
+msgstr ""
+
+msgid "Query"
+msgstr ""
+
+msgid "Issues"
+msgstr ""
+
+#, php-format
+msgid "%1$d new issues, %2$d fixed in this period."
+msgstr ""
+
+msgid "Diagnosis"
+msgstr ""
+
+msgid "Priority"
+msgstr ""
+
+msgid "Improvements & AI changes"
+msgstr ""
+
+#, php-format
+msgid "%1$d changes applied, %2$d reverted."
+msgstr ""
+
+msgid "Experiment"
+msgstr ""
+
+msgid "Outcome"
+msgstr ""
+
+msgid "Why"
+msgstr ""
+
+msgid "Competitor"
+msgstr ""
+
+msgid "Pages"
+msgstr ""
+
+msgid "New"
+msgstr ""
+
+msgid "Summary"
+msgstr ""
+
+msgid "Recommended next actions"
+msgstr ""
+
+msgid "Product image without ALT → Generate ALT"
+msgstr ""
+
+#, php-format
+msgid "CTR < 1% with > 500 impressions → Rewrite title + meta"
+msgstr ""
+
+msgid "New post published → Suggest internal links"
+msgstr ""
+
+msgid "Published without meta description → Write one"
+msgstr ""
+
+msgid "Uploaded image → Generate ALT"
+msgstr ""
+
+msgid "Ranking 8–20 → Recommend content refresh"
+msgstr ""
+
+msgid "Rule needs a name and a valid trigger."
+msgstr ""
+
+msgid "Add at least one action."
+msgstr ""
+
+#, php-format
+msgid "Rule matched: %1$s (%2$s)"
+msgstr ""
+
+#, php-format
+msgid "%1$s: %2$s"
+msgstr ""
+
+msgid "Matched your automation rule."
+msgstr ""
+
+msgid "Home"
+msgstr ""
+
+#, php-format
+msgid "%1$s is missing required property \"%2$s\"."
+msgstr ""
+
+#, php-format
+msgid "%1$s is missing recommended property \"%2$s\"."
+msgstr ""
+
+msgid "Product needs offers, review or aggregateRating to be eligible for rich results."
+msgstr ""
+
+msgid "ratingValue exceeds bestRating."
+msgstr ""
+
+msgid "Only URLs of this site can be checked."
+msgstr ""
+
+msgid "Product page without Product schema — enable WooCommerce structured data or SEOlity schema."
+msgstr ""
+
+msgid "Blog post without Article/BlogPosting schema."
+msgstr ""
+
+#, php-format
+msgid "Page contains %d question headings — FAQ schema could describe them."
+msgstr ""
+
+msgid "Add BreadcrumbList schema."
+msgstr ""
+
+msgid "Homepage has no Organization/LocalBusiness entity — important for the Knowledge Panel and E-E-A-T."
+msgstr ""
+
+msgid "GitHub storage is not configured."
+msgstr ""
+
+msgid "Repository must look like owner/name."
+msgstr ""
+
+msgid "robots.txt is empty or missing. That allows all crawling, but you lose the chance to block crawl waste and reference your sitemap."
+msgstr ""
+
+msgid "WordPress \"Discourage search engines\" is ON — the whole site is asking not to be indexed."
+msgstr ""
+
+msgid "The homepage is blocked for Googlebot."
+msgstr ""
+
+msgid "uploads (images)"
+msgstr ""
+
+msgid "core JavaScript"
+msgstr ""
+
+msgid "theme CSS"
+msgstr ""
+
+#, php-format
+msgid "Blocking %s prevents Google from rendering pages correctly."
+msgstr ""
+
+msgid "admin-ajax.php is blocked; some themes load content through it. WordPress default allows it."
+msgstr ""
+
+msgid "Crawl-delay is ignored by Google (manage crawl rate in Search Console instead)."
+msgstr ""
+
+#, php-format
+msgid "Unknown directive \"%s\" will be ignored."
+msgstr ""
+
+#, php-format
+msgid "Line %1$d could not be parsed: %2$s"
+msgstr ""
+
+msgid "Add a Sitemap: line pointing to your XML sitemap."
+msgstr ""
+
+msgid "internal search results"
+msgstr ""
+
+msgid "add-to-cart URLs"
+msgstr ""
+
+msgid "sorting parameters"
+msgstr ""
+
+msgid "layered-nav filter parameters"
+msgstr ""
+
+msgid "cart page"
+msgstr ""
+
+msgid "checkout page"
+msgstr ""
+
+msgid "account pages"
+msgstr ""
+
+#, php-format
+msgid "Consider blocking %1$s to save crawl budget: Disallow: %2$s"
+msgstr ""
+
+msgid "Invalid XML"
+msgstr ""
+
+msgid "No sitemap found. Enable SEOlity sitemap enhancements (or your SEO plugin sitemap) and submit it in Search Console."
+msgstr ""
+
+#, php-format
+msgid "Remove %1$d URL(s) from the sitemap (%2$s). Sitemaps should only contain canonical, indexable 200 pages."
+msgstr ""
+
+#, php-format
+msgid "%d indexable published page(s) are not in any sitemap."
+msgstr ""
+
+#, php-format
+msgid "Sitemap %s has no <lastmod> values — accurate lastmod helps Google prioritize recrawls."
+msgstr ""
+
+#, php-format
+msgid "Sitemap %s exceeds 50,000 URLs and will be rejected."
+msgstr ""
+
+msgid "Product not found (is WooCommerce active?)."
+msgstr ""
+
+msgid "ALT generated from product data."
+msgstr ""
+
+#, php-format
+msgid "%d very similar product(s) may compete for the same keywords — differentiate titles/descriptions or canonicalize variants."
+msgstr ""
+
+msgid "SEOlity requires PHP 7.4 or newer."
+msgstr ""
+
+msgid "Nothing here yet"
+msgstr ""
+
+msgid "Previous"
+msgstr ""
+
+#, php-format
+msgid "Page %1$s of %2$s"
+msgstr ""
+
+msgid "Next"
+msgstr ""
+
+msgid "Create redirect"
+msgstr ""
+
+msgid "From"
+msgstr ""
+
+msgid "To"
+msgstr ""
+
+msgid "Cancel"
+msgstr ""
+
+msgid "Create 301 redirect"
+msgstr ""
+
+msgid "Redirect created."
+msgstr ""
+
+msgid "Suggestions are ready for review."
+msgstr ""
+
+#, php-format
+msgid "%s items queued for background AI processing."
+msgstr ""
+
+#, php-format
+msgid "%s redirect chains fixed."
+msgstr ""
+
+msgid "Added to the content planner."
+msgstr ""
+
+msgid "Impact"
+msgstr ""
+
+msgid "Effort"
+msgstr ""
+
+msgid "Confidence"
+msgstr ""
+
+msgid "Do it"
+msgstr ""
+
+msgid "Why?"
+msgstr ""
+
+msgid "Mark as done"
+msgstr ""
+
+msgid "Dismiss"
+msgstr ""
+
+msgid "SEOlity navigation"
+msgstr ""
+
+msgid "Toggle dark mode"
+msgstr ""
+
+msgid "AI SEO Intelligence for WordPress"
+msgstr ""
+
+msgid "Menu"
+msgstr ""
+
+msgid "Manual approval"
+msgstr ""
+
+msgid "Semi-automatic"
+msgstr ""
+
+msgid "Autonomous"
+msgstr ""
+
+msgid "AI connected"
+msgstr ""
+
+msgid "AI not configured"
+msgstr ""
+
+msgid "Search Console connected"
+msgstr ""
+
+msgid "Search Console not connected"
+msgstr ""
+
+#, php-format
+msgid "%s changes awaiting review"
+msgstr ""
+
+msgid "Google Search Console connected. Now choose a property."
+msgstr ""
+
+msgid "Google access was denied."
+msgstr ""
+
+msgid "The connection link expired. Please try again."
+msgstr ""
+
+msgid "Google did not return a refresh token. Remove SEOlity from your Google account permissions and connect again."
+msgstr ""
+
+msgid "Your SEO command center: health, traffic, opportunities and AI activity."
+msgstr ""
+
+msgid "SEO Health Score"
+msgstr ""
+
+msgid "Why this score?"
+msgstr ""
+
+msgid "Organic clicks"
+msgstr ""
+
+msgid "Connect Search Console"
+msgstr ""
+
+msgid "CTR"
+msgstr ""
+
+msgid "Indexable pages"
+msgstr ""
+
+#, php-format
+msgid "%s crawled"
+msgstr ""
+
+msgid "Critical issues"
+msgstr ""
+
+msgid "High priority opportunities"
+msgstr ""
+
+msgid "Optimization opportunities"
+msgstr ""
+
+msgid "Improvements"
+msgstr ""
+
+msgid "No recommendations yet"
+msgstr ""
+
+msgid "Run a site audit and connect Search Console — SEOlity will tell you exactly what to do."
+msgstr ""
+
+msgid "See all"
+msgstr ""
+
+msgid "Click & impression trend"
+msgstr ""
+
+msgid "No Search Console data"
+msgstr ""
+
+msgid "Connect Google Search Console to see real traffic."
+msgstr ""
+
+msgid "Connect"
+msgstr ""
+
+msgid "Errors"
+msgstr ""
+
+msgid "Critical"
+msgstr ""
+
+msgid "High"
+msgstr ""
+
+msgid "Medium"
+msgstr ""
+
+msgid "Low"
+msgstr ""
+
+msgid "Open audit"
+msgstr ""
+
+msgid "Running"
+msgstr ""
+
+msgid "Positive"
+msgstr ""
+
+msgid "Negative"
+msgstr ""
+
+msgid "Neutral"
+msgstr ""
+
+msgid "Details"
+msgstr ""
+
+msgid "AI actions"
+msgstr ""
+
+msgid "Applied (30 days)"
+msgstr ""
+
+msgid "Awaiting review"
+msgstr ""
+
+msgid "Review"
+msgstr ""
+
+msgid "All quiet"
+msgstr ""
+
+msgid "No new alerts."
+msgstr ""
+
+msgid "All alerts"
+msgstr ""
+
+msgid "Competitor status"
+msgstr ""
+
+msgid "New pages"
+msgstr ""
+
+msgid "Last analyzed"
+msgstr ""
+
+msgid "No competitors yet"
+msgstr ""
+
+msgid "Add competitors to monitor their content and find gaps."
+msgstr ""
+
+msgid "Add competitor"
+msgstr ""
+
+msgid "Connect an AI provider"
+msgstr ""
+
+msgid "Add an API key (Anthropic, OpenAI, Gemini, OpenRouter) or a local LLM."
+msgstr ""
+
+msgid "Connect Google Search Console"
+msgstr ""
+
+msgid "Real clicks, impressions and queries power every recommendation."
+msgstr ""
+
+msgid "Run your first site audit"
+msgstr ""
+
+msgid "SEOlity crawls your site in the background without slowing it down."
+msgstr ""
+
+msgid "Add competitors"
+msgstr ""
+
+msgid "Monitor competitor content and discover gaps."
+msgstr ""
+
+msgid "Get started"
+msgstr ""
+
+msgid "Start"
+msgstr ""
+
+msgid "No briefing yet"
+msgstr ""
+
+msgid "Your daily SEO briefing is generated every morning."
+msgstr ""
+
+msgid "Generate now"
+msgstr ""
+
+msgid "Do today"
+msgstr ""
+
+msgid "Today's SEO Briefing"
+msgstr ""
+
+msgid "What Should I Do Today?"
+msgstr ""
+
+msgid "AI-prioritized actions ranked by impact, effort and confidence. Every suggestion explains itself — click “Why?”."
+msgstr ""
+
+msgid "Refresh recommendations"
+msgstr ""
+
+msgid "Refreshing in the background — reload in a minute."
+msgstr ""
+
+msgid "All"
+msgstr ""
+
+#, php-format
+msgid "%s AI changes are waiting for your approval."
+msgstr ""
+
+msgid "Review now"
+msgstr ""
+
+msgid "Nothing to do here"
+msgstr ""
+
+msgid "Great job — or SEOlity needs more data (audit + Search Console)."
+msgstr ""
+
+msgid "Ask anything about your site. Answers are grounded in your real Search Console, audit, competitor and experiment data."
+msgstr ""
+
+msgid "New conversation"
+msgstr ""
+
+msgid "e.g. Why did my organic sales drop this month?"
+msgstr ""
+
+msgid "Send"
+msgstr ""
+
+msgid "Why has my organic traffic dropped?"
+msgstr ""
+
+msgid "Why does this product not rank?"
+msgstr ""
+
+msgid "Which pages should I optimize today?"
+msgstr ""
+
+msgid "What did my competitor do recently?"
+msgstr ""
+
+msgid "Why does this page have a low CTR?"
+msgstr ""
+
+msgid "Should I redirect this URL?"
+msgstr ""
+
+msgid "Data used"
+msgstr ""
+
+msgid "Analyzing your data…"
+msgstr ""
+
+msgid "Hi! I am your AI SEO strategist. Ask me about traffic, rankings, products, competitors or what to do next."
+msgstr ""
+
+msgid "Recent conversations"
+msgstr ""
+
+msgid "Every change is previewed, approved, logged and versioned. Nothing destructive happens without your approval unless you enable Autonomous mode."
+msgstr ""
+
+msgid "All statuses"
+msgstr ""
+
+msgid "Pending approval"
+msgstr ""
+
+msgid "Applied"
+msgstr ""
+
+msgid "Rejected"
+msgstr ""
+
+msgid "Reverted"
+msgstr ""
+
+msgid "Apply all in this batch"
+msgstr ""
+
+msgid "Reject all"
+msgstr ""
+
+msgid "Item"
+msgstr ""
+
+msgid "After"
+msgstr ""
+
+msgid "Risk"
+msgstr ""
+
+msgid "Status"
+msgstr ""
+
+msgid "Source"
+msgstr ""
+
+msgid "Score"
+msgstr ""
+
+msgid "Date"
+msgstr ""
+
+msgid "View"
+msgstr ""
+
+msgid "History"
+msgstr ""
+
+msgid "No changes"
+msgstr ""
+
+msgid "AI suggestions you generate will appear here for approval."
+msgstr ""
+
+msgid "Internal link suggestions"
+msgstr ""
+
+msgid "No good link opportunities found"
+msgstr ""
+
+msgid "SEOlity only suggests links whose anchor text already exists in the source content."
+msgstr ""
+
+msgid "Anchor"
+msgstr ""
+
+msgid "Target"
+msgstr ""
+
+msgid "Relevance"
+msgstr ""
+
+msgid "Reason"
+msgstr ""
+
+msgid "Apply"
+msgstr ""
+
+#, php-format
+msgid "Cannibalization: %s"
+msgstr ""
+
+msgid "Merge"
+msgstr ""
+
+msgid "Redirect"
+msgstr ""
+
+msgid "Differentiate"
+msgstr ""
+
+msgid "Internal link"
+msgstr ""
+
+msgid "Change keyword target"
+msgstr ""
+
+msgid "No action"
+msgstr ""
+
+msgid "Recommended action"
+msgstr ""
+
+msgid "Primary URL"
+msgstr ""
+
+msgid "Share"
+msgstr ""
+
+#, php-format
+msgid "Redirect %s → primary"
+msgstr ""
+
+#, php-format
+msgid "Create a 301 redirect from %1$s to %2$s?"
+msgstr ""
+
+msgid "SEO Score Before"
+msgstr ""
+
+msgid "SEO Score After"
+msgstr ""
+
+msgid "Proposed changes"
+msgstr ""
+
+msgid "Field"
+msgstr ""
+
+msgid "Image ALT"
+msgstr ""
+
+msgid "Preview"
+msgstr ""
+
+msgid "Applied."
+msgstr ""
+
+msgid "Focus"
+msgstr ""
+
+msgid "Secondary"
+msgstr ""
+
+msgid "Long-tail"
+msgstr ""
+
+msgid "Semantic"
+msgstr ""
+
+msgid "Benefits"
+msgstr ""
+
+msgid "Content weaknesses"
+msgstr ""
+
+msgid "Missing attributes"
+msgstr ""
+
+msgid "Suggested categories"
+msgstr ""
+
+msgid "Suggested tags"
+msgstr ""
+
+msgid "CTA ideas"
+msgstr ""
+
+msgid "Competitor gaps"
+msgstr ""
+
+msgid "Internal link ideas"
+msgstr ""
+
+msgid "Apply all"
+msgstr ""
+
+msgid "All changes applied."
+msgstr ""
+
+msgid "Save the item first."
+msgstr ""
+
+msgid "Writing FAQs from your content and real question queries…"
+msgstr ""
+
+msgid "Run a site audit so SEOlity knows your pages, then try again."
+msgstr ""
+
+msgid "The anchor text was not found in the current editor content."
+msgstr ""
+
+msgid "Inserted"
+msgstr ""
+
+msgid "Link inserted. Save the post to keep it."
+msgstr ""
+
+msgid "Insert link"
+msgstr ""
+
+msgid "Analyzing product data, queries and competitors…"
+msgstr ""
+
+msgid "Inserted into the editor. Save the product to keep it."
+msgstr ""
+
+msgid "Insert into editor"
+msgstr ""
+
+msgid "Google will generate a snippet from your content. Write a description to control it."
+msgstr ""
+
+msgid "Select a Text Editor or Heading widget first."
+msgstr ""
+
+msgid "Analyzing…"
+msgstr ""
+
+msgid "Keyword coverage"
+msgstr ""
+
+msgid "Search intent match"
+msgstr ""
+
+msgid "Readability"
+msgstr ""
+
+msgid "Content depth"
+msgstr ""
+
+msgid "Words"
+msgstr ""
+
+msgid "Optimize short description"
+msgstr ""
+
+msgid "Optimize excerpt"
+msgstr ""
+
+msgid "Live SEO analysis"
+msgstr ""
+
+msgid "Approval workflow, SEO rules engine, background queue and the full audit log."
+msgstr ""
+
+msgid "Approval workflow"
+msgstr ""
+
+msgid "Rules"
+msgstr ""
+
+msgid "Background queue"
+msgstr ""
+
+msgid "Audit log"
+msgstr ""
+
+msgid "Manual"
+msgstr ""
+
+msgid "Every change needs your approval (recommended to start)."
+msgstr ""
+
+msgid "Semi-Automatic"
+msgstr ""
+
+msgid "Low-risk changes (ALT text, meta descriptions, focus keywords) are applied automatically; everything else waits for approval."
+msgstr ""
+
+msgid "AI acts within your rules: low and medium-risk changes are applied automatically. High-risk changes (content, titles, slugs, noindex, redirects) always need approval."
+msgstr ""
+
+msgid "Approval mode updated."
+msgstr ""
+
+msgid "All changes — automatic or manual — are logged, versioned and can be undone."
+msgstr ""
+
+msgid "Post type"
+msgstr ""
+
+msgid "Has image without ALT"
+msgstr ""
+
+msgid "Meta description missing"
+msgstr ""
+
+msgid "SEO title length >"
+msgstr ""
+
+msgid "SEO score <"
+msgstr ""
+
+msgid "Word count <"
+msgstr ""
+
+#, php-format
+msgid "CTR % <"
+msgstr ""
+
+msgid "Impressions (28d) >"
+msgstr ""
+
+msgid "Position >"
+msgstr ""
+
+msgid "Position <"
+msgstr ""
+
+msgid "Has FAQ"
+msgstr ""
+
+msgid "Product without short description"
+msgstr ""
+
+msgid "Internal links <"
+msgstr ""
+
+msgid "Generate ALT"
+msgstr ""
+
+msgid "Analyze & rewrite title + meta"
+msgstr ""
+
+msgid "Suggest internal links"
+msgstr ""
+
+msgid "Propose noindex"
+msgstr ""
+
+msgid "Send alert"
+msgstr ""
+
+msgid "Create recommendation"
+msgstr ""
+
+msgid "Content published"
+msgstr ""
+
+msgid "Content updated"
+msgstr ""
+
+msgid "Image uploaded"
+msgstr ""
+
+msgid "Daily check"
+msgstr ""
+
+msgid "New rule"
+msgstr ""
+
+msgid "Templates:"
+msgstr ""
+
+msgid "Rule"
+msgstr ""
+
+msgid "IF"
+msgstr ""
+
+msgid "THEN"
+msgstr ""
+
+msgid "Trigger"
+msgstr ""
+
+msgid "Mode"
+msgstr ""
+
+msgid "Auto (within approval mode)"
+msgstr ""
+
+msgid "Suggest only"
+msgstr ""
+
+msgid "Runs"
+msgstr ""
+
+msgid "Last run"
+msgstr ""
+
+msgid "Edit"
+msgstr ""
+
+msgid "Delete this rule?"
+msgstr ""
+
+msgid "Delete"
+msgstr ""
+
+msgid "No rules yet"
+msgstr ""
+
+msgid "Example: IF product has image without ALT THEN generate ALT."
+msgstr ""
+
+msgid "Edit rule"
+msgstr ""
+
+msgid "Name"
+msgstr ""
+
+msgid "When"
+msgstr ""
+
+msgid "IF (all conditions)"
+msgstr ""
+
+msgid "Condition"
+msgstr ""
+
+msgid "Save rule"
+msgstr ""
+
+msgid "Pending"
+msgstr ""
+
+msgid "Done (3 days)"
+msgstr ""
+
+msgid "Failed"
+msgstr ""
+
+msgid "Run queue now"
+msgstr ""
+
+#, php-format
+msgid "%s jobs processed."
+msgstr ""
+
+msgid "Retry failed"
+msgstr ""
+
+msgid "Next cron tick"
+msgstr ""
+
+msgid "Tip: for busy or low-traffic sites, add a real system cron that runs “wp seolity queue run” (or hits wp-cron.php) every minute."
+msgstr ""
+
+msgid "Job"
+msgstr ""
+
+msgid "Attempts"
+msgstr ""
+
+msgid "Error"
+msgstr ""
+
+msgid "Created"
+msgstr ""
+
+msgid "User"
+msgstr ""
+
+msgid "System"
+msgstr ""
+
+msgid "Action"
+msgstr ""
+
+msgid "Object"
+msgstr ""
+
+msgid "SEO Knowledge Base"
+msgstr ""
+
+msgid "Curated Persian & English SEO best practices that ground every AI answer. Synced from GitHub, where a scheduled workflow distils the best Iranian and international SEO documentation."
+msgstr ""
+
+msgid "Sync from GitHub"
+msgstr ""
+
+#, php-format
+msgid "Synced: %1$s bundled, %2$s from GitHub."
+msgstr ""
+
+msgid "Repository"
+msgstr ""
+
+msgid "Last sync"
+msgstr ""
+
+msgid "Title"
+msgstr ""
+
+msgid "topic"
+msgstr ""
+
+msgid "Your own SEO rule, brand guideline or lesson learned…"
+msgstr ""
+
+msgid "Add your own knowledge"
+msgstr ""
+
+msgid "Also commit it to the GitHub knowledge repository"
+msgstr ""
+
+msgid "Save note"
+msgstr ""
+
+msgid "Knowledge saved."
+msgstr ""
+
+msgid "Save settings"
+msgstr ""
+
+msgid "Settings saved."
+msgstr ""
+
+msgid "(saved — enter a new value to replace)"
+msgstr ""
+
+msgid "Save"
+msgstr ""
+
+msgid "(saved)"
+msgstr ""
+
+msgid "Saved securely (encrypted)."
+msgstr ""
+
+msgid "Remove"
+msgstr ""
+
+msgid "Removed."
+msgstr ""
+
+msgid "Write-only: secrets are encrypted on the server and never sent back to the browser."
+msgstr ""
+
+msgid "configured"
+msgstr ""
+
+msgid "not configured"
+msgstr ""
+
+msgid "Test"
+msgstr ""
+
+#, php-format
+msgid "Connection OK — model %s"
+msgstr ""
+
+msgid "Encryption"
+msgstr ""
+
+msgid "For maximum security define SEOLITY_ENCRYPTION_KEY in wp-config.php. You can also define any secret as a constant, e.g. SEOLITY_ANTHROPIC_API_KEY."
+msgstr ""
+
+msgid "AI usage this month"
+msgstr ""
+
+msgid "Spend (est.)"
+msgstr ""
+
+msgid "Budget"
+msgstr ""
+
+msgid "unlimited"
+msgstr ""
+
+msgid "Requests (30d)"
+msgstr ""
+
+msgid "Task"
+msgstr ""
+
+msgid "Requests"
+msgstr ""
+
+msgid "Tokens in/out"
+msgstr ""
+
+msgid "Cost"
+msgstr ""
+
+msgid "GitHub data storage"
+msgstr ""
+
+msgid "Cold data (old Search Console rows, audit logs, reports, change history backups, crawl snapshots, config) is committed to your private GitHub repository and pruned locally, keeping your hosting database small. SEOlity reads it back when needed."
+msgstr ""
+
+msgid "SEOlity tables size"
+msgstr ""
+
+msgid "GSC rows (local)"
+msgstr ""
+
+msgid "Last archive"
+msgstr ""
+
+#, php-format
+msgid "%s files"
+msgstr ""
+
+msgid "Test repository access"
+msgstr ""
+
+msgid "private"
+msgstr ""
+
+msgid "PUBLIC — use a private repo!"
+msgstr ""
+
+msgid "write access"
+msgstr ""
+
+msgid "read only"
+msgstr ""
+
+msgid "Archive now"
+msgstr ""
+
+#, php-format
+msgid "Archived %s files to GitHub."
+msgstr ""
+
+msgid "Restore archived Search Console data:"
+msgstr ""
+
+msgid "Restore"
+msgstr ""
+
+#, php-format
+msgid "Restored %1$s rows from %2$s days."
+msgstr ""
+
+msgid "SEO engine detected"
+msgstr ""
+
+msgid "when another SEO plugin is active, SEOlity writes titles/descriptions into it and does not duplicate head tags."
+msgstr ""
+
+msgid "Competitor Intelligence"
+msgstr ""
+
+msgid "SEOlity monitors competitor sitemaps and pages (politely, respecting robots.txt), tracks new content and finds content gaps."
+msgstr ""
+
+msgid "Daily"
+msgstr ""
+
+msgid "Weekly"
+msgstr ""
+
+msgid "Monthly"
+msgstr ""
+
+msgid "Add"
+msgstr ""
+
+msgid "Competitor added. First analysis is running in the background."
+msgstr ""
+
+msgid "Add 2–5 real SEO competitors (sites that rank for your keywords)."
+msgstr ""
+
+msgid "Pages analyzed"
+msgstr ""
+
+#, php-format
+msgid "%s known"
+msgstr ""
+
+msgid "Avg. words"
+msgstr ""
+
+msgid "Pages with FAQ"
+msgstr ""
+
+msgid "Where they are stronger"
+msgstr ""
+
+msgid "Opportunities for you"
+msgstr ""
+
+msgid "Threats"
+msgstr ""
+
+msgid "Recommended actions"
+msgstr ""
+
+msgid "AI summary will appear after the analysis finishes (requires an AI provider)."
+msgstr ""
+
+msgid "Content sections"
+msgstr ""
+
+msgid "Content gap"
+msgstr ""
+
+msgid "Analyze now"
+msgstr ""
+
+msgid "Analysis queued."
+msgstr ""
+
+msgid "Remove this competitor and its data?"
+msgstr ""
+
+msgid "Content gap opportunities"
+msgstr ""
+
+msgid "Keyword"
+msgstr ""
+
+msgid "Suggested page"
+msgstr ""
+
+msgid "Brief"
+msgstr ""
+
+msgid "Outline"
+msgstr ""
+
+msgid "Filter…"
+msgstr ""
+
+msgid "First seen"
+msgstr ""
+
+msgid "SEO Experiments"
+msgstr ""
+
+msgid "Every applied change becomes an experiment: equal before/after windows, adjusted by the site-wide trend (control), judged Positive / Negative / Neutral / Inconclusive."
+msgstr ""
+
+msgid "Evaluate now"
+msgstr ""
+
+msgid "Evaluation queued."
+msgstr ""
+
+msgid "Inconclusive"
+msgstr ""
+
+msgid "Site-Specific SEO Intelligence"
+msgstr ""
+
+msgid "win rate"
+msgstr ""
+
+msgid "Learning in progress"
+msgstr ""
+
+msgid "After a few experiments are evaluated, SEOlity learns which changes work best on your site and uses it in every AI suggestion."
+msgstr ""
+
+msgid "Change"
+msgstr ""
+
+msgid "Before → After"
+msgstr ""
+
+#, php-format
+msgid "Window: %s days"
+msgstr ""
+
+msgid "Started"
+msgstr ""
+
+msgid "Revert"
+msgstr ""
+
+msgid "Revert all changes made in this experiment?"
+msgstr ""
+
+msgid "Reverted."
+msgstr ""
+
+msgid "No experiments yet"
+msgstr ""
+
+msgid "Apply an AI change to a page that gets search traffic — SEOlity measures the result automatically."
+msgstr ""
+
+msgid "Redirect Manager"
+msgstr ""
+
+msgid "301 / 302 / 307 / 410 / 451, regex, bulk import/export, chain & loop detection, hit tracking."
+msgstr ""
+
+msgid "Export CSV"
+msgstr ""
+
+msgid "or"
+msgstr ""
+
+msgid "Permanent"
+msgstr ""
+
+msgid "Temporary"
+msgstr ""
+
+msgid "Gone"
+msgstr ""
+
+msgid "Add redirect"
+msgstr ""
+
+msgid "Regex"
+msgstr ""
+
+msgid "Bulk import"
+msgstr ""
+
+msgid "Bulk import (CSV)"
+msgstr ""
+
+msgid "Import"
+msgstr ""
+
+#, php-format
+msgid "%s redirects imported."
+msgstr ""
+
+#, php-format
+msgid "%s lines had errors."
+msgstr ""
+
+msgid "Search redirects…"
+msgstr ""
+
+#, php-format
+msgid "%s redirect chains/loops detected."
+msgstr ""
+
+msgid "Flatten chains"
+msgstr ""
+
+msgid "Type"
+msgstr ""
+
+msgid "Hits"
+msgstr ""
+
+msgid "Last used"
+msgstr ""
+
+msgid "Origin"
+msgstr ""
+
+msgid "Active"
+msgstr ""
+
+msgid "Delete this redirect?"
+msgstr ""
+
+msgid "No redirects yet"
+msgstr ""
+
+msgid "Every 404 is logged with referrer and hits; SEOlity suggests the best redirect target (slug similarity + AI)."
+msgstr ""
+
+msgid "Suggest targets"
+msgstr ""
+
+msgid "Computing suggestions in the background."
+msgstr ""
+
+msgid "Open 404s"
+msgstr ""
+
+msgid "Hits (7 days)"
+msgstr ""
+
+msgid "New (24h)"
+msgstr ""
+
+msgid "With referrer"
+msgstr ""
+
+msgid "Open"
+msgstr ""
+
+msgid "Redirected"
+msgstr ""
+
+msgid "Ignored"
+msgstr ""
+
+msgid "URL"
+msgstr ""
+
+msgid "Referrer"
+msgstr ""
+
+msgid "Last seen"
+msgstr ""
+
+msgid "Suggested redirect"
+msgstr ""
+
+msgid "no good match"
+msgstr ""
+
+msgid "pending"
+msgstr ""
+
+msgid "410 Gone"
+msgstr ""
+
+msgid "Marked as gone (410)."
+msgstr ""
+
+msgid "Ignore"
+msgstr ""
+
+msgid "No 404 errors logged"
+msgstr ""
+
+msgid "Schema Intelligence"
+msgstr ""
+
+msgid "Validate Product, Article, FAQ, Breadcrumb, Organization, LocalBusiness, Review, AggregateRating, WebSite, WebPage and Person markup; find missing opportunities."
+msgstr ""
+
+msgid "Validate a URL"
+msgstr ""
+
+msgid "Check structured data"
+msgstr ""
+
+msgid "Types found"
+msgstr ""
+
+#, php-format
+msgid "%s JSON-LD blocks contain invalid JSON."
+msgstr ""
+
+msgid "No required properties missing."
+msgstr ""
+
+#, php-format
+msgid "Warnings (%s)"
+msgstr ""
+
+msgid "Opportunities"
+msgstr ""
+
+msgid "Raw JSON-LD"
+msgstr ""
+
+msgid "Schema coverage"
+msgstr ""
+
+#, php-format
+msgid "%1$s of %2$s indexable pages have no structured data."
+msgstr ""
+
+msgid "Schema issues"
+msgstr ""
+
+msgid "Issue"
+msgstr ""
+
+msgid "No schema issues"
+msgstr ""
+
+msgid "SEOlity outputs Organization, WebSite, WebPage, Breadcrumb and Article schema."
+msgstr ""
+
+msgid "Another SEO plugin outputs your main schema; SEOlity adds FAQ schema only."
+msgstr ""
+
+msgid "Pages with SEOlity FAQ schema"
+msgstr ""
+
+msgid "Organization settings"
+msgstr ""
+
+msgid "Sitemap Intelligence"
+msgstr ""
+
+msgid "Checks every sitemap URL against crawl data: 404s, redirects, noindex and canonicalized URLs, missing important pages and lastmod quality."
+msgstr ""
+
+msgid "Re-check"
+msgstr ""
+
+msgid "Sitemaps"
+msgstr ""
+
+msgid "URLs in sitemaps"
+msgstr ""
+
+msgid "Problem URLs"
+msgstr ""
+
+msgid "Missing important pages"
+msgstr ""
+
+msgid "Recommendations"
+msgstr ""
+
+msgid "Entries"
+msgstr ""
+
+msgid "Submit to Google"
+msgstr ""
+
+msgid "Sitemap submitted to Search Console."
+msgstr ""
+
+msgid "Search Console sitemap status"
+msgstr ""
+
+msgid "Last downloaded"
+msgstr ""
+
+msgid "Warnings"
+msgstr ""
+
+msgid "Remove from sitemap"
+msgstr ""
+
+msgid "Sitemap is clean"
+msgstr ""
+
+msgid "Add to sitemap (indexable pages missing)"
+msgstr ""
+
+msgid "Inlinks"
+msgstr ""
+
+msgid "Nothing missing"
+msgstr ""
+
+msgid "Robots.txt Intelligence"
+msgstr ""
+
+msgid "Google-compatible rule matching, blocked important URLs, crawl-waste detection and a safe editor with live testing."
+msgstr ""
+
+msgid "A physical robots.txt file exists in your web root; WordPress (and SEOlity) cannot override it. Edit or delete that file."
+msgstr ""
+
+msgid "Editor"
+msgstr ""
+
+msgid "Serve this content as robots.txt (virtual)"
+msgstr ""
+
+msgid "robots.txt saved."
+msgstr ""
+
+msgid "Load suggested"
+msgstr ""
+
+msgid "Test URL"
+msgstr ""
+
+msgid "allowed"
+msgstr ""
+
+msgid "blocked"
+msgstr ""
+
+msgid "No issues"
+msgstr ""
+
+msgid "Crawl-waste suggestions"
+msgstr ""
+
+msgid "Nothing to suggest"
+msgstr ""
+
+msgid "Important URLs blocked"
+msgstr ""
+
+msgid "SEO Reports"
+msgstr ""
+
+msgid "Daily, weekly and monthly reports with traffic, rankings, issues, improvements, competitors, AI changes and recommendations — white-label ready."
+msgstr ""
+
+msgid "Generate report"
+msgstr ""
+
+msgid "Generate"
+msgstr ""
+
+msgid "Report generated."
+msgstr ""
+
+msgid "Schedule & recipients"
+msgstr ""
+
+msgid "Report"
+msgstr ""
+
+msgid "Period"
+msgstr ""
+
+msgid "Storage"
+msgstr ""
+
+msgid "Local"
+msgstr ""
+
+msgid "Export"
+msgstr ""
+
+msgid "View / PDF"
+msgstr ""
+
+msgid "Email"
+msgstr ""
+
+msgid "Report sent."
+msgstr ""
+
+msgid "No recipients configured."
+msgstr ""
+
+msgid "No reports yet"
+msgstr ""
+
+msgid "AI Alerts"
+msgstr ""
+
+msgid "Ranking, traffic, CTR and indexing drops, new 404s, lost/new keywords, deindexed pages, sitemap & Core Web Vitals problems, competitor growth."
+msgstr ""
+
+msgid "Mark all as read"
+msgstr ""
+
+msgid "No alerts"
+msgstr ""
+
+msgid "SEOlity checks for important changes every hour."
+msgstr ""
+
+msgid "Site Audit & SEO Doctor"
+msgstr ""
+
+msgid "Full crawl of your site with 60+ checks. The SEO Doctor explains what is wrong, why it matters, where, and how to fix it."
+msgstr ""
+
+msgid "Start full audit"
+msgstr ""
+
+msgid "Audit started in the background."
+msgstr ""
+
+msgid "Incremental"
+msgstr ""
+
+msgid "Incremental audit queued."
+msgstr ""
+
+msgid "No audit yet"
+msgstr ""
+
+msgid "Start your first audit — it runs in the background and never slows down your visitors."
+msgstr ""
+
+msgid "Audit in progress"
+msgstr ""
+
+#, php-format
+msgid "Phase: %1$s · %2$s of %3$s URLs"
+msgstr ""
+
+#, php-format
+msgid "Last audit: %1$s · %2$s URLs crawled"
+msgstr ""
+
+msgid "SEO Doctor"
+msgstr ""
+
+msgid "All issues"
+msgstr ""
+
+msgid "URL explorer"
+msgstr ""
+
+msgid "Core Web Vitals"
+msgstr ""
+
+msgid "Your site looks healthy"
+msgstr ""
+
+msgid "No open diagnoses. Keep monitoring with scheduled audits."
+msgstr ""
+
+msgid "AI can fix"
+msgstr ""
+
+msgid "Manual fix"
+msgstr ""
+
+msgid "Why is it a problem?"
+msgstr ""
+
+msgid "Likely impact"
+msgstr ""
+
+msgid "How to fix"
+msgstr ""
+
+msgid "Where"
+msgstr ""
+
+msgid "Fix it"
+msgstr ""
+
+msgid "Show affected URLs"
+msgstr ""
+
+msgid "Grade"
+msgstr ""
+
+msgid "Weight"
+msgstr ""
+
+msgid "Excluded (no data yet)"
+msgstr ""
+
+msgid "All severities"
+msgstr ""
+
+msgid "Info"
+msgstr ""
+
+msgid "All categories"
+msgstr ""
+
+msgid "Fixed"
+msgstr ""
+
+msgid "Site-wide"
+msgstr ""
+
+msgid "Severity"
+msgstr ""
+
+msgid "AI fix"
+msgstr ""
+
+msgid "Find links"
+msgstr ""
+
+msgid "No issues found"
+msgstr ""
+
+msgid "Filter URLs…"
+msgstr ""
+
+msgid "Most linked"
+msgstr ""
+
+msgid "Word count"
+msgstr ""
+
+msgid "Slowest"
+msgstr ""
+
+msgid "Deepest"
+msgstr ""
+
+msgid "Status code"
+msgstr ""
+
+msgid "Indexable"
+msgstr ""
+
+msgid "Depth"
+msgstr ""
+
+msgid "Response"
+msgstr ""
+
+msgid "Test with PageSpeed Insights"
+msgstr ""
+
+#, php-format
+msgid "Performance score: %s"
+msgstr ""
+
+msgid "(field)"
+msgstr ""
+
+msgid "Top opportunities"
+msgstr ""
+
+msgid "Tested"
+msgstr ""
+
+msgid "No PageSpeed data yet"
+msgstr ""
+
+msgid "SEOlity tests your most important pages daily (10 per day)."
+msgstr ""
+
+msgid "Search Console Analytics"
+msgstr ""
+
+msgid "Real Google data, analyzed deeper than Search Console itself."
+msgstr ""
+
+msgid "Search Console is not connected"
+msgstr ""
+
+msgid "Ask an administrator to connect Google Search Console."
+msgstr ""
+
+msgid "Step 1 — Google OAuth client"
+msgstr ""
+
+msgid "Open Google Cloud Console → APIs & Services → enable “Google Search Console API”."
+msgstr ""
+
+msgid "Create OAuth client ID → type “Web application”."
+msgstr ""
+
+msgid "Add the Authorized redirect URI below (exactly)."
+msgstr ""
+
+msgid "Paste the Client ID and Client Secret here."
+msgstr ""
+
+msgid "Authorized redirect URI"
+msgstr ""
+
+msgid "Copy"
+msgstr ""
+
+msgid "Copied."
+msgstr ""
+
+msgid "Client ID"
+msgstr ""
+
+msgid "Client secret"
+msgstr ""
+
+msgid "Stored encrypted. Never shown again or sent to the browser."
+msgstr ""
+
+msgid "Save credentials"
+msgstr ""
+
+msgid "Saved."
+msgstr ""
+
+msgid "Step 2 — Connect your Google account"
+msgstr ""
+
+msgid "SEOlity requests read-only access (webmasters.readonly). You can revoke it anytime."
+msgstr ""
+
+msgid "Reconnect Google account"
+msgstr ""
+
+msgid "Connect Google account"
+msgstr ""
+
+msgid "Step 3 — Choose a property"
+msgstr ""
+
+msgid "No verified properties"
+msgstr ""
+
+msgid "Verify your site in Google Search Console first."
+msgstr ""
+
+msgid "matches this site"
+msgstr ""
+
+msgid "Use this property"
+msgstr ""
+
+msgid "Property selected. Importing data in the background…"
+msgstr ""
+
+msgid "Last 7 days"
+msgstr ""
+
+msgid "Last 28 days"
+msgstr ""
+
+msgid "Last 3 months"
+msgstr ""
+
+msgid "Last 6 months"
+msgstr ""
+
+msgid "Last 12 months"
+msgstr ""
+
+msgid "rows"
+msgstr ""
+
+msgid "Sync now"
+msgstr ""
+
+msgid "Sync queued."
+msgstr ""
+
+msgid "Change property"
+msgstr ""
+
+msgid "Select"
+msgstr ""
+
+msgid "Disconnect"
+msgstr ""
+
+msgid "Disconnect Google Search Console? Stored data stays until you change property."
+msgstr ""
+
+msgid "Importing your Search Console data… the first import can take a few minutes."
+msgstr ""
+
+msgid "Average position"
+msgstr ""
+
+msgid "Trend"
+msgstr ""
+
+msgid "Click Trend"
+msgstr ""
+
+msgid "Impression Trend"
+msgstr ""
+
+msgid "CTR Trend"
+msgstr ""
+
+msgid "Average Position"
+msgstr ""
+
+msgid "Top Queries"
+msgstr ""
+
+msgid "Top Pages"
+msgstr ""
+
+msgid "Winners & Losers"
+msgstr ""
+
+msgid "New & Lost Keywords"
+msgstr ""
+
+msgid "Rising & Declining Pages"
+msgstr ""
+
+msgid "Ranking Distribution"
+msgstr ""
+
+msgid "Countries & Devices"
+msgstr ""
+
+msgid "Queries"
+msgstr ""
+
+msgid "Click change"
+msgstr ""
+
+msgid "CTR Opportunities"
+msgstr ""
+
+msgid "Pages with many impressions whose CTR is far below what their position should earn. Rewriting title + description is usually the fastest win."
+msgstr ""
+
+msgid "Potential clicks"
+msgstr ""
+
+msgid "Insight"
+msgstr ""
+
+#, php-format
+msgid "This page has %1$s impressions but a low CTR; improving the title and meta description has high growth potential."
+msgstr ""
+
+msgid "Fix with AI"
+msgstr ""
+
+msgid "No CTR opportunities"
+msgstr ""
+
+msgid "Position Opportunities"
+msgstr ""
+
+msgid "URLs ranking for several keywords on positions 8–20 — improving content depth and internal links can push them onto page 1."
+msgstr ""
+
+msgid "Keywords at 8–20"
+msgstr ""
+
+#, php-format
+msgid "This URL ranks for %1$s keywords in positions 8–20; improving content depth is likely worth it."
+msgstr ""
+
+msgid "No position opportunities"
+msgstr ""
+
+msgid "Winners"
+msgstr ""
+
+msgid "Losers"
+msgstr ""
+
+msgid "New Keywords"
+msgstr ""
+
+msgid "Lost Keywords"
+msgstr ""
+
+msgid "Rising Pages"
+msgstr ""
+
+msgid "Declining Pages"
+msgstr ""
+
+msgid "New Pages"
+msgstr ""
+
+msgid "This URL is not mapped to a WordPress object yet. Run a site audit first."
+msgstr ""
+
+msgid "Devices"
+msgstr ""
+
+msgid "Countries"
+msgstr ""
+
+msgid "Search Appearance"
+msgstr ""
+
+msgid "No data"
+msgstr ""
+
+msgid "Keyword Intelligence"
+msgstr ""
+
+msgid "Your keyword universe from Search Console + AI research, with intent, opportunity scores, URL mapping and cannibalization detection."
+msgstr ""
+
+msgid "Sync from Search Console"
+msgstr ""
+
+msgid "Keyword Research"
+msgstr ""
+
+msgid "Cannibalization"
+msgstr ""
+
+msgid "Keyword Mapping"
+msgstr ""
+
+msgid "Search keywords…"
+msgstr ""
+
+msgid "Add keywords (comma separated)"
+msgstr ""
+
+msgid "All intents"
+msgstr ""
+
+msgid "Informational"
+msgstr ""
+
+msgid "Commercial"
+msgstr ""
+
+msgid "Transactional"
+msgstr ""
+
+msgid "Navigational"
+msgstr ""
+
+msgid "All types"
+msgstr ""
+
+msgid "Head"
+msgstr ""
+
+msgid "Questions"
+msgstr ""
+
+msgid "Entities"
+msgstr ""
+
+msgid "Intent"
+msgstr ""
+
+msgid "Opportunity"
+msgstr ""
+
+msgid "Difficulty (est.)"
+msgstr ""
+
+msgid "Target URL"
+msgstr ""
+
+msgid "unmapped"
+msgstr ""
+
+msgid "Track"
+msgstr ""
+
+msgid "No keywords yet"
+msgstr ""
+
+msgid "Connect Search Console or run keyword research."
+msgstr ""
+
+msgid "Seed keywords, one per line (e.g. espresso machine, coffee grinder)"
+msgstr ""
+
+msgid "Market / language (optional), e.g. Iran – Persian"
+msgstr ""
+
+msgid "Research keywords"
+msgstr ""
+
+msgid "Expanding seeds with AI and your Search Console data…"
+msgstr ""
+
+msgid "Clusters"
+msgstr ""
+
+msgid "Keyword → URL mapping"
+msgstr ""
+
+msgid "New page?"
+msgstr ""
+
+msgid "new"
+msgstr ""
+
+msgid "Queries where several of your URLs share impressions. SEOlity can suggest merge, redirect, differentiate, internal linking or changing the keyword target."
+msgstr ""
+
+msgid "Competing URLs"
+msgstr ""
+
+msgid "AI advice"
+msgstr ""
+
+msgid "No cannibalization detected"
+msgstr ""
+
+msgid "Requires Search Console data."
+msgstr ""
+
+msgid "Keywords by URL"
+msgstr ""
+
+msgid "Unmapped keywords (content opportunities)"
+msgstr ""
+
+msgid "Inventory with SEO scores, AI optimization, content planner, topic clusters and bulk AI."
+msgstr ""
+
+msgid "Inventory"
+msgstr ""
+
+msgid "Content Planner"
+msgstr ""
+
+msgid "Topic Clusters"
+msgstr ""
+
+msgid "Bulk AI"
+msgstr ""
+
+msgid "Search…"
+msgstr ""
+
+msgid "Posts, pages & products"
+msgstr ""
+
+msgid "Categories & tags"
+msgstr ""
+
+msgid "Title problems"
+msgstr ""
+
+msgid "Meta description problems"
+msgstr ""
+
+msgid "H1 problems"
+msgstr ""
+
+msgid "Low SEO score"
+msgstr ""
+
+msgid "No focus keyword"
+msgstr ""
+
+msgid "(no title)"
+msgstr ""
+
+msgid "Meta"
+msgstr ""
+
+msgid "title"
+msgstr ""
+
+msgid "description"
+msgstr ""
+
+msgid "Optimize"
+msgstr ""
+
+#, php-format
+msgid "%s pending"
+msgstr ""
+
+msgid "Focus (optional): topic, product line, season…"
+msgstr ""
+
+msgid "Generate calendar"
+msgstr ""
+
+#, php-format
+msgid "%s items planned."
+msgstr ""
+
+msgid "Topic"
+msgstr ""
+
+msgid "Planned"
+msgstr ""
+
+msgid "In progress"
+msgstr ""
+
+msgid "Published"
+msgstr ""
+
+msgid "Skipped"
+msgstr ""
+
+msgid "Edit draft"
+msgstr ""
+
+msgid "Create draft with brief"
+msgstr ""
+
+msgid "No planned content"
+msgstr ""
+
+msgid "Generate an AI content calendar from your keyword gaps, competitor gaps and topic clusters."
+msgstr ""
+
+msgid "Rebuild clusters"
+msgstr ""
+
+msgid "Building clusters in the background."
+msgstr ""
+
+msgid "No topic clusters yet"
+msgstr ""
+
+msgid "SEOlity groups your pages into Pillar → Cluster → Supporting content and finds topic gaps."
+msgstr ""
+
+msgid "coverage"
+msgstr ""
+
+msgid "Pillar page"
+msgstr ""
+
+msgid "not linked with pillar"
+msgstr ""
+
+msgid "Topic gaps"
+msgstr ""
+
+msgid "Optimize titles & meta descriptions"
+msgstr ""
+
+msgid "Optimize posts content"
+msgstr ""
+
+msgid "Optimize categories"
+msgstr ""
+
+msgid "Generate FAQs"
+msgstr ""
+
+msgid "Generate internal links"
+msgstr ""
+
+msgid "Fix missing H1 (empty titles)"
+msgstr ""
+
+msgid "Optimize products"
+msgstr ""
+
+msgid "Optimize image ALT"
+msgstr ""
+
+msgid "Pages with missing/weak meta"
+msgstr ""
+
+msgid "Pages with title problems"
+msgstr ""
+
+msgid "Latest content"
+msgstr ""
+
+#, php-format
+msgid "%s items selected. Each item is processed as a separate background job; results arrive as pending changes (or auto-apply per your approval mode)."
+msgstr ""
+
+msgid "Run bulk AI"
+msgstr ""
+
+msgid "AI Product SEO"
+msgstr ""
+
+msgid "WooCommerce product optimization: titles, descriptions, meta, keywords, FAQ, ALT, tags, schema and cannibalization — grounded in real product data."
+msgstr ""
+
+msgid "Search products…"
+msgstr ""
+
+msgid "All products"
+msgstr ""
+
+msgid "No short description"
+msgstr ""
+
+msgid "Bulk optimize selected"
+msgstr ""
+
+msgid "Select products first."
+msgstr ""
+
+msgid "WooCommerce is not active"
+msgstr ""
+
+msgid "Product"
+msgstr ""
+
+msgid "no focus keyword"
+msgstr ""
+
+msgid "Short desc."
+msgstr ""
+
+msgid "missing"
+msgstr ""
+
+msgid "Description words"
+msgstr ""
+
+msgid "AI Image SEO"
+msgstr ""
+
+msgid "Detect missing, generic, duplicate or stuffed ALT text and bad filenames; generate context-aware ALT from page, product and nearby text."
+msgstr ""
+
+msgid "Scan media library"
+msgstr ""
+
+msgid "Scan queued."
+msgstr ""
+
+msgid "Missing ALT"
+msgstr ""
+
+msgid "Generic ALT"
+msgstr ""
+
+msgid "Duplicate ALT"
+msgstr ""
+
+msgid "Keyword stuffing"
+msgstr ""
+
+msgid "Filename as ALT"
+msgstr ""
+
+msgid "ALT too long"
+msgstr ""
+
+msgid "Bad filename"
+msgstr ""
+
+msgid "“Image of…” prefix"
+msgstr ""
+
+#, php-format
+msgid "%1$s images indexed · last scan %2$s"
+msgstr ""
+
+msgid "Select all"
+msgstr ""
+
+msgid "Generate ALT for selected"
+msgstr ""
+
+msgid "Select images first."
+msgstr ""
+
+msgid "Generated ALT text"
+msgstr ""
+
+msgid "Image"
+msgstr ""
+
+msgid "Caption"
+msgstr ""
+
+msgid "ALT text applied."
+msgstr ""
+
+msgid "No images with this issue"
+msgstr ""
+
+msgid "No ALT"
+msgstr ""
+
+msgid "Internal Linking AI"
+msgstr ""
+
+msgid "Suggestions use anchors that already exist in your text, so links are added without rewriting. Every link is a reviewable, revertible change."
+msgstr ""
+
+msgid "Find new opportunities"
+msgstr ""
+
+msgid "Analyzing your link graph in the background."
+msgstr ""
+
+msgid "Avg. internal links per page"
+msgstr ""
+
+msgid "Suggestions"
+msgstr ""
+
+#, php-format
+msgid "%s internal links today"
+msgstr ""
+
+msgid "No suggestions yet"
+msgstr ""
+
+msgid "Run a site audit, then click “Find new opportunities”."
+msgstr ""
+
+msgid "Most linked pages"
+msgstr ""
+
+msgid "Something went wrong."
+msgstr ""
+
+msgid "Close"
+msgstr ""
+
+msgid "Please confirm"
+msgstr ""
+
+msgid "Confirm"
+msgstr ""
+
+msgid "Loading…"
+msgstr ""
+
+msgid "Preview change"
+msgstr ""
+
+msgid "Before / After"
+msgstr ""
+
+msgid "BEFORE"
+msgstr ""
+
+msgid "AFTER"
+msgstr ""
+
+msgid "Compare"
+msgstr ""
+
+msgid "SEO score"
+msgstr ""
+
+msgid "Generated by"
+msgstr ""
+
+msgid "Change rejected."
+msgstr ""
+
+msgid "Reject"
+msgstr ""
+
+msgid "Change applied. You can undo it anytime from version history."
+msgstr ""
+
+msgid "Change reverted."
+msgstr ""
+
+msgid "Undo"
+msgstr ""
+
+msgid "No changes yet"
+msgstr ""
+
+msgid "Every change SEOlity makes is versioned here and can be restored."
+msgstr ""
+
+msgid "Version"
+msgstr ""
+
+msgid "Restore this version as the current value?"
+msgstr ""
+
+msgid "Version restored."
+msgstr ""
+
+msgid "What did SEOlity find?"
+msgstr ""
+
+msgid "Why is this suggested?"
+msgstr ""
+
+msgid "Expected result"
+msgstr ""
+
+msgid "Scores"
+msgstr ""
+
+msgid "What worked on this site before"
+msgstr ""
+
+msgid "Focus keyword (optional — SEOlity can pick it from Search Console)"
+msgstr ""
+
+msgid "Goal (optional), e.g. rank for “buy espresso machine”, improve conversions…"
+msgstr ""
+
+msgid "Analyze & optimize"
+msgstr ""
+
+msgid "SEOlity analyzes your text, the real queries you rank for and SEO best practices, then proposes an improved version. Nothing changes until you apply it."
+msgstr ""
+
+msgid "Analyzing current content…"
+msgstr ""
+
+msgid "Reading Search Console queries…"
+msgstr ""
+
+msgid "Consulting the SEO knowledge base…"
+msgstr ""
+
+msgid "Writing the optimized version…"
+msgstr ""
+
+msgid "Scoring before vs. after…"
+msgstr ""
+
+msgid "Working… this can take up to a minute."
+msgstr ""
+
+msgid "Open settings"
+msgstr ""
+
+msgid "Semantic coverage"
+msgstr ""
+
+msgid "Entity coverage"
+msgstr ""
+
+msgid "Semantic terms"
+msgstr ""
+
+msgid "What changed and why"
+msgstr ""
+
+msgid "Information gain"
+msgstr ""
+
+msgid "Please review:"
+msgstr ""
+
+msgid "Also suggested"
+msgstr ""
+
+msgid "AI Suggested"
+msgstr ""
+
+msgid "Original"
+msgstr ""
+
+msgid "Edit HTML"
+msgstr ""
+
+msgid "Model"
+msgstr ""
+
+msgid "Knowledge"
+msgstr ""
+
+msgid "Suggestion rejected."
+msgstr ""
+
+msgid "Applied. Undo anytime from version history."
+msgstr ""
+
+msgid "Apply to editor"
+msgstr ""
+
+msgid "Apply changes"
+msgstr ""
+
+msgid "Analyzing real search queries…"
+msgstr ""
+
+msgid "Google preview"
+msgstr ""
+
+msgid "Title & description applied."
+msgstr ""
+
+msgid "Short description"
+msgstr ""
+
+msgid "URL slug"
+msgstr ""
+
+msgid "FAQ"
+msgstr ""
+
+msgid "Image title"
+msgstr ""
+
+msgid "Category description"
+msgstr ""
+
+msgid "Author bio"
+msgstr ""
+
+msgid "Noindex"
+msgstr ""
+
+msgid "Nofollow"
+msgstr ""
+
+msgid "Canonical URL"
+msgstr ""
+
+msgid "Product tags"
+msgstr ""
+
+msgid "robots.txt"
+msgstr ""
+
+msgid "Approval mode"
+msgstr ""
+
+msgid "Interface language"
+msgstr ""
+
+msgid "Brand name (white label)"
+msgstr ""
+
+msgid "Brand logo URL"
+msgstr ""
+
+msgid "Brand color"
+msgstr ""
+
+msgid "Output SEO tags on the frontend"
+msgstr ""
+
+msgid "Title separator"
+msgstr ""
+
+msgid "AI provider"
+msgstr ""
+
+msgid "OpenAI model"
+msgstr ""
+
+msgid "Anthropic model"
+msgstr ""
+
+msgid "Gemini model"
+msgstr ""
+
+msgid "OpenRouter model"
+msgstr ""
+
+msgid "Ollama model"
+msgstr ""
+
+msgid "Custom model"
+msgstr ""
+
+msgid "Reasoning effort (Claude)"
+msgstr ""
+
+msgid "Ollama URL"
+msgstr ""
+
+msgid "Custom API base URL"
+msgstr ""
+
+msgid "Max output tokens"
+msgstr ""
+
+msgid "Request timeout (s)"
+msgstr ""
+
+msgid "Monthly AI budget (USD, 0 = unlimited)"
+msgstr ""
+
+msgid "Cache AI answers (hours)"
+msgstr ""
+
+msgid "Content language"
+msgstr ""
+
+msgid "Brand voice & editorial rules"
+msgstr ""
+
+msgid "Use the SEO knowledge base in prompts"
+msgstr ""
+
+msgid "Initial import (days)"
+msgstr ""
+
+msgid "Rows per API call"
+msgstr ""
+
+msgid "Max URLs per crawl"
+msgstr ""
+
+msgid "Parallel requests per batch"
+msgstr ""
+
+msgid "Check external links"
+msgstr ""
+
+msgid "Full audit frequency"
+msgstr ""
+
+msgid "Thin content threshold (words)"
+msgstr ""
+
+msgid "Max pages per competitor"
+msgstr ""
+
+msgid "Alert email"
+msgstr ""
+
+msgid "Email high-priority alerts"
+msgstr ""
+
+#, php-format
+msgid "Drop alert threshold (%)"
+msgstr ""
+
+msgid "Scheduled report"
+msgstr ""
+
+msgid "Report recipients (one per line)"
+msgstr ""
+
+msgid "Enhance WordPress sitemaps"
+msgstr ""
+
+msgid "Exclude post types from sitemap"
+msgstr ""
+
+msgid "Serve custom robots.txt"
+msgstr ""
+
+msgid "Enable redirects"
+msgstr ""
+
+msgid "Log 404 errors"
+msgstr ""
+
+msgid "Log 404s from bots"
+msgstr ""
+
+msgid "Data retention (days)"
+msgstr ""
+
+msgid "Output structured data"
+msgstr ""
+
+msgid "Entity type"
+msgstr ""
+
+msgid "Organization / person name"
+msgstr ""
+
+msgid "Logo URL"
+msgstr ""
+
+msgid "Phone"
+msgstr ""
+
+msgid "Address"
+msgstr ""
+
+msgid "Social profiles (sameAs, one per line)"
+msgstr ""
+
+msgid "Experiment window (days)"
+msgstr ""
+
+msgid "Knowledge repository (owner/repo)"
+msgstr ""
+
+msgid "Knowledge branch"
+msgstr ""
+
+msgid "Knowledge folder"
+msgstr ""
+
+msgid "Sync knowledge daily"
+msgstr ""
+
+msgid "Contribute anonymized learnings to GitHub"
+msgstr ""
+
+msgid "Enable GitHub data storage"
+msgstr ""
+
+msgid "Data repository (owner/repo, private!)"
+msgstr ""
+
+msgid "Data branch"
+msgstr ""
+
+msgid "Data folder"
+msgstr ""
+
+msgid "Archive data older than (days)"
+msgstr ""
+
+msgid "Delete archived rows from the WordPress database"
+msgstr ""
+
+msgid "Anonymize IP addresses"
+msgstr ""
+
+msgid "Delete all data on uninstall"
+msgstr ""
+
+msgid "General"
+msgstr ""
+
+msgid "Crawler & audits"
+msgstr ""
+
+msgid "Alerts & reports"
+msgstr ""
+
+msgid "Technical SEO"
+msgstr ""
+
+msgid "Schema & entity"
+msgstr ""
+
+msgid "GitHub (knowledge & storage)"
+msgstr ""
+
+msgid "Privacy & data"
+msgstr ""
+
+msgid "Anthropic API key"
+msgstr ""
+
+msgid "OpenAI API key"
+msgstr ""
+
+msgid "Google Gemini API key"
+msgstr ""
+
+msgid "OpenRouter API key"
+msgstr ""
+
+msgid "Custom API key"
+msgstr ""
+
+msgid "PageSpeed Insights API key (optional)"
+msgstr ""
+
+msgid "SERP data API key (optional)"
+msgstr ""
+
+msgid "GitHub fine-grained token (Contents: read & write on the chosen repos only)"
+msgstr ""
+
+msgid "manual"
+msgstr ""
+
+msgid "semi"
+msgstr ""
+
+msgid "autonomous"
+msgstr ""
+
+msgid "auto"
+msgstr ""
+
+msgid "on"
+msgstr ""
+
+msgid "off"
+msgstr ""
+
+msgid "fa"
+msgstr ""
+
+msgid "en"
+msgstr ""
+
+msgid "ar"
+msgstr ""
+
+msgid "tr"
+msgstr ""
+
+msgid "de"
+msgstr ""
+
+msgid "fr"
+msgstr ""
+
+msgid "es"
+msgstr ""
+
+msgid "low"
+msgstr ""
+
+msgid "medium"
+msgstr ""
+
+msgid "high"
+msgstr ""
+
+msgid "xhigh"
+msgstr ""
+
+msgid "max"
+msgstr ""
+
+msgid "daily"
+msgstr ""
+
+msgid "weekly"
+msgstr ""
+
+msgid "monthly"
+msgstr ""
+
+msgid "none"
+msgstr ""
+
+msgid "Organization"
+msgstr ""
+
+msgid "LocalBusiness"
+msgstr ""
+
+msgid "Person"
+msgstr ""
+
+msgid "OnlineStore"
+msgstr ""
+
+msgid "applied"
+msgstr ""
+
+msgid "applied_editor"
+msgstr ""
+
+msgid "rejected"
+msgstr ""
+
+msgid "reverted"
+msgstr ""
+
+msgid "superseded"
+msgstr ""
+
+msgid "running"
+msgstr ""
+
+msgid "evaluated"
+msgstr ""
+
+msgid "cancelled"
+msgstr ""
+
+msgid "done"
+msgstr ""
+
+msgid "failed"
+msgstr ""
+
+msgid "open"
+msgstr ""
+
+msgid "ignored"
+msgstr ""
+
+msgid "fixed"
+msgstr ""
+
+msgid "redirected"
+msgstr ""
+
+msgid "planned"
+msgstr ""
+
+msgid "in_progress"
+msgstr ""
+
+msgid "published"
+msgstr ""
+
+msgid "skipped"
+msgstr ""
+
+msgid "ai"
+msgstr ""
+
+msgid "rule"
+msgstr ""
+
+msgid "revert"
+msgstr ""
+
+msgid "restore"
+msgstr ""
+
+msgid "recommendation"
+msgstr ""
+
+msgid "internal_link"
+msgstr ""
+
+msgid "import"
+msgstr ""
+
+msgid "slug_change"
+msgstr ""
+
+msgid "404_monitor"
+msgstr ""
+
+msgid "informational"
+msgstr ""
+
+msgid "commercial"
+msgstr ""
+
+msgid "transactional"
+msgstr ""
+
+msgid "navigational"
+msgstr ""
+
+msgid "head"
+msgstr ""
+
+msgid "long_tail"
+msgstr ""
+
+msgid "question"
+msgstr ""
+
+msgid "semantic"
+msgstr ""
+
+msgid "entity"
+msgstr ""
+
+msgid "positive"
+msgstr ""
+
+msgid "negative"
+msgstr ""
+
+msgid "neutral"
+msgstr ""
+
+msgid "inconclusive"
+msgstr ""
+
+msgid "post"
+msgstr ""
+
+msgid "term"
+msgstr ""
+
+msgid "user"
+msgstr ""
+
+msgid "attachment"
+msgstr ""
+
+msgid "site"
+msgstr ""
+
+msgid "publish"
+msgstr ""
+
+msgid "draft"
+msgstr ""
+
+msgid "future"
+msgstr ""
+
+msgid "crawling"
+msgstr ""
+
+msgid "seeding"
+msgstr ""
+
+msgid "analyzing"
+msgstr ""
+
+msgid "missing_topic"
+msgstr ""
+
+msgid "missing_page"
+msgstr ""
+
+msgid "weak_page"
+msgstr ""
+
+msgid "noindex"
+msgstr ""
+
+msgid "redirect"
+msgstr ""
+
+msgid "canonicalized"
+msgstr ""
+
+msgid "error_404"
+msgstr ""
+
+msgid "error_410"
+msgstr ""
+
+msgid "error_500"
+msgstr ""
+
+msgid "Indexation"
+msgstr ""
+
+msgid "Links"
+msgstr ""
+
+msgid "Performance"
+msgstr ""
+
+msgid "Security"
+msgstr ""
+
+msgid "Mobile"
+msgstr ""
+
+msgid "International"
+msgstr ""
+
+msgid "Technical"
+msgstr ""
+
+msgid "Gsc"
+msgstr ""
+
+msgid "instock"
+msgstr ""
+
+msgid "outofstock"
+msgstr ""
+
+msgid "onbackorder"
+msgstr ""
+
+#, php-format
+msgid "%d published page is blocked by robots.txt."
+msgid_plural "%d published pages are blocked by robots.txt."
+msgstr[0] ""
+msgstr[1] ""
