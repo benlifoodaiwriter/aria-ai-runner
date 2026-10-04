@@ -22,7 +22,7 @@ final class Database {
 		'keywords', 'competitors', 'competitor_pages', 'changes', 'experiments', 'learnings',
 		'redirects', 'not_found', 'recommendations', 'content_analysis', 'images', 'internal_links',
 		'alerts', 'reports', 'jobs', 'audit_log', 'ai_requests', 'ai_cache', 'rules', 'chat',
-		'knowledge', 'content_plan', 'clusters',
+		'knowledge', 'content_plan', 'clusters', 'remote_jobs',
 	);
 
 	/** @var \wpdb */
@@ -743,6 +743,25 @@ final class Database {
 				updated_at datetime NOT NULL,
 				PRIMARY KEY  (id),
 				KEY project (project_id)
+			) $c;",
+			"CREATE TABLE {$t('remote_jobs')} (
+				id char(32) NOT NULL,
+				request_hash char(40) NOT NULL,
+				engine varchar(20) NOT NULL,
+				model varchar(80) NOT NULL DEFAULT '',
+				task varchar(60) NOT NULL DEFAULT '',
+				status varchar(20) NOT NULL DEFAULT 'queued',
+				payload longtext NOT NULL,
+				response longtext NULL,
+				error text NULL,
+				usage_in int(10) unsigned NOT NULL DEFAULT 0,
+				usage_out int(10) unsigned NOT NULL DEFAULT 0,
+				created_at datetime NOT NULL,
+				submitted_at datetime NULL,
+				finished_at datetime NULL,
+				PRIMARY KEY  (id),
+				KEY request (request_hash,created_at),
+				KEY status (status,created_at)
 			) $c;",
 		);
 	}

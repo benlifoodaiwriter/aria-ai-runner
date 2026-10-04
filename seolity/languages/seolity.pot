@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: SEOlity 1.0.0\n"
-"POT-Creation-Date: 2026-10-04 10:24+0000\n"
+"POT-Creation-Date: 2026-10-04 13:52+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -64,6 +64,52 @@ msgid "Gemini blocked this response for safety reasons."
 msgstr ""
 
 msgid "Local LLM (Ollama)"
+msgstr ""
+
+msgid "Claude subscription (Pro/Max via GitHub)"
+msgstr ""
+
+msgid "ChatGPT subscription (Plus/Pro via GitHub)"
+msgstr ""
+
+msgid "Runner repository (owner/name)"
+msgstr ""
+
+msgid "GitHub token"
+msgstr ""
+
+msgid "Claude subscription token (claude setup-token)"
+msgstr ""
+
+msgid "ChatGPT auth.json (codex login)"
+msgstr ""
+
+msgid "Run \"Set up GitHub runner\""
+msgstr ""
+
+msgid "The subscription runner did not answer in time. Check the \"SEOlity AI\" workflow runs on GitHub."
+msgstr ""
+
+#, php-format
+msgid "Subscription AI is not ready. Missing: %s."
+msgstr ""
+
+msgid "Empty answer from the subscription runner."
+msgstr ""
+
+msgid "Your AI subscription usage limit was reached. Try again later or switch provider."
+msgstr ""
+
+msgid "Enter the runner repository as owner/name (it will be created as a private repository if it does not exist)."
+msgstr ""
+
+msgid "Add a GitHub token first (Settings → GitHub)."
+msgstr ""
+
+msgid "The PHP OpenSSL extension is required."
+msgstr ""
+
+msgid "The runner repository must be private."
 msgstr ""
 
 msgid "Dashboard"
@@ -415,6 +461,9 @@ msgstr ""
 msgid "Several sentences are repeated — remove boilerplate to increase information gain."
 msgstr ""
 
+msgid "Your AI subscription is working on this request on GitHub…"
+msgstr ""
+
 msgid "Unexpected error."
 msgstr ""
 
@@ -434,6 +483,9 @@ msgid "You are not allowed to edit this product."
 msgstr ""
 
 msgid "Unknown secret."
+msgstr ""
+
+msgid "auth.json must be valid JSON (copy the whole file from ~/.codex/auth.json)."
 msgstr ""
 
 msgid "Dates must be YYYY-MM-DD."
@@ -1681,6 +1733,9 @@ msgstr ""
 msgid "GitHub storage is not configured."
 msgstr ""
 
+msgid "The PHP sodium extension is required to store GitHub secrets."
+msgstr ""
+
 msgid "Repository must look like owner/name."
 msgstr ""
 
@@ -2677,6 +2732,72 @@ msgstr ""
 msgid "Write-only: secrets are encrypted on the server and never sent back to the browser."
 msgstr ""
 
+msgid "Use the AI subscription you already pay for"
+msgstr ""
+
+msgid "Instead of a pay-per-token API key, SEOlity can run every AI feature with your Claude Pro/Max or ChatGPT Plus/Pro plan. The official Claude Code / Codex command-line tools run on GitHub Actions in your own private repository; requests and answers are encrypted. Answers take about 1–3 minutes, so SEOlity waits for them automatically."
+msgstr ""
+
+msgid "GitHub → Settings → Developer settings → create a token with access to the runner repository: Contents, Actions, Secrets and Workflows (read & write) — or a classic token with the \"repo\" and \"workflow\" scopes. Save it in the GitHub tab."
+msgstr ""
+
+msgid "Enter a repository name below, e.g. your-user/seolity-runner (it is created as a private repository if it does not exist) and save settings."
+msgstr ""
+
+msgid "Claude: on your computer run “claude setup-token” (Claude Code CLI) and paste the token below. ChatGPT: run “codex login”, then paste the contents of ~/.codex/auth.json below."
+msgstr ""
+
+msgid "Click “Set up GitHub runner”, then choose the subscription provider in the AI tab and press Test."
+msgstr ""
+
+msgid "Runner repository set up"
+msgstr ""
+
+msgid "Claude subscription token"
+msgstr ""
+
+msgid "ChatGPT login (auth.json)"
+msgstr ""
+
+msgid "runner files will be updated on the next request"
+msgstr ""
+
+msgid "Last 24 hours"
+msgstr ""
+
+msgid "done"
+msgstr ""
+
+msgid "waiting"
+msgstr ""
+
+msgid "failed"
+msgstr ""
+
+msgid "Workflow run"
+msgstr ""
+
+msgid "Started"
+msgstr ""
+
+msgid "Set up GitHub runner"
+msgstr ""
+
+msgid "GitHub runner is ready."
+msgstr ""
+
+msgid "Start runner now"
+msgstr ""
+
+msgid "Workflow started on GitHub."
+msgstr ""
+
+msgid "Refresh status"
+msgstr ""
+
+msgid "GitHub runner"
+msgstr ""
+
 msgid "configured"
 msgstr ""
 
@@ -2903,9 +3024,6 @@ msgstr ""
 
 #, php-format
 msgid "Window: %s days"
-msgstr ""
-
-msgid "Started"
 msgstr ""
 
 msgid "Revert"
@@ -4136,6 +4254,10 @@ msgstr ""
 msgid "Most linked pages"
 msgstr ""
 
+#, php-format
+msgid "Your AI subscription is working on GitHub (%s)…"
+msgstr ""
+
 msgid "Something went wrong."
 msgstr ""
 
@@ -4602,7 +4724,28 @@ msgstr ""
 msgid "Delete all data on uninstall"
 msgstr ""
 
+msgid "Claude model (opus, sonnet, haiku or a full model id)"
+msgstr ""
+
+msgid "ChatGPT / Codex model (empty = default)"
+msgstr ""
+
+msgid "Runner repository (owner/name, private)"
+msgstr ""
+
+msgid "Queue branch"
+msgstr ""
+
+msgid "Send results directly to this site (faster when the site is public)"
+msgstr ""
+
+msgid "Maximum wait per request (minutes)"
+msgstr ""
+
 msgid "General"
+msgstr ""
+
+msgid "Subscription AI"
 msgstr ""
 
 msgid "Crawler & audits"
@@ -4636,6 +4779,12 @@ msgid "OpenRouter API key"
 msgstr ""
 
 msgid "Custom API key"
+msgstr ""
+
+msgid "Claude subscription token (output of: claude setup-token)"
+msgstr ""
+
+msgid "ChatGPT login (contents of ~/.codex/auth.json after: codex login)"
 msgstr ""
 
 msgid "PageSpeed Insights API key (optional)"
@@ -4747,12 +4896,6 @@ msgid "evaluated"
 msgstr ""
 
 msgid "cancelled"
-msgstr ""
-
-msgid "done"
-msgstr ""
-
-msgid "failed"
 msgstr ""
 
 msgid "open"

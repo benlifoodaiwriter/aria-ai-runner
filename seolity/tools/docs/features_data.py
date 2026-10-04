@@ -31,6 +31,15 @@ Knowledge-grounded prompts (RAG) | Injects best-practice chunks relevant to the 
 Site-learning injection | Adds what worked on this site (experiment results) to prompts | AI improves with your own data | Learnings | Prompt context | db=learnings
 Connection test | Sends a tiny structured request to verify the provider | Fast setup troubleshooting | Provider settings | OK + model + sample | api=POST /settings/test-ai
 Encrypted API keys | Keys encrypted at rest, never sent to browser | Security | Key input | Encrypted secret | db=wp_options (seolity_secrets)
+Claude subscription provider (Pro/Max) | Runs every AI feature with Claude Code on GitHub Actions using your Claude plan's token | No pay-per-token API bill | claude setup-token token | Schema-valid JSON | deps=GitHub token, Claude Pro/Max; api=GitHub API, GitHub Actions; ui=Settings → Subscription AI
+ChatGPT subscription provider (Plus/Pro) | Runs AI features with the official OpenAI Codex CLI using your ChatGPT login | Use the plan you already pay for | ~/.codex/auth.json | Schema-valid JSON | deps=GitHub token, ChatGPT Plus/Pro; api=GitHub API, GitHub Actions; ui=Settings → Subscription AI
+One-click runner setup | Creates the private runner repo, pushes the workflow/runner, queue branch and Actions secrets | Setup in one click | Repo name, tokens | Ready runner | deps=GitHub token; api=GitHub API; ui=Settings → Subscription AI; auto=Manual
+Encrypted job queue on GitHub | Requests/answers stored AES-256-GCM encrypted on a queue branch; many requests batched in one commit | Privacy, no readable content in the repo | AI requests | Encrypted jobs/results | deps=GitHub token; db=remote_jobs; api=GitHub API
+Transparent waiting (UI + queue) | REST answers 202 and the admin UI waits and re-sends; queue jobs re-schedule without using retries | Every AI button works with subscriptions unchanged | Deferred request | Final answer | db=remote_jobs, jobs; api=GET /ai/remote/{id}
+Signed result callback | Runner posts results to the site with an HMAC signature | Answers in seconds when the site is public | Encrypted result | Stored answer | api=POST /remote/callback
+Local-site mode | Sites behind localhost/NAT collect results from GitHub themselves | Works without a public URL or Cloudflare | Results branch | Stored answers | db=remote_jobs; api=GitHub API
+ChatGPT login auto-refresh | Refreshed Codex auth.json returns encrypted and updates the local copy and the GitHub secret | No manual re-login | Runner result | Updated secret | deps=ChatGPT Plus/Pro
+Subscription quota detection | Usage-limit errors are reported as such | Clear next step (wait or switch provider) | CLI error | Clear message
 Per-task model routing | Use a cheaper model for simple tasks and a stronger one for writing | Lower cost | Task → model map | Routed requests | ed=Pro
 Batch API mode | Send bulk jobs through provider batch APIs at lower price | ~50% cheaper bulk AI | Bulk queue | Batched results | ed=Pro
 ''')

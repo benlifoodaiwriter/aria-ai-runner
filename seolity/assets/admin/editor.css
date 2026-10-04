@@ -256,3 +256,6 @@
 .sl-serp-result__title { font-weight: 600; color: var(--sl-info); }
 .sl-serp-result__url { font-size: 12px; color: var(--sl-good); direction: ltr; text-align: start; overflow-wrap: anywhere; }
 .sl-serp-result.is-yours { background: color-mix(in srgb, var(--sl-brand) 7%, transparent); border-radius: 8px; padding-inline: 8px; }
+.sl-remote-wait { position: fixed; inset-block-end: 16px; inset-inline-start: 50%; transform: translateX(-50%); z-index: 170001; font-family: "Vazirmatn", Tahoma, system-ui, sans-serif; display: flex; align-items: center; gap: 10px; padding: 10px 16px; border-radius: 999px; background: var(--sl-text); color: var(--sl-surface); box-shadow: var(--sl-shadow); font-size: 13px; max-width: calc(100vw - 32px); }
+.is-rtl.sl-remote-wait { transform: translateX(50%); }
+.sl-spinner--sm { width: 14px; height: 14px; border-color: rgba(255, 255, 255, .35); border-top-color: #fff; }

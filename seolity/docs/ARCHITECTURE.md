@@ -40,7 +40,7 @@ Contents
 | White-hat only | AI guardrails (policy prompt + output inspection) reject keyword stuffing, hidden text, removed links/shortcodes and invented figures. |
 | Nothing heavy on page load | Front end only reads cached meta; crawling, GSC sync, AI and analytics run in the DB-backed queue. |
 | Real data first | Recommendations, briefings and chat are grounded in crawler/GSC/analysis data passed to the model as JSON; the model is told to say when data is missing. |
-| Own tables, not `wp_options` | 30 custom tables; settings live in one non-autoloaded option, secrets in another (encrypted). |
+| Own tables, not `wp_options` | 31 custom tables; settings live in one non-autoloaded option, secrets in another (encrypted). |
 | Multi-project from day one | Every data table has `project_id` so one install (or the future SaaS) can manage several sites. |
 
 ## 2. Folder structure
@@ -79,6 +79,7 @@ seolity/
 │   ├── pages-admin.js          Automation (rules, queue, audit log), knowledge, settings
 │   ├── editor.js / gutenberg.js / elementor.js   Editor integrations
 │   └── app.css / editor.css    Design system (CSS variables, logical properties, dark mode)
+├── runner/                     GitHub Actions workflow + runner.mjs for subscription AI
 ├── knowledge/                  Curated SEO knowledge (fa + en) + distilled/ (GitHub Action output)
 ├── languages/                  seolity.pot, seolity-fa_IR.po/.mo
 ├── tools/
@@ -146,6 +147,7 @@ each path segment (so `%d9` and `%D9` are the same Persian URL), and drops fragm
 | `knowledge` | Knowledge chunks (RAG) | source (bundled/github/user), path, sha, lang, topic, tags, chunk_index, content |
 | `content_plan` | Content calendar | scheduled_date, topic, keyword, intent, brief(JSON), status, post_id |
 | `clusters` | Topic clusters | pillar_url, members, gaps, coverage |
+| `remote_jobs` | Subscription AI requests | request_hash, engine, model, task, status, payload, response, error, usage |
 
 Settings: option `seolity_settings` (non-autoloaded, schema-validated). Secrets: option `seolity_secrets`
 (encrypted values; never sent to the browser). Retention: the daily `cleanup` job prunes logs, 404 hits,
@@ -202,6 +204,39 @@ Providers implement `ProviderInterface` (`id`, `label`, `is_configured`, `model`
 | Google Gemini | generateContent | `responseJsonSchema` |
 | Ollama / local LLM | `/api/chat` | `format` = schema |
 | Custom | Any OpenAI-compatible base URL | json_schema |
+| Claude subscription (Pro/Max) | Claude Code CLI on GitHub Actions (asynchronous, see below) | schema in prompt + validation/repair |
+| ChatGPT subscription (Plus/Pro) | OpenAI Codex CLI on GitHub Actions (asynchronous, see below) | schema in prompt + validation/repair |
+
+### Subscription AI (Claude Pro/Max, ChatGPT Plus/Pro)
+
+Inspired by the ARIAGH AI Writer runner: instead of a pay-per-token key, the official CLIs run with
+the owner's own plan inside the owner's **private** GitHub repository.
+
+```
+Engine::run → Providers\SubscriptionClaude|Codex::complete
+   └─ AI\Remote\SubscriptionRunner::complete(engine, model, request)
+        ├─ answer already stored for this request hash? → return it (synchronous)
+        └─ else insert remote_jobs row (queued) and throw AI\Deferred
+shutdown → flush(): all queued requests → jobs/<id>.json (AES-256-GCM) in ONE commit on the
+           queue branch (default "seolity-jobs") → workflow_dispatch "SEOlity AI"
+GitHub Actions → runner/runner.mjs: claude -p / codex exec per job → results/<id>.json (encrypted)
+           → POST /seolity/v1/remote/callback (HMAC) when the site is reachable
+site → stores the answer (callback, or collect() polling the results folder for local sites)
+```
+
+* `AI\Deferred` is caught by the REST router (HTTP 202 `seolity_ai_deferred` with the job id; the admin
+  UI shows a waiting indicator, polls `GET /ai/remote/{id}` and re-sends the identical request) and by
+  the queue (job re-scheduled in 45 s without counting an attempt; woken immediately when a result arrives).
+* Keys: `enc = sha256("enc|" + SEOLITY_SHARED_SECRET)` for AES-256-GCM, `mac = sha256("mac|" + secret)`
+  for the callback HMAC (timestamped, 10-minute window). The repository only ever holds ciphertext.
+* The runner waits ~2 minutes for follow-up requests (multi-step features), deletes processed jobs,
+  prunes results after 24 h, never sets `ANTHROPIC_API_KEY`/`OPENAI_API_KEY` (no API billing), and
+  returns a refreshed Codex `auth.json` inside the encrypted result so SEOlity updates the secret.
+* Setup (`POST /subscription/setup`) creates the private repository if needed, pushes the workflow and
+  runner, creates the queue branch and stores the Actions secrets (`SEOLITY_SHARED_SECRET`,
+  `SEOLITY_CALLBACK_URL`, `CLAUDE_CODE_OAUTH_TOKEN`, `CODEX_AUTH_JSON`) with libsodium sealed boxes.
+  Runner files are re-pushed automatically when a plugin update ships a newer runner.
+* Stalled queues are re-dispatched; requests expire after `sub_wait_minutes` (default 45).
 
 Extensions register more providers with the `seolity_ai_providers` filter. Tasks (22): optimize_content,
 meta_tags, product_seo, image_alt, keyword_research, search_intent, ctr_rewrite, content_gap,

@@ -15,6 +15,9 @@ final class Jobs {
 
 	public static function register( Queue $q, Plugin $p ) {
 		// Crawler / audit.
+		$q->handler( 'subscription_collect', static function () use ( $p ) {
+			return $p->subscription->collect_job();
+		} );
 		$q->handler( 'crawl_start', static function ( $a ) use ( $p ) {
 			return $p->crawler->start( isset( $a['type'] ) ? $a['type'] : 'full' );
 		} );

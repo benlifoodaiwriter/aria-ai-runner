@@ -149,6 +149,12 @@ final class Queue {
 				),
 				array( 'id' => (int) $job['id'] )
 			);
+		} catch ( \SEOlity\AI\Deferred $d ) {
+			// Waiting for the subscription runner: re-schedule without counting an attempt.
+			$db->query(
+				"UPDATE {jobs} SET status = 'pending', attempts = IF(attempts > 0, attempts - 1, 0), available_at = %s, last_error = %s WHERE id = %d",
+				array( gmdate( 'Y-m-d H:i:s', time() + 45 ), $d->getMessage() . ' (' . $d->job_id() . ')', (int) $job['id'] )
+			);
 		} catch ( \Throwable $e ) {
 			$attempts = (int) $job['attempts'];
 			$final    = $attempts >= (int) $job['max_attempts'];

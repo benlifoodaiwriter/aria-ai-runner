@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: SEOlity 1.0.0\n"
-"POT-Creation-Date: 2026-10-04 10:24+0000\n"
+"POT-Creation-Date: 2026-10-04 13:52+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -66,6 +66,52 @@ msgstr "جمینای این پاسخ را به دلایل ایمنی مسدود 
 
 msgid "Local LLM (Ollama)"
 msgstr "مدل زبانی محلی (Ollama)"
+
+msgid "Claude subscription (Pro/Max via GitHub)"
+msgstr "اشتراک Claude (Pro/Max از طریق گیت‌هاب)"
+
+msgid "ChatGPT subscription (Plus/Pro via GitHub)"
+msgstr "اشتراک ChatGPT (Plus/Pro از طریق گیت‌هاب)"
+
+msgid "Runner repository (owner/name)"
+msgstr "مخزن اجراکننده (owner/name)"
+
+msgid "GitHub token"
+msgstr "توکن گیت‌هاب"
+
+msgid "Claude subscription token (claude setup-token)"
+msgstr "توکن اشتراک Claude ‏(claude setup-token)"
+
+msgid "ChatGPT auth.json (codex login)"
+msgstr "فایل auth.json چت‌جی‌پی‌تی (codex login)"
+
+msgid "Run \"Set up GitHub runner\""
+msgstr "دکمه «راه‌اندازی اجراکننده گیت‌هاب» را بزنید"
+
+msgid "The subscription runner did not answer in time. Check the \"SEOlity AI\" workflow runs on GitHub."
+msgstr "اجراکننده اشتراکی به‌موقع پاسخ نداد. اجراهای گردش‌کار «SEOlity AI» را در گیت‌هاب بررسی کنید."
+
+#, php-format
+msgid "Subscription AI is not ready. Missing: %s."
+msgstr "هوش مصنوعی اشتراکی آماده نیست. موارد ناقص: %s."
+
+msgid "Empty answer from the subscription runner."
+msgstr "پاسخ خالی از اجراکننده اشتراکی دریافت شد."
+
+msgid "Your AI subscription usage limit was reached. Try again later or switch provider."
+msgstr "سقف استفاده از اشتراک هوش مصنوعی شما پر شده است. بعداً دوباره تلاش کنید یا ارائه‌دهنده را عوض کنید."
+
+msgid "Enter the runner repository as owner/name (it will be created as a private repository if it does not exist)."
+msgstr "مخزن اجراکننده را به شکل owner/name وارد کنید (اگر وجود نداشته باشد به‌صورت خصوصی ساخته می‌شود)."
+
+msgid "Add a GitHub token first (Settings → GitHub)."
+msgstr "ابتدا توکن گیت‌هاب را وارد کنید (تنظیمات ← گیت‌هاب)."
+
+msgid "The PHP OpenSSL extension is required."
+msgstr "افزونه OpenSSL در PHP لازم است."
+
+msgid "The runner repository must be private."
+msgstr "مخزن اجراکننده باید خصوصی باشد."
 
 msgid "Dashboard"
 msgstr "داشبورد"
@@ -416,6 +462,9 @@ msgstr "قالب محتوا در برابر هدف جستجوی «%s»."
 msgid "Several sentences are repeated — remove boilerplate to increase information gain."
 msgstr "چند جمله تکرار شده‌اند — متن‌های تکراری را حذف کنید تا ارزش اطلاعاتی افزایش یابد."
 
+msgid "Your AI subscription is working on this request on GitHub…"
+msgstr "اشتراک هوش مصنوعی شما در حال انجام این درخواست روی گیت‌هاب است…"
+
 msgid "Unexpected error."
 msgstr "خطای غیرمنتظره."
 
@@ -436,6 +485,9 @@ msgstr "شما اجازه ویرایش این محصول را ندارید."
 
 msgid "Unknown secret."
 msgstr "کلید محرمانه ناشناخته."
+
+msgid "auth.json must be valid JSON (copy the whole file from ~/.codex/auth.json)."
+msgstr "auth.json باید JSON معتبر باشد (کل فایل ~/.codex/auth.json را کپی کنید)."
 
 msgid "Dates must be YYYY-MM-DD."
 msgstr "تاریخ‌ها باید به‌صورت YYYY-MM-DD باشند."
@@ -1682,6 +1734,9 @@ msgstr "خطای SERP API: %s"
 msgid "GitHub storage is not configured."
 msgstr "ذخیره‌سازی گیت‌هاب تنظیم نشده است."
 
+msgid "The PHP sodium extension is required to store GitHub secrets."
+msgstr "برای ذخیره Secretهای گیت‌هاب، افزونه sodium در PHP لازم است."
+
 msgid "Repository must look like owner/name."
 msgstr "مخزن باید به شکل owner/name باشد."
 
@@ -2678,6 +2733,72 @@ msgstr "حذف شد."
 msgid "Write-only: secrets are encrypted on the server and never sent back to the browser."
 msgstr "فقط‌نوشتنی: اطلاعات محرمانه روی سرور رمزنگاری می‌شوند و هرگز به مرورگر برگردانده نمی‌شوند."
 
+msgid "Use the AI subscription you already pay for"
+msgstr "از اشتراک هوش مصنوعی‌ای که همین حالا دارید استفاده کنید"
+
+msgid "Instead of a pay-per-token API key, SEOlity can run every AI feature with your Claude Pro/Max or ChatGPT Plus/Pro plan. The official Claude Code / Codex command-line tools run on GitHub Actions in your own private repository; requests and answers are encrypted. Answers take about 1–3 minutes, so SEOlity waits for them automatically."
+msgstr "به‌جای کلید API با پرداخت به‌ازای توکن، سئولیتی می‌تواند همه قابلیت‌های هوش مصنوعی را با اشتراک Claude Pro/Max یا ChatGPT Plus/Pro شما اجرا کند. ابزارهای رسمی خط فرمان Claude Code / Codex روی GitHub Actions در مخزن خصوصی خودتان اجرا می‌شوند و درخواست‌ها و پاسخ‌ها رمزنگاری می‌شوند. هر پاسخ حدود ۱ تا ۳ دقیقه طول می‌کشد و سئولیتی خودکار منتظر آن می‌ماند."
+
+msgid "GitHub → Settings → Developer settings → create a token with access to the runner repository: Contents, Actions, Secrets and Workflows (read & write) — or a classic token with the \"repo\" and \"workflow\" scopes. Save it in the GitHub tab."
+msgstr "در گیت‌هاب ← Settings ← Developer settings یک توکن با دسترسی به مخزن اجراکننده بسازید: Contents، Actions، Secrets و Workflows (خواندن و نوشتن) — یا یک توکن کلاسیک با دسترسی‌های «repo» و «workflow». آن را در تب گیت‌هاب ذخیره کنید."
+
+msgid "Enter a repository name below, e.g. your-user/seolity-runner (it is created as a private repository if it does not exist) and save settings."
+msgstr "نام یک مخزن را پایین وارد کنید، مثلاً your-user/seolity-runner (اگر وجود نداشته باشد خصوصی ساخته می‌شود) و تنظیمات را ذخیره کنید."
+
+msgid "Claude: on your computer run “claude setup-token” (Claude Code CLI) and paste the token below. ChatGPT: run “codex login”, then paste the contents of ~/.codex/auth.json below."
+msgstr "Claude: روی کامپیوتر خود دستور «claude setup-token» (ابزار Claude Code) را اجرا کنید و توکن را پایین وارد کنید. ChatGPT: دستور «codex login» را اجرا کنید و محتوای فایل ~/.codex/auth.json را پایین وارد کنید."
+
+msgid "Click “Set up GitHub runner”, then choose the subscription provider in the AI tab and press Test."
+msgstr "دکمه «راه‌اندازی اجراکننده گیت‌هاب» را بزنید، سپس در تب هوش مصنوعی ارائه‌دهنده اشتراکی را انتخاب کنید و «تست» را بزنید."
+
+msgid "Runner repository set up"
+msgstr "مخزن اجراکننده راه‌اندازی شده"
+
+msgid "Claude subscription token"
+msgstr "توکن اشتراک Claude"
+
+msgid "ChatGPT login (auth.json)"
+msgstr "ورود ChatGPT ‏(auth.json)"
+
+msgid "runner files will be updated on the next request"
+msgstr "فایل‌های اجراکننده در درخواست بعدی به‌روز می‌شوند"
+
+msgid "Last 24 hours"
+msgstr "۲۴ ساعت گذشته"
+
+msgid "done"
+msgstr "انجام‌شده"
+
+msgid "waiting"
+msgstr "در انتظار"
+
+msgid "failed"
+msgstr "ناموفق"
+
+msgid "Workflow run"
+msgstr "اجرای گردش‌کار"
+
+msgid "Started"
+msgstr "شروع"
+
+msgid "Set up GitHub runner"
+msgstr "راه‌اندازی اجراکننده گیت‌هاب"
+
+msgid "GitHub runner is ready."
+msgstr "اجراکننده گیت‌هاب آماده است."
+
+msgid "Start runner now"
+msgstr "اجرای فوری"
+
+msgid "Workflow started on GitHub."
+msgstr "گردش‌کار در گیت‌هاب شروع شد."
+
+msgid "Refresh status"
+msgstr "به‌روزرسانی وضعیت"
+
+msgid "GitHub runner"
+msgstr "اجراکننده گیت‌هاب"
+
 msgid "configured"
 msgstr "تنظیم‌شده"
 
@@ -2905,9 +3026,6 @@ msgstr "قبل ← بعد"
 #, php-format
 msgid "Window: %s days"
 msgstr "بازه: %s روز"
-
-msgid "Started"
-msgstr "شروع"
 
 msgid "Revert"
 msgstr "بازگردانی"
@@ -4137,6 +4255,10 @@ msgstr "یک ممیزی سایت اجرا کنید و سپس روی «یافتن
 msgid "Most linked pages"
 msgstr "پرلینک‌ترین صفحات"
 
+#, php-format
+msgid "Your AI subscription is working on GitHub (%s)…"
+msgstr "اشتراک هوش مصنوعی شما روی گیت‌هاب در حال کار است (%s)…"
+
 msgid "Something went wrong."
 msgstr "مشکلی پیش آمد."
 
@@ -4603,8 +4725,29 @@ msgstr "ناشناس‌سازی آدرس‌های IP"
 msgid "Delete all data on uninstall"
 msgstr "حذف همه داده‌ها هنگام حذف افزونه"
 
+msgid "Claude model (opus, sonnet, haiku or a full model id)"
+msgstr "مدل Claude ‏(opus، sonnet، haiku یا شناسه کامل مدل)"
+
+msgid "ChatGPT / Codex model (empty = default)"
+msgstr "مدل ChatGPT / Codex ‏(خالی = پیش‌فرض)"
+
+msgid "Runner repository (owner/name, private)"
+msgstr "مخزن اجراکننده (owner/name، خصوصی)"
+
+msgid "Queue branch"
+msgstr "شاخه صف"
+
+msgid "Send results directly to this site (faster when the site is public)"
+msgstr "ارسال مستقیم نتایج به این سایت (وقتی سایت عمومی است سریع‌تر است)"
+
+msgid "Maximum wait per request (minutes)"
+msgstr "حداکثر انتظار برای هر درخواست (دقیقه)"
+
 msgid "General"
 msgstr "عمومی"
+
+msgid "Subscription AI"
+msgstr "هوش مصنوعی اشتراکی"
 
 msgid "Crawler & audits"
 msgstr "خزنده و ممیزی‌ها"
@@ -4638,6 +4781,12 @@ msgstr "کلید API اوپن‌روتر"
 
 msgid "Custom API key"
 msgstr "کلید API سفارشی"
+
+msgid "Claude subscription token (output of: claude setup-token)"
+msgstr "توکن اشتراک Claude (خروجی دستور claude setup-token)"
+
+msgid "ChatGPT login (contents of ~/.codex/auth.json after: codex login)"
+msgstr "ورود ChatGPT (محتوای ~/.codex/auth.json پس از codex login)"
 
 msgid "PageSpeed Insights API key (optional)"
 msgstr "کلید API پیج‌اسپید (اختیاری)"
@@ -4749,12 +4898,6 @@ msgstr "ارزیابی‌شده"
 
 msgid "cancelled"
 msgstr "لغوشده"
-
-msgid "done"
-msgstr "انجام‌شده"
-
-msgid "failed"
-msgstr "ناموفق"
 
 msgid "open"
 msgstr "باز"

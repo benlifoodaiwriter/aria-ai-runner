@@ -245,10 +245,13 @@
 		kb_repo: 'Knowledge repository (owner/repo)', kb_branch: 'Knowledge branch', kb_path: 'Knowledge folder', kb_auto_sync: 'Sync knowledge daily', kb_contribute: 'Contribute anonymized learnings to GitHub',
 		storage_enabled: 'Enable GitHub data storage', storage_repo: 'Data repository (owner/repo, private!)', storage_branch: 'Data branch', storage_path: 'Data folder', storage_archive_days: 'Archive data older than (days)', storage_prune_local: 'Delete archived rows from the WordPress database',
 		anonymize_ip: 'Anonymize IP addresses', delete_on_uninstall: 'Delete all data on uninstall',
+		ai_model_sub_claude: 'Claude model (opus, sonnet, haiku or a full model id)', ai_model_sub_codex: 'ChatGPT / Codex model (empty = default)',
+		sub_repo: 'Runner repository (owner/name, private)', sub_branch: 'Queue branch', sub_callback: 'Send results directly to this site (faster when the site is public)', sub_wait_minutes: 'Maximum wait per request (minutes)',
 	};
 	var GROUPS = [
 		[ 'general', 'General', [ 'approval_mode', 'ui_language', 'frontend_output', 'title_separator', 'brand_name', 'brand_logo', 'brand_color' ] ],
 		[ 'ai', 'AI', [ 'ai_provider', 'ai_model_anthropic', 'ai_model_openai', 'ai_model_gemini', 'ai_model_openrouter', 'ai_model_ollama', 'ollama_base_url', 'ai_model_custom', 'custom_base_url', 'ai_effort', 'ai_content_language', 'ai_brand_voice', 'ai_use_knowledge', 'ai_max_tokens', 'ai_timeout', 'ai_monthly_budget', 'ai_cache_hours' ] ],
+		[ 'subscription', 'Subscription AI', [ 'sub_repo', 'ai_model_sub_claude', 'ai_model_sub_codex', 'sub_callback', 'sub_wait_minutes', 'sub_branch' ] ],
 		[ 'crawler', 'Crawler & audits', [ 'crawl_frequency', 'crawl_max_urls', 'crawl_batch_size', 'crawl_timeout', 'thin_content_words', 'crawl_check_external', 'competitor_max_pages', 'experiment_window', 'gsc_sync_days', 'gsc_row_limit' ] ],
 		[ 'reports', 'Alerts & reports', [ 'alert_email_enabled', 'alert_email', 'alert_drop_percent', 'report_frequency', 'report_recipients' ] ],
 		[ 'technical', 'Technical SEO', [ 'sitemap_enabled', 'sitemap_exclude_types', 'redirects_enabled', 'log_404', 'log_404_bots' ] ],
@@ -258,6 +261,7 @@
 	];
 	var SECRETS = {
 		ai: [ [ 'anthropic_api_key', 'Anthropic API key' ], [ 'openai_api_key', 'OpenAI API key' ], [ 'gemini_api_key', 'Google Gemini API key' ], [ 'openrouter_api_key', 'OpenRouter API key' ], [ 'custom_api_key', 'Custom API key' ] ],
+		subscription: [ [ 'claude_oauth_token', 'Claude subscription token (output of: claude setup-token)' ], [ 'codex_auth_json', 'ChatGPT login (contents of ~/.codex/auth.json after: codex login)' ] ],
 		crawler: [ [ 'pagespeed_api_key', 'PageSpeed Insights API key (optional)' ], [ 'serp_api_key', 'SERP data API key (optional)' ] ],
 		github: [ [ 'github_token', 'GitHub fine-grained token (Contents: read & write on the chosen repos only)' ] ],
 	};
@@ -292,7 +296,7 @@
 			}, 'primary' ) ) );
 		} );
 
-		function input( key, def, value, dirty ) {
+		function input( key, def, value, dirty, providers ) {
 			var el;
 			if ( def.type === 'bool' ) {
 				el = h( 'input', { type: 'checkbox', checked: !! value } );
@@ -302,8 +306,12 @@
 				return h( 'label', { class: 'sl-check sl-field' }, el, h( 'span', { text: t( LABELS[ key ] || key ) } ) );
 			}
 			if ( def.type === 'enum' ) {
+				var names = {};
+				( key === 'ai_provider' && providers ? providers : [] ).forEach( function ( p ) {
+					names[ p.id ] = p.label;
+				} );
 				el = App.select( def.options.map( function ( o ) {
-					return [ o, t( o ) ];
+					return [ o, names[ o ] || t( o ) ];
 				} ), value, function ( x ) {
 					dirty[ key ] = x;
 				} );
@@ -340,6 +348,79 @@
 			}, 'sm' ) : null ), t( 'Write-only: secrets are encrypted on the server and never sent back to the browser.' ) );
 		}
 
+		function subscriptionGuide( data, dirty ) {
+			var wrap = h( 'div', { class: 'sl-stack' } );
+			wrap.appendChild( h( 'div', { class: 'sl-alert sl-alert--info' },
+				h( 'strong', { text: t( 'Use the AI subscription you already pay for' ) } ),
+				h( 'p', { text: t( 'Instead of a pay-per-token API key, SEOlity can run every AI feature with your Claude Pro/Max or ChatGPT Plus/Pro plan. The official Claude Code / Codex command-line tools run on GitHub Actions in your own private repository; requests and answers are encrypted. Answers take about 1–3 minutes, so SEOlity waits for them automatically.' ) } ),
+				h( 'ol', null,
+					h( 'li', { text: t( 'GitHub → Settings → Developer settings → create a token with access to the runner repository: Contents, Actions, Secrets and Workflows (read & write) — or a classic token with the "repo" and "workflow" scopes. Save it in the GitHub tab.' ) } ),
+					h( 'li', { text: t( 'Enter a repository name below, e.g. your-user/seolity-runner (it is created as a private repository if it does not exist) and save settings.' ) } ),
+					h( 'li', { text: t( 'Claude: on your computer run “claude setup-token” (Claude Code CLI) and paste the token below. ChatGPT: run “codex login”, then paste the contents of ~/.codex/auth.json below.' ) } ),
+					h( 'li', { text: t( 'Click “Set up GitHub runner”, then choose the subscription provider in the AI tab and press Test.' ) } )
+				)
+			) );
+			var st = h( 'div' );
+			var render = function ( s ) {
+				SL.clear( st );
+				var ok = function ( v ) {
+					return v ? '✓' : '✗';
+				};
+				st.appendChild( h( 'ul', { class: 'sl-checklist' },
+					h( 'li', { text: ok( s.github_token ) + ' ' + t( 'GitHub token' ) } ),
+					h( 'li', { text: ok( s.setup ) + ' ' + t( 'Runner repository set up' ) + ( s.setup ? ' (' + SL.date( s.setup ) + ')' : '' ) } ),
+					h( 'li', { text: ok( s.claude_token ) + ' ' + t( 'Claude subscription token' ) } ),
+					h( 'li', { text: ok( s.codex_auth ) + ' ' + t( 'ChatGPT login (auth.json)' ) } )
+				) );
+				if ( s.repo_url ) {
+					st.appendChild( h( 'p', { class: 'sl-small' }, t( 'Repository' ) + ': ', App.ext( s.repo_url, s.repo ), s.files_current ? null : h( 'span', { class: 'sl-muted', text: ' — ' + t( 'runner files will be updated on the next request' ) } ) ) );
+				}
+				var counts = s.requests_24h || {};
+				st.appendChild( h( 'p', { class: 'sl-small sl-muted', text: t( 'Last 24 hours' ) + ': ' + t( 'done' ) + ' ' + ( counts.done || 0 ) + ' · ' + t( 'waiting' ) + ' ' + ( ( counts.queued || 0 ) + ( counts.submitted || 0 ) ) + ' · ' + t( 'failed' ) + ' ' + ( counts.failed || 0 ) } ) );
+				if ( Array.isArray( s.runs ) && s.runs.length ) {
+					st.appendChild( App.table( [ { label: t( 'Workflow run' ), render: function ( r ) {
+						return App.ext( r.url, '#' + r.id );
+					} }, { label: t( 'Status' ), render: function ( r ) {
+						return SL.badge( r.conclusion || r.status, r.conclusion === 'success' ? 'good' : ( r.conclusion === 'failure' ? 'bad' : 'default' ) );
+					} }, { label: t( 'Started' ), render: function ( r ) {
+						return SL.date( r.created_at );
+					} } ], s.runs ) );
+				} else if ( s.runs && s.runs.error ) {
+					st.appendChild( h( 'div', { class: 'sl-alert sl-alert--error', text: s.runs.error } ) );
+				}
+			};
+			var actions = h( 'div', { class: 'sl-toolbar' },
+				App.abtn( t( 'Set up GitHub runner' ), function () {
+					var pending = Object.keys( dirty ).filter( function ( k ) {
+						return /^(sub_|ai_model_sub_)/.test( k );
+					} );
+					var save = pending.length ? SL.api( 'settings', { body: dirty } ).then( function ( r ) {
+						data.settings = r.settings;
+						pending.forEach( function ( k ) {
+							delete dirty[ k ];
+						} );
+					} ) : Promise.resolve();
+					return save.then( function () {
+						return SL.api( 'subscription/setup', { method: 'POST' } );
+					} ).then( function ( r ) {
+						render( r );
+						SL.toast( t( 'GitHub runner is ready.' ), 'success' );
+					} );
+				}, 'primary' ),
+				App.abtn( t( 'Start runner now' ), function () {
+					return SL.api( 'subscription/run', { method: 'POST' } ).then( function () {
+						SL.toast( t( 'Workflow started on GitHub.' ), 'success' );
+					} );
+				} ),
+				App.abtn( t( 'Refresh status' ), function () {
+					return SL.api( 'subscription' ).then( render );
+				} )
+			);
+			wrap.appendChild( App.card( t( 'GitHub runner' ), h( 'div', null, actions, st ) ) );
+			App.load( st, SL.api( 'subscription' ), render );
+			return wrap;
+		}
+
 		function group( g, data, dirty ) {
 			var box = h( 'div', { class: 'sl-form' } );
 			if ( g[ 0 ] === 'ai' ) {
@@ -351,12 +432,15 @@
 					}, 'sm' ) : null );
 				} ) ) );
 			}
+			if ( g[ 0 ] === 'subscription' ) {
+				box.appendChild( subscriptionGuide( data, dirty ) );
+			}
 			if ( g[ 0 ] === 'privacy' ) {
 				box.appendChild( h( 'div', { class: 'sl-alert sl-alert--info', text: t( 'Encryption' ) + ': ' + data.encryption + '. ' + t( 'For maximum security define SEOLITY_ENCRYPTION_KEY in wp-config.php. You can also define any secret as a constant, e.g. SEOLITY_ANTHROPIC_API_KEY.' ) } ) );
 			}
 			g[ 2 ].forEach( function ( key ) {
 				if ( data.schema[ key ] ) {
-					box.appendChild( input( key, data.schema[ key ], data.settings[ key ], dirty ) );
+					box.appendChild( input( key, data.schema[ key ], data.settings[ key ], dirty, data.providers ) );
 				}
 			} );
 			( SECRETS[ g[ 0 ] ] || [] ).forEach( function ( s ) {

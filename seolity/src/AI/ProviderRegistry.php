@@ -30,6 +30,8 @@ final class ProviderRegistry {
 				'openrouter' => new Providers\OpenRouter( $plugin ),
 				'ollama'     => new Providers\Ollama( $plugin ),
 				'custom'     => new Providers\CustomApi( $plugin ),
+				'sub_claude' => new Providers\SubscriptionClaude( $plugin ),
+				'sub_codex'  => new Providers\SubscriptionCodex( $plugin ),
 			);
 			$providers = apply_filters( 'seolity_ai_providers', $providers, $plugin );
 			self::$providers = array_filter(

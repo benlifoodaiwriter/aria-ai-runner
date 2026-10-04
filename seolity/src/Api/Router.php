@@ -53,6 +53,16 @@ final class Router {
 				'callback'            => function ( Req $r ) use ( $cb ) {
 					try {
 						$res = $cb( $r );
+					} catch ( \SEOlity\AI\Deferred $d ) {
+						// Subscription AI is working on it: the admin UI waits and re-sends the same request.
+						return new \WP_REST_Response(
+							array(
+								'code'    => 'seolity_ai_deferred',
+								'message' => __( 'Your AI subscription is working on this request on GitHub…', 'seolity' ),
+								'data'    => array( 'status' => 202, 'job' => $d->job_id(), 'retry_after' => $d->retry_after() ),
+							),
+							202
+						);
 					} catch ( \Throwable $e ) {
 						return new \WP_Error( 'seolity_error', defined( 'WP_DEBUG' ) && WP_DEBUG ? $e->getMessage() : __( 'Unexpected error.', 'seolity' ), array( 'status' => 500 ) );
 					}
@@ -727,15 +737,33 @@ final class Router {
 		} );
 		$this->route( 'POST', '/settings/secret', 'manage', function ( Req $r ) use ( $p ) {
 			$key = self::key( $r, 'key' );
-			if ( ! in_array( $key, Settings::SECRET_FIELDS, true ) || 'gsc_tokens' === $key ) {
+			if ( ! in_array( $key, Settings::SECRET_FIELDS, true ) || in_array( $key, array( 'gsc_tokens', 'sub_shared_secret' ), true ) ) {
 				return new \WP_Error( 'seolity_secret', __( 'Unknown secret.', 'seolity' ), array( 'status' => 400 ) );
 			}
-			$p->settings->set_secret( $key, trim( (string) wp_unslash( $r->get_param( 'value' ) ) ) );
-			$p->audit_log->log( 'secret.updated', 'settings', null, array( 'key' => $key, 'cleared' => '' === trim( (string) $r->get_param( 'value' ) ) ) );
-			return array( 'secrets' => $p->settings->secret_flags() );
+			$value = trim( (string) wp_unslash( $r->get_param( 'value' ) ) );
+			if ( 'codex_auth_json' === $key && '' !== $value && ! is_array( json_decode( $value, true ) ) ) {
+				return new \WP_Error( 'seolity_secret', __( 'auth.json must be valid JSON (copy the whole file from ~/.codex/auth.json).', 'seolity' ), array( 'status' => 400 ) );
+			}
+			$p->settings->set_secret( $key, $value );
+			$p->audit_log->log( 'secret.updated', 'settings', null, array( 'key' => $key, 'cleared' => '' === $value ) );
+			$synced = $p->subscription->sync_secret( $key ); // Keep the runner repository's secret in step.
+			return array( 'secrets' => $p->settings->secret_flags(), 'runner_synced' => is_wp_error( $synced ) ? $synced->get_error_message() : $synced );
 		} );
 		$this->route( 'POST', '/settings/test-ai', 'manage', function ( Req $r ) use ( $p ) {
 			return $p->ai->test( self::key( $r, 'provider' ) ? self::key( $r, 'provider' ) : null );
+		} );
+		$this->route( 'GET', '/ai/remote/(?P<id>[a-f0-9]{32})', 'ai', function ( Req $r ) use ( $p ) {
+			return $p->subscription->job_status( (string) $r->get_param( 'id' ) );
+		} );
+		$this->route( 'GET', '/subscription', 'manage', function () use ( $p ) {
+			return $p->subscription->status();
+		} );
+		$this->route( 'POST', '/subscription/setup', 'manage', function () use ( $p ) {
+			return $p->subscription->setup();
+		} );
+		$this->route( 'POST', '/subscription/run', 'manage', function () use ( $p ) {
+			$res = $p->subscription->dispatch( true );
+			return is_wp_error( $res ) ? $res : array( 'dispatched' => true );
 		} );
 		$this->route( 'GET', '/ai/usage', 'manage', function () use ( $p ) {
 			return $p->ai->usage_summary();
@@ -773,6 +801,19 @@ final class Router {
 			return $p->archive->restore_gsc( $start, $end );
 		} );
 
+		// Subscription runner callback: public route, authenticated by an HMAC signature
+		// made with the shared secret only SEOlity and the private runner repository know.
+		register_rest_route(
+			self::NS,
+			'/remote/callback',
+			array(
+				'methods'             => 'POST',
+				'permission_callback' => '__return_true',
+				'callback'            => function ( Req $r ) use ( $p ) {
+					return $p->subscription->handle_callback( $r );
+				},
+			)
+		);
 		do_action( 'seolity_rest_routes', $this );
 	}
 }

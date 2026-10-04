@@ -149,6 +149,7 @@ final class Plugin {
 			'robots'          => Technical\RobotsService::class,
 			'pagespeed'       => Technical\PageSpeed::class,
 			'serp'            => Serp\SerpService::class,
+			'subscription'    => AI\Remote\SubscriptionRunner::class,
 		);
 		foreach ( $map as $id => $class ) {
 			$this->set(

@@ -139,6 +139,12 @@
 				} catch ( e ) {
 					data = { message: txt.slice( 0, 300 ) };
 				}
+				if ( 202 === res.status && data && data.code === 'seolity_ai_deferred' && ! opts.noWait ) {
+					// Subscription AI (GitHub runner): wait for the answer, then re-send the identical request.
+					return SL.waitRemote( data.data.job ).then( function () {
+						return SL.api( path, opts );
+					} );
+				}
 				if ( ! res.ok ) {
 					var err = new Error( ( data && data.message ) || res.statusText );
 					err.status = res.status;
@@ -147,6 +153,63 @@
 				}
 				return data;
 			} );
+		} );
+	};
+
+	/* ------------------------------------------------------------------ Subscription AI waiting */
+	var waits = {};
+	var waitBox = null;
+	var waitTimer = null;
+	function renderWaits() {
+		var ids = Object.keys( waits );
+		if ( ! ids.length ) {
+			if ( waitBox ) {
+				waitBox.remove();
+				waitBox = null;
+			}
+			clearInterval( waitTimer );
+			waitTimer = null;
+			return;
+		}
+		if ( ! waitBox ) {
+			waitBox = h( 'div', { class: 'sl-remote-wait sl-root' + ( C.rtl ? ' is-rtl' : '' ), dir: C.rtl ? 'rtl' : 'ltr', role: 'status', 'aria-live': 'polite' } );
+			d.body.appendChild( waitBox );
+		}
+		var oldest = Math.min.apply( null, ids.map( function ( k ) {
+			return waits[ k ];
+		} ) );
+		var sec = Math.round( ( Date.now() - oldest ) / 1000 );
+		SL.clear( waitBox );
+		waitBox.appendChild( h( 'span', { class: 'sl-spinner sl-spinner--sm', 'aria-hidden': 'true' } ) );
+		waitBox.appendChild( h( 'span', { text: t( 'Your AI subscription is working on GitHub (%s)…', ids.length ) + ' ' + Math.floor( sec / 60 ) + ':' + ( '0' + ( sec % 60 ) ).slice( -2 ) } ) );
+	}
+	SL.waitRemote = function ( job ) {
+		waits[ job ] = waits[ job ] || Date.now();
+		renderWaits();
+		if ( ! waitTimer ) {
+			waitTimer = setInterval( renderWaits, 1000 );
+		}
+		var started = Date.now();
+		return new Promise( function ( resolve, reject ) {
+			function done( fn, arg ) {
+				delete waits[ job ];
+				renderWaits();
+				fn( arg );
+			}
+			function poll() {
+				SL.api( 'ai/remote/' + job, { noWait: true } ).then( function ( r ) {
+					if ( r.status === 'done' || r.status === 'failed' || r.status === 'unknown' ) {
+						done( resolve ); // The re-sent request returns the answer (or the runner's error).
+					} else if ( Date.now() - started > 65 * 60000 ) {
+						done( reject, new Error( t( 'The subscription runner did not answer in time. Check the "SEOlity AI" workflow runs on GitHub.' ) ) );
+					} else {
+						setTimeout( poll, 6000 );
+					}
+				} ).catch( function () {
+					setTimeout( poll, 15000 ); // Transient network/server error: keep waiting.
+				} );
+			}
+			setTimeout( poll, 5000 );
 		} );
 	};
 

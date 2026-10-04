@@ -23,6 +23,7 @@ final class Settings {
 	const SECRET_FIELDS = array(
 		'openai_api_key', 'anthropic_api_key', 'gemini_api_key', 'openrouter_api_key', 'custom_api_key',
 		'gsc_client_secret', 'gsc_tokens', 'github_token', 'pagespeed_api_key', 'serp_api_key',
+		'claude_oauth_token', 'codex_auth_json', 'sub_shared_secret',
 	);
 
 	/** @var Plugin|null */
@@ -50,13 +51,20 @@ final class Settings {
 			'frontend_output'      => array( 'enum', 'auto', array( 'auto', 'on', 'off' ) ),
 			'title_separator'      => array( 'string', '|' ),
 			// AI.
-			'ai_provider'          => array( 'enum', 'anthropic', array( 'openai', 'anthropic', 'gemini', 'openrouter', 'ollama', 'custom' ) ),
+			'ai_provider'          => array( 'enum', 'anthropic', array( 'openai', 'anthropic', 'gemini', 'openrouter', 'ollama', 'custom', 'sub_claude', 'sub_codex' ) ),
 			'ai_model_openai'      => array( 'string', 'gpt-4.1-mini' ),
 			'ai_model_anthropic'   => array( 'string', 'claude-opus-5-5' ),
 			'ai_model_gemini'      => array( 'string', 'gemini-2.5-flash' ),
 			'ai_model_openrouter'  => array( 'string', 'anthropic/claude-opus-5-5' ),
 			'ai_model_ollama'      => array( 'string', 'llama3.1' ),
 			'ai_model_custom'      => array( 'string', '' ),
+			'ai_model_sub_claude'  => array( 'string', 'sonnet' ),
+			'ai_model_sub_codex'   => array( 'string', '' ),
+			// Subscription AI (Claude Pro/Max or ChatGPT Plus/Pro through GitHub Actions).
+			'sub_repo'             => array( 'string', '' ),
+			'sub_branch'           => array( 'string', 'seolity-jobs' ),
+			'sub_callback'         => array( 'bool', true ),
+			'sub_wait_minutes'     => array( 'int', 45, array( 10, 180 ) ),
 			'ai_effort'            => array( 'enum', 'medium', array( 'low', 'medium', 'high', 'xhigh', 'max' ) ),
 			'ollama_base_url'      => array( 'url', 'http://localhost:11434' ),
 			'custom_base_url'      => array( 'url', '' ),
@@ -274,7 +282,7 @@ final class Settings {
 	public function secret_flags() {
 		$out = array();
 		foreach ( self::SECRET_FIELDS as $key ) {
-			if ( 'gsc_tokens' === $key ) {
+			if ( 'gsc_tokens' === $key || 'sub_shared_secret' === $key ) {
 				continue;
 			}
 			$out[ $key ] = $this->has_secret( $key );

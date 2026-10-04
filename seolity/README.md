@@ -18,6 +18,17 @@
 - **ذخیره‌سازی در گیت‌هاب**: داده‌های قدیمی در یک مخزن خصوصی بایگانی می‌شوند تا دیتابیس هاست سبک بماند (قابل بازیابی).
 - رابط کاربری فارسی، راست‌به‌چپ، حالت تیره، واکنش‌گرا و دسترس‌پذیر. فقط روش‌های کلاه‌سفید.
 
+## هوش مصنوعی اشتراکی (بدون کلید API)
+
+مثل آریا رایتر، می‌توانید به‌جای کلید API با پرداخت به‌ازای مصرف، از **اشتراک Claude Pro/Max** یا **ChatGPT Plus/Pro** خودتان استفاده کنید. ابزارهای رسمی Claude Code و Codex روی GitHub Actions در مخزن خصوصی شما اجرا می‌شوند:
+
+۱. یک توکن گیت‌هاب با دسترسی Contents، Actions، Secrets و Workflows بسازید و در تنظیمات ← گیت‌هاب ذخیره کنید.
+۲. در تنظیمات ← هوش مصنوعی اشتراکی نام مخزن (مثلاً `your-user/seolity-runner`) را وارد کنید؛ اگر وجود نداشته باشد خصوصی ساخته می‌شود.
+۳. برای Claude دستور `claude setup-token` و برای ChatGPT دستور `codex login` را روی کامپیوتر خود اجرا کنید و توکن یا محتوای `~/.codex/auth.json` را وارد کنید.
+۴. «راه‌اندازی اجراکننده گیت‌هاب» را بزنید و در تب هوش مصنوعی ارائه‌دهنده اشتراکی را انتخاب کنید.
+
+همه دکمه‌های هوش مصنوعی بدون تغییر کار می‌کنند؛ هر پاسخ حدود ۱ تا ۳ دقیقه طول می‌کشد و سئولیتی خودش منتظر می‌ماند. درخواست‌ها و پاسخ‌ها در مخزن **رمزنگاری‌شده** ذخیره می‌شوند. سایت‌های لوکال هم کار می‌کنند (نتایج از گیت‌هاب برداشته می‌شود و Cloudflare لازم نیست).
+
 ## نصب سریع
 
 ۱. پوشه `seolity` را در `wp-content/plugins` قرار دهید و فعال کنید.
@@ -38,7 +49,7 @@
 SEOlity is an AI-powered SEO operating system for WordPress and WooCommerce. It **measures** (crawler with ~60 checks, Search Console page × query × day analytics, content analysis, competitors), **decides** (SEO Doctor, prioritized Action Center with "Why?" explanations, rules, daily briefing, data-grounded chat), **acts safely** (AI optimizer in every editor with preview, approval modes, versions and undo) and **learns** (every applied change becomes a measured experiment; results feed future suggestions).
 
 - Architecture, database schema, API, AI, security, queue, OAuth and roadmap: [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md)
-- Feature catalog (567 features, 511 implemented in 1.0, the rest marked as roadmap): [`docs/FEATURES.md`](docs/FEATURES.md)
+- Feature catalog (576 features, 520 implemented in 1.0, the rest marked as roadmap): [`docs/FEATURES.md`](docs/FEATURES.md)
 - Installation, external services and FAQ: [`readme.txt`](readme.txt)
 - Knowledge base format and contribution rules: [`knowledge/README.md`](knowledge/README.md)
 

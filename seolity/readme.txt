@@ -23,12 +23,13 @@ White-hat only: guardrails reject keyword stuffing, hidden text, removed links a
 
 Works alongside Yoast SEO, Rank Math, SEOPress and AIOSEO (reads/writes their fields) or standalone. WooCommerce HPOS compatible.
 
-Full documentation: `docs/ARCHITECTURE.md` and the 567-feature catalog in `docs/FEATURES.md`.
+Full documentation: `docs/ARCHITECTURE.md` and the 576-feature catalog in `docs/FEATURES.md`.
 
 == Installation ==
 
 1. Upload the `seolity` folder to `/wp-content/plugins/` (or upload the ZIP in Plugins → Add New) and activate it.
 2. **AI** – SEOlity → Settings → AI: choose a provider (Anthropic Claude, OpenAI, Google Gemini, OpenRouter, a local Ollama server or any OpenAI-compatible API) and enter its key. Click "Test connection".
+   **Or use your subscription** (Claude Pro/Max or ChatGPT Plus/Pro) instead of an API key: SEOlity → Settings → Subscription AI. Save a GitHub token (Contents, Actions, Secrets, Workflows), enter a repository name, paste the output of `claude setup-token` (or the contents of `~/.codex/auth.json` after `codex login`) and click "Set up GitHub runner". Answers take about 1–3 minutes; SEOlity waits automatically.
 3. **Search Console** – create an OAuth client (type "Web application") in Google Cloud Console, enable the "Google Search Console API", add the redirect URI shown in SEOlity → Settings → Search Console, then paste the Client ID and Secret and click Connect. Choose your property.
 4. **First audit** – SEOlity → Site Audit → Start audit. Work continues in the background.
 5. Optional: SerpApi key (live SERP analysis), PageSpeed Insights key, a GitHub fine-grained token (knowledge sync / data storage), competitors.
@@ -44,6 +45,7 @@ Secrets can be defined in wp-config.php instead of the database, e.g. `define( '
 SEOlity only contacts external services that you configure:
 
 * **AI providers** (Anthropic, OpenAI, Google Gemini, OpenRouter, your own endpoint) – page content and SEO data needed for the requested task are sent when you (or a rule you created) run an AI action. Each provider's terms and privacy policy apply.
+* **GitHub Actions + Claude Code / OpenAI Codex** (subscription AI, optional) – AI requests are written encrypted to your private GitHub repository and processed there by the official CLI with your own Claude or ChatGPT plan; results are posted back to your site (HMAC-signed) or collected from GitHub.
 * **Google Search Console API / OAuth** – read-only Search Console data for the property you select (https://policies.google.com/privacy).
 * **Google PageSpeed Insights API** – the URL you test.
 * **SerpApi** – the keyword and market you analyze (https://serpapi.com/legal).
