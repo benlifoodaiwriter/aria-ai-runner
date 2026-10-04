@@ -50,6 +50,9 @@ jobs:
             claude --version
           fi
 
+      - name: Image compressor (smaller downloads for slow hosts)
+        run: npm install --no-save --no-package-lock --no-audit --no-fund --prefix runner sharp@0.33.5 || echo "sharp not installed (images stay uncompressed)"
+
       - name: Write articles with your subscription
         run: node runner/runner.mjs
         env:
