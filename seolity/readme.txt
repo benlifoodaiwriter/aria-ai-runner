@@ -4,7 +4,7 @@ Tags: seo, ai, search console, woocommerce, schema
 Requires at least: 6.2
 Tested up to: 6.6
 Requires PHP: 7.4
-Stable tag: 1.0.0
+Stable tag: 1.1.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -69,6 +69,9 @@ Yes. The interface is fully translated and RTL-native, text analysis understands
 Enable "Delete all data on uninstall" in Settings → Privacy, then delete the plugin.
 
 == Changelog ==
+
+= 1.1.0 =
+* Subscription AI: use your Claude Pro/Max or ChatGPT Plus/Pro plan (official Claude Code / Codex CLI on GitHub Actions in your private repository) instead of an API key. Encrypted job queue, signed callback, local-site mode, automatic waiting in every AI feature.
 
 = 1.0.0 =
 * First release.
