@@ -291,14 +291,14 @@
 	var root;
 	var view;
 	var nav;
-	var ICONS = { dashboard: 'dashboard', actions: 'wand', ai: 'prompt', audit: 'pulse', gsc: 'chart', keywords: 'key', content: 'content', products: 'bag', images: 'image', links: 'link', competitors: 'swords', experiments: 'flask', changes: 'undo', redirects: 'corner', 404: 'unlink', schema: 'braces', sitemap: 'map', robots: 'bot', reports: 'review', alerts: 'bell', automation: 'zap', knowledge: 'book', settings: 'settings' };
+	var ICONS = { dashboard: 'dashboard', actions: 'wand', ai: 'prompt', audit: 'pulse', gsc: 'chart', keywords: 'key', content: 'content', products: 'bag', images: 'image', links: 'link', competitors: 'swords', experiments: 'flask', changes: 'undo', redirects: 'corner', 404: 'unlink', schema: 'braces', sitemap: 'map', robots: 'bot', reports: 'review', alerts: 'bell', automation: 'zap', knowledge: 'book', settings: 'settings', rankmath: 'target', guide: 'lifebuoy' };
 	/** Sidebar groups (ARIAGH-style navigation sections). */
 	var NAV_GROUPS = [
 		[ 'Overview', [ 'dashboard', 'actions', 'ai', 'alerts', 'reports' ] ],
-		[ 'Content & SEO', [ 'content', 'products', 'images', 'keywords', 'links' ] ],
+		[ 'Content & SEO', [ 'content', 'products', 'images', 'keywords', 'rankmath', 'links' ] ],
 		[ 'Analysis', [ 'audit', 'gsc', 'competitors', 'experiments' ] ],
 		[ 'Technical SEO', [ 'redirects', '404', 'schema', 'sitemap', 'robots' ] ],
-		[ 'System', [ 'changes', 'automation', 'knowledge', 'settings' ] ],
+		[ 'System', [ 'changes', 'automation', 'knowledge', 'guide', 'settings' ] ],
 	];
 	App.icon = function ( slug ) {
 		return ICONS[ slug ] || 'info';

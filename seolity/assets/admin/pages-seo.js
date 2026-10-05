@@ -307,6 +307,7 @@
 			var cid = h( 'input', { class: 'sl-input', value: st.client_id || '', dir: 'ltr', placeholder: 'xxxxxxxx.apps.googleusercontent.com' } );
 			var secret = h( 'input', { class: 'sl-input', type: 'password', dir: 'ltr', placeholder: st.has_secret ? '•••••••• ' + t( '(saved)' ) : 'GOCSPX-…', autocomplete: 'new-password' } );
 			var redirect = h( 'input', { class: 'sl-input', readonly: true, value: st.redirect_uri, dir: 'ltr' } );
+			box.appendChild( h( 'div', { class: 'sl-alert sl-alert--info sl-iconline' }, SL.icon( 'lifebuoy', 18 ), h( 'span', { text: t( 'First time? The connection guide walks you through every Google Cloud screen with direct links.' ) + ' ' } ), App.link( t( 'Open the connection guide' ), 'guide?service=gsc' ) ) );
 			box.appendChild( App.card( t( 'Step 1 — Google OAuth client' ), h( 'div', { class: 'sl-stack' },
 				h( 'ol', { class: 'sl-small' }, [ t( 'Open Google Cloud Console → APIs & Services → enable “Google Search Console API”.' ), t( 'Create OAuth client ID → type “Web application”.' ), t( 'Add the Authorized redirect URI below (exactly).' ), t( 'Paste the Client ID and Client Secret here.' ) ].map( function ( x ) {
 					return h( 'li', { text: x } );
@@ -892,7 +893,7 @@
 					}
 					list.appendChild( App.table( [
 						{ label: t( 'Title' ), render: function ( c ) {
-							return h( 'div', null, h( 'a', { href: c.edit_link, class: 'sl-link', dir: 'auto' }, c.title || t( '(no title)' ) ), h( 'div', { class: 'sl-muted sl-small', text: c.subtype + ' · ' + t( c.status ) + ( c.focus_keyword ? ' · ' + t( 'Focus keyword' ) + ': ' + c.focus_keyword : '' ) } ) );
+							return h( 'div', null, h( 'a', { href: c.edit_link, class: 'sl-link', dir: 'auto' }, c.title || t( '(no title)' ) ), h( 'div', { class: 'sl-muted sl-small', text: c.subtype + ' · ' + t( c.status ) + ( c.focus_keywords && c.focus_keywords.length ? ' · ' + t( 'Focus keywords' ) + ': ' + c.focus_keywords.join( '، ' ) : '' ) } ), c.rank_math_score !== null && c.rank_math_score !== undefined ? h( 'span', { class: 'sl-badge sl-badge--' + ( c.rank_math_score >= 80 ? 'good' : c.rank_math_score >= 50 ? 'warn' : 'bad' ), title: t( 'Rank Math score' ) }, 'Rank Math ' + c.rank_math_score ) : null );
 						} },
 						{ label: t( 'Score' ), render: function ( c ) {
 							return SL.scoreRing( c.score, 40 );
@@ -913,6 +914,9 @@
 								}, 'primary' ) : null,
 								App.cap( 'ai' ) ? App.btn( t( 'Meta' ), function () {
 									SL.metaModal( c.object_type, c.id, load );
+								}, 'sm' ) : null,
+								c.object_type === 'post' || c.object_type === 'term' ? App.btn( SL.il( 'key', t( 'Keywords' ), 15 ), function () {
+									SL.keywordInsights( c.object_type, c.id, { onApply: load } );
 								}, 'sm' ) : null,
 								App.btn( t( 'History' ), function () {
 									SL.history( c.object_type, c.id );

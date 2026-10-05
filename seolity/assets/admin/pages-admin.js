@@ -345,7 +345,7 @@
 					el.placeholder = '';
 					SL.toast( t( 'Removed.' ) );
 				} );
-			}, 'sm' ) : null ) );
+			}, 'sm' ) : null, App.guideFor && App.guideFor( key ) ? h( 'a', { class: 'sl-btn sl-btn--sm sl-btn--ghost', href: '#/guide?service=' + App.guideFor( key ), title: t( 'How to get this key' ) }, SL.il( 'lifebuoy', t( 'Guide' ), 15 ) ) : null ) );
 		}
 
 		function subscriptionGuide( data, dirty ) {

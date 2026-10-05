@@ -276,6 +276,8 @@
 		'pause': '<rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/>',
 		'play': '<path d="M7 4.5v15a1 1 0 0 0 1.5.86l12-7.5a1 1 0 0 0 0-1.72l-12-7.5A1 1 0 0 0 7 4.5z"/>',
 		'plus': '<path d="M12 5v14M5 12h14"/>',
+		'lifebuoy': '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.5"/><path d="m5.6 5.6 3.9 3.9M14.5 14.5l3.9 3.9M18.4 5.6l-3.9 3.9M9.5 14.5l-3.9 3.9"/>',
+		'list-checks': '<path d="M11 6h10M11 12h10M11 18h10"/><path d="m3 6 1.5 1.5L7 5M3 12l1.5 1.5L7 11M3 18l1.5 1.5L7 17"/>',
 		'power': '<path d="M12 2v10"/><path d="M18.4 6.6a9 9 0 1 1-12.77.04"/>',
 		'prompt': '<path d="M21 15a2 2 0 0 1-2 2H8l-5 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M8 8h8M8 12h5"/>',
 		'pulse': '<path d="M3 12h4l2-5 4 10 2-5h6"/>',
@@ -1048,6 +1050,7 @@
 					jobs.push( SL.api( 'changes/' + r.changes.meta_description + '/apply', { method: 'POST', body: { value: dIn.value } } ) );
 				}
 				Promise.all( jobs ).then( function () {
+					SL.seoSync( { title: tIn.value, description: dIn.value } );
 					SL.toast( t( 'Title & description applied.' ), 'success' );
 					m.close();
 					if ( onDone ) {
@@ -1055,6 +1058,265 @@
 					}
 				} ).catch( SL.fail );
 			} }, t( 'Apply' ) ) );
+		} ).catch( function ( e ) {
+			m.close();
+			SL.fail( e );
+		} );
+	};
+
+	/* ------------------------------------------------------------------ SEO plugin editor sync */
+	/**
+	 * Push values into the Rank Math / Yoast editor stores (Gutenberg & classic)
+	 * so their own "Save" does not overwrite what SEOlity just wrote, and their
+	 * sidebars show the new keywords / snippet live. All calls are guarded.
+	 * v: { keywords: 'a,b', title, description, pillar }
+	 */
+	SL.seoSync = function ( v ) {
+		var data = w.wp && w.wp.data;
+		if ( ! data || ! data.dispatch ) {
+			return false;
+		}
+		var synced = false;
+		function call( store, fn, arg ) {
+			try {
+				var s = data.dispatch( store );
+				if ( s && typeof s[ fn ] === 'function' ) {
+					s[ fn ]( arg );
+					synced = true;
+				}
+			} catch ( e ) {}
+		}
+		if ( v.keywords !== undefined ) {
+			call( 'rank-math', 'updateKeywords', String( v.keywords ).split( /\s*,\s*/ ).filter( Boolean ).join( ',' ) );
+			call( 'yoast-seo/editor', 'setFocusKeyword', String( v.keywords ).split( ',' )[ 0 ].trim() );
+		}
+		if ( v.title ) {
+			call( 'rank-math', 'updateSerpTitle', v.title );
+		}
+		if ( v.description ) {
+			call( 'rank-math', 'updateSerpDescription', v.description );
+		}
+		if ( v.title || v.description ) {
+			var y = {};
+			if ( v.title ) {
+				y.title = v.title;
+			}
+			if ( v.description ) {
+				y.description = v.description;
+			}
+			call( 'yoast-seo/editor', 'updateData', y );
+		}
+		if ( v.pillar !== undefined ) {
+			call( 'rank-math', 'updatePillarContent', !! v.pillar );
+			call( 'yoast-seo/editor', 'setCornerstoneContent', !! v.pillar );
+		}
+		// Classic editor fallbacks: the plugins' metabox inputs + SEOlity's own box.
+		if ( v.keywords !== undefined ) {
+			var list = String( v.keywords ).split( /\s*,\s*/ ).filter( Boolean );
+			[ [ '[name="rank_math_focus_keyword"]', list.join( ',' ) ], [ '[name="yoast_wpseo_focuskw"]', list[ 0 ] || '' ], [ '#seolity_focus_keyword', list.join( ', ' ) ] ].forEach( function ( x ) {
+				var el = d.querySelector( x[ 0 ] );
+				if ( el ) {
+					el.value = x[ 1 ];
+					el.dispatchEvent( new Event( 'input', { bubbles: true } ) );
+					synced = synced || x[ 0 ] !== '#seolity_focus_keyword';
+				}
+			} );
+			Array.prototype.forEach.call( d.querySelectorAll( '.seolity-kw-list' ), function ( el ) {
+				el.textContent = list.join( ', ' );
+			} );
+		}
+		return synced;
+	};
+
+	/* ------------------------------------------------------------------ GSC keyword intelligence modal */
+	/**
+	 * Focus keywords chosen from real Search Console data for one page:
+	 * suggested set, coverage of every query, gaps, questions, conflicts,
+	 * CTR gap and an optional AI keyword strategy. opts: { onApply(list), editor }
+	 */
+	SL.keywordInsights = function ( type, id, opts ) {
+		opts = opts || {};
+		var m = SL.modal( { title: t( 'GSC keyword intelligence' ), wide: true } );
+		m.body.appendChild( SL.spinner( t( 'Reading the queries Google shows this page for…' ) ) );
+		SL.api( 'focus/insights?object_type=' + ( type || 'post' ) + '&object_id=' + id ).then( function ( r ) {
+			SL.clear( m.body );
+			if ( ! r.has_gsc ) {
+				m.body.appendChild( h( 'div', { class: 'sl-alert sl-alert--info' }, h( 'strong', { text: t( 'Connect Google Search Console' ) } ), h( 'p', { text: t( 'Focus keywords are chosen from the real queries Google shows each page for. Connect Search Console to use this.' ) } ), h( 'a', { class: 'sl-btn sl-btn--primary sl-btn--sm', href: ( C.adminUrl || '' ) + 'admin.php?page=seolity#/guide?service=gsc' }, SL.il( 'book', t( 'Open the connection guide' ), 16 ) ) ) );
+				return;
+			}
+			var met = r.metrics || {};
+			var kpis = h( 'div', { class: 'sl-kw-kpis' },
+				[ [ t( 'Impressions' ), SL.num( met.impressions, 0 ), 'eye' ], [ t( 'Clicks' ), SL.num( met.clicks, 0 ), 'target' ], [ t( 'Avg. position' ), met.position ? SL.num( met.position ) : '—', 'trending' ], [ 'CTR', SL.num( met.ctr ) + '%', 'chart' ] ].map( function ( k ) {
+					return h( 'div', { class: 'sl-kw-kpi' }, SL.icon( k[ 2 ], 18 ), h( 'span', { text: k[ 0 ] } ), h( 'strong', { text: k[ 1 ] } ) );
+				} ),
+				r.rank_math ? h( 'div', { class: 'sl-kw-kpi sl-kw-kpi--rm' }, SL.icon( 'shield', 18 ), h( 'span', { text: t( 'Rank Math score' ) } ), h( 'strong', { text: r.rank_math.score === null ? '—' : String( r.rank_math.score ) + '/100' } ) ) : null
+			);
+			m.body.appendChild( kpis );
+			m.body.appendChild( h( 'p', { class: 'sl-muted sl-small', text: t( 'Last 28 days for this URL. Keyword data below covers the last 90 days.' ) } ) );
+
+			// Keyword set editor.
+			var suggested = [ r.suggested.primary ].concat( r.suggested.secondary || [] ).filter( Boolean );
+			var input = h( 'input', { class: 'sl-input', dir: 'auto', value: ( suggested.length ? suggested : r.current ).join( ', ' ) } );
+			function list() {
+				return input.value.split( ',' ).map( function ( s ) {
+					return s.trim();
+				} ).filter( Boolean );
+			}
+			function add( q ) {
+				var l = list();
+				if ( l.map( function ( x ) {
+					return x.toLowerCase();
+				} ).indexOf( q.toLowerCase() ) === -1 ) {
+					l.push( q );
+				}
+				input.value = l.join( ', ' );
+			}
+			var setBox = h( 'div', { class: 'sl-panel sl-kw-set' },
+				h( 'div', { class: 'sl-row sl-row--between' }, h( 'div', { class: 'sl-panel__title' }, t( 'Focus keywords' ) ), r.engine !== 'seolity' ? SL.badge( t( 'Saved to %s', r.engine === 'rankmath' ? 'Rank Math' : r.engine === 'yoast' ? 'Yoast' : r.engine === 'seopress' ? 'SEOPress' : 'AIOSEO' ), 'info' ) : null ),
+				h( 'div', { class: 'sl-small sl-muted' }, t( 'First keyword = primary. The others are secondary keywords (Rank Math shows each in its checklist).' ) ),
+				input,
+				h( 'div', { class: 'sl-small sl-iconline' }, SL.icon( 'sparkles', 14 ), h( 'span', { text: t( 'Suggested from Search Console' ) + ': ' } ), h( 'strong', { dir: 'auto', text: suggested.join( '، ' ) || '—' } ) ),
+				h( 'div', { class: 'sl-small sl-iconline sl-muted' }, SL.icon( 'key', 14 ), h( 'span', { text: t( 'Current' ) + ': ' } ), h( 'span', { dir: 'auto', text: r.current.join( '، ' ) || t( 'none' ) } ) )
+			);
+			m.body.appendChild( setBox );
+
+			// Tips.
+			if ( r.tips && r.tips.length ) {
+				m.body.appendChild( h( 'ul', { class: 'sl-kw-tips' }, r.tips.map( function ( x ) {
+					return h( 'li', { class: 'sl-iconline' }, SL.dot( x.level ), h( 'span', { dir: 'auto', text: x.text } ) );
+				} ) ) );
+			}
+
+			function cov( q ) {
+				return h( 'span', { class: 'sl-kw-cov' }, [ [ 'T', q.in_title, t( 'In title' ) ], [ 'D', q.in_meta, t( 'In meta description' ) ], [ 'H', q.in_headings, t( 'In headings' ) ], [ 'C', q.in_body, t( 'In content' ) ] ].map( function ( c ) {
+					return h( 'span', { class: 'sl-kw-cov__i' + ( c[ 1 ] ? ' is-on' : '' ), title: c[ 2 ] + ': ' + ( c[ 1 ] ? t( 'Yes' ) : t( 'No' ) ) }, c[ 0 ] );
+				} ) );
+			}
+			var cols = function ( withOwner ) {
+				return [
+					{ label: t( 'Query' ), render: function ( q ) {
+						return h( 'span', { class: 'sl-iconline', dir: 'auto' }, q.is_focus ? SL.icon( 'key', 14, 'is-good' ) : null, q.question ? SL.icon( 'info', 14 ) : null, h( 'span', { text: q.query } ) );
+					} },
+					{ label: t( 'Impr.' ), render: function ( q ) {
+						return SL.num( q.impressions, 0 );
+					} },
+					{ label: t( 'Clicks' ), render: function ( q ) {
+						return SL.num( q.clicks, 0 );
+					} },
+					{ label: t( 'Pos.' ), render: function ( q ) {
+						return SL.num( q.position );
+					} },
+					{ label: t( 'Coverage' ), render: cov },
+					withOwner ? { label: t( 'Owner' ), render: function ( q ) {
+						return q.owner ? SL.badge( t( 'This page' ), 'good' ) : h( 'a', { href: q.owner_url, target: '_blank', rel: 'noopener', class: 'sl-link', dir: 'auto', text: SL.path( q.owner_url ) } );
+					} } : null,
+					{ label: '', render: function ( q ) {
+						return q.owner ? h( 'button', { type: 'button', class: 'sl-btn sl-btn--sm sl-btn--icon', title: t( 'Add to focus keywords' ), 'aria-label': t( 'Add to focus keywords' ), onClick: function () {
+							add( q.query );
+						} }, SL.icon( 'plus', 15 ) ) : null;
+					} },
+				].filter( Boolean );
+			};
+			function table( rows, withOwner, empty ) {
+				if ( ! rows || ! rows.length ) {
+					return SL.empty( empty || t( 'Nothing here' ), '' );
+				}
+				var c = cols( withOwner );
+				return h( 'div', { class: 'sl-table-wrap' }, h( 'table', { class: 'sl-table sl-table--compact' }, h( 'thead', null, h( 'tr', null, c.map( function ( x ) {
+					return h( 'th', { scope: 'col' }, x.label );
+				} ) ) ), h( 'tbody', null, rows.map( function ( q ) {
+					return h( 'tr', { class: q.owner ? '' : 'is-muted' }, c.map( function ( x ) {
+						return h( 'td', null, x.render( q ) );
+					} ) );
+				} ) ) ) );
+			}
+			var aiBox = h( 'div' );
+			m.body.appendChild( SL.tabs( [
+				{ label: t( 'All queries' ) + ' (' + r.queries.length + ')', render: function () {
+					return table( r.queries, true );
+				} },
+				{ label: t( 'Not covered' ) + ' (' + ( r.missing || [] ).length + ')', render: function () {
+					return [ h( 'p', { class: 'sl-small sl-muted', text: t( 'Google already shows this page for these queries, but the content barely mentions them. Add a section or paragraph for each.' ) } ), table( r.missing, false, t( 'Every important query is covered' ) ), opts.editor && SL.openOptimizer && ( r.missing || [] ).length > 0 ? h( 'button', { type: 'button', class: 'sl-btn sl-btn--primary sl-btn--sm', onClick: function () {
+						m.close();
+						SL.openOptimizer( 'post_content' );
+					} }, SL.il( 'sparkles', t( 'Optimize content with AI' ) ) ) : null ];
+				} },
+				{ label: t( 'Questions' ) + ' (' + ( r.questions || [] ).length + ')', render: function () {
+					return [ table( r.questions, false, t( 'No question queries yet' ) ), ( r.questions || [] ).length > 0 && SL.faqFor && type === 'post' ? h( 'button', { type: 'button', class: 'sl-btn sl-btn--sm', onClick: function () {
+						m.close();
+						SL.faqFor( id );
+					} }, SL.il( 'sparkles', t( 'Generate FAQ' ) ) ) : null ];
+				} },
+				{ label: t( 'Striking distance' ) + ' (' + ( r.striking || [] ).length + ')', render: function () {
+					return [ h( 'p', { class: 'sl-small sl-muted', text: t( 'Positions 4–20: the fastest wins. Strengthen these in headings, add internal links with these anchors.' ) } ), table( r.striking, false ) ];
+				} },
+				{ label: t( 'Cannibalization' ) + ' (' + ( r.conflicts || [] ).length + ')', render: function () {
+					return [ h( 'p', { class: 'sl-small sl-muted', text: t( 'Another page of your site wins these queries. Do not target them here; link to the winning page instead.' ) } ), table( r.conflicts, true, t( 'No conflicts' ) ) ];
+				} },
+				{ label: t( 'AI strategy' ), render: function () {
+					return aiBox;
+				} },
+			] ) );
+
+			// AI keyword strategy (grounded in the same GSC data).
+			function renderPlan( res ) {
+				SL.clear( aiBox );
+				var p = res.plan;
+				var ti = h( 'input', { class: 'sl-input', dir: 'auto', value: p.seo_title || '' } );
+				var de = h( 'textarea', { class: 'sl-input', dir: 'auto', rows: 2 } );
+				de.value = p.meta_description || '';
+				SL.append( aiBox, [
+					h( 'div', { class: 'sl-row' }, SL.badge( t( p.search_intent ), 'info' ), p.pillar ? SL.badge( t( 'Pillar page' ), 'good' ) : null, SL.badge( t( 'Confidence' ) + ' ' + ( p.confidence || 0 ) + '%', 'neutral' ) ),
+					h( 'p', { dir: 'auto' }, h( 'strong', { text: t( 'Primary' ) + ': ' } ), p.primary_keyword, ' · ', h( 'strong', { text: t( 'Secondary' ) + ': ' } ), ( p.secondary_keywords || [] ).join( '، ' ) ),
+					h( 'p', { class: 'sl-reason', dir: 'auto', text: p.rationale } ),
+					h( 'button', { type: 'button', class: 'sl-btn sl-btn--sm', onClick: function () {
+						input.value = [ p.primary_keyword ].concat( p.secondary_keywords || [] ).filter( Boolean ).join( ', ' );
+						SL.toast( t( 'Keywords copied to the set above. Press Apply to save.' ) );
+					} }, SL.il( 'key', t( 'Use these keywords' ) ) ),
+					h( 'label', { class: 'sl-label', text: t( 'SEO title' ) } ), ti,
+					h( 'label', { class: 'sl-label', text: t( 'Meta description' ) } ), de,
+					SL.listBlock( t( 'Content gaps (add these sections)' ), ( p.content_gaps || [] ).map( function ( g ) {
+						return g.heading + ' — ' + g.query + ( g.why ? ' (' + g.why + ')' : '' );
+					} ), 'info' ),
+					SL.listBlock( t( 'FAQ questions' ), p.faq_questions || [], 'info' ),
+					SL.listBlock( t( 'Internal link anchors to this page' ), p.link_anchors || [], 'info' ),
+					SL.listBlock( t( 'Do not target here' ), p.avoid_keywords || [], 'warn' ),
+				] );
+				aiBox._plan = { title: ti, description: de };
+			}
+			aiBox.appendChild( h( 'div', { class: 'sl-empty' }, SL.icon( 'brain', 28 ), h( 'p', { text: t( 'AI combines these Search Console queries with your content and picks the keyword set, title, description, missing sections and FAQ — beyond a generic content AI, because it knows what Google already ranks you for.' ) } ), h( 'button', { type: 'button', class: 'sl-btn sl-btn--primary', onClick: function ( e ) {
+				var b = e.currentTarget;
+				b.disabled = true;
+				SL.clear( aiBox );
+				aiBox.appendChild( SL.spinner( t( 'Building the keyword strategy…' ) ) );
+				SL.api( 'focus/plan', { body: { object_type: type, object_id: id } } ).then( renderPlan ).catch( function ( err ) {
+					SL.clear( aiBox );
+					aiBox.appendChild( h( 'div', { class: 'sl-alert sl-alert--error', text: err.message } ) );
+				} );
+			} }, SL.il( 'sparkles', t( 'Build AI keyword strategy' ) ) ) ) );
+
+			m.foot.appendChild( h( 'button', { class: 'sl-btn', type: 'button', onClick: m.close }, t( 'Close' ) ) );
+			m.foot.appendChild( h( 'button', { class: 'sl-btn sl-btn--primary', type: 'button', onClick: function ( e ) {
+				var b = e.currentTarget;
+				var kws = list();
+				var body = { object_type: type, object_id: id, keywords: kws };
+				if ( aiBox._plan ) {
+					body.meta_title = aiBox._plan.title.value;
+					body.meta_description = aiBox._plan.description.value;
+				}
+				b.disabled = true;
+				SL.api( 'focus/apply', { body: body } ).then( function ( res ) {
+					var synced = SL.seoSync( { keywords: kws.join( ',' ), title: body.meta_title, description: body.meta_description } );
+					SL.toast( synced ? t( 'Saved and synced with the SEO plugin in this editor.' ) : t( 'Focus keywords saved.' ), 'success' );
+					if ( opts.onApply ) {
+						opts.onApply( kws, res );
+					}
+					m.close();
+				} ).catch( function ( err ) {
+					b.disabled = false;
+					SL.fail( err );
+				} );
+			} }, SL.il( 'check', t( 'Apply' ) ) ) );
 		} ).catch( function ( e ) {
 			m.close();
 			SL.fail( e );

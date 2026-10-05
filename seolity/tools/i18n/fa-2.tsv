@@ -52,7 +52,7 @@ Add redirect	افزودن ریدایرکت
 Regex	عبارت باقاعده
 Bulk import	ورود گروهی
 Bulk import (CSV)	ورود گروهی (CSV)
-Import	ورود
+Import	درون‌ریزی
 %s redirects imported.	%s ریدایرکت وارد شد.
 %s lines had errors.	%s خط خطا داشت.
 Search redirects…	جستجوی ریدایرکت‌ها…

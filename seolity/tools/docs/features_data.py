@@ -44,7 +44,7 @@ Per-task model routing | Use a cheaper model for simple tasks and a stronger one
 Batch API mode | Send bulk jobs through provider batch APIs at lower price | ~50% cheaper bulk AI | Bulk queue | Batched results | ed=Pro
 ''')
 
-cat('AI Content Optimizer', intro='"✨ Optimize with SEOlity AI" everywhere content is edited.',
+cat('AI Content Optimizer', intro='"Optimize with SEOlity AI" everywhere content is edited.',
     deps='AI provider', ui='Editors (Gutenberg, Classic, Elementor), Content page', auto='Assisted', risk='High', db='changes, content_analysis', api='POST /optimize', features='''
 Optimize post content | Rewrites content for intent, coverage and readability while keeping facts | Better rankings with less editing time | Post content, focus keyword, goal | Optimized HTML + explanation
 Optimize page content | Same optimizer for pages | Consistent quality site-wide | Page content | Optimized HTML
@@ -353,6 +353,31 @@ Search volume data | Volumes from a keyword data provider | Demand sizing | Keyw
 Keyword groups / tags | Organize keywords by product line or campaign | Reporting by segment | Tags | Groups | ed=Pro
 ''')
 
+cat('Rank Math Integration & GSC Focus Keywords', intro='Works inside Rank Math (or Yoast / SEOPress / AIOSEO) and goes beyond its Content AI: keywords come from the queries Google already shows each page for.',
+    deps='Search Console; Rank Math (optional)', ui='Rank Math & focus keywords page, editors, Content page', auto='Assisted', risk='Low', db='changes, gsc_page_query', api='GET /focus/insights, GET /rankmath', features='''
+Multiple focus keywords | Primary + up to 4 secondary keywords written to Rank Math's comma list, Yoast related keyphrases or SEOPress target keywords | Native checklists show every keyword | Keyword list | Plugin meta | risk=Low
+Primary-safe single edits | Changing the primary keyword keeps Rank Math's secondary keywords | No silent data loss | Primary keyword | Updated list | risk=Low
+GSC keyword insights per page | All queries of a URL with impressions, clicks, position and owner page | See what the page really ranks for | URL | Query table | api=GET /focus/insights
+Coverage map per query | Whether each query appears in title, meta description, headings and body | Know exactly what to add where | Page text + queries | T/D/H/C flags
+Suggested keyword set | Scores owned queries by demand, clicks, position, shape and brand, removes near-duplicates | Best keywords picked from data, not guesses | GSC queries | Primary + secondary
+Cannibalization-safe assignment | A query belongs to the URL Google prefers and is never given to two pages | No self-competition | Site-wide query owners | Conflict-free keyword map
+Focus keyword audit | Flags keywords with no impressions or won by another URL | Fix wrong targets | Current keywords | Status per keyword
+Not-covered queries | High-impression queries the content barely mentions | Concrete content gaps | Queries + content | Gap list
+Question queries for FAQ | Detects English and Persian questions (start or end question words) | FAQ that matches real searches | Queries | Question list
+Striking-distance queries | Positions 4–20 sorted by impressions | Fastest ranking wins | Queries | Opportunity list
+CTR gap check | Page CTR vs. expected CTR for its position | Know when to rewrite the snippet | Page metrics | Advice
+AI keyword strategy | AI combines GSC queries with the content: keywords, intent, title, description, gaps, FAQ, anchors, pillar | Beyond generic content AI | Insights + content | Strategy | deps=AI provider; api=POST /focus/plan
+One-click apply with undo | Keywords (and AI title/description) applied through the change log | Safe, reversible | Keyword set | Applied change | api=POST /focus/apply
+Focus keyword autopilot | Site-wide, cannibalization-safe bulk assignment with preview, approval or auto-apply (Semi/Autonomous) | Every page targeted correctly at once | Filters | Change batch | api=POST /focus/bulk; auto=Semi
+Rank Math editor sync | Updates Rank Math / Yoast editor stores so their save never overwrites SEOlity and sidebars update live | No conflicts between plugins | Applied values | Store updates | ui=Gutenberg, Classic editor
+Read-only keyword box under other SEO plugins | SEOlity's meta box shows keywords read-only when Rank Math owns them | Two editors never fight | — | Read-only field | ui=Classic editor
+Rank Math status & score triage | Version, modules, average score, low scores ordered by search demand | Fix the pages that matter first | Rank Math meta + GSC | Dashboard | api=GET /rankmath
+Rank Math score in content list | Score badge next to SEOlity's own score | One overview | Rank Math meta | Badge | ui=Content page
+Pillar content sync | Marks topic-cluster pillars as Rank Math Pillar Content / Yoast cornerstone (reversible) | Rank Math link suggestions follow your architecture | Clusters | Changes | api=POST /rankmath/sync-pillars
+Rank Math redirection import | Converts exact, regex, contains, starts-with and ends-with rules into SEOlity redirects | Consolidate redirects safely | Rank Math table | Redirects | api=POST /rankmath/import-redirects; risk=Medium
+Social title & description | Writes Rank Math / Yoast / SEOPress Open Graph fields; SEOlity's own head uses them | Better social snippets | Values | Plugin meta | risk=Low
+''')
+
 cat('Internal Linking & Site Architecture', intro='Link graph analysis and AI link suggestions that reuse text already on the page.',
     deps='Audit data', ui='Internal Links page, editors', auto='Assisted', risk='Medium', db='internal_links, urls', api='GET /links', features='''
 Link graph | Inlinks/outlinks per URL from the crawl | See how authority flows | Crawl | Graph stats | auto=Auto; risk=None
@@ -613,7 +638,8 @@ cat('UI/UX, Accessibility & Internationalization', intro='A modern SaaS-style in
     deps='—', ui='All SEOlity screens', auto='Auto', risk='None', db='—', api='—', features='''
 Single-page admin app | Fast hash-routed SPA (23 sections) without a build step | Smooth, app-like experience | — | UI
 ARIAGH visual language | Same top bar, grouped icon sidebar, icon cards, toggle rows, save bar and palette as ARIAGH AI Writer | One familiar interface across your plugins | — | Consistent UI
-Line icon set | 80+ 24px stroke icons for navigation, cards and stats | Faster scanning | Icon name | Inline SVG
+Line icon set | 80+ 24px stroke icons for navigation, cards, stats, status marks and editor buttons (no emoji glyphs) | Consistent on every OS | Icon name | Inline SVG
+Connection guide | Step-by-step bilingual guide with direct links for every API key and account (AI providers, subscriptions, GitHub, Search Console OAuth, PageSpeed, SerpApi), copy buttons, where-to-paste links and troubleshooting | Setup without searching the web | Service | Guide page + docs/CONNECT.md | ui=Connection guide page, Settings
 Vazirmatn webfont (optional) | Persian-first typeface loaded from Google Fonts | Beautiful Persian typography | Setting | Webfont | deps=Google Fonts; ui=Settings → General
 Persian (fa_IR) complete | 1,600 strings translated | Native experience for Persian users | — | Translated UI
 Translatable (.pot) | Standard gettext workflow for new languages | English and more | — | POT file
@@ -638,7 +664,7 @@ Command palette | Keyboard command search | Power-user speed | Keys | Navigation
 
 cat('Editor Integrations', intro='SEOlity works wherever content is edited.',
     deps='—', ui='Editors', auto='Assisted', risk='Medium', db='changes', api='/optimize, /meta, /faq, /links, /eeat', features='''
-Gutenberg plugin sidebar | Optimizer, meta, excerpt, FAQ, links, E-E-A-T, history, live analysis | Everything in the block editor | Editor | Actions | ui=Gutenberg
+Gutenberg plugin sidebar | Optimizer, GSC keywords, meta, excerpt, FAQ, links, E-E-A-T, history, live analysis | Everything in the block editor | Editor | Actions | ui=Gutenberg
 Classic editor meta box | Same tools plus SEO fields and SERP preview | Classic sites supported | Editor | Actions | ui=Classic editor
 Classic media-row button | "✨ Optimize with SEOlity AI" above the editor | One-click access | Editor | Optimizer | ui=Classic editor
 Elementor integration | Optimize widget text via Elementor commands | Page builder support | Elementor document | Updated widgets | deps=Elementor; ui=Elementor

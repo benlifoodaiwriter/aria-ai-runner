@@ -150,8 +150,8 @@ final class Head {
 		$og = array(
 			'og:locale'    => get_locale(),
 			'og:site_name' => get_bloginfo( 'name' ),
-			'og:title'     => $title,
-			'og:description' => $desc,
+			'og:title'     => $this->meta_value( 'social_title' ) ? $this->meta_value( 'social_title' ) : $title,
+			'og:description' => $this->meta_value( 'social_description' ) ? $this->meta_value( 'social_description' ) : $desc,
 			'og:url'       => $canonical,
 			'og:type'      => is_singular( 'post' ) ? 'article' : ( is_singular( 'product' ) ? 'product' : 'website' ),
 		);

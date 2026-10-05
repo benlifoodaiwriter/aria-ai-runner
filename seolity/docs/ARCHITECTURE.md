@@ -175,7 +175,7 @@ Main route groups: `bootstrap`, `dashboard`, `action-center`, `health`, `doctor`
 `urls`, `pagespeed`, `gsc/*`, `keywords/*`, `products/*`, `images/*`, `links/*`, `competitors/*`,
 `experiments/*`, `redirects/*`, `404/*`, `schema/*`, `sitemap/*`, `robots/*`, `reports/*`, `alerts/*`,
 `briefing/*`, `chat/*`, `rules/*`, `queue/*`, `audit-log`, `planner/*`, `clusters/*`, `settings/*`,
-`ai/usage`, `knowledge/*`, `storage/*`.
+`ai/usage`, `knowledge/*`, `storage/*`, `focus/*` (insights, apply, plan, bulk), `rankmath/*` (status, import-redirects, sync-pillars).
 
 ## 6. AI architecture
 
@@ -383,7 +383,20 @@ generates prioritized actions, `HealthScore` computes the explainable score.
 * **Editors**: Gutenberg, Classic, Elementor (reads `_elementor_data` for analysis; writes through
   Elementor's document API in the editor).
 * **SEO plugins**: `MetaStore` reads/writes meta through Yoast, Rank Math, SEOPress or AIOSEO when present,
-  and SEOlity's own head output turns off automatically (configurable) to avoid duplicate tags.
+  and SEOlity's own head output turns off automatically (configurable) to avoid duplicate tags. Extended
+  fields: `focus_keywords` (full list, primary first: Rank Math comma list, Yoast `_yoast_wpseo_focuskeywords`,
+  SEOPress target keywords), `pillar_content` (Rank Math pillar / Yoast cornerstone), `social_title` and
+  `social_description` (Open Graph). Setting only the primary keyword keeps Rank Math's secondaries.
+* **Rank Math** (`Integrations\RankMath`): status (version, Pro, modules), score triage by GSC demand,
+  redirection import (exact/regex/contains/start/end → SEOlity redirects), pillar sync from topic clusters.
+  In the editor `SL.seoSync()` dispatches to the `rank-math` / `yoast-seo/editor` data stores (guarded
+  calls) so the plugin's own save never overwrites what SEOlity wrote; SEOlity's meta box shows keywords
+  read-only when a third-party plugin owns them.
+* **GSC focus keywords** (`Keywords\FocusKeywords`): per-URL query table with an owner page per query
+  (most clicks, then impressions), coverage flags (title/meta/headings/intro/body), question/brand
+  detection (fa + en), scoring (demand × ownership × position × shape × brand), near-duplicate removal,
+  tips, AI task `keyword_plan`, and a site-wide bulk assignment where one primary query is never given
+  to two URLs. All writes go through `ChangeManager` (source `gsc`).
 * **Multisite**: per-site tables and settings; uninstall iterates sites.
 
 ## 17. Extensibility

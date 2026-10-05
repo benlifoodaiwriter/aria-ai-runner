@@ -65,7 +65,7 @@ final class ContentList {
 			$ids              = array_map( 'intval', $this->p->db->column( "SELECT object_id FROM {content_analysis} WHERE project_id = %d AND object_type = 'post' AND score < 55 LIMIT 2000", array( $this->p->db->project_id() ) ) );
 			$args['post__in'] = $ids ? $ids : array( 0 );
 		} elseif ( 'no_keyword' === $filter ) {
-			$with             = array_map( 'intval', $this->p->db->column( "SELECT post_id FROM {$this->p->db->wpdb->postmeta} WHERE meta_key = '_seolity_focus_keyword' AND meta_value <> ''" ) );
+			$with             = array_map( 'intval', $this->p->db->column( "SELECT post_id FROM {$this->p->db->wpdb->postmeta} WHERE meta_key IN ( '_seolity_focus_keyword', %s ) AND meta_value <> ''", array( $this->p->meta->meta_key( 'focus_keyword' ) ) ) );
 			$args['post__not_in'] = $with;
 		}
 		$q     = new \WP_Query( $args );
@@ -103,7 +103,9 @@ final class ContentList {
 
 	private function row( $type, $id, $title, $url, $subtype, $status, $content, $modified ) {
 		$db    = $this->p->db;
-		$meta  = 'term' === $type ? array( $this->p->meta->get_term( $id, 'meta_title' ), $this->p->meta->get_term( $id, 'meta_description' ), $this->p->meta->get_term( $id, 'focus_keyword' ) ) : array( $this->p->meta->get_post( $id, 'meta_title' ), $this->p->meta->get_post( $id, 'meta_description' ), $this->p->meta->get_post( $id, 'focus_keyword' ) );
+		$meta  = 'term' === $type ? array( $this->p->meta->get_term( $id, 'meta_title' ), $this->p->meta->get_term( $id, 'meta_description' ), $this->p->meta->get_term( $id, 'focus_keywords' ) ) : array( $this->p->meta->get_post( $id, 'meta_title' ), $this->p->meta->get_post( $id, 'meta_description' ), $this->p->meta->get_post( $id, 'focus_keywords' ) );
+		$kws   = \SEOlity\Content\MetaStore::keyword_list( $meta[2] );
+		$rm    = $this->p->rankmath->post_info( $type, $id );
 		$score = $db->value( 'SELECT score FROM {content_analysis} WHERE project_id = %d AND object_type = %s AND object_id = %d', array( $db->project_id(), $type, $id ) );
 		$url_id = $url ? $db->value( 'SELECT id FROM {urls} WHERE project_id = %d AND url_hash = %s', array( $db->project_id(), Database::url_hash( $url ) ) ) : null;
 		return array(
@@ -118,7 +120,9 @@ final class ContentList {
 			'score'            => null === $score ? null : (int) $score,
 			'meta_title'       => $meta[0],
 			'meta_description' => $meta[1],
-			'focus_keyword'    => $meta[2],
+			'focus_keyword'    => $kws ? $kws[0] : '',
+			'focus_keywords'   => $kws,
+			'rank_math_score'  => $rm ? $rm['score'] : null,
 			'issues'           => $url_id ? $db->column( "SELECT check_code FROM {issues} WHERE url_id = %d AND status = 'open' AND severity <> 'info'", array( (int) $url_id ) ) : array(),
 			'pending'          => (int) $db->value( "SELECT COUNT(*) FROM {changes} WHERE object_type = %s AND object_id = %d AND status = 'pending'", array( $type, $id ) ),
 			'edit_link'        => 'term' === $type ? get_edit_term_link( $id ) : get_edit_post_link( $id, 'raw' ),

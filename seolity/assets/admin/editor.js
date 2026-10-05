@@ -86,8 +86,8 @@
 		return el ? el.value : '';
 	}
 	function focusKeyword() {
-		var el = d.getElementById( 'seolity_focus_keyword' ) || d.querySelector( '[name="seolity_focus_keyword"]' );
-		return el ? el.value : '';
+		var el = d.getElementById( 'seolity_focus_keyword' );
+		return el ? el.value.split( ',' )[ 0 ].trim() : '';
 	}
 	function contentAdapter( field ) {
 		if ( field === 'post_excerpt' ) {
@@ -177,6 +177,15 @@
 				}
 				live();
 			} );
+			return;
+		}
+		if ( e.target.closest && e.target.closest( '.seolity-kw-btn' ) ) {
+			e.preventDefault();
+			if ( ! ctx.object_id ) {
+				SL.toast( t( 'Save the item first.' ) );
+				return;
+			}
+			SL.keywordInsights( ctx.object_type === 'term' ? 'term' : 'post', ctx.object_id, { editor: true, onApply: live } );
 			return;
 		}
 		if ( e.target.closest && e.target.closest( '.seolity-faq-btn' ) ) {

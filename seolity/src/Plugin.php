@@ -37,6 +37,8 @@ defined( 'ABSPATH' ) || exit;
  * @property-read Images\ImageSeo            $images
  * @property-read Links\InternalLinker       $links
  * @property-read Keywords\KeywordService    $keywords
+ * @property-read Keywords\FocusKeywords        $focus
+ * @property-read Integrations\RankMath         $rankmath
  * @property-read Competitors\CompetitorService $competitors
  * @property-read Experiments\ExperimentService $experiments
  * @property-read Experiments\Learning       $learning
@@ -131,6 +133,8 @@ final class Plugin {
 			'images'          => Images\ImageSeo::class,
 			'links'           => Links\InternalLinker::class,
 			'keywords'        => Keywords\KeywordService::class,
+			'focus'           => Keywords\FocusKeywords::class,
+			'rankmath'        => Integrations\RankMath::class,
 			'competitors'     => Competitors\CompetitorService::class,
 			'experiments'     => Experiments\ExperimentService::class,
 			'learning'        => Experiments\Learning::class,

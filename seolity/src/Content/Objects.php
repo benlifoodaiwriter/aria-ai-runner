@@ -24,6 +24,10 @@ final class Objects {
 		'caption'          => 'low',
 		'meta_description' => 'low',
 		'focus_keyword'    => 'low',
+		'focus_keywords'   => 'low',
+		'pillar_content'   => 'low',
+		'social_title'     => 'low',
+		'social_description' => 'low',
 		'meta_title'       => 'medium',
 		'post_excerpt'     => 'medium',
 		'faq_schema'       => 'medium',
@@ -41,8 +45,8 @@ final class Objects {
 	);
 
 	const FIELDS_BY_TYPE = array(
-		'post'       => array( 'post_title', 'post_content', 'post_excerpt', 'post_name', 'meta_title', 'meta_description', 'focus_keyword', 'canonical', 'noindex', 'nofollow', 'faq_schema', 'product_tags' ),
-		'term'       => array( 'term_name', 'term_description', 'meta_title', 'meta_description', 'focus_keyword', 'canonical', 'noindex' ),
+		'post'       => array( 'post_title', 'post_content', 'post_excerpt', 'post_name', 'meta_title', 'meta_description', 'focus_keyword', 'focus_keywords', 'pillar_content', 'social_title', 'social_description', 'canonical', 'noindex', 'nofollow', 'faq_schema', 'product_tags' ),
+		'term'       => array( 'term_name', 'term_description', 'meta_title', 'meta_description', 'focus_keyword', 'focus_keywords', 'social_title', 'social_description', 'canonical', 'noindex' ),
 		'user'       => array( 'user_description' ),
 		'attachment' => array( 'alt', 'image_title', 'caption' ),
 		'site'       => array( 'robots_txt' ),

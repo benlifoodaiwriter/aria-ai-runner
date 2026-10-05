@@ -326,3 +326,24 @@ input[type="color"].sl-input { padding: 4px; width: 80px; }
 .sl-remote-wait { position: fixed; inset-block-end: 16px; inset-inline-start: 50%; transform: translateX(-50%); z-index: 170001; font-family: "Vazirmatn", Tahoma, system-ui, sans-serif; display: flex; align-items: center; gap: 10px; padding: 10px 16px; border-radius: 999px; background: var(--sl-text); color: var(--sl-surface); box-shadow: var(--sl-shadow); font-size: 13px; max-width: calc(100vw - 32px); }
 .is-rtl.sl-remote-wait { transform: translateX(50%); }
 .sl-spinner--sm { width: 14px; height: 14px; border-color: rgba(255, 255, 255, .35); border-top-color: #fff; }
+
+/* GSC keyword intelligence */
+.sl-kw-kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin-block-end: 6px; }
+.sl-kw-kpi { display: grid; grid-template-columns: auto 1fr; column-gap: 8px; align-items: center; padding: 10px 12px; border: 1px solid var(--sl-border); border-radius: 12px; background: var(--sl-surface-2); }
+.sl-kw-kpi .sl-ic { grid-row: span 2; color: var(--sl-brand); }
+.sl-kw-kpi span { font-size: 12px; color: var(--sl-muted); }
+.sl-kw-kpi strong { font-size: 17px; }
+.sl-kw-kpi--rm .sl-ic { color: #7c3aed; }
+.sl-kw-set { display: grid; gap: 8px; margin-block: 10px; }
+.sl-kw-tips { list-style: none; padding: 0; margin: 8px 0 14px; display: grid; gap: 6px; font-size: 13px; }
+.sl-kw-tips li { align-items: flex-start; }
+.sl-kw-tips .sl-dot { margin-block-start: 5px; }
+.sl-kw-cov { display: inline-flex; gap: 3px; }
+.sl-kw-cov__i { display: inline-grid; place-items: center; width: 20px; height: 20px; border-radius: 6px; font: 700 10.5px/1 ui-monospace, Menlo, monospace; background: var(--sl-bad-50); color: var(--sl-bad); }
+.sl-kw-cov__i.is-on { background: var(--sl-good-50); color: var(--sl-good); }
+.sl-table--compact td, .sl-table--compact th { padding: 7px 9px; font-size: 12.5px; }
+.sl-table tr.is-muted td { opacity: .62; }
+/* Line icons inside WordPress components (Gutenberg sets svg { fill: currentColor }) */
+.seolity-svg, .components-button svg.seolity-svg, .seolity-ic { fill: none !important; }
+.seolity-g-btn .seolity-svg { width: 18px; height: 18px; }
+.seolity-kw-line .seolity-ic { vertical-align: -3px; }

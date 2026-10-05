@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: SEOlity 1.0.0\n"
-"POT-Creation-Date: 2026-10-05 15:56+0000\n"
+"POT-Creation-Date: 2026-10-05 16:16+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -130,6 +130,12 @@ msgstr ""
 msgid "Keywords"
 msgstr ""
 
+msgid "Rank Math & focus keywords"
+msgstr ""
+
+msgid "Focus keywords"
+msgstr ""
+
 msgid "Content"
 msgstr ""
 
@@ -178,6 +184,9 @@ msgstr ""
 msgid "Knowledge Base"
 msgstr ""
 
+msgid "Connection guide"
+msgstr ""
+
 msgid "Settings"
 msgstr ""
 
@@ -209,10 +218,17 @@ msgstr ""
 msgid "SEO score (live)"
 msgstr ""
 
-msgid "Focus keyword"
+msgid "e.g. espresso machine for home, home espresso machine price"
 msgstr ""
 
-msgid "e.g. espresso machine for home"
+msgid "Comma separated. The first one is the primary keyword."
+msgstr ""
+
+msgid "none"
+msgstr ""
+
+#, php-format
+msgid "Stored in %s. Use “GSC keywords” to choose them from real Search Console data."
 msgstr ""
 
 msgid "SEO title"
@@ -229,6 +245,9 @@ msgid "SEO title & description are managed by %s. SEOlity AI reads and writes th
 msgstr ""
 
 msgid "Optimize content"
+msgstr ""
+
+msgid "GSC keywords"
 msgstr ""
 
 msgid "AI title & description"
@@ -1333,6 +1352,52 @@ msgid "Some categories have no data yet and are excluded rather than guessed (co
 msgstr ""
 
 msgid "No images selected."
+msgstr ""
+
+msgid "No Rank Math redirections table was found."
+msgstr ""
+
+#, php-format
+msgid "Pillar page of the “%s” topic cluster."
+msgstr ""
+
+#, php-format
+msgid "Google shows this page most for “%s”, but it is not your focus keyword."
+msgstr ""
+
+#, php-format
+msgid "Focus keyword “%1$s” is won by another page (%2$s). Targeting it here causes cannibalization."
+msgstr ""
+
+#, php-format
+msgid "Focus keyword “%s” gets no impressions for this page in Search Console."
+msgstr ""
+
+msgid "Put the primary keyword in the SEO title (ideally near the start)."
+msgstr ""
+
+msgid "Use the primary keyword naturally in the first paragraph."
+msgstr ""
+
+#, php-format
+msgid "CTR is %1$s%% at position %2$s (expected about %3$s%%). Rewrite the title and description."
+msgstr ""
+
+msgid "Searchers ask questions about this page. Answer them in an FAQ section."
+msgstr ""
+
+#, php-format
+msgid "%d queries rank on positions 4–20: small content and internal-link improvements can move them to the top 3."
+msgstr ""
+
+msgid "Chosen from real Search Console queries for this page."
+msgstr ""
+
+msgid "Connect Google Search Console first: keywords are chosen from real search data."
+msgstr ""
+
+#, php-format
+msgid "Primary keyword “%1$s” has %2$d impressions at position %3$s for this page (Search Console, 90 days). Secondary keywords are other queries this page owns."
 msgstr ""
 
 msgid "Enter at least one seed keyword."
@@ -2750,6 +2815,12 @@ msgstr ""
 msgid "Removed."
 msgstr ""
 
+msgid "How to get this key"
+msgstr ""
+
+msgid "Guide"
+msgstr ""
+
 msgid "Use the AI subscription you already pay for"
 msgstr ""
 
@@ -2928,6 +2999,188 @@ msgstr ""
 msgid "when another SEO plugin is active, SEOlity writes titles/descriptions into it and does not duplicate head tags."
 msgstr ""
 
+msgid "Focus keywords chosen from the queries Google already shows each page for — written straight into Rank Math (or your SEO plugin), cannibalization-safe, with approval and undo."
+msgstr ""
+
+msgid "Rank Math"
+msgstr ""
+
+msgid "Free"
+msgstr ""
+
+msgid "Average Rank Math score"
+msgstr ""
+
+#, php-format
+msgid "%s pages scored"
+msgstr ""
+
+msgid "Pages with focus keywords"
+msgstr ""
+
+#, php-format
+msgid "%s without"
+msgstr ""
+
+msgid "Pillar content"
+msgstr ""
+
+#, php-format
+msgid "Low score (<50): %s"
+msgstr ""
+
+#, php-format
+msgid "Rank Math is not active. SEOlity saves focus keywords to %s and everything below still works."
+msgstr ""
+
+msgid "SEO plugin"
+msgstr ""
+
+msgid "For every page with search demand SEOlity picks a primary keyword the page already wins in Google and up to 4 secondary keywords. A query is never assigned to two pages: it belongs to the URL Google prefers. Every change goes to “AI Changes” for approval (or applies itself in Semi/Autonomous mode) and can be undone."
+msgstr ""
+
+msgid "Only pages without a focus keyword"
+msgstr ""
+
+msgid "Turn off to also re-check pages whose keyword gets no impressions or belongs to another page."
+msgstr ""
+
+msgid "Minimum impressions (90 days)"
+msgstr ""
+
+msgid "Pages per run"
+msgstr ""
+
+msgid "Assign focus keywords"
+msgstr ""
+
+msgid "Open the connection guide"
+msgstr ""
+
+#, php-format
+msgid "%1$s changes proposed, %2$s applied."
+msgstr ""
+
+msgid "Before"
+msgstr ""
+
+msgid "Nothing to assign"
+msgstr ""
+
+msgid "Every page with search demand already has a focus keyword."
+msgstr ""
+
+msgid "Focus keyword autopilot (Search Console)"
+msgstr ""
+
+msgid "Beyond Rank Math Content AI: uses the keywords you already rank for."
+msgstr ""
+
+msgid "High-demand pages without a focus keyword"
+msgstr ""
+
+msgid "Low Rank Math score, highest search demand"
+msgstr ""
+
+msgid "No focus keyword"
+msgstr ""
+
+msgid "Rank Math score"
+msgstr ""
+
+msgid "Optimize"
+msgstr ""
+
+msgid "No low scores"
+msgstr ""
+
+msgid "Rank Math scores are calculated when a post is opened and saved in the editor."
+msgstr ""
+
+msgid "Fix the pages Google already shows first — that is where a better score pays off."
+msgstr ""
+
+msgid "Import Rank Math redirections"
+msgstr ""
+
+#, php-format
+msgid "%s active redirections in Rank Math. Exact, regex, contains, starts-with and ends-with rules are converted; Rank Math’s own table is not changed."
+msgstr ""
+
+msgid "Import"
+msgstr ""
+
+#, php-format
+msgid "%1$s imported, %2$s skipped."
+msgstr ""
+
+msgid "Mark cluster pillars as Rank Math Pillar Content"
+msgstr ""
+
+msgid "Mark cluster pillars as pillar content"
+msgstr ""
+
+msgid "Uses the topic clusters from Keywords → Topic clusters. Rank Math then suggests these pages for internal links."
+msgstr ""
+
+msgid "Sync pillars"
+msgstr ""
+
+#, php-format
+msgid "%s changes proposed."
+msgstr ""
+
+msgid "Tools"
+msgstr ""
+
+msgid "How SEOlity works with Rank Math"
+msgstr ""
+
+msgid "Writes Rank Math’s own fields: SEO title, description, all focus keywords, pillar flag, social title/description, robots and canonical."
+msgstr ""
+
+msgid "Keeps the Rank Math editor in sync: changes made by SEOlity in Gutenberg or the classic editor appear live in the Rank Math sidebar and are not overwritten on save."
+msgstr ""
+
+msgid "Chooses keywords from Search Console data (real impressions, clicks and positions), not from guesses — and never assigns one query to two pages."
+msgstr ""
+
+msgid "Shows per query whether it appears in the title, description, headings and content, which queries are missing, questions for FAQ and striking-distance queries."
+msgstr ""
+
+msgid "Every change is logged with before/after, approval, one-click undo and a measured SEO experiment."
+msgstr ""
+
+msgid "Works with any AI: API keys, OpenRouter, local Ollama or your Claude / ChatGPT subscription."
+msgstr ""
+
+msgid "Copied."
+msgstr ""
+
+msgid "You need"
+msgstr ""
+
+msgid "Troubleshooting"
+msgstr ""
+
+msgid "Official documentation"
+msgstr ""
+
+msgid "Connected"
+msgstr ""
+
+msgid "Not set"
+msgstr ""
+
+msgid "Step-by-step instructions with direct links for every key and account SEOlity can use. Open a service, follow the numbered steps, paste the key where shown and press Test."
+msgstr ""
+
+msgid "Which one do I need?"
+msgstr ""
+
+msgid "You need one AI option plus Google Search Console. Everything else is optional."
+msgstr ""
+
 msgid "Competitor Intelligence"
 msgstr ""
 
@@ -3099,9 +3352,6 @@ msgid "Bulk import"
 msgstr ""
 
 msgid "Bulk import (CSV)"
-msgstr ""
-
-msgid "Import"
 msgstr ""
 
 #, php-format
@@ -3605,6 +3855,9 @@ msgstr ""
 msgid "Ask an administrator to connect Google Search Console."
 msgstr ""
 
+msgid "First time? The connection guide walks you through every Google Cloud screen with direct links."
+msgstr ""
+
 msgid "Step 1 — Google OAuth client"
 msgstr ""
 
@@ -3621,9 +3874,6 @@ msgid "Paste the Client ID and Client Secret here."
 msgstr ""
 
 msgid "Authorized redirect URI"
-msgstr ""
-
-msgid "Copied."
 msgstr ""
 
 msgid "Client ID"
@@ -4015,9 +4265,6 @@ msgstr ""
 msgid "Low SEO score"
 msgstr ""
 
-msgid "No focus keyword"
-msgstr ""
-
 msgid "(no title)"
 msgstr ""
 
@@ -4028,9 +4275,6 @@ msgid "title"
 msgstr ""
 
 msgid "description"
-msgstr ""
-
-msgid "Optimize"
 msgstr ""
 
 #, php-format
@@ -4163,6 +4407,9 @@ msgid "WooCommerce is not active"
 msgstr ""
 
 msgid "Product"
+msgstr ""
+
+msgid "Focus keyword"
 msgstr ""
 
 msgid "no focus keyword"
@@ -4454,6 +4701,133 @@ msgid "Google preview"
 msgstr ""
 
 msgid "Title & description applied."
+msgstr ""
+
+msgid "GSC keyword intelligence"
+msgstr ""
+
+msgid "Reading the queries Google shows this page for…"
+msgstr ""
+
+msgid "Focus keywords are chosen from the real queries Google shows each page for. Connect Search Console to use this."
+msgstr ""
+
+msgid "Last 28 days for this URL. Keyword data below covers the last 90 days."
+msgstr ""
+
+#, php-format
+msgid "Saved to %s"
+msgstr ""
+
+msgid "First keyword = primary. The others are secondary keywords (Rank Math shows each in its checklist)."
+msgstr ""
+
+msgid "Suggested from Search Console"
+msgstr ""
+
+msgid "Current"
+msgstr ""
+
+msgid "In title"
+msgstr ""
+
+msgid "In meta description"
+msgstr ""
+
+msgid "In headings"
+msgstr ""
+
+msgid "In content"
+msgstr ""
+
+msgid "Impr."
+msgstr ""
+
+msgid "Pos."
+msgstr ""
+
+msgid "Coverage"
+msgstr ""
+
+msgid "Owner"
+msgstr ""
+
+msgid "This page"
+msgstr ""
+
+msgid "Add to focus keywords"
+msgstr ""
+
+msgid "Nothing here"
+msgstr ""
+
+msgid "All queries"
+msgstr ""
+
+msgid "Not covered"
+msgstr ""
+
+msgid "Google already shows this page for these queries, but the content barely mentions them. Add a section or paragraph for each."
+msgstr ""
+
+msgid "Every important query is covered"
+msgstr ""
+
+msgid "Optimize content with AI"
+msgstr ""
+
+msgid "No question queries yet"
+msgstr ""
+
+msgid "Striking distance"
+msgstr ""
+
+msgid "Positions 4–20: the fastest wins. Strengthen these in headings, add internal links with these anchors."
+msgstr ""
+
+msgid "Another page of your site wins these queries. Do not target them here; link to the winning page instead."
+msgstr ""
+
+msgid "No conflicts"
+msgstr ""
+
+msgid "AI strategy"
+msgstr ""
+
+msgid "Primary"
+msgstr ""
+
+msgid "Keywords copied to the set above. Press Apply to save."
+msgstr ""
+
+msgid "Use these keywords"
+msgstr ""
+
+msgid "Content gaps (add these sections)"
+msgstr ""
+
+msgid "FAQ questions"
+msgstr ""
+
+msgid "Internal link anchors to this page"
+msgstr ""
+
+msgid "Do not target here"
+msgstr ""
+
+msgid "AI combines these Search Console queries with your content and picks the keyword set, title, description, missing sections and FAQ — beyond a generic content AI, because it knows what Google already ranks you for."
+msgstr ""
+
+msgid "Building the keyword strategy…"
+msgstr ""
+
+msgid "Build AI keyword strategy"
+msgstr ""
+
+msgid "Saved and synced with the SEO plugin in this editor."
+msgstr ""
+
+msgid "Focus keywords saved."
 msgstr ""
 
 msgid "Checking experience, expertise, authority and trust signals…"
@@ -4886,9 +5260,6 @@ msgstr ""
 msgid "monthly"
 msgstr ""
 
-msgid "none"
-msgstr ""
-
 msgid "Organization"
 msgstr ""
 
@@ -5107,6 +5478,12 @@ msgstr ""
 
 msgid "onbackorder"
 msgstr ""
+
+#, php-format
+msgid "%d search query you already get impressions for is not covered in the content."
+msgid_plural "%d search queries you already get impressions for are not covered in the content."
+msgstr[0] ""
+msgstr[1] ""
 
 #, php-format
 msgid "%d published page is blocked by robots.txt."

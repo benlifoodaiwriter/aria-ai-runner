@@ -281,6 +281,37 @@ final class Tasks {
 					)
 				),
 			),
+			'keyword_plan'       => array(
+				'version'      => 'keyword_plan@1.0',
+				'max_tokens'   => 4000,
+				'topics'       => array( 'keywords', 'intent', 'on-page', 'cannibalization' ),
+				'cache'        => true,
+				'instructions' => 'Choose the focus keyword set for this page from its REAL Google Search Console queries (gsc_queries). Rules: the primary keyword must be a query this page owns (owner=true), with real demand, matching the page intent; never pick a query listed in owned_elsewhere (another URL of the site wins it — targeting it here causes cannibalization); secondary keywords (max 4) are distinct variants/sub-topics the page also owns, not near-duplicates; prefer the algorithm_pick unless you have a clear reason. Then give a title and meta description that contain the primary keyword naturally, content gaps for high-impression queries the content does not cover (coverage < 0.75) as concrete H2/H3 suggestions, FAQ questions from question queries, and anchors other pages should use to link here. Be specific to this page; no generic advice.',
+				'schema'       => S::obj(
+					array(
+						'primary_keyword'    => S::str(),
+						'secondary_keywords' => S::strings(),
+						'search_intent'      => S::enum( array( 'informational', 'commercial', 'transactional', 'navigational' ) ),
+						'rationale'          => S::str(),
+						'seo_title'          => S::str(),
+						'meta_description'   => S::str(),
+						'content_gaps'       => S::arr(
+							S::obj(
+								array(
+									'query'   => S::str(),
+									'heading' => S::str(),
+									'why'     => S::str(),
+								)
+							)
+						),
+						'faq_questions'      => S::strings(),
+						'avoid_keywords'     => S::strings(),
+						'link_anchors'       => S::strings(),
+						'pillar'             => S::bool(),
+						'confidence'         => S::int(),
+					)
+				),
+			),
 			'internal_links'     => array(
 				'version'      => 'internal_links@1.1',
 				'max_tokens'   => 5000,

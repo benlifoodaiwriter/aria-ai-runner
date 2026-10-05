@@ -463,6 +463,42 @@ final class Router {
 		$this->route( 'POST', '/keywords/cannibalization/advice', 'ai', function ( Req $r ) use ( $p ) {
 			return $p->keywords->cannibalization_advice( self::str( $r, 'query' ) );
 		} );
+		// GSC-driven focus keywords + Rank Math bridge.
+		$this->route( 'GET', '/focus/insights', 'view', function ( Req $r ) use ( $p ) {
+			return $p->focus->insights( self::key( $r, 'object_type', 'post' ), self::int( $r, 'object_id' ), max( 7, min( 480, self::int( $r, 'days', 90 ) ) ) );
+		} );
+		$this->route( 'POST', '/focus/apply', 'apply', function ( Req $r ) use ( $p ) {
+			return $p->focus->apply(
+				self::key( $r, 'object_type', 'post' ),
+				self::int( $r, 'object_id' ),
+				array_filter( array_map( 'sanitize_text_field', (array) $r->get_param( 'keywords' ) ) ),
+				'',
+				array( 'meta_title' => self::str( $r, 'meta_title' ), 'meta_description' => self::str( $r, 'meta_description' ) )
+			);
+		} );
+		$this->route( 'POST', '/focus/plan', 'ai', function ( Req $r ) use ( $p ) {
+			return $p->focus->ai_plan( self::key( $r, 'object_type', 'post' ), self::int( $r, 'object_id' ) );
+		} );
+		$this->route( 'POST', '/focus/bulk', 'apply', function ( Req $r ) use ( $p ) {
+			return $p->focus->assign_bulk(
+				array(
+					'only_empty'      => (bool) $r->get_param( 'only_empty' ),
+					'post_types'      => array_map( 'sanitize_key', (array) $r->get_param( 'post_types' ) ),
+					'limit'           => self::int( $r, 'limit', 200 ),
+					'min_impressions' => self::int( $r, 'min_impressions', 30 ),
+					'dry_run'         => (bool) $r->get_param( 'dry_run' ),
+				)
+			);
+		} );
+		$this->route( 'GET', '/rankmath', 'view', function () use ( $p ) {
+			return $p->rankmath->status();
+		} );
+		$this->route( 'POST', '/rankmath/import-redirects', 'manage', function () use ( $p ) {
+			return $p->rankmath->import_redirections();
+		} );
+		$this->route( 'POST', '/rankmath/sync-pillars', 'apply', function () use ( $p ) {
+			return $p->rankmath->sync_pillars();
+		} );
 		$this->route( 'GET', '/keywords/mapping', 'view', function () use ( $p ) {
 			return $p->keywords->mapping();
 		} );

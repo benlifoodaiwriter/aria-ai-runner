@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: SEOlity 1.0.0\n"
-"POT-Creation-Date: 2026-10-05 15:56+0000\n"
+"POT-Creation-Date: 2026-10-05 16:16+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -131,6 +131,12 @@ msgstr "سرچ کنسول"
 msgid "Keywords"
 msgstr "کلمات کلیدی"
 
+msgid "Rank Math & focus keywords"
+msgstr "رنک مث و کلمات کلیدی کانونی"
+
+msgid "Focus keywords"
+msgstr "کلمات کلیدی کانونی"
+
 msgid "Content"
 msgstr "محتوا"
 
@@ -179,6 +185,9 @@ msgstr "اتوماسیون"
 msgid "Knowledge Base"
 msgstr "پایگاه دانش"
 
+msgid "Connection guide"
+msgstr "راهنمای اتصال"
+
 msgid "Settings"
 msgstr "تنظیمات"
 
@@ -210,11 +219,18 @@ msgstr "بهینه‌سازی با هوش مصنوعی سئولیتی"
 msgid "SEO score (live)"
 msgstr "امتیاز سئو (زنده)"
 
-msgid "Focus keyword"
-msgstr "کلمه کلیدی کانونی"
+msgid "e.g. espresso machine for home, home espresso machine price"
+msgstr "مثلاً اسپرسوساز خانگی، قیمت اسپرسوساز خانگی"
 
-msgid "e.g. espresso machine for home"
-msgstr "مثلاً اسپرسوساز خانگی"
+msgid "Comma separated. The first one is the primary keyword."
+msgstr "با کاما جدا کنید. اولی کلمه کلیدی اصلی است."
+
+msgid "none"
+msgstr "هیچ"
+
+#, php-format
+msgid "Stored in %s. Use “GSC keywords” to choose them from real Search Console data."
+msgstr "در %s ذخیره می‌شود. با «کلمات کلیدی GSC» آن‌ها را از داده واقعی سرچ کنسول انتخاب کنید."
 
 msgid "SEO title"
 msgstr "عنوان سئو"
@@ -231,6 +247,9 @@ msgstr "عنوان و توضیحات سئو توسط %s مدیریت می‌شو
 
 msgid "Optimize content"
 msgstr "بهینه‌سازی محتوا"
+
+msgid "GSC keywords"
+msgstr "کلمات کلیدی GSC"
 
 msgid "AI title & description"
 msgstr "عنوان و توضیحات با هوش مصنوعی"
@@ -1335,6 +1354,52 @@ msgstr "برخی بخش‌ها هنوز داده ندارند و به‌جای �
 
 msgid "No images selected."
 msgstr "تصویری انتخاب نشده است."
+
+msgid "No Rank Math redirections table was found."
+msgstr "جدول ریدایرکت‌های رنک مث پیدا نشد."
+
+#, php-format
+msgid "Pillar page of the “%s” topic cluster."
+msgstr "صفحه ستون (Pillar) خوشه موضوعی «%s»."
+
+#, php-format
+msgid "Google shows this page most for “%s”, but it is not your focus keyword."
+msgstr "گوگل این صفحه را بیشتر برای «%s» نشان می‌دهد، اما این کلمه کلیدی کانونی شما نیست."
+
+#, php-format
+msgid "Focus keyword “%1$s” is won by another page (%2$s). Targeting it here causes cannibalization."
+msgstr "کلمه کلیدی «%1$s» را صفحه دیگری می‌برد (%2$s). هدف‌گیری آن در این صفحه باعث کنیبالیزیشن می‌شود."
+
+#, php-format
+msgid "Focus keyword “%s” gets no impressions for this page in Search Console."
+msgstr "کلمه کلیدی «%s» در سرچ کنسول برای این صفحه هیچ نمایشی ندارد."
+
+msgid "Put the primary keyword in the SEO title (ideally near the start)."
+msgstr "کلمه کلیدی اصلی را در عنوان سئو بیاورید (ترجیحاً نزدیک ابتدای آن)."
+
+msgid "Use the primary keyword naturally in the first paragraph."
+msgstr "کلمه کلیدی اصلی را به‌طور طبیعی در پاراگراف اول به کار ببرید."
+
+#, php-format
+msgid "CTR is %1$s%% at position %2$s (expected about %3$s%%). Rewrite the title and description."
+msgstr "نرخ کلیک %1$s%% در جایگاه %2$s است (انتظار حدود %3$s%%). عنوان و توضیحات را بازنویسی کنید."
+
+msgid "Searchers ask questions about this page. Answer them in an FAQ section."
+msgstr "کاربران درباره این صفحه سؤال می‌پرسند. در بخش پرسش‌های متداول پاسخ دهید."
+
+#, php-format
+msgid "%d queries rank on positions 4–20: small content and internal-link improvements can move them to the top 3."
+msgstr "%d کوئری در جایگاه ۴ تا ۲۰ هستند: بهبودهای کوچک محتوا و لینک داخلی می‌تواند آن‌ها را به ۳ نتیجه اول برساند."
+
+msgid "Chosen from real Search Console queries for this page."
+msgstr "بر اساس کوئری‌های واقعی سرچ کنسول برای این صفحه انتخاب شد."
+
+msgid "Connect Google Search Console first: keywords are chosen from real search data."
+msgstr "ابتدا گوگل سرچ کنسول را وصل کنید: کلمات کلیدی از داده واقعی جستجو انتخاب می‌شوند."
+
+#, php-format
+msgid "Primary keyword “%1$s” has %2$d impressions at position %3$s for this page (Search Console, 90 days). Secondary keywords are other queries this page owns."
+msgstr "کلمه کلیدی اصلی «%1$s» برای این صفحه %2$d نمایش در جایگاه %3$s دارد (سرچ کنسول، ۹۰ روز). کلمات کلیدی فرعی، کوئری‌های دیگری هستند که این صفحه صاحب آن‌هاست."
 
 msgid "Enter at least one seed keyword."
 msgstr "حداقل یک کلمه کلیدی پایه وارد کنید."
@@ -2751,6 +2816,12 @@ msgstr "به‌صورت امن (رمزنگاری‌شده) ذخیره شد."
 msgid "Removed."
 msgstr "حذف شد."
 
+msgid "How to get this key"
+msgstr "این کلید را چطور بگیرم"
+
+msgid "Guide"
+msgstr "راهنما"
+
 msgid "Use the AI subscription you already pay for"
 msgstr "از اشتراک هوش مصنوعی‌ای که همین حالا دارید استفاده کنید"
 
@@ -2929,6 +3000,188 @@ msgstr "موتور سئوی شناسایی‌شده"
 msgid "when another SEO plugin is active, SEOlity writes titles/descriptions into it and does not duplicate head tags."
 msgstr "وقتی افزونه سئوی دیگری فعال است، سئولیتی عنوان/توضیحات را در آن می‌نویسد و تگ‌های head را تکرار نمی‌کند."
 
+msgid "Focus keywords chosen from the queries Google already shows each page for — written straight into Rank Math (or your SEO plugin), cannibalization-safe, with approval and undo."
+msgstr "کلمات کلیدی کانونی از کوئری‌هایی انتخاب می‌شوند که گوگل همین حالا هر صفحه را برایشان نشان می‌دهد — مستقیم در رنک مث (یا افزونه سئوی شما) نوشته می‌شوند، بدون کنیبالیزیشن، با تأیید و امکان بازگشت."
+
+msgid "Rank Math"
+msgstr "رنک مث"
+
+msgid "Free"
+msgstr "رایگان"
+
+msgid "Average Rank Math score"
+msgstr "میانگین امتیاز رنک مث"
+
+#, php-format
+msgid "%s pages scored"
+msgstr "%s صفحه امتیاز دارند"
+
+msgid "Pages with focus keywords"
+msgstr "صفحات دارای کلمه کلیدی کانونی"
+
+#, php-format
+msgid "%s without"
+msgstr "%s بدون کلمه کلیدی"
+
+msgid "Pillar content"
+msgstr "محتوای ستون (Pillar)"
+
+#, php-format
+msgid "Low score (<50): %s"
+msgstr "امتیاز پایین (زیر ۵۰): %s"
+
+#, php-format
+msgid "Rank Math is not active. SEOlity saves focus keywords to %s and everything below still works."
+msgstr "رنک مث فعال نیست. SEOlity کلمات کلیدی را در %s ذخیره می‌کند و همه بخش‌های زیر کار می‌کنند."
+
+msgid "SEO plugin"
+msgstr "افزونه سئو"
+
+msgid "For every page with search demand SEOlity picks a primary keyword the page already wins in Google and up to 4 secondary keywords. A query is never assigned to two pages: it belongs to the URL Google prefers. Every change goes to “AI Changes” for approval (or applies itself in Semi/Autonomous mode) and can be undone."
+msgstr "برای هر صفحه‌ای که تقاضای جستجو دارد، SEOlity یک کلمه کلیدی اصلی که صفحه همین حالا در گوگل برایش دیده می‌شود و تا ۴ کلمه کلیدی فرعی انتخاب می‌کند. هیچ کوئری به دو صفحه داده نمی‌شود: متعلق به آدرسی است که گوگل ترجیح می‌دهد. هر تغییر برای تأیید به «تغییرات هوش مصنوعی» می‌رود (یا در حالت نیمه‌خودکار/خودکار اعمال می‌شود) و قابل بازگشت است."
+
+msgid "Only pages without a focus keyword"
+msgstr "فقط صفحات بدون کلمه کلیدی کانونی"
+
+msgid "Turn off to also re-check pages whose keyword gets no impressions or belongs to another page."
+msgstr "خاموش کنید تا صفحاتی که کلمه کلیدی‌شان نمایش ندارد یا متعلق به صفحه دیگری است هم بررسی شوند."
+
+msgid "Minimum impressions (90 days)"
+msgstr "حداقل نمایش (۹۰ روز)"
+
+msgid "Pages per run"
+msgstr "تعداد صفحه در هر اجرا"
+
+msgid "Assign focus keywords"
+msgstr "تعیین کلمات کلیدی کانونی"
+
+msgid "Open the connection guide"
+msgstr "باز کردن راهنمای اتصال"
+
+#, php-format
+msgid "%1$s changes proposed, %2$s applied."
+msgstr "%1$s تغییر پیشنهاد شد، %2$s اعمال شد."
+
+msgid "Before"
+msgstr "قبل"
+
+msgid "Nothing to assign"
+msgstr "چیزی برای تعیین نیست"
+
+msgid "Every page with search demand already has a focus keyword."
+msgstr "همه صفحات دارای تقاضای جستجو کلمه کلیدی کانونی دارند."
+
+msgid "Focus keyword autopilot (Search Console)"
+msgstr "تعیین خودکار کلمه کلیدی کانونی (سرچ کنسول)"
+
+msgid "Beyond Rank Math Content AI: uses the keywords you already rank for."
+msgstr "فراتر از Content AI رنک مث: از کلماتی استفاده می‌کند که همین حالا در آن‌ها رتبه دارید."
+
+msgid "High-demand pages without a focus keyword"
+msgstr "صفحات پرتقاضا بدون کلمه کلیدی کانونی"
+
+msgid "Low Rank Math score, highest search demand"
+msgstr "امتیاز پایین رنک مث، بیشترین تقاضای جستجو"
+
+msgid "No focus keyword"
+msgstr "بدون کلمه کلیدی کانونی"
+
+msgid "Rank Math score"
+msgstr "امتیاز رنک مث"
+
+msgid "Optimize"
+msgstr "بهینه‌سازی"
+
+msgid "No low scores"
+msgstr "امتیاز پایینی نیست"
+
+msgid "Rank Math scores are calculated when a post is opened and saved in the editor."
+msgstr "امتیاز رنک مث وقتی محاسبه می‌شود که نوشته در ویرایشگر باز و ذخیره شود."
+
+msgid "Fix the pages Google already shows first — that is where a better score pays off."
+msgstr "اول صفحاتی را درست کنید که گوگل همین حالا نشان می‌دهد — بهتر شدن امتیاز آنجا نتیجه می‌دهد."
+
+msgid "Import Rank Math redirections"
+msgstr "درون‌ریزی ریدایرکت‌های رنک مث"
+
+#, php-format
+msgid "%s active redirections in Rank Math. Exact, regex, contains, starts-with and ends-with rules are converted; Rank Math’s own table is not changed."
+msgstr "%s ریدایرکت فعال در رنک مث. قوانین دقیق، regex، شامل، شروع با و پایان با تبدیل می‌شوند؛ جدول خود رنک مث تغییر نمی‌کند."
+
+msgid "Import"
+msgstr "درون‌ریزی"
+
+#, php-format
+msgid "%1$s imported, %2$s skipped."
+msgstr "%1$s درون‌ریزی شد، %2$s رد شد."
+
+msgid "Mark cluster pillars as Rank Math Pillar Content"
+msgstr "علامت‌گذاری صفحات ستون خوشه‌ها به‌عنوان Pillar Content در رنک مث"
+
+msgid "Mark cluster pillars as pillar content"
+msgstr "علامت‌گذاری صفحات ستون خوشه‌ها به‌عنوان محتوای ستون"
+
+msgid "Uses the topic clusters from Keywords → Topic clusters. Rank Math then suggests these pages for internal links."
+msgstr "از خوشه‌های موضوعی بخش کلمات کلیدی ← خوشه‌های موضوعی استفاده می‌کند. سپس رنک مث این صفحات را برای لینک داخلی پیشنهاد می‌دهد."
+
+msgid "Sync pillars"
+msgstr "همگام‌سازی صفحات ستون"
+
+#, php-format
+msgid "%s changes proposed."
+msgstr "%s تغییر پیشنهاد شد."
+
+msgid "Tools"
+msgstr "ابزارها"
+
+msgid "How SEOlity works with Rank Math"
+msgstr "SEOlity چطور با رنک مث کار می‌کند"
+
+msgid "Writes Rank Math’s own fields: SEO title, description, all focus keywords, pillar flag, social title/description, robots and canonical."
+msgstr "فیلدهای خود رنک مث را می‌نویسد: عنوان سئو، توضیحات، همه کلمات کلیدی کانونی، پرچم Pillar، عنوان/توضیحات شبکه‌های اجتماعی، robots و canonical."
+
+msgid "Keeps the Rank Math editor in sync: changes made by SEOlity in Gutenberg or the classic editor appear live in the Rank Math sidebar and are not overwritten on save."
+msgstr "ویرایشگر رنک مث را همگام نگه می‌دارد: تغییرات SEOlity در گوتنبرگ یا ویرایشگر کلاسیک بلافاصله در سایدبار رنک مث دیده می‌شود و هنگام ذخیره بازنویسی نمی‌شود."
+
+msgid "Chooses keywords from Search Console data (real impressions, clicks and positions), not from guesses — and never assigns one query to two pages."
+msgstr "کلمات کلیدی را از داده سرچ کنسول (نمایش، کلیک و جایگاه واقعی) انتخاب می‌کند نه حدس — و هرگز یک کوئری را به دو صفحه نمی‌دهد."
+
+msgid "Shows per query whether it appears in the title, description, headings and content, which queries are missing, questions for FAQ and striking-distance queries."
+msgstr "برای هر کوئری نشان می‌دهد در عنوان، توضیحات، سرتیترها و محتوا آمده یا نه، کدام کوئری‌ها پوشش داده نشده‌اند، سؤال‌ها برای FAQ و کوئری‌های نزدیک به صفحه اول."
+
+msgid "Every change is logged with before/after, approval, one-click undo and a measured SEO experiment."
+msgstr "هر تغییر با قبل/بعد، تأیید، بازگشت با یک کلیک و آزمایش سئوی اندازه‌گیری‌شده ثبت می‌شود."
+
+msgid "Works with any AI: API keys, OpenRouter, local Ollama or your Claude / ChatGPT subscription."
+msgstr "با هر هوش مصنوعی کار می‌کند: کلید API، OpenRouter، Ollama محلی یا اشتراک Claude / ChatGPT شما."
+
+msgid "Copied."
+msgstr "کپی شد."
+
+msgid "You need"
+msgstr "پیش‌نیازها"
+
+msgid "Troubleshooting"
+msgstr "رفع مشکل"
+
+msgid "Official documentation"
+msgstr "مستندات رسمی"
+
+msgid "Connected"
+msgstr "متصل"
+
+msgid "Not set"
+msgstr "تنظیم نشده"
+
+msgid "Step-by-step instructions with direct links for every key and account SEOlity can use. Open a service, follow the numbered steps, paste the key where shown and press Test."
+msgstr "راهنمای قدم‌به‌قدم با لینک مستقیم برای هر کلید و حسابی که SEOlity استفاده می‌کند. یک سرویس را باز کنید، مراحل شماره‌دار را انجام دهید، کلید را در جای گفته‌شده بچسبانید و تست بزنید."
+
+msgid "Which one do I need?"
+msgstr "کدام را لازم دارم؟"
+
+msgid "You need one AI option plus Google Search Console. Everything else is optional."
+msgstr "یک گزینه هوش مصنوعی به‌علاوه گوگل سرچ کنسول کافی است. بقیه اختیاری‌اند."
+
 msgid "Competitor Intelligence"
 msgstr "هوش رقابتی"
 
@@ -3101,9 +3354,6 @@ msgstr "ورود گروهی"
 
 msgid "Bulk import (CSV)"
 msgstr "ورود گروهی (CSV)"
-
-msgid "Import"
-msgstr "ورود"
 
 #, php-format
 msgid "%s redirects imported."
@@ -3606,6 +3856,9 @@ msgstr "سرچ کنسول متصل نیست"
 msgid "Ask an administrator to connect Google Search Console."
 msgstr "از مدیر سایت بخواهید گوگل سرچ کنسول را متصل کند."
 
+msgid "First time? The connection guide walks you through every Google Cloud screen with direct links."
+msgstr "بار اول است؟ راهنمای اتصال همه صفحه‌های Google Cloud را با لینک مستقیم قدم‌به‌قدم توضیح می‌دهد."
+
 msgid "Step 1 — Google OAuth client"
 msgstr "مرحله ۱ — کلاینت OAuth گوگل"
 
@@ -3623,9 +3876,6 @@ msgstr "Client ID و Client Secret را اینجا وارد کنید."
 
 msgid "Authorized redirect URI"
 msgstr "آدرس بازگشت مجاز (Redirect URI)"
-
-msgid "Copied."
-msgstr "کپی شد."
 
 msgid "Client ID"
 msgstr "شناسه کلاینت (Client ID)"
@@ -4016,9 +4266,6 @@ msgstr "مشکلات H1"
 msgid "Low SEO score"
 msgstr "امتیاز سئوی پایین"
 
-msgid "No focus keyword"
-msgstr "بدون کلمه کلیدی کانونی"
-
 msgid "(no title)"
 msgstr "(بدون عنوان)"
 
@@ -4030,9 +4277,6 @@ msgstr "عنوان"
 
 msgid "description"
 msgstr "توضیحات"
-
-msgid "Optimize"
-msgstr "بهینه‌سازی"
 
 #, php-format
 msgid "%s pending"
@@ -4165,6 +4409,9 @@ msgstr "ووکامرس فعال نیست"
 
 msgid "Product"
 msgstr "محصول"
+
+msgid "Focus keyword"
+msgstr "کلمه کلیدی کانونی"
 
 msgid "no focus keyword"
 msgstr "بدون کلمه کلیدی کانونی"
@@ -4456,6 +4703,133 @@ msgstr "پیش‌نمایش گوگل"
 
 msgid "Title & description applied."
 msgstr "عنوان و توضیحات اعمال شد."
+
+msgid "GSC keyword intelligence"
+msgstr "هوش کلمات کلیدی GSC"
+
+msgid "Reading the queries Google shows this page for…"
+msgstr "در حال خواندن کوئری‌هایی که گوگل این صفحه را برایشان نشان می‌دهد…"
+
+msgid "Focus keywords are chosen from the real queries Google shows each page for. Connect Search Console to use this."
+msgstr "کلمات کلیدی کانونی از کوئری‌های واقعی‌ای انتخاب می‌شوند که گوگل هر صفحه را برایشان نشان می‌دهد. برای استفاده، سرچ کنسول را وصل کنید."
+
+msgid "Last 28 days for this URL. Keyword data below covers the last 90 days."
+msgstr "۲۸ روز اخیر برای این آدرس. داده‌های کلمات کلیدی زیر مربوط به ۹۰ روز اخیر است."
+
+#, php-format
+msgid "Saved to %s"
+msgstr "ذخیره در %s"
+
+msgid "First keyword = primary. The others are secondary keywords (Rank Math shows each in its checklist)."
+msgstr "کلمه اول = اصلی. بقیه کلمات کلیدی فرعی هستند (رنک مث هر کدام را در چک‌لیست خود نشان می‌دهد)."
+
+msgid "Suggested from Search Console"
+msgstr "پیشنهاد از سرچ کنسول"
+
+msgid "Current"
+msgstr "فعلی"
+
+msgid "In title"
+msgstr "در عنوان"
+
+msgid "In meta description"
+msgstr "در توضیحات متا"
+
+msgid "In headings"
+msgstr "در سرتیترها"
+
+msgid "In content"
+msgstr "در محتوا"
+
+msgid "Impr."
+msgstr "نمایش"
+
+msgid "Pos."
+msgstr "جایگاه"
+
+msgid "Coverage"
+msgstr "پوشش"
+
+msgid "Owner"
+msgstr "صاحب"
+
+msgid "This page"
+msgstr "همین صفحه"
+
+msgid "Add to focus keywords"
+msgstr "افزودن به کلمات کلیدی کانونی"
+
+msgid "Nothing here"
+msgstr "چیزی اینجا نیست"
+
+msgid "All queries"
+msgstr "همه کوئری‌ها"
+
+msgid "Not covered"
+msgstr "پوشش داده نشده"
+
+msgid "Google already shows this page for these queries, but the content barely mentions them. Add a section or paragraph for each."
+msgstr "گوگل این صفحه را برای این کوئری‌ها نشان می‌دهد، اما محتوا تقریباً به آن‌ها نپرداخته است. برای هر کدام یک بخش یا پاراگراف اضافه کنید."
+
+msgid "Every important query is covered"
+msgstr "همه کوئری‌های مهم پوشش داده شده‌اند"
+
+msgid "Optimize content with AI"
+msgstr "بهینه‌سازی محتوا با هوش مصنوعی"
+
+msgid "No question queries yet"
+msgstr "هنوز کوئری سؤالی وجود ندارد"
+
+msgid "Striking distance"
+msgstr "نزدیک صفحه اول"
+
+msgid "Positions 4–20: the fastest wins. Strengthen these in headings, add internal links with these anchors."
+msgstr "جایگاه ۴ تا ۲۰: سریع‌ترین بردها. این‌ها را در سرتیترها تقویت کنید و با همین انکرها لینک داخلی بدهید."
+
+msgid "Another page of your site wins these queries. Do not target them here; link to the winning page instead."
+msgstr "صفحه دیگری از سایت شما این کوئری‌ها را می‌برد. اینجا هدفشان نگیرید؛ به صفحه برنده لینک بدهید."
+
+msgid "No conflicts"
+msgstr "تداخلی نیست"
+
+msgid "AI strategy"
+msgstr "استراتژی هوش مصنوعی"
+
+msgid "Primary"
+msgstr "اصلی"
+
+msgid "Keywords copied to the set above. Press Apply to save."
+msgstr "کلمات کلیدی در کادر بالا قرار گرفت. برای ذخیره «اعمال» را بزنید."
+
+msgid "Use these keywords"
+msgstr "استفاده از این کلمات کلیدی"
+
+msgid "Content gaps (add these sections)"
+msgstr "شکاف‌های محتوا (این بخش‌ها را اضافه کنید)"
+
+msgid "FAQ questions"
+msgstr "سؤالات متداول"
+
+msgid "Internal link anchors to this page"
+msgstr "انکرهای لینک داخلی به این صفحه"
+
+msgid "Do not target here"
+msgstr "اینجا هدف نگیرید"
+
+msgid "AI combines these Search Console queries with your content and picks the keyword set, title, description, missing sections and FAQ — beyond a generic content AI, because it knows what Google already ranks you for."
+msgstr "هوش مصنوعی این کوئری‌های سرچ کنسول را با محتوای شما ترکیب می‌کند و مجموعه کلمات کلیدی، عنوان، توضیحات، بخش‌های جاافتاده و FAQ را انتخاب می‌کند — فراتر از یک هوش مصنوعی محتوای عمومی، چون می‌داند گوگل همین حالا شما را برای چه چیزی رتبه می‌دهد."
+
+msgid "Building the keyword strategy…"
+msgstr "در حال ساخت استراتژی کلمات کلیدی…"
+
+msgid "Build AI keyword strategy"
+msgstr "ساخت استراتژی کلمات کلیدی با هوش مصنوعی"
+
+msgid "Saved and synced with the SEO plugin in this editor."
+msgstr "ذخیره شد و با افزونه سئوی این ویرایشگر همگام شد."
+
+msgid "Focus keywords saved."
+msgstr "کلمات کلیدی کانونی ذخیره شد."
 
 msgid "Checking experience, expertise, authority and trust signals…"
 msgstr "در حال بررسی سیگنال‌های تجربه، تخصص، اعتبار و اعتماد…"
@@ -4887,9 +5261,6 @@ msgstr "هفتگی"
 msgid "monthly"
 msgstr "ماهانه"
 
-msgid "none"
-msgstr "هیچ"
-
 msgid "Organization"
 msgstr "سازمان"
 
@@ -5108,6 +5479,11 @@ msgstr "ناموجود"
 
 msgid "onbackorder"
 msgstr "پیش‌سفارش"
+
+#, php-format
+msgid "%d search query you already get impressions for is not covered in the content."
+msgid_plural "%d search queries you already get impressions for are not covered in the content."
+msgstr[0] "%d کوئری که همین حالا برایش نمایش دارید در محتوا پوشش داده نشده است."
 
 #, php-format
 msgid "%d published page is blocked by robots.txt."

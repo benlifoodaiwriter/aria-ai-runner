@@ -262,3 +262,41 @@ a.sl-chip-status:hover { box-shadow: var(--sl-shadow); }
 .is-rtl .nav-open .sl-side { animation-name: sl-drawer-rtl; }
 @keyframes sl-drawer-rtl { from { opacity: 0; transform: translateX(24px); } to { opacity: 1; transform: none; } }
 @media (prefers-reduced-motion: reduce) { .nav-open .sl-side { animation: none; } }
+
+/* Connection guide */
+.sl-guide__chooser { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 10px; }
+.sl-guide__choice { display: flex; flex-direction: column; gap: 6px; align-items: flex-start; text-align: start; padding: 12px 14px; border: 1px solid var(--sl-border); border-radius: 12px; background: var(--sl-surface); color: var(--sl-text-2); font: inherit; font-size: 13px; cursor: pointer; transition: border-color .15s, box-shadow .15s; }
+.sl-guide__choice:hover { border-color: var(--sl-brand); box-shadow: 0 0 0 3px rgba(29, 78, 216, .1); }
+.sl-guide__choice strong { color: var(--sl-brand); font-size: 13.5px; }
+.sl-guide__group { font-size: 16px; margin: 26px 0 10px; color: var(--sl-text); }
+.sl-guide__group .sl-ic { color: var(--sl-brand); }
+.sl-guide__svc { border: 1px solid var(--sl-border); border-radius: 16px; background: var(--sl-surface); box-shadow: var(--sl-shadow); margin-block-end: 10px; overflow: hidden; scroll-margin-top: 90px; }
+.sl-guide__svc > summary { list-style: none; display: flex; align-items: center; gap: 12px; padding: 14px 16px; cursor: pointer; }
+.sl-guide__svc > summary::-webkit-details-marker { display: none; }
+.sl-guide__svc[open] > summary { border-block-end: 1px solid var(--sl-border); }
+.sl-guide__title { flex: 1; display: flex; flex-direction: column; gap: 5px; min-width: 0; }
+.sl-guide__title strong { font-size: 14.5px; }
+.sl-guide__badges { display: flex; flex-wrap: wrap; gap: 5px; }
+.sl-guide__chev { color: var(--sl-muted); transition: transform .2s; }
+.sl-guide__svc[open] .sl-guide__chev { transform: rotate(180deg); }
+.sl-guide__body { padding: 16px 18px 18px; display: grid; gap: 14px; }
+.sl-guide__why { margin: 0; color: var(--sl-text-2); line-height: 1.9; }
+.sl-guide__need ul { list-style: none; padding: 0; margin: 6px 0 0; display: grid; gap: 4px; }
+.sl-guide__steps { margin: 0; padding-inline-start: 0; list-style: none; counter-reset: sl-step; display: grid; gap: 12px; }
+.sl-guide__steps > li { counter-increment: sl-step; position: relative; padding-inline-start: 40px; line-height: 1.9; }
+.sl-guide__steps > li::before { content: counter(sl-step); position: absolute; inset-inline-start: 0; top: 0; width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; background: var(--sl-brand-50); color: var(--sl-brand); font-weight: 800; font-size: 13px; }
+.sl-guide__links { display: flex; flex-wrap: wrap; gap: 8px; margin-block-start: 6px; }
+.sl-guide__link { display: inline-flex; align-items: center; gap: 6px; padding: 6px 10px; border: 1px solid var(--sl-border); border-radius: 10px; background: var(--sl-surface-2); color: var(--sl-brand) !important; font-size: 12.5px; font-weight: 600; text-decoration: none; max-width: 100%; }
+.sl-guide__link:hover { border-color: var(--sl-brand); }
+.sl-guide__link small { color: var(--sl-muted); font-weight: 400; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 220px; }
+.sl-guide__code { display: flex; align-items: center; gap: 8px; margin-block-start: 6px; padding: 6px 6px 6px 12px; border-radius: 10px; background: #0f172a; color: #e2e8f0; text-align: left; }
+.sl-guide__code code { flex: 1; background: none !important; border: 0 !important; color: inherit !important; padding: 0 !important; font-size: 12.5px; white-space: pre-wrap; word-break: break-all; }
+.sl-guide__code .sl-btn { background: rgba(255, 255, 255, .08); border-color: transparent; color: #e2e8f0; }
+.sl-guide__go { margin-block-start: 8px; }
+.sl-guide__trouble details { border: 1px solid var(--sl-border); border-radius: 10px; padding: 8px 12px; margin-block-start: 6px; }
+.sl-guide__trouble summary { cursor: pointer; font-weight: 600; font-size: 13px; }
+.sl-guide__trouble p { margin: 6px 0 0; font-size: 13px; color: var(--sl-text-2); line-height: 1.8; }
+@media (max-width: 600px) {
+	.sl-guide__link small { display: none; }
+	.sl-guide__svc > summary { flex-wrap: wrap; }
+}

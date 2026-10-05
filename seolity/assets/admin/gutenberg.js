@@ -24,7 +24,7 @@
 
 	/** Line icon from the shared SEOlity set as a React element (sidebar + panel headers). */
 	function sparkIcon( name ) {
-		return el( 'svg', { width: 20, height: 20, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.75, strokeLinecap: 'round', strokeLinejoin: 'round', 'aria-hidden': true, focusable: false, dangerouslySetInnerHTML: { __html: SL.ICONS[ name || 'sparkles' ] } } );
+		return el( 'svg', { className: 'seolity-svg', width: 20, height: 20, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.75, strokeLinecap: 'round', strokeLinejoin: 'round', 'aria-hidden': true, focusable: false, dangerouslySetInnerHTML: { __html: SL.ICONS[ name || 'sparkles' ] } } );
 	}
 
 	function Score() {
@@ -73,6 +73,9 @@
 					el( Button, { variant: 'primary', className: 'seolity-g-btn', onClick: function () {
 						SL.openOptimizer( 'post_content' );
 					} }, t( 'Optimize content' ) ),
+					el( Button, { variant: 'secondary', className: 'seolity-g-btn', disabled: ! saved, icon: sparkIcon( 'key' ), onClick: function () {
+						SL.keywordInsights( 'post', id, { editor: true } );
+					} }, t( 'GSC keywords' ) ),
 					el( Button, { variant: 'secondary', className: 'seolity-g-btn', disabled: ! saved, onClick: function () {
 						SL.metaModal( 'post', id );
 					} }, t( 'AI title & description' ) ),

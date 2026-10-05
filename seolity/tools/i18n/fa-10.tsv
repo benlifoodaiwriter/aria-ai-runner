@@ -1,0 +1,120 @@
+Rank Math & focus keywords	رنک مث و کلمات کلیدی کانونی
+Focus keywords	کلمات کلیدی کانونی
+Connection guide	راهنمای اتصال
+e.g. espresso machine for home, home espresso machine price	مثلاً اسپرسوساز خانگی، قیمت اسپرسوساز خانگی
+Comma separated. The first one is the primary keyword.	با کاما جدا کنید. اولی کلمه کلیدی اصلی است.
+Stored in %s. Use “GSC keywords” to choose them from real Search Console data.	در %s ذخیره می‌شود. با «کلمات کلیدی GSC» آن‌ها را از داده واقعی سرچ کنسول انتخاب کنید.
+GSC keywords	کلمات کلیدی GSC
+No Rank Math redirections table was found.	جدول ریدایرکت‌های رنک مث پیدا نشد.
+Pillar page of the “%s” topic cluster.	صفحه ستون (Pillar) خوشه موضوعی «%s».
+Google shows this page most for “%s”, but it is not your focus keyword.	گوگل این صفحه را بیشتر برای «%s» نشان می‌دهد، اما این کلمه کلیدی کانونی شما نیست.
+Focus keyword “%1$s” is won by another page (%2$s). Targeting it here causes cannibalization.	کلمه کلیدی «%1$s» را صفحه دیگری می‌برد (%2$s). هدف‌گیری آن در این صفحه باعث کنیبالیزیشن می‌شود.
+Focus keyword “%s” gets no impressions for this page in Search Console.	کلمه کلیدی «%s» در سرچ کنسول برای این صفحه هیچ نمایشی ندارد.
+Put the primary keyword in the SEO title (ideally near the start).	کلمه کلیدی اصلی را در عنوان سئو بیاورید (ترجیحاً نزدیک ابتدای آن).
+Use the primary keyword naturally in the first paragraph.	کلمه کلیدی اصلی را به‌طور طبیعی در پاراگراف اول به کار ببرید.
+CTR is %1$s%% at position %2$s (expected about %3$s%%). Rewrite the title and description.	نرخ کلیک %1$s%% در جایگاه %2$s است (انتظار حدود %3$s%%). عنوان و توضیحات را بازنویسی کنید.
+Searchers ask questions about this page. Answer them in an FAQ section.	کاربران درباره این صفحه سؤال می‌پرسند. در بخش پرسش‌های متداول پاسخ دهید.
+%d queries rank on positions 4–20: small content and internal-link improvements can move them to the top 3.	%d کوئری در جایگاه ۴ تا ۲۰ هستند: بهبودهای کوچک محتوا و لینک داخلی می‌تواند آن‌ها را به ۳ نتیجه اول برساند.
+Chosen from real Search Console queries for this page.	بر اساس کوئری‌های واقعی سرچ کنسول برای این صفحه انتخاب شد.
+Connect Google Search Console first: keywords are chosen from real search data.	ابتدا گوگل سرچ کنسول را وصل کنید: کلمات کلیدی از داده واقعی جستجو انتخاب می‌شوند.
+Primary keyword “%1$s” has %2$d impressions at position %3$s for this page (Search Console, 90 days). Secondary keywords are other queries this page owns.	کلمه کلیدی اصلی «%1$s» برای این صفحه %2$d نمایش در جایگاه %3$s دارد (سرچ کنسول، ۹۰ روز). کلمات کلیدی فرعی، کوئری‌های دیگری هستند که این صفحه صاحب آن‌هاست.
+How to get this key	این کلید را چطور بگیرم
+Guide	راهنما
+Focus keywords chosen from the queries Google already shows each page for — written straight into Rank Math (or your SEO plugin), cannibalization-safe, with approval and undo.	کلمات کلیدی کانونی از کوئری‌هایی انتخاب می‌شوند که گوگل همین حالا هر صفحه را برایشان نشان می‌دهد — مستقیم در رنک مث (یا افزونه سئوی شما) نوشته می‌شوند، بدون کنیبالیزیشن، با تأیید و امکان بازگشت.
+Rank Math	رنک مث
+Free	رایگان
+Average Rank Math score	میانگین امتیاز رنک مث
+%s pages scored	%s صفحه امتیاز دارند
+Pages with focus keywords	صفحات دارای کلمه کلیدی کانونی
+%s without	%s بدون کلمه کلیدی
+Pillar content	محتوای ستون (Pillar)
+Low score (<50): %s	امتیاز پایین (زیر ۵۰): %s
+Rank Math is not active. SEOlity saves focus keywords to %s and everything below still works.	رنک مث فعال نیست. SEOlity کلمات کلیدی را در %s ذخیره می‌کند و همه بخش‌های زیر کار می‌کنند.
+SEO plugin	افزونه سئو
+For every page with search demand SEOlity picks a primary keyword the page already wins in Google and up to 4 secondary keywords. A query is never assigned to two pages: it belongs to the URL Google prefers. Every change goes to “AI Changes” for approval (or applies itself in Semi/Autonomous mode) and can be undone.	برای هر صفحه‌ای که تقاضای جستجو دارد، SEOlity یک کلمه کلیدی اصلی که صفحه همین حالا در گوگل برایش دیده می‌شود و تا ۴ کلمه کلیدی فرعی انتخاب می‌کند. هیچ کوئری به دو صفحه داده نمی‌شود: متعلق به آدرسی است که گوگل ترجیح می‌دهد. هر تغییر برای تأیید به «تغییرات هوش مصنوعی» می‌رود (یا در حالت نیمه‌خودکار/خودکار اعمال می‌شود) و قابل بازگشت است.
+Only pages without a focus keyword	فقط صفحات بدون کلمه کلیدی کانونی
+Turn off to also re-check pages whose keyword gets no impressions or belongs to another page.	خاموش کنید تا صفحاتی که کلمه کلیدی‌شان نمایش ندارد یا متعلق به صفحه دیگری است هم بررسی شوند.
+Minimum impressions (90 days)	حداقل نمایش (۹۰ روز)
+Pages per run	تعداد صفحه در هر اجرا
+Assign focus keywords	تعیین کلمات کلیدی کانونی
+Open the connection guide	باز کردن راهنمای اتصال
+%1$s changes proposed, %2$s applied.	%1$s تغییر پیشنهاد شد، %2$s اعمال شد.
+Before	قبل
+Nothing to assign	چیزی برای تعیین نیست
+Every page with search demand already has a focus keyword.	همه صفحات دارای تقاضای جستجو کلمه کلیدی کانونی دارند.
+Focus keyword autopilot (Search Console)	تعیین خودکار کلمه کلیدی کانونی (سرچ کنسول)
+Beyond Rank Math Content AI: uses the keywords you already rank for.	فراتر از Content AI رنک مث: از کلماتی استفاده می‌کند که همین حالا در آن‌ها رتبه دارید.
+High-demand pages without a focus keyword	صفحات پرتقاضا بدون کلمه کلیدی کانونی
+Low Rank Math score, highest search demand	امتیاز پایین رنک مث، بیشترین تقاضای جستجو
+Rank Math score	امتیاز رنک مث
+No low scores	امتیاز پایینی نیست
+Rank Math scores are calculated when a post is opened and saved in the editor.	امتیاز رنک مث وقتی محاسبه می‌شود که نوشته در ویرایشگر باز و ذخیره شود.
+Fix the pages Google already shows first — that is where a better score pays off.	اول صفحاتی را درست کنید که گوگل همین حالا نشان می‌دهد — بهتر شدن امتیاز آنجا نتیجه می‌دهد.
+Import Rank Math redirections	درون‌ریزی ریدایرکت‌های رنک مث
+%s active redirections in Rank Math. Exact, regex, contains, starts-with and ends-with rules are converted; Rank Math’s own table is not changed.	%s ریدایرکت فعال در رنک مث. قوانین دقیق، regex، شامل، شروع با و پایان با تبدیل می‌شوند؛ جدول خود رنک مث تغییر نمی‌کند.
+%1$s imported, %2$s skipped.	%1$s درون‌ریزی شد، %2$s رد شد.
+Mark cluster pillars as Rank Math Pillar Content	علامت‌گذاری صفحات ستون خوشه‌ها به‌عنوان Pillar Content در رنک مث
+Mark cluster pillars as pillar content	علامت‌گذاری صفحات ستون خوشه‌ها به‌عنوان محتوای ستون
+Uses the topic clusters from Keywords → Topic clusters. Rank Math then suggests these pages for internal links.	از خوشه‌های موضوعی بخش کلمات کلیدی ← خوشه‌های موضوعی استفاده می‌کند. سپس رنک مث این صفحات را برای لینک داخلی پیشنهاد می‌دهد.
+Sync pillars	همگام‌سازی صفحات ستون
+%s changes proposed.	%s تغییر پیشنهاد شد.
+Tools	ابزارها
+How SEOlity works with Rank Math	SEOlity چطور با رنک مث کار می‌کند
+Writes Rank Math’s own fields: SEO title, description, all focus keywords, pillar flag, social title/description, robots and canonical.	فیلدهای خود رنک مث را می‌نویسد: عنوان سئو، توضیحات، همه کلمات کلیدی کانونی، پرچم Pillar، عنوان/توضیحات شبکه‌های اجتماعی، robots و canonical.
+Keeps the Rank Math editor in sync: changes made by SEOlity in Gutenberg or the classic editor appear live in the Rank Math sidebar and are not overwritten on save.	ویرایشگر رنک مث را همگام نگه می‌دارد: تغییرات SEOlity در گوتنبرگ یا ویرایشگر کلاسیک بلافاصله در سایدبار رنک مث دیده می‌شود و هنگام ذخیره بازنویسی نمی‌شود.
+Chooses keywords from Search Console data (real impressions, clicks and positions), not from guesses — and never assigns one query to two pages.	کلمات کلیدی را از داده سرچ کنسول (نمایش، کلیک و جایگاه واقعی) انتخاب می‌کند نه حدس — و هرگز یک کوئری را به دو صفحه نمی‌دهد.
+Shows per query whether it appears in the title, description, headings and content, which queries are missing, questions for FAQ and striking-distance queries.	برای هر کوئری نشان می‌دهد در عنوان، توضیحات، سرتیترها و محتوا آمده یا نه، کدام کوئری‌ها پوشش داده نشده‌اند، سؤال‌ها برای FAQ و کوئری‌های نزدیک به صفحه اول.
+Every change is logged with before/after, approval, one-click undo and a measured SEO experiment.	هر تغییر با قبل/بعد، تأیید، بازگشت با یک کلیک و آزمایش سئوی اندازه‌گیری‌شده ثبت می‌شود.
+Works with any AI: API keys, OpenRouter, local Ollama or your Claude / ChatGPT subscription.	با هر هوش مصنوعی کار می‌کند: کلید API، OpenRouter، Ollama محلی یا اشتراک Claude / ChatGPT شما.
+You need	پیش‌نیازها
+Troubleshooting	رفع مشکل
+Official documentation	مستندات رسمی
+Connected	متصل
+Not set	تنظیم نشده
+Step-by-step instructions with direct links for every key and account SEOlity can use. Open a service, follow the numbered steps, paste the key where shown and press Test.	راهنمای قدم‌به‌قدم با لینک مستقیم برای هر کلید و حسابی که SEOlity استفاده می‌کند. یک سرویس را باز کنید، مراحل شماره‌دار را انجام دهید، کلید را در جای گفته‌شده بچسبانید و تست بزنید.
+Which one do I need?	کدام را لازم دارم؟
+You need one AI option plus Google Search Console. Everything else is optional.	یک گزینه هوش مصنوعی به‌علاوه گوگل سرچ کنسول کافی است. بقیه اختیاری‌اند.
+First time? The connection guide walks you through every Google Cloud screen with direct links.	بار اول است؟ راهنمای اتصال همه صفحه‌های Google Cloud را با لینک مستقیم قدم‌به‌قدم توضیح می‌دهد.
+GSC keyword intelligence	هوش کلمات کلیدی GSC
+Reading the queries Google shows this page for…	در حال خواندن کوئری‌هایی که گوگل این صفحه را برایشان نشان می‌دهد…
+Focus keywords are chosen from the real queries Google shows each page for. Connect Search Console to use this.	کلمات کلیدی کانونی از کوئری‌های واقعی‌ای انتخاب می‌شوند که گوگل هر صفحه را برایشان نشان می‌دهد. برای استفاده، سرچ کنسول را وصل کنید.
+Last 28 days for this URL. Keyword data below covers the last 90 days.	۲۸ روز اخیر برای این آدرس. داده‌های کلمات کلیدی زیر مربوط به ۹۰ روز اخیر است.
+Saved to %s	ذخیره در %s
+First keyword = primary. The others are secondary keywords (Rank Math shows each in its checklist).	کلمه اول = اصلی. بقیه کلمات کلیدی فرعی هستند (رنک مث هر کدام را در چک‌لیست خود نشان می‌دهد).
+Suggested from Search Console	پیشنهاد از سرچ کنسول
+Current	فعلی
+In title	در عنوان
+In meta description	در توضیحات متا
+In headings	در سرتیترها
+In content	در محتوا
+Impr.	نمایش
+Pos.	جایگاه
+Coverage	پوشش
+Owner	صاحب
+This page	همین صفحه
+Add to focus keywords	افزودن به کلمات کلیدی کانونی
+Nothing here	چیزی اینجا نیست
+All queries	همه کوئری‌ها
+Not covered	پوشش داده نشده
+Google already shows this page for these queries, but the content barely mentions them. Add a section or paragraph for each.	گوگل این صفحه را برای این کوئری‌ها نشان می‌دهد، اما محتوا تقریباً به آن‌ها نپرداخته است. برای هر کدام یک بخش یا پاراگراف اضافه کنید.
+Every important query is covered	همه کوئری‌های مهم پوشش داده شده‌اند
+Optimize content with AI	بهینه‌سازی محتوا با هوش مصنوعی
+No question queries yet	هنوز کوئری سؤالی وجود ندارد
+Striking distance	نزدیک صفحه اول
+Positions 4–20: the fastest wins. Strengthen these in headings, add internal links with these anchors.	جایگاه ۴ تا ۲۰: سریع‌ترین بردها. این‌ها را در سرتیترها تقویت کنید و با همین انکرها لینک داخلی بدهید.
+Another page of your site wins these queries. Do not target them here; link to the winning page instead.	صفحه دیگری از سایت شما این کوئری‌ها را می‌برد. اینجا هدفشان نگیرید؛ به صفحه برنده لینک بدهید.
+No conflicts	تداخلی نیست
+AI strategy	استراتژی هوش مصنوعی
+Primary	اصلی
+Keywords copied to the set above. Press Apply to save.	کلمات کلیدی در کادر بالا قرار گرفت. برای ذخیره «اعمال» را بزنید.
+Use these keywords	استفاده از این کلمات کلیدی
+Content gaps (add these sections)	شکاف‌های محتوا (این بخش‌ها را اضافه کنید)
+FAQ questions	سؤالات متداول
+Internal link anchors to this page	انکرهای لینک داخلی به این صفحه
+Do not target here	اینجا هدف نگیرید
+AI combines these Search Console queries with your content and picks the keyword set, title, description, missing sections and FAQ — beyond a generic content AI, because it knows what Google already ranks you for.	هوش مصنوعی این کوئری‌های سرچ کنسول را با محتوای شما ترکیب می‌کند و مجموعه کلمات کلیدی، عنوان، توضیحات، بخش‌های جاافتاده و FAQ را انتخاب می‌کند — فراتر از یک هوش مصنوعی محتوای عمومی، چون می‌داند گوگل همین حالا شما را برای چه چیزی رتبه می‌دهد.
+Building the keyword strategy…	در حال ساخت استراتژی کلمات کلیدی…
+Build AI keyword strategy	ساخت استراتژی کلمات کلیدی با هوش مصنوعی
+Saved and synced with the SEO plugin in this editor.	ذخیره شد و با افزونه سئوی این ویرایشگر همگام شد.
+Focus keywords saved.	کلمات کلیدی کانونی ذخیره شد.
+%d search query you already get impressions for is not covered in the content.	%d کوئری که همین حالا برایش نمایش دارید در محتوا پوشش داده نشده است.

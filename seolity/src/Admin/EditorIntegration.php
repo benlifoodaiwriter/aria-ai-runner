@@ -36,6 +36,12 @@ final class EditorIntegration {
 		add_action( 'edit_user_profile', array( $this, 'user_hint' ) );
 	}
 
+	/** Display name of an SEO plugin engine. */
+	public static function engine_name( $engine ) {
+		$names = array( 'rankmath' => 'Rank Math', 'yoast' => 'Yoast SEO', 'seopress' => 'SEOPress', 'aioseo' => 'All in One SEO', 'seolity' => 'SEOlity' );
+		return isset( $names[ $engine ] ) ? $names[ $engine ] : ucfirst( $engine );
+	}
+
 	private function can() {
 		return current_user_can( Capabilities::AI );
 	}
@@ -132,12 +138,22 @@ final class EditorIntegration {
 		wp_nonce_field( 'seolity_meta_' . $post->ID, 'seolity_meta_nonce' );
 		$title = $m->get_post( $post->ID, 'meta_title' );
 		$desc  = $m->get_post( $post->ID, 'meta_description' );
-		$kw    = $m->get_post( $post->ID, 'focus_keyword' );
+		$kws   = $m->get_post( $post->ID, 'focus_keywords' );
+		$own   = 'seolity' === $engine;
 		?>
 		<div class="seolity-box" data-post="<?php echo (int) $post->ID; ?>">
 			<div class="seolity-box__score" aria-live="polite"><span class="seolity-score-ring" data-score="">—</span><span class="seolity-box__score-label"><?php esc_html_e( 'SEO score (live)', 'seolity' ); ?></span></div>
-			<p><label for="seolity_focus_keyword"><strong><?php esc_html_e( 'Focus keyword', 'seolity' ); ?></strong></label><br>
-			<input type="text" class="widefat" id="seolity_focus_keyword" name="seolity_focus_keyword" value="<?php echo esc_attr( $kw ); ?>" placeholder="<?php esc_attr_e( 'e.g. espresso machine for home', 'seolity' ); ?>"></p>
+			<?php if ( $own ) : ?>
+				<p><label for="seolity_focus_keyword"><strong><?php esc_html_e( 'Focus keywords', 'seolity' ); ?></strong></label><br>
+				<input type="text" class="widefat" id="seolity_focus_keyword" name="seolity_focus_keywords" value="<?php echo esc_attr( $kws ); ?>" placeholder="<?php esc_attr_e( 'e.g. espresso machine for home, home espresso machine price', 'seolity' ); ?>">
+				<span class="description"><?php esc_html_e( 'Comma separated. The first one is the primary keyword.', 'seolity' ); ?></span></p>
+			<?php else : ?>
+				<?php /* Third-party SEO plugin owns the keyword field: show it read-only so two editors never overwrite each other. */ ?>
+				<input type="hidden" id="seolity_focus_keyword" value="<?php echo esc_attr( $kws ); ?>">
+				<p class="seolity-kw-line"><?php Icons::e( 'key' ); ?> <strong><?php esc_html_e( 'Focus keywords', 'seolity' ); ?>:</strong> <span class="seolity-kw-list" dir="auto"><?php echo $kws ? esc_html( $kws ) : esc_html__( 'none', 'seolity' ); ?></span>
+				<?php /* translators: %s SEO plugin name */ ?>
+				<br><span class="description"><?php echo esc_html( sprintf( __( 'Stored in %s. Use “GSC keywords” to choose them from real Search Console data.', 'seolity' ), self::engine_name( $engine ) ) ); ?></span></p>
+			<?php endif; ?>
 			<?php if ( 'seolity' === $engine || 'on' === $this->plugin->settings->get( 'frontend_output' ) ) : ?>
 				<p><label for="seolity_meta_title"><strong><?php esc_html_e( 'SEO title', 'seolity' ); ?></strong></label> <span class="seolity-count" data-for="seolity_meta_title"></span><br>
 				<input type="text" class="widefat" id="seolity_meta_title" name="seolity_meta_title" value="<?php echo esc_attr( $title ); ?>" maxlength="120"></p>
@@ -147,11 +163,12 @@ final class EditorIntegration {
 				<div class="seolity-serp" aria-hidden="true"><div class="seolity-serp__url"></div><div class="seolity-serp__title"></div><div class="seolity-serp__desc"></div></div>
 			<?php else : ?>
 				<?php /* translators: %s SEO plugin */ ?>
-				<p class="description"><?php echo esc_html( sprintf( __( 'SEO title & description are managed by %s. SEOlity AI reads and writes them there.', 'seolity' ), ucfirst( $engine ) ) ); ?></p>
+				<p class="description"><?php echo esc_html( sprintf( __( 'SEO title & description are managed by %s. SEOlity AI reads and writes them there.', 'seolity' ), self::engine_name( $engine ) ) ); ?></p>
 			<?php endif; ?>
 			<p class="seolity-box__actions">
 				<?php if ( $this->can() ) : ?>
 					<button type="button" class="button button-primary seolity-optimize-btn" data-field="post_content"><?php Icons::e( 'sparkles' ); ?> <?php esc_html_e( 'Optimize content', 'seolity' ); ?></button>
+					<button type="button" class="button seolity-kw-btn"><?php Icons::e( 'key' ); ?> <?php esc_html_e( 'GSC keywords', 'seolity' ); ?></button>
 					<button type="button" class="button seolity-meta-btn"><?php esc_html_e( 'AI title & description', 'seolity' ); ?></button>
 					<button type="button" class="button seolity-faq-btn"><?php esc_html_e( 'Generate FAQ', 'seolity' ); ?></button>
 					<button type="button" class="button seolity-links-btn"><?php esc_html_e( 'Internal links', 'seolity' ); ?></button>
@@ -175,8 +192,8 @@ final class EditorIntegration {
 			return;
 		}
 		$m = $this->plugin->meta;
-		if ( isset( $_POST['seolity_focus_keyword'] ) ) {
-			$m->set_post( $post_id, 'focus_keyword', sanitize_text_field( wp_unslash( $_POST['seolity_focus_keyword'] ) ) );
+		if ( isset( $_POST['seolity_focus_keywords'] ) && 'seolity' === $m->engine() ) {
+			$m->set_post( $post_id, 'focus_keywords', sanitize_text_field( wp_unslash( $_POST['seolity_focus_keywords'] ) ) );
 		}
 		if ( isset( $_POST['seolity_meta_title'] ) ) {
 			$m->set_post( $post_id, 'meta_title', sanitize_text_field( wp_unslash( $_POST['seolity_meta_title'] ) ) );
@@ -201,10 +218,11 @@ final class EditorIntegration {
 			<td>
 				<?php if ( $this->can() ) : ?>
 					<p><button type="button" class="button button-primary seolity-optimize-btn" data-field="term_description" data-target="#description"><?php Icons::e( 'sparkles' ); ?> <?php esc_html_e( 'Optimize with SEOlity AI', 'seolity' ); ?></button>
-					<button type="button" class="button seolity-meta-btn"><?php esc_html_e( 'AI title & description', 'seolity' ); ?></button></p>
+					<button type="button" class="button seolity-meta-btn"><?php esc_html_e( 'AI title & description', 'seolity' ); ?></button>
+					<button type="button" class="button seolity-kw-btn"><?php Icons::e( 'key' ); ?> <?php esc_html_e( 'GSC keywords', 'seolity' ); ?></button></p>
 				<?php endif; ?>
-				<p><label><?php esc_html_e( 'Focus keyword', 'seolity' ); ?><br><input type="text" name="seolity_focus_keyword" value="<?php echo esc_attr( $m->get_term( $term->term_id, 'focus_keyword' ) ); ?>"></label></p>
 				<?php if ( 'seolity' === $m->engine() ) : ?>
+					<p><label><?php esc_html_e( 'Focus keywords', 'seolity' ); ?><br><input type="text" name="seolity_focus_keywords" value="<?php echo esc_attr( $m->get_term( $term->term_id, 'focus_keywords' ) ); ?>"></label></p>
 					<p><label><?php esc_html_e( 'SEO title', 'seolity' ); ?><br><input type="text" name="seolity_meta_title" value="<?php echo esc_attr( $m->get_term( $term->term_id, 'meta_title' ) ); ?>"></label></p>
 					<p><label><?php esc_html_e( 'Meta description', 'seolity' ); ?><br><textarea name="seolity_meta_description" rows="3"><?php echo esc_textarea( $m->get_term( $term->term_id, 'meta_description' ) ); ?></textarea></label></p>
 					<p><label><input type="checkbox" name="seolity_noindex" value="1" <?php checked( '1', $m->get_term( $term->term_id, 'noindex' ) ); ?>> <?php esc_html_e( 'Noindex this archive', 'seolity' ); ?></label></p>
@@ -219,8 +237,8 @@ final class EditorIntegration {
 			return;
 		}
 		$m = $this->plugin->meta;
-		if ( isset( $_POST['seolity_focus_keyword'] ) ) {
-			$m->set_term( $term_id, 'focus_keyword', sanitize_text_field( wp_unslash( $_POST['seolity_focus_keyword'] ) ) );
+		if ( isset( $_POST['seolity_focus_keywords'] ) && 'seolity' === $m->engine() ) {
+			$m->set_term( $term_id, 'focus_keywords', sanitize_text_field( wp_unslash( $_POST['seolity_focus_keywords'] ) ) );
 		}
 		if ( isset( $_POST['seolity_meta_title'] ) ) {
 			$m->set_term( $term_id, 'meta_title', sanitize_text_field( wp_unslash( $_POST['seolity_meta_title'] ) ) );

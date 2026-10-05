@@ -4,7 +4,7 @@ Tags: seo, ai, search console, woocommerce, schema
 Requires at least: 6.2
 Tested up to: 6.6
 Requires PHP: 7.4
-Stable tag: 1.2.0
+Stable tag: 1.3.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -70,6 +70,13 @@ Yes. The interface is fully translated and RTL-native, text analysis understands
 Enable "Delete all data on uninstall" in Settings → Privacy, then delete the plugin.
 
 == Changelog ==
+
+= 1.3.0 =
+* Rank Math integration that goes beyond Rank Math Content AI: focus keywords chosen from the Search Console queries each page already ranks for, written to Rank Math's full keyword list (primary + secondary), cannibalization-safe across the whole site, with preview, approval and undo. Also works with Yoast, SEOPress and AIOSEO.
+* GSC keyword intelligence for every page (editor, content list, Rank Math page): query coverage in title/description/headings/content, not-covered queries, question queries for FAQ, striking distance, cannibalization, CTR gap, focus keyword audit and an AI keyword strategy.
+* Rank Math editor sync (Gutenberg + classic): SEOlity changes appear live in the Rank Math sidebar and are never overwritten on save. Rank Math score in the content list, low-score triage by search demand, pillar content sync, redirection import, social title/description fields.
+* New Connection guide: step-by-step bilingual instructions with direct links for every key and account (Claude, OpenAI, Gemini, OpenRouter, Ollama, Claude/ChatGPT subscriptions, GitHub, Search Console OAuth, PageSpeed, SerpApi), plus docs/CONNECT.md and "Guide" links next to each key field.
+* Emoji glyphs replaced with line icons everywhere (status marks, priorities, editor buttons, checklists); icon-only buttons have accessible names.
 
 = 1.2.0 =
 * New admin design shared with ARIAGH AI Writer: full-width top bar with status chips, grouped sidebar with line icons and AI/Search Console engine cards, icon cards, two-column settings rows with toggle switches, floating save bar, provider cards, blue palette and Vazirmatn font (light by default, dark mode kept).
