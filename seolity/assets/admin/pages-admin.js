@@ -80,7 +80,7 @@
 						{ label: '', render: function ( x ) {
 							return App.cap( 'manage' ) ? h( 'div', { class: 'sl-row' }, App.btn( t( 'Edit' ), function () {
 								editor( x, r, labels );
-							}, 'sm' ), App.btn( '🗑', function () {
+							}, 'sm' ), App.btn( SL.icon( 'trash', 16 ), function () {
 								SL.confirm( t( 'Delete this rule?' ), function () {
 									SL.api( 'rules/' + x.id, { method: 'DELETE' } ).then( load ).catch( SL.fail );
 								}, true );
@@ -108,9 +108,9 @@
 					} ), c ? c.field : meta.fields[ 0 ] );
 					var op = App.select( [ [ '=', '=' ], [ '!=', '≠' ], [ '<', '<' ], [ '>', '>' ] ], c ? c.op : '=' );
 					var val = h( 'input', { class: 'sl-input sl-input--sm', value: c ? c.value : '' } );
-					var row = h( 'div', { class: 'sl-row sl-cond' }, f, op, val, App.btn( '✕', function () {
+					var row = h( 'div', { class: 'sl-row sl-cond' }, f, op, val, App.btn( SL.icon( 'x', 16 ), function () {
 						row.remove();
-					}, 'ghost' ) );
+					}, 'ghost', { 'aria-label': t( 'Remove' ) } ) );
 					row._get = function () {
 						return { field: f.value, op: op.value, value: val.value };
 					};
@@ -364,13 +364,13 @@
 			var render = function ( s ) {
 				SL.clear( st );
 				var ok = function ( v ) {
-					return v ? '✓' : '✗';
+					return SL.yes( !! v, 16 );
 				};
 				st.appendChild( h( 'ul', { class: 'sl-checklist' },
-					h( 'li', { text: ok( s.github_token ) + ' ' + t( 'GitHub token' ) } ),
-					h( 'li', { text: ok( s.setup ) + ' ' + t( 'Runner repository set up' ) + ( s.setup ? ' (' + SL.date( s.setup ) + ')' : '' ) } ),
-					h( 'li', { text: ok( s.claude_token ) + ' ' + t( 'Claude subscription token' ) } ),
-					h( 'li', { text: ok( s.codex_auth ) + ' ' + t( 'ChatGPT login (auth.json)' ) } )
+					h( 'li', { class: 'sl-iconline' }, ok( s.github_token ), h( 'span', { text: t( 'GitHub token' ) } ) ),
+					h( 'li', { class: 'sl-iconline' }, ok( s.setup ), h( 'span', { text: t( 'Runner repository set up' ) + ( s.setup ? ' (' + SL.date( s.setup ) + ')' : '' ) } ) ),
+					h( 'li', { class: 'sl-iconline' }, ok( s.claude_token ), h( 'span', { text: t( 'Claude subscription token' ) } ) ),
+					h( 'li', { class: 'sl-iconline' }, ok( s.codex_auth ), h( 'span', { text: t( 'ChatGPT login (auth.json)' ) } ) )
 				) );
 				if ( s.repo_url ) {
 					st.appendChild( h( 'p', { class: 'sl-small' }, t( 'Repository' ) + ': ', App.ext( s.repo_url, s.repo ), s.files_current ? null : h( 'span', { class: 'sl-muted', text: ' — ' + t( 'runner files will be updated on the next request' ) } ) ) );

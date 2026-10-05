@@ -217,6 +217,12 @@
 	 * Line icon set (24x24, 1.75 stroke), shared with the ARIAGH AI Writer admin. Static,
 	 * trusted markup only — never pass user data here. */
 	SL.ICONS = {
+		'arrow-right': '<path d="M5 12h14M13 6l6 6-6 6"/>',
+		'arrow-left': '<path d="M19 12H5M11 6l-6 6 6 6"/>',
+		'sun': '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',
+		'trending-down': '<path d="m22 17-8.5-8.5-5 5L2 7"/><path d="M16 17h6v-6"/>',
+		'brain': '<path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 4.44-2.04Z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-4.44-2.04Z"/>',
+		'landmark': '<path d="M3 21h18M5 21V10M9 21V10M15 21V10M19 21V10"/><path d="m12 3 9 5H3z"/>',
 		'activity': '<path d="M22 12h-4l-3 8L9 4l-3 8H2"/>',
 		'alert': '<path d="m21.73 18-8-14a2 2 0 0 0-3.46 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3z"/><path d="M12 9v4M12 17h.01"/>',
 		'arrow-down': '<path d="M12 5v14M19 12l-7 7-7-7"/>',
@@ -302,10 +308,27 @@
 		'zap': '<path d="M13 2 3 14h9l-1 8 10-12h-9z"/>',
 	};
 	var SVGNS = 'http://www.w3.org/2000/svg';
+	/** Icon + label (for buttons, headings and chips). */
+	SL.il = function ( name, label, size ) {
+		return [ SL.icon( name, size || 16 ), h( 'span', { text: label } ) ];
+	};
+	/** Coloured priority dot (replaces coloured-circle emoji). */
+	SL.dot = function ( level ) {
+		return h( 'span', { class: 'sl-dot sl-dot--' + ( level || 'info' ), 'aria-hidden': 'true' } );
+	};
+	/** Yes / no state icon (replaces check-mark glyphs). */
+	SL.yes = function ( ok, size ) {
+		var el = SL.icon( ok ? 'check' : 'x', size || 16, ok ? 'is-good' : 'is-bad' );
+		el.setAttribute( 'aria-hidden', 'false' );
+		el.setAttribute( 'role', 'img' );
+		el.setAttribute( 'aria-label', ok ? t( 'Yes' ) : t( 'No' ) );
+		return el;
+	};
 	SL.icon = function ( name, size, cls ) {
 		var svg = d.createElementNS( SVGNS, 'svg' );
 		size = size || 18;
 		svg.setAttribute( 'class', 'sl-ic' + ( cls ? ' ' + cls : '' ) );
+		svg.setAttribute( 'data-icon', name );
 		svg.setAttribute( 'width', size );
 		svg.setAttribute( 'height', size );
 		svg.setAttribute( 'viewBox', '0 0 24 24' );
@@ -350,7 +373,7 @@
 		var foot = h( 'div', { class: 'sl-modal__foot' } );
 		box.appendChild( h( 'div', { class: 'sl-modal__head' }, h( 'h2', { text: opts.title || '' } ), h( 'button', { class: 'sl-icon-btn', 'aria-label': t( 'Close' ), onClick: function () {
 			close();
-		} }, '✕' ) ) );
+		} }, SL.icon( 'x', 18 ) ) ) );
 		box.appendChild( body );
 		box.appendChild( foot );
 		overlay.appendChild( box );
@@ -416,15 +439,14 @@
 		return h( 'div', { class: 'sl-loading', role: 'status' }, h( 'span', { class: 'sl-spinner' } ), h( 'span', { text: label || t( 'Loading…' ) } ) );
 	};
 	SL.empty = function ( title, text, action ) {
-		return h( 'div', { class: 'sl-empty' }, h( 'div', { class: 'sl-empty__icon', 'aria-hidden': 'true' }, '◎' ), h( 'h3', { text: title } ), text ? h( 'p', { text: text } ) : null, action || null );
+		return h( 'div', { class: 'sl-empty' }, h( 'div', { class: 'sl-empty__icon', 'aria-hidden': 'true' }, SL.icon( 'inbox', 24 ) ), h( 'h3', { text: title } ), text ? h( 'p', { text: text } ) : null, action || null );
 	};
 	SL.badge = function ( text, kind ) {
 		return h( 'span', { class: 'sl-badge sl-badge--' + ( kind || 'default' ) }, text );
 	};
 	SL.priorityBadge = function ( p ) {
-		var map = { critical: [ '🔴', t( 'Critical' ) ], high: [ '🟠', t( 'High' ) ], medium: [ '🟡', t( 'Medium' ) ], low: [ '🟢', t( 'Low' ) ], info: [ '🔵', t( 'Info' ) ] };
-		var m = map[ p ] || [ '', p ];
-		return h( 'span', { class: 'sl-badge sl-badge--' + p }, m[ 0 ] + ' ' + m[ 1 ] );
+		var map = { critical: t( 'Critical' ), high: t( 'High' ), medium: t( 'Medium' ), low: t( 'Low' ), info: t( 'Info' ) };
+		return h( 'span', { class: 'sl-badge sl-badge--' + p }, SL.dot( p ), map[ p ] || p );
 	};
 	SL.scoreRing = function ( score, size, label ) {
 		size = size || 64;
@@ -818,10 +840,10 @@
 	/* ------------------------------------------------------------------ AI Optimizer modal */
 	SL.optimizer = function ( opts ) {
 		// opts: object_type, object_id, field, getContent(), setContent(html) [optional, editor mode], title, focus_keyword
-		var m = SL.modal( { title: '✨ ' + t( 'Optimize with SEOlity AI' ), wide: true } );
+		var m = SL.modal( { title: t( 'Optimize with SEOlity AI' ), wide: true } );
 		var kw = h( 'input', { class: 'sl-input', type: 'text', placeholder: t( 'Focus keyword (optional — SEOlity can pick it from Search Console)' ), value: opts.focus_keyword || '' } );
 		var goal = h( 'input', { class: 'sl-input', type: 'text', placeholder: t( 'Goal (optional), e.g. rank for “buy espresso machine”, improve conversions…' ) } );
-		var start = h( 'button', { class: 'sl-btn sl-btn--primary sl-btn--lg', onClick: run }, '✨ ' + t( 'Analyze & optimize' ) );
+		var start = h( 'button', { class: 'sl-btn sl-btn--primary sl-btn--lg', onClick: run }, SL.il( 'sparkles', t( 'Analyze & optimize' ), 18 ) );
 		m.body.appendChild( h( 'div', { class: 'sl-stack' }, h( 'p', { class: 'sl-muted', text: t( 'SEOlity analyzes your text, the real queries you rank for and SEO best practices, then proposes an improved version. Nothing changes until you apply it.' ) } ), kw, goal, start ) );
 
 		function run() {
@@ -866,7 +888,7 @@
 			var side = h( 'aside', { class: 'sl-opt__side' },
 				h( 'div', { class: 'sl-opt__scores' },
 					h( 'div', null, h( 'div', { class: 'sl-muted sl-small', text: t( 'SEO Score Before' ) } ), SL.scoreRing( b.score, 72 ) ),
-					h( 'div', { class: 'sl-opt__arrow', 'aria-hidden': 'true' }, C.rtl ? '←' : '→' ),
+					h( 'div', { class: 'sl-opt__arrow', 'aria-hidden': 'true' }, SL.icon( C.rtl ? 'arrow-left' : 'arrow-right', 22 ) ),
 					h( 'div', null, h( 'div', { class: 'sl-muted sl-small', text: t( 'SEO Score After' ) } ), SL.scoreRing( a.score, 72 ) )
 				),
 				metrics.map( function ( x ) {
@@ -1054,7 +1076,7 @@
 			var a = r.analysis;
 			var s = r.signals || {};
 			var yes = function ( v ) {
-				return v ? '✓' : '✗';
+				return SL.yes( !! v, 15 );
 			};
 			SL.clear( m.body );
 			m.body.appendChild( h( 'div', { class: 'sl-stack' },
@@ -1063,11 +1085,11 @@
 				SL.listBlock( t( 'Missing signals' ), a.missing_signals, 'warn' ),
 				SL.listBlock( t( 'Recommendations' ), a.recommendations, 'info' ),
 				h( 'details', null, h( 'summary', { text: t( 'Site-wide trust pages' ) } ), h( 'ul', null,
-					h( 'li', { text: yes( s.https ) + ' HTTPS' } ),
-					h( 'li', { text: yes( s.about_page ) + ' ' + t( 'About page' ) } ),
-					h( 'li', { text: yes( s.contact_page ) + ' ' + t( 'Contact page' ) } ),
-					h( 'li', { text: yes( s.privacy_policy ) + ' ' + t( 'Privacy policy' ) } ),
-					h( 'li', { text: yes( s.returns_policy ) + ' ' + t( 'Returns / refund policy' ) } )
+					h( 'li', { class: 'sl-iconline' }, yes( s.https ), 'HTTPS' ),
+					h( 'li', { class: 'sl-iconline' }, yes( s.about_page ), t( 'About page' ) ),
+					h( 'li', { class: 'sl-iconline' }, yes( s.contact_page ), t( 'Contact page' ) ),
+					h( 'li', { class: 'sl-iconline' }, yes( s.privacy_policy ), t( 'Privacy policy' ) ),
+					h( 'li', { class: 'sl-iconline' }, yes( s.returns_policy ), t( 'Returns / refund policy' ) )
 				) )
 			) );
 		} ).catch( function ( e ) {

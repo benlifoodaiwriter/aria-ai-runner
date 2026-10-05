@@ -37,12 +37,22 @@
 			opts.icon ? h( 'span', { class: 'sl-kpi__ic is-' + ( opts.tone || 'blue' ) }, SL.icon( opts.icon, 22 ) ) : null,
 			h( 'div', { class: 'sl-kpi__label', text: label } ),
 			h( 'div', { class: 'sl-kpi__value', text: value } ),
-			delta === null || delta === undefined ? h( 'div', { class: 'sl-kpi__delta sl-muted', text: opts.sub || '' } ) : h( 'div', { class: 'sl-kpi__delta ' + ( good ? 'is-up' : delta === 0 ? '' : 'is-down' ), text: ( delta > 0 ? '▲ ' : delta < 0 ? '▼ ' : '' ) + ( opts.abs ? SL.num( Math.abs( delta ) ) : SL.pct( delta ) ) } ),
+			delta === null || delta === undefined ? h( 'div', { class: 'sl-kpi__delta sl-muted', text: opts.sub || '' } ) : h( 'div', { class: 'sl-kpi__delta ' + ( good ? 'is-up' : delta === 0 ? '' : 'is-down' ) }, delta ? SL.icon( delta > 0 ? 'arrow-up' : 'arrow-down', 13 ) : null, h( 'span', { text: opts.abs ? SL.num( Math.abs( delta ) ) : SL.pct( delta ) } ) ),
 			opts.spark ? h( 'div', { class: 'sl-kpi__spark' }, SL.charts.sparkline( opts.spark, { invert: opts.invert } ) ) : null
 		);
 	};
 	App.btn = function ( label, onClick, kind, attrs ) {
-		return h( 'button', Object.assign( { type: 'button', class: 'sl-btn' + ( kind ? ' sl-btn--' + kind : '' ), onClick: onClick }, attrs || {} ), label );
+		attrs = attrs || {};
+		// Icon-only buttons get an accessible name + tooltip.
+		if ( label && label.getAttribute && label.getAttribute( 'data-icon' ) && ! attrs[ 'aria-label' ] ) {
+			var names = { trash: t( 'Remove' ), x: t( 'Dismiss' ), refresh: t( 'Refresh' ), copy: t( 'Copy' ), edit: t( 'Edit' ) };
+			var n = names[ label.getAttribute( 'data-icon' ) ];
+			if ( n ) {
+				attrs = Object.assign( { 'aria-label': n, title: n }, attrs );
+			}
+			kind = kind ? kind + ' sl-btn--icon' : 'icon';
+		}
+		return h( 'button', Object.assign( { type: 'button', class: 'sl-btn' + ( kind ? ' sl-btn--' + kind : '' ), onClick: onClick }, attrs ), label );
 	};
 	/** Async button: disables itself while the promise runs. */
 	App.abtn = function ( label, fn, kind ) {
@@ -169,7 +179,9 @@
 	App.cap = function ( c ) {
 		return App.state.boot && App.state.boot.caps && App.state.boot.caps[ c ];
 	};
-	App.priorityIcon = { critical: '🔴', high: '🟠', medium: '🟡', low: '🟢' };
+	App.priorityDot = function ( p ) {
+		return SL.dot( p );
+	};
 
 	/** Handle the result of executing a recommendation / generic AI action. */
 	App.handleResult = function ( res, refresh ) {
@@ -250,7 +262,7 @@
 
 	App.recommendationRow = function ( r, refresh ) {
 		return h( 'div', { class: 'sl-rec sl-rec--' + r.priority },
-			h( 'div', { class: 'sl-rec__icon', 'aria-hidden': 'true' }, App.priorityIcon[ r.priority ] || '•' ),
+			h( 'div', { class: 'sl-rec__icon', 'aria-hidden': 'true' }, SL.dot( r.priority ) ),
 			h( 'div', { class: 'sl-rec__main' },
 				h( 'div', { class: 'sl-rec__title', text: r.title } ),
 				h( 'div', { class: 'sl-rec__reason', text: r.reason } ),
@@ -265,10 +277,10 @@
 				App.btn( t( 'Why?' ), function () {
 					SL.why( r.title, SL.api( 'recommendations/' + r.id + '/why' ) );
 				} ),
-				App.cap( 'apply' ) ? App.btn( '✓', function () {
+				App.cap( 'apply' ) ? App.btn( SL.icon( 'check', 17 ), function () {
 					SL.api( 'recommendations/' + r.id + '/status', { body: { status: 'done' } } ).then( refresh ).catch( SL.fail );
 				}, 'ghost', { title: t( 'Mark as done' ), 'aria-label': t( 'Mark as done' ) } ) : null,
-				App.cap( 'apply' ) ? App.btn( '✕', function () {
+				App.cap( 'apply' ) ? App.btn( SL.icon( 'x', 17 ), function () {
 					SL.api( 'recommendations/' + r.id + '/status', { body: { status: 'dismissed' } } ).then( refresh ).catch( SL.fail );
 				}, 'ghost', { title: t( 'Dismiss' ), 'aria-label': t( 'Dismiss' ) } ) : null
 			)
@@ -498,7 +510,7 @@
 
 			var counts = dsh.action.counts;
 			var ac = h( 'div', { class: 'sl-actioncounts' }, [ [ 'critical', t( 'Critical issues' ) ], [ 'high', t( 'High priority opportunities' ) ], [ 'medium', t( 'Optimization opportunities' ) ], [ 'low', t( 'Improvements' ) ] ].map( function ( x ) {
-				return h( 'a', { href: '#/actions?priority=' + x[ 0 ], class: 'sl-actioncount sl-actioncount--' + x[ 0 ] }, h( 'span', { class: 'sl-actioncount__n', text: App.priorityIcon[ x[ 0 ] ] + ' ' + SL.num( counts[ x[ 0 ] ], 0 ) } ), h( 'span', { text: x[ 1 ] } ) );
+				return h( 'a', { href: '#/actions?priority=' + x[ 0 ], class: 'sl-actioncount sl-actioncount--' + x[ 0 ] }, h( 'span', { class: 'sl-actioncount__n' }, SL.dot( x[ 0 ] ), h( 'span', { text: SL.num( counts[ x[ 0 ] ], 0 ) } ) ), h( 'span', { text: x[ 1 ] } ) );
 			} ) );
 			body.appendChild( App.card( t( 'AI Action Center' ), [ ac, h( 'div', { class: 'sl-recs' }, dsh.action.today.slice( 0, 5 ).map( function ( r ) {
 				return App.recommendationRow( r, function () {
@@ -551,7 +563,7 @@
 			[ dsh.competitors.length > 0, t( 'Add competitors' ), t( 'Monitor competitor content and discover gaps.' ), 'competitors' ],
 		];
 		return App.card( t( 'Get started' ), h( 'ol', { class: 'sl-onboarding' }, steps.map( function ( s ) {
-			return h( 'li', { class: s[ 0 ] ? 'is-done' : '' }, h( 'span', { class: 'sl-onboarding__check', 'aria-hidden': 'true' }, s[ 0 ] ? '✓' : '' ), h( 'div', null, h( 'strong', { text: s[ 1 ] } ), h( 'p', { class: 'sl-muted', text: s[ 2 ] } ) ), s[ 0 ] ? null : App.btn( t( 'Start' ), function () {
+			return h( 'li', { class: s[ 0 ] ? 'is-done' : '' }, h( 'span', { class: 'sl-onboarding__check', 'aria-hidden': 'true' }, s[ 0 ] ? SL.icon( 'check', 15 ) : null ), h( 'div', null, h( 'strong', { text: s[ 1 ] } ), h( 'p', { class: 'sl-muted', text: s[ 2 ] } ) ), s[ 0 ] ? null : App.btn( t( 'Start' ), function () {
 				App.go( s[ 3 ] );
 			}, 'primary' ) );
 		} ) ), { class: 'sl-card--onboarding' } );
@@ -572,15 +584,15 @@
 				h( 'h4', { text: b.headline } ),
 				h( 'p', { text: b.summary } ),
 				h( 'ul', { class: 'sl-highlights' }, ( b.highlights || [] ).slice( 0, 6 ).map( function ( x ) {
-					var icon = { win: '📈', loss: '📉', risk: '⚠️', info: 'ℹ️' }[ x.type ] || '•';
-					return h( 'li', null, h( 'span', { 'aria-hidden': 'true' }, icon + ' ' ), h( 'strong', { text: x.title } ), x.detail ? h( 'div', { class: 'sl-muted sl-small', text: x.detail } ) : null );
+					var icon = { win: 'trending', loss: 'trending-down', risk: 'alert', info: 'info' }[ x.type ] || 'info';
+					return h( 'li', { class: 'sl-highlight sl-highlight--' + ( x.type || 'info' ) }, SL.icon( icon, 17 ), h( 'strong', { text: x.title } ), x.detail ? h( 'div', { class: 'sl-muted sl-small', text: x.detail } ) : null );
 				} ) ),
 				b.actions && b.actions.length ? h( 'div', null, h( 'h4', { text: t( 'Do today' ) } ), h( 'ol', null, b.actions.map( function ( a ) {
-					return h( 'li', null, App.priorityIcon[ a.priority ] + ' ', h( 'strong', { text: a.title } ), h( 'div', { class: 'sl-muted sl-small', text: a.reason } ) );
+					return h( 'li', null, SL.dot( a.priority ), ' ', h( 'strong', { text: a.title } ), h( 'div', { class: 'sl-muted sl-small', text: a.reason } ) );
 				} ) ) ) : null
 			);
 		}
-		return App.card( '☀️ ' + t( "Today's SEO Briefing" ), body );
+		return App.card( t( "Today's SEO Briefing" ), body, { icon: 'sun' } );
 	};
 
 	/* ================================================================ AI Action Center */
@@ -601,7 +613,7 @@
 					return h( 'button', { type: 'button', class: 'sl-actioncount sl-actioncount--' + ( x[ 0 ] || 'all' ) + ( filter === x[ 0 ] ? ' is-active' : '' ), onClick: function () {
 						filter = x[ 0 ];
 						load();
-					} }, h( 'span', { class: 'sl-actioncount__n', text: ( App.priorityIcon[ x[ 0 ] ] || '∑' ) + ' ' + SL.num( n, 0 ) } ), h( 'span', { text: x[ 1 ] } ) );
+					} }, h( 'span', { class: 'sl-actioncount__n' }, x[ 0 ] ? SL.dot( x[ 0 ] ) : SL.icon( 'layers', 18 ), h( 'span', { text: SL.num( n, 0 ) } ) ), h( 'span', { text: x[ 1 ] } ) );
 				} ) ) );
 				if ( r[ 0 ].pending_changes ) {
 					body.appendChild( h( 'div', { class: 'sl-alert sl-alert--info' }, t( '%s AI changes are waiting for your approval.', r[ 0 ].pending_changes ), ' ', App.link( t( 'Review now' ), 'changes' ) ) );
@@ -662,7 +674,7 @@
 				bubble( 'assistant', r.answer, r );
 			} ).catch( function ( e ) {
 				thinking.remove();
-				bubble( 'assistant', '⚠️ ' + e.message );
+				bubble( 'assistant', e.message );
 			} ).then( function () {
 				send.disabled = false;
 			} );

@@ -63,7 +63,7 @@
 			var box = h( 'div' );
 			App.load( box, SL.api( 'doctor' ), function ( r ) {
 				box.appendChild( h( 'div', { class: 'sl-actioncounts' }, [ 'critical', 'high', 'medium', 'low' ].map( function ( p ) {
-					return h( 'div', { class: 'sl-actioncount sl-actioncount--' + p }, h( 'span', { class: 'sl-actioncount__n', text: App.priorityIcon[ p ] + ' ' + r.counts[ p ] } ), h( 'span', { text: t( p.charAt( 0 ).toUpperCase() + p.slice( 1 ) ) } ) );
+					return h( 'div', { class: 'sl-actioncount sl-actioncount--' + p }, h( 'span', { class: 'sl-actioncount__n' }, SL.dot( p ), h( 'span', { text: SL.num( r.counts[ p ], 0 ) } ) ), h( 'span', { text: t( p.charAt( 0 ).toUpperCase() + p.slice( 1 ) ) } ) );
 				} ) ) );
 				if ( ! r.diagnoses.length ) {
 					box.appendChild( SL.empty( t( 'Your site looks healthy' ), t( 'No open diagnoses. Keep monitoring with scheduled audits.' ) ) );
@@ -71,7 +71,7 @@
 				}
 				r.diagnoses.forEach( function ( dg ) {
 					box.appendChild( h( 'article', { class: 'sl-diag sl-diag--' + dg.priority },
-						h( 'header', { class: 'sl-diag__head' }, h( 'span', { 'aria-hidden': 'true' }, App.priorityIcon[ dg.priority ] || '•' ), h( 'h3', { text: dg.title } ), dg.auto_fixable ? SL.badge( t( 'AI can fix' ), 'brand' ) : SL.badge( t( 'Manual fix' ) ) ),
+						h( 'header', { class: 'sl-diag__head' }, SL.dot( dg.priority ), h( 'h3', { text: dg.title } ), dg.auto_fixable ? SL.badge( t( 'AI can fix' ), 'brand' ) : SL.badge( t( 'Manual fix' ) ) ),
 						h( 'dl', { class: 'sl-diag__grid' },
 							h( 'dt', { text: t( 'Why is it a problem?' ) } ), h( 'dd', { text: dg.why } ),
 							h( 'dt', { text: t( 'Likely impact' ) } ), h( 'dd', { text: dg.impact } ),
@@ -137,7 +137,7 @@
 					f.page = 1;
 					load();
 				} ),
-				f.check_code ? App.btn( '✕ ' + f.check_code, function () {
+				f.check_code ? App.btn( [ SL.icon( 'x', 14 ), h( 'span', { text: f.check_code } ) ], function () {
 					f.check_code = '';
 					load();
 				}, 'sm' ) : null
@@ -216,7 +216,7 @@
 							return SL.badge( String( u.status_code ), +u.status_code === 200 ? 'good' : +u.status_code >= 400 ? 'bad' : 'warn' );
 						} },
 						{ label: t( 'Indexable' ), render: function ( u ) {
-							return +u.indexable ? '✓' : '✕';
+							return SL.yes( +u.indexable === 1 );
 						} },
 						{ label: t( 'Words' ), render: function ( u ) {
 							return SL.num( u.word_count, 0 );
@@ -229,7 +229,7 @@
 							return SL.num( u.response_ms, 0 ) + 'ms';
 						} },
 						{ label: t( 'Sitemap' ), render: function ( u ) {
-							return +u.in_sitemap ? '✓' : '';
+							return +u.in_sitemap ? SL.yes( true ) : '';
 						} },
 					], r.items ) );
 					SL.append( list, App.pager( r.total, f.page, f.per_page, function ( p ) {
@@ -553,7 +553,7 @@
 						} },
 					], r.position_opportunities, { empty: t( 'No position opportunities' ) } ) ] ) );
 				} else if ( which === 'movers' ) {
-					box.appendChild( h( 'div', { class: 'sl-grid-2' }, App.card( '📈 ' + t( 'Winners' ) + ' — ' + t( 'Pages' ), App.table( gscCols( 'page' ).slice( 0, 3 ), r.pages.winners ) ), App.card( '📉 ' + t( 'Losers' ) + ' — ' + t( 'Pages' ), App.table( gscCols( 'page' ).slice( 0, 3 ), r.pages.losers ) ), App.card( '📈 ' + t( 'Winners' ) + ' — ' + t( 'Queries' ), App.table( gscCols( 'query' ).slice( 0, 3 ), r.queries.winners ) ), App.card( '📉 ' + t( 'Losers' ) + ' — ' + t( 'Queries' ), App.table( gscCols( 'query' ).slice( 0, 3 ), r.queries.losers ) ) ) );
+					box.appendChild( h( 'div', { class: 'sl-grid-2' }, App.card( t( 'Winners' ) + ' — ' + t( 'Pages' ), App.table( gscCols( 'page' ).slice( 0, 3 ), r.pages.winners ), { icon: 'trending' } ), App.card( t( 'Losers' ) + ' — ' + t( 'Pages' ), App.table( gscCols( 'page' ).slice( 0, 3 ), r.pages.losers ), { icon: 'trending-down' } ), App.card( '📈 ' + t( 'Winners' ) + ' — ' + t( 'Queries' ), App.table( gscCols( 'query' ).slice( 0, 3 ), r.queries.winners ) ), App.card( '📉 ' + t( 'Losers' ) + ' — ' + t( 'Queries' ), App.table( gscCols( 'query' ).slice( 0, 3 ), r.queries.losers ) ) ) );
 				} else if ( which === 'keywords' ) {
 					var cols = [ { label: t( 'Query' ), render: function ( k ) {
 						return h( 'span', { dir: 'auto', text: k.query } );
@@ -717,7 +717,7 @@
 				box.appendChild( h( 'div', { class: 'sl-alert sl-alert--info' }, t( 'Add a SERP API key (SerpApi) in Settings → Crawler & audits to enable live SERP analysis.' ), ' ', App.link( t( 'Settings' ), 'settings?tab=crawler' ) ) );
 				return box;
 			}
-			box.appendChild( h( 'div', { class: 'sl-toolbar' }, kw, market, App.cap( 'ai' ) ? App.abtn( '✨ ' + t( 'Analyze SERP' ), function () {
+			box.appendChild( h( 'div', { class: 'sl-toolbar' }, kw, market, App.cap( 'ai' ) ? App.abtn( SL.il( 'sparkles', t( 'Analyze SERP' ) ), function () {
 				if ( ! kw.value.trim() ) {
 					SL.toast( t( 'Enter a keyword.' ), 'error' );
 					return null;
@@ -743,7 +743,7 @@
 			var out = h( 'div' );
 			box.appendChild( seeds );
 			box.appendChild( market );
-			box.appendChild( App.cap( 'ai' ) ? App.abtn( '✨ ' + t( 'Research keywords' ), function () {
+			box.appendChild( App.cap( 'ai' ) ? App.abtn( SL.il( 'sparkles', t( 'Research keywords' ) ), function () {
 				SL.clear( out );
 				out.appendChild( SL.spinner( t( 'Expanding seeds with AI and your Search Console data…' ) ) );
 				return SL.api( 'keywords/research', { body: { seeds: seeds.value.split( /\n|,|،/ ).map( function ( x ) {
@@ -892,7 +892,7 @@
 					}
 					list.appendChild( App.table( [
 						{ label: t( 'Title' ), render: function ( c ) {
-							return h( 'div', null, h( 'a', { href: c.edit_link, class: 'sl-link', dir: 'auto' }, c.title || t( '(no title)' ) ), h( 'div', { class: 'sl-muted sl-small', text: c.subtype + ' · ' + t( c.status ) + ( c.focus_keyword ? ' · 🔑 ' + c.focus_keyword : '' ) } ) );
+							return h( 'div', null, h( 'a', { href: c.edit_link, class: 'sl-link', dir: 'auto' }, c.title || t( '(no title)' ) ), h( 'div', { class: 'sl-muted sl-small', text: c.subtype + ' · ' + t( c.status ) + ( c.focus_keyword ? ' · ' + t( 'Focus keyword' ) + ': ' + c.focus_keyword : '' ) } ) );
 						} },
 						{ label: t( 'Score' ), render: function ( c ) {
 							return SL.scoreRing( c.score, 40 );
@@ -901,14 +901,14 @@
 							return SL.num( c.words, 0 );
 						} },
 						{ label: t( 'Meta' ), render: function ( c ) {
-							return h( 'div', { class: 'sl-small' }, c.meta_title ? '✓ ' + t( 'title' ) : '✕ ' + t( 'title' ), ' · ', c.meta_description ? '✓ ' + t( 'description' ) : '✕ ' + t( 'description' ) );
+							return h( 'div', { class: 'sl-small' }, SL.yes( !! c.meta_title, 14 ), ' ' + t( 'title' ) + ' · ', SL.yes( !! c.meta_description, 14 ), ' ' + t( 'description' ) );
 						} },
 						{ label: t( 'Issues' ), render: function ( c ) {
-							return c.issues.length ? SL.chips( c.issues.slice( 0, 4 ), 'warn' ) : '✓';
+							return c.issues.length ? SL.chips( c.issues.slice( 0, 4 ), 'warn' ) : SL.yes( true );
 						} },
 						{ label: '', render: function ( c ) {
 							return h( 'div', { class: 'sl-row' },
-								App.cap( 'ai' ) ? App.btn( '✨ ' + t( 'Optimize' ), function () {
+								App.cap( 'ai' ) ? App.btn( SL.il( 'sparkles', t( 'Optimize' ) ), function () {
 									SL.optimizer( { object_type: c.object_type, object_id: c.id, field: c.object_type === 'term' ? 'term_description' : 'post_content', focus_keyword: c.focus_keyword } );
 								}, 'primary' ) : null,
 								App.cap( 'ai' ) ? App.btn( t( 'Meta' ), function () {
@@ -938,7 +938,7 @@
 			var focus = h( 'input', { class: 'sl-input', placeholder: t( 'Focus (optional): topic, product line, season…' ) } );
 			var list = h( 'div' );
 			if ( App.cap( 'ai' ) ) {
-				box.appendChild( h( 'div', { class: 'sl-toolbar' }, cadence, items, focus, App.abtn( '✨ ' + t( 'Generate calendar' ), function () {
+				box.appendChild( h( 'div', { class: 'sl-toolbar' }, cadence, items, focus, App.abtn( SL.il( 'sparkles', t( 'Generate calendar' ) ), function () {
 					return SL.api( 'planner/generate', { body: { cadence: cadence.value, items: items.value, focus: focus.value } } ).then( function ( r ) {
 						SL.toast( t( '%s items planned.', r.created ), 'success' );
 						load();
@@ -1006,10 +1006,10 @@
 				}
 				rows.forEach( function ( c ) {
 					list.appendChild( App.card( c.name + ' · ' + t( 'coverage' ) + ' ' + c.coverage + '%', h( 'div', { class: 'sl-cluster-tree' },
-						h( 'div', { class: 'sl-cluster-tree__pillar' }, '🏛 ', t( 'Pillar page' ), ': ', c.pillar_url ? App.ext( c.pillar_url ) : '—' ),
+						h( 'div', { class: 'sl-cluster-tree__pillar sl-iconline' }, SL.icon( 'landmark', 16 ), t( 'Pillar page' ), ': ', c.pillar_url ? App.ext( c.pillar_url ) : '—' ),
 						h( 'ul', null, ( c.members || [] ).map( function ( m ) {
 							var unlinked = ( c.unlinked_members || [] ).indexOf( m.url ) > -1;
-							return h( 'li', null, '↳ ', App.ext( m.url, m.title ), unlinked ? SL.badge( t( 'not linked with pillar' ), 'warn' ) : null );
+							return h( 'li', { class: 'sl-iconline' }, SL.icon( 'corner', 14 ), App.ext( m.url, m.title ), unlinked ? SL.badge( t( 'not linked with pillar' ), 'warn' ) : null );
 						} ) ),
 						c.gaps && c.gaps.length ? h( 'div', null, h( 'h4', { text: t( 'Topic gaps' ) } ), h( 'ul', null, c.gaps.map( function ( g ) {
 							return h( 'li', null, h( 'strong', { text: g.topic } ), ' — ', h( 'span', { class: 'sl-muted', text: g.keyword + ' · ' + t( g.intent || '' ) } ) );
@@ -1108,25 +1108,25 @@
 						return cb;
 					} },
 					{ label: t( 'Product' ), render: function ( p ) {
-						return h( 'div', { class: 'sl-row' }, p.thumb ? h( 'img', { src: p.thumb, alt: '', class: 'sl-thumb' } ) : null, h( 'div', null, App.ext( p.url, p.name ), h( 'div', { class: 'sl-muted sl-small', text: ( p.focus_keyword ? '🔑 ' + p.focus_keyword : t( 'no focus keyword' ) ) + ' · ' + t( p.stock || '' ) } ) ) );
+						return h( 'div', { class: 'sl-row' }, p.thumb ? h( 'img', { src: p.thumb, alt: '', class: 'sl-thumb' } ) : null, h( 'div', null, App.ext( p.url, p.name ), h( 'div', { class: 'sl-muted sl-small', text: ( p.focus_keyword ? t( 'Focus keyword' ) + ': ' + p.focus_keyword : t( 'no focus keyword' ) ) + ' · ' + t( p.stock || '' ) } ) ) );
 					} },
 					{ label: t( 'Score' ), render: function ( p ) {
 						return SL.scoreRing( p.score, 40 );
 					} },
 					{ label: t( 'Short desc.' ), render: function ( p ) {
-						return p.has_short ? '✓' : SL.badge( t( 'missing' ), 'bad' );
+						return p.has_short ? SL.yes( true ) : SL.badge( t( 'missing' ), 'bad' );
 					} },
 					{ label: t( 'Description words' ), render: function ( p ) {
 						return SL.num( p.desc_words, 0 );
 					} },
 					{ label: t( 'Meta' ), render: function ( p ) {
-						return p.has_meta ? '✓' : SL.badge( t( 'missing' ), 'warn' );
+						return p.has_meta ? SL.yes( true ) : SL.badge( t( 'missing' ), 'warn' );
 					} },
 					{ label: t( 'Images without ALT' ), render: function ( p ) {
-						return p.images_no_alt ? SL.badge( p.images_no_alt + '/' + p.images, 'warn' ) : '✓';
+						return p.images_no_alt ? SL.badge( p.images_no_alt + '/' + p.images, 'warn' ) : SL.yes( true );
 					} },
 					{ label: '', render: function ( p ) {
-						return h( 'div', { class: 'sl-row' }, App.cap( 'ai' ) ? App.abtn( '✨ ' + t( 'AI Product Optimizer' ), function () {
+						return h( 'div', { class: 'sl-row' }, App.cap( 'ai' ) ? App.abtn( SL.il( 'sparkles', t( 'AI Product Optimizer' ) ), function () {
 							var m = SL.modal( { title: t( 'AI Product Optimizer' ) } );
 							m.body.appendChild( SL.spinner( t( 'Analyzing product data, queries and competitors…' ) ) );
 							return SL.api( 'products/' + p.id + '/optimize', { method: 'POST' } ).then( function ( res ) {
@@ -1181,7 +1181,7 @@
 						cb.checked = true;
 						selected[ cb.value ] = true;
 					} );
-				}, 'sm' ), App.cap( 'ai' ) ? App.abtn( '✨ ' + t( 'Generate ALT for selected' ), function () {
+				}, 'sm' ), App.cap( 'ai' ) ? App.abtn( SL.il( 'sparkles', t( 'Generate ALT for selected' ) ), function () {
 					var ids = Object.keys( selected ).filter( function ( k ) {
 						return selected[ k ];
 					} );
@@ -1221,7 +1221,7 @@
 					var cb = h( 'input', { type: 'checkbox', value: img.attachment_id, 'aria-label': t( 'Select' ), onChange: function () {
 						selected[ img.attachment_id ] = cb.checked;
 					} } );
-					return h( 'figure', { class: 'sl-img' }, h( 'label', { class: 'sl-img__sel' }, cb ), img.thumb ? h( 'img', { src: img.thumb, alt: img.alt || '', loading: 'lazy' } ) : h( 'div', { class: 'sl-img__ph' } ), h( 'figcaption', null, h( 'div', { class: 'sl-small sl-clip', dir: 'ltr', text: img.filename } ), h( 'div', { class: 'sl-small', dir: 'auto', text: img.alt ? 'ALT: ' + img.alt : t( 'No ALT' ) } ), img.parent_title ? h( 'div', { class: 'sl-muted sl-small sl-clip', dir: 'auto', text: '↳ ' + img.parent_title } ) : null, SL.chips( ( img.issues || '' ).split( ',' ).filter( Boolean ).map( function ( i ) {
+					return h( 'figure', { class: 'sl-img' }, h( 'label', { class: 'sl-img__sel' }, cb ), img.thumb ? h( 'img', { src: img.thumb, alt: img.alt || '', loading: 'lazy' } ) : h( 'div', { class: 'sl-img__ph' } ), h( 'figcaption', null, h( 'div', { class: 'sl-small sl-clip', dir: 'ltr', text: img.filename } ), h( 'div', { class: 'sl-small', dir: 'auto', text: img.alt ? 'ALT: ' + img.alt : t( 'No ALT' ) } ), img.parent_title ? h( 'div', { class: 'sl-muted sl-small sl-clip sl-iconline' }, SL.icon( 'corner', 13 ), h( 'span', { dir: 'auto', text: img.parent_title } ) ) : null, SL.chips( ( img.issues || '' ).split( ',' ).filter( Boolean ).map( function ( i ) {
 						return labels[ i ] || i;
 					} ), 'warn' ) ) );
 				} ) ) );
@@ -1267,7 +1267,7 @@
 							return SL.api( 'links/' + l.id + '/apply', { method: 'POST' } ).then( function ( res ) {
 								SL.preview( res.change_id, load );
 							} );
-						}, 'primary' ) : null, App.cap( 'apply' ) ? App.btn( '✕', function () {
+						}, 'primary' ) : null, App.cap( 'apply' ) ? App.btn( SL.icon( 'x', 16 ), function () {
 							SL.api( 'links/' + l.id + '/dismiss', { method: 'POST' } ).then( load ).catch( SL.fail );
 						}, 'ghost', { 'aria-label': t( 'Dismiss' ) } ) : null );
 					} },

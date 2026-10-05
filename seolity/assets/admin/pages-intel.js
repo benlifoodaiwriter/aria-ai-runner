@@ -50,7 +50,7 @@
 							} ) ) )
 						),
 						ai.actions && ai.actions.length ? h( 'div', null, h( 'h4', { text: t( 'Recommended actions' ) } ), h( 'ol', null, ai.actions.map( function ( a ) {
-							return h( 'li', null, App.priorityIcon[ a.priority ] + ' ', h( 'strong', { text: a.title } ), h( 'div', { class: 'sl-muted sl-small', text: a.reason } ) );
+							return h( 'li', null, SL.dot( a.priority ), ' ', h( 'strong', { text: a.title } ), h( 'div', { class: 'sl-muted sl-small', text: a.reason } ) );
 						} ) ) ) : null
 					) : h( 'p', { class: 'sl-muted', text: t( 'AI summary will appear after the analysis finishes (requires an AI provider).' ) } ),
 					stats.sections ? h( 'div', null, h( 'h4', { text: t( 'Content sections' ) } ), SL.charts.bars( Object.keys( stats.sections ).slice( 0, 8 ).map( function ( k ) {
@@ -73,7 +73,7 @@
 							SL.toast( t( 'Analysis queued.' ) );
 						} );
 					}, 'sm' ) : null,
-					App.cap( 'manage' ) ? App.btn( '🗑', function () {
+					App.cap( 'manage' ) ? App.btn( SL.icon( 'trash', 16 ), function () {
 						SL.confirm( t( 'Remove this competitor and its data?' ), function () {
 							SL.api( 'competitors/' + c.id, { method: 'DELETE' } ).then( function () {
 								App.pages.competitors( SL.clear( v ) );
@@ -150,8 +150,8 @@
 			App.load( body, SL.api( 'experiments' ), function ( r ) {
 				var s = r.stats;
 				body.appendChild( h( 'div', { class: 'sl-kpis' }, App.kpi( t( 'Running' ), SL.num( s.running || 0, 0 ) ), App.kpi( t( 'Positive' ), SL.num( s.positive || 0, 0 ) ), App.kpi( t( 'Negative' ), SL.num( s.negative || 0, 0 ) ), App.kpi( t( 'Neutral' ), SL.num( s.neutral || 0, 0 ) ), App.kpi( t( 'Inconclusive' ), SL.num( s.inconclusive || 0, 0 ) ) ) );
-				body.appendChild( App.card( '🧠 ' + t( 'Site-Specific SEO Intelligence' ), r.insights.length ? h( 'ul', { class: 'sl-insights' }, r.insights.map( function ( i ) {
-					return h( 'li', null, h( 'span', { class: i.avg_delta > 0 ? 'is-up' : 'is-down', text: ( i.avg_delta > 0 ? '▲ ' : '▼ ' ) } ), i.text, ' ', SL.badge( t( 'win rate' ) + ' ' + i.win_rate + '%' ) );
+				body.appendChild( App.card( t( 'Site-Specific SEO Intelligence' ), r.insights.length ? h( 'ul', { class: 'sl-insights' }, r.insights.map( function ( i ) {
+					return h( 'li', null, h( 'span', { class: i.avg_delta > 0 ? 'is-up' : 'is-down' }, SL.icon( i.avg_delta > 0 ? 'arrow-up' : 'arrow-down', 14 ) ), ' ', i.text, ' ', SL.badge( t( 'win rate' ) + ' ' + i.win_rate + '%' ) );
 				} ) ) : SL.empty( t( 'Learning in progress' ), t( 'After a few experiments are evaluated, SEOlity learns which changes work best on your site and uses it in every AI suggestion.' ) ) ) );
 				body.appendChild( App.table( [
 					{ label: t( 'Experiment' ), render: function ( e ) {
@@ -242,7 +242,7 @@
 			App.load( list, SL.api( 'redirects', { query: f } ), function ( r ) {
 				if ( r.chains.length ) {
 					list.appendChild( h( 'div', { class: 'sl-alert sl-alert--warn' }, h( 'strong', { text: t( '%s redirect chains/loops detected.', r.chains.length ) } ), h( 'ul', null, r.chains.slice( 0, 5 ).map( function ( c ) {
-						return h( 'li', { dir: 'ltr', text: ( c.loop ? '⟳ ' : '' ) + c.chain.join( ' → ' ) } );
+						return h( 'li', { dir: 'ltr', class: 'sl-iconline' }, c.loop ? SL.icon( 'refresh', 14 ) : null, h( 'span', { text: c.chain.join( ' → ' ) } ) );
 					} ) ), App.cap( 'manage' ) ? App.abtn( t( 'Flatten chains' ), function () {
 						return SL.api( 'redirects/fix-chains', { method: 'POST' } ).then( function ( x ) {
 							SL.toast( t( '%s redirect chains fixed.', x.fixed ), 'success' );
@@ -277,7 +277,7 @@
 						return cb;
 					} },
 					{ label: '', render: function ( x ) {
-						return App.cap( 'manage' ) ? App.btn( '🗑', function () {
+						return App.cap( 'manage' ) ? App.btn( SL.icon( 'trash', 16 ), function () {
 							SL.confirm( t( 'Delete this redirect?' ), function () {
 								SL.api( 'redirects/' + x.id, { method: 'DELETE' } ).then( load ).catch( SL.fail );
 							}, true );
@@ -380,7 +380,7 @@
 					return h( 'li', { text: e.message } );
 				} ) ) ) : null,
 				list( t( 'Opportunities' ), r.opportunities, 'info' ),
-				r.ai ? h( 'div', { class: 'sl-card sl-card--inset' }, h( 'h3', { text: '✨ ' + t( 'AI schema suggestions' ) } ),
+				r.ai ? h( 'div', { class: 'sl-card sl-card--inset' }, h( 'h3', { class: 'sl-iconline' }, SL.il( 'sparkles', t( 'AI schema suggestions' ), 17 ) ),
 					h( 'div', null, h( 'strong', { text: t( 'Eligible types' ) + ': ' } ), SL.chips( r.ai.eligible_types ) ),
 					list( t( 'Issues' ), r.ai.issues, 'warn' ),
 					list( t( 'Opportunities' ), r.ai.opportunities, 'info' ),
@@ -393,7 +393,7 @@
 			return SL.api( 'schema/check', { body: { url: url.value || C.homeUrl } } ).then( render );
 		}, 'primary' ) ];
 		if ( App.cap( 'ai' ) ) {
-			actions.push( App.abtn( '✨ ' + t( 'AI schema suggestions' ), function () {
+			actions.push( App.abtn( SL.il( 'sparkles', t( 'AI schema suggestions' ) ), function () {
 				return SL.api( 'schema/suggest', { body: { url: url.value || C.homeUrl } } ).then( render );
 			} ) );
 		}
@@ -478,7 +478,7 @@
 				} ) ), h( 'div', { class: 'sl-toolbar' }, testUrl, App.abtn( t( 'Test URL' ), function () {
 					return SL.api( 'robots/test', { body: { url: testUrl.value, content: ta.value } } ).then( function ( x ) {
 						SL.clear( testOut );
-						testOut.appendChild( SL.chips( [ 'Googlebot: ' + ( x.googlebot ? '✓ ' + t( 'allowed' ) : '✕ ' + t( 'blocked' ) ), 'Bingbot: ' + ( x.bingbot ? '✓' : '✕' ), '*: ' + ( x.any ? '✓' : '✕' ) ] ) );
+						testOut.appendChild( SL.chips( [ [ SL.yes( x.googlebot, 14 ), ' Googlebot: ' + ( x.googlebot ? t( 'allowed' ) : t( 'blocked' ) ) ], [ SL.yes( x.bingbot, 14 ), ' Bingbot' ], [ SL.yes( x.any, 14 ), ' *' ] ] ) );
 					} );
 				} ) ), testOut ) ),
 				h( 'div', null,
@@ -553,7 +553,7 @@
 				list.appendChild( h( 'div', { class: 'sl-alertitem' + ( a.status === 'new' ? ' is-new' : '' ) },
 					SL.priorityBadge( a.severity ),
 					h( 'div', { class: 'sl-alertitem__main' }, h( 'strong', { text: a.title } ), h( 'p', { class: 'sl-small', text: a.message } ), h( 'span', { class: 'sl-muted sl-small', text: SL.date( a.created_at ) + ' · ' + a.type } ) ),
-					h( 'div', { class: 'sl-row' }, a.data && a.data.url ? App.ext( a.data.url, t( 'Open' ) ) : null, App.btn( '✕', function () {
+					h( 'div', { class: 'sl-row' }, a.data && a.data.url ? App.ext( a.data.url, t( 'Open' ) ) : null, App.btn( SL.icon( 'x', 16 ), function () {
 						SL.api( 'alerts/' + a.id, { body: { status: 'dismissed' } } ).then( function () {
 							App.pages.alerts( SL.clear( v ) );
 						} ).catch( SL.fail );

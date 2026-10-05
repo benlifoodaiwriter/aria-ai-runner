@@ -1,6 +1,6 @@
 /**
  * SEOlity Gutenberg sidebar (no JSX / no build step: wp.element.createElement).
- * Adds "✨ Optimize with SEOlity AI" + live score + quick AI actions to the
+ * Adds "Optimize with SEOlity AI" + live score + quick AI actions to the
  * block editor's "more" menu and a dedicated sidebar.
  */
 ( function ( wp, w ) {
@@ -20,6 +20,11 @@
 	var t = SL.t;
 	if ( ! PluginSidebar ) {
 		return;
+	}
+
+	/** Line icon from the shared SEOlity set as a React element (sidebar + panel headers). */
+	function sparkIcon( name ) {
+		return el( 'svg', { width: 20, height: 20, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.75, strokeLinecap: 'round', strokeLinejoin: 'round', 'aria-hidden': true, focusable: false, dangerouslySetInnerHTML: { __html: SL.ICONS[ name || 'sparkles' ] } } );
 	}
 
 	function Score() {
@@ -63,8 +68,8 @@
 		var saved = ! wp.data.select( 'core/editor' ).isEditedPostNew();
 		return el( wp.element.Fragment, null,
 			el( PluginSidebarMoreMenuItem, { target: 'seolity-sidebar' }, 'SEOlity' ),
-			el( PluginSidebar, { name: 'seolity-sidebar', title: 'SEOlity', icon: 'superhero-alt' },
-				el( PanelBody, { title: '✨ ' + t( 'Optimize with SEOlity AI' ), initialOpen: true },
+			el( PluginSidebar, { name: 'seolity-sidebar', title: 'SEOlity', icon: sparkIcon() },
+				el( PanelBody, { title: t( 'Optimize with SEOlity AI' ), icon: sparkIcon(), initialOpen: true },
 					el( Button, { variant: 'primary', className: 'seolity-g-btn', onClick: function () {
 						SL.openOptimizer( 'post_content' );
 					} }, t( 'Optimize content' ) ),

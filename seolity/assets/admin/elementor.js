@@ -1,5 +1,5 @@
 /**
- * SEOlity ↔ Elementor bridge: a floating "✨ Optimize with SEOlity AI" button
+ * SEOlity ↔ Elementor bridge: a floating "Optimize with SEOlity AI" button
  * that optimizes the currently edited Text Editor / Heading widget through
  * Elementor's official command API ($e.run('document/elements/settings')).
  */
@@ -51,7 +51,7 @@
 				return;
 			}
 			SL.openOptimizer( 'custom', adapter( sel ) );
-		} }, '✨ ' + t( 'Optimize with SEOlity AI' ) );
+		} }, SL.icon( 'sparkles', 16 ), SL.h( 'span', { text: t( 'Optimize with SEOlity AI' ) } ) );
 		d.body.appendChild( b );
 	}
 

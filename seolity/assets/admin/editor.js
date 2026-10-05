@@ -426,7 +426,7 @@
 			return;
 		}
 		el._seolity = true;
-		var b = h( 'button', { type: 'button', class: 'button seolity-optimize-btn seolity-inline-btn', 'data-field': field }, '✨ ' + t( 'Optimize with SEOlity AI' ) );
+		var b = h( 'button', { type: 'button', class: 'button seolity-optimize-btn seolity-inline-btn', 'data-field': field }, SL.icon( 'sparkles', 16 ), h( 'span', { text: t( 'Optimize with SEOlity AI' ) } ) );
 		b._seolityAdapter = el.id && w.tinymce && w.tinymce.get( el.id ) ? Editors.classic( el.id ) : Editors.element( el );
 		el.parentNode.insertBefore( b, el.nextSibling );
 	}

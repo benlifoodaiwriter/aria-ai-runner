@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: SEOlity 1.0.0\n"
-"POT-Creation-Date: 2026-10-05 13:56+0000\n"
+"POT-Creation-Date: 2026-10-05 15:56+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1838,6 +1838,21 @@ msgstr ""
 msgid "SEOlity requires PHP 7.4 or newer."
 msgstr ""
 
+msgid "Remove"
+msgstr ""
+
+msgid "Dismiss"
+msgstr ""
+
+msgid "Refresh"
+msgstr ""
+
+msgid "Copy"
+msgstr ""
+
+msgid "Edit"
+msgstr ""
+
 msgid "Nothing here yet"
 msgstr ""
 
@@ -1901,9 +1916,6 @@ msgstr ""
 msgid "Mark as done"
 msgstr ""
 
-msgid "Dismiss"
-msgstr ""
-
 msgid "AI SEO Intelligence for WordPress"
 msgstr ""
 
@@ -1957,10 +1969,6 @@ msgid "Semi-automatic"
 msgstr ""
 
 msgid "Autonomous"
-msgstr ""
-
-#, php-format
-msgid "%s changes awaiting review"
 msgstr ""
 
 msgid "Google Search Console connected. Now choose a property."
@@ -2605,9 +2613,6 @@ msgstr ""
 msgid "Last run"
 msgstr ""
 
-msgid "Edit"
-msgstr ""
-
 msgid "Delete this rule?"
 msgstr ""
 
@@ -2740,9 +2745,6 @@ msgid "(saved)"
 msgstr ""
 
 msgid "Saved securely (encrypted)."
-msgstr ""
-
-msgid "Remove"
 msgstr ""
 
 msgid "Removed."
@@ -3621,9 +3623,6 @@ msgstr ""
 msgid "Authorized redirect URI"
 msgstr ""
 
-msgid "Copy"
-msgstr ""
-
 msgid "Copied."
 msgstr ""
 
@@ -4278,6 +4277,12 @@ msgstr ""
 
 #, php-format
 msgid "Your AI subscription is working on GitHub (%s)…"
+msgstr ""
+
+msgid "Yes"
+msgstr ""
+
+msgid "No"
 msgstr ""
 
 msgid "Something went wrong."

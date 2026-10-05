@@ -1,6 +1,6 @@
 <?php
 /**
- * "✨ Optimize with SEOlity AI" everywhere WordPress lets you edit content:
+ * "Optimize with SEOlity AI" everywhere WordPress lets you edit content:
  * Classic Editor (content + WooCommerce short description), Gutenberg sidebar,
  * Elementor panel, taxonomy terms (incl. product categories/tags), author bio,
  * ACF/custom textarea & WYSIWYG fields — plus an SEO meta box.
@@ -110,10 +110,11 @@ final class EditorIntegration {
 		}
 		$field = 'excerpt' === $editor_id ? 'post_excerpt' : ( 'content' === $editor_id ? 'post_content' : 'custom' );
 		printf(
-			'<button type="button" class="button seolity-optimize-btn" data-editor="%1$s" data-field="%2$s"><span aria-hidden="true">✨</span> %3$s</button>',
+			'<button type="button" class="button seolity-optimize-btn" data-editor="%1$s" data-field="%2$s">%4$s <span>%3$s</span></button>',
 			esc_attr( $editor_id ),
 			esc_attr( $field ),
-			esc_html__( 'Optimize with SEOlity AI', 'seolity' )
+			esc_html__( 'Optimize with SEOlity AI', 'seolity' ),
+			Icons::svg( 'sparkles' ) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static markup.
 		);
 	}
 
@@ -150,7 +151,7 @@ final class EditorIntegration {
 			<?php endif; ?>
 			<p class="seolity-box__actions">
 				<?php if ( $this->can() ) : ?>
-					<button type="button" class="button button-primary seolity-optimize-btn" data-field="post_content"><span aria-hidden="true">✨</span> <?php esc_html_e( 'Optimize content', 'seolity' ); ?></button>
+					<button type="button" class="button button-primary seolity-optimize-btn" data-field="post_content"><?php Icons::e( 'sparkles' ); ?> <?php esc_html_e( 'Optimize content', 'seolity' ); ?></button>
 					<button type="button" class="button seolity-meta-btn"><?php esc_html_e( 'AI title & description', 'seolity' ); ?></button>
 					<button type="button" class="button seolity-faq-btn"><?php esc_html_e( 'Generate FAQ', 'seolity' ); ?></button>
 					<button type="button" class="button seolity-links-btn"><?php esc_html_e( 'Internal links', 'seolity' ); ?></button>
@@ -199,7 +200,7 @@ final class EditorIntegration {
 			<th scope="row">SEOlity</th>
 			<td>
 				<?php if ( $this->can() ) : ?>
-					<p><button type="button" class="button button-primary seolity-optimize-btn" data-field="term_description" data-target="#description"><span aria-hidden="true">✨</span> <?php esc_html_e( 'Optimize with SEOlity AI', 'seolity' ); ?></button>
+					<p><button type="button" class="button button-primary seolity-optimize-btn" data-field="term_description" data-target="#description"><?php Icons::e( 'sparkles' ); ?> <?php esc_html_e( 'Optimize with SEOlity AI', 'seolity' ); ?></button>
 					<button type="button" class="button seolity-meta-btn"><?php esc_html_e( 'AI title & description', 'seolity' ); ?></button></p>
 				<?php endif; ?>
 				<p><label><?php esc_html_e( 'Focus keyword', 'seolity' ); ?><br><input type="text" name="seolity_focus_keyword" value="<?php echo esc_attr( $m->get_term( $term->term_id, 'focus_keyword' ) ); ?>"></label></p>

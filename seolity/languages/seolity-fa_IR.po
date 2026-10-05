@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: SEOlity 1.0.0\n"
-"POT-Creation-Date: 2026-10-05 13:56+0000\n"
+"POT-Creation-Date: 2026-10-05 15:56+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1839,6 +1839,21 @@ msgstr "%d محصول بسیار مشابه ممکن است برای کلمات 
 msgid "SEOlity requires PHP 7.4 or newer."
 msgstr "سئولیتی به PHP نسخه ۷٫۴ یا جدیدتر نیاز دارد."
 
+msgid "Remove"
+msgstr "حذف"
+
+msgid "Dismiss"
+msgstr "رد کردن"
+
+msgid "Refresh"
+msgstr "به‌روزرسانی"
+
+msgid "Copy"
+msgstr "کپی"
+
+msgid "Edit"
+msgstr "ویرایش"
+
 msgid "Nothing here yet"
 msgstr "هنوز چیزی اینجا نیست"
 
@@ -1902,9 +1917,6 @@ msgstr "چرا؟"
 msgid "Mark as done"
 msgstr "علامت‌گذاری به‌عنوان انجام‌شده"
 
-msgid "Dismiss"
-msgstr "رد کردن"
-
 msgid "AI SEO Intelligence for WordPress"
 msgstr "هوش سئوی مبتنی بر هوش مصنوعی برای وردپرس"
 
@@ -1959,10 +1971,6 @@ msgstr "نیمه‌خودکار"
 
 msgid "Autonomous"
 msgstr "خودمختار"
-
-#, php-format
-msgid "%s changes awaiting review"
-msgstr "%s تغییر در انتظار بررسی"
 
 msgid "Google Search Console connected. Now choose a property."
 msgstr "گوگل سرچ کنسول متصل شد. حالا یک پراپرتی انتخاب کنید."
@@ -2606,9 +2614,6 @@ msgstr "اجراها"
 msgid "Last run"
 msgstr "آخرین اجرا"
 
-msgid "Edit"
-msgstr "ویرایش"
-
 msgid "Delete this rule?"
 msgstr "این قانون حذف شود؟"
 
@@ -2742,9 +2747,6 @@ msgstr "(ذخیره‌شده)"
 
 msgid "Saved securely (encrypted)."
 msgstr "به‌صورت امن (رمزنگاری‌شده) ذخیره شد."
-
-msgid "Remove"
-msgstr "حذف"
 
 msgid "Removed."
 msgstr "حذف شد."
@@ -3622,9 +3624,6 @@ msgstr "Client ID و Client Secret را اینجا وارد کنید."
 msgid "Authorized redirect URI"
 msgstr "آدرس بازگشت مجاز (Redirect URI)"
 
-msgid "Copy"
-msgstr "کپی"
-
 msgid "Copied."
 msgstr "کپی شد."
 
@@ -4281,6 +4280,12 @@ msgstr "پرلینک‌ترین صفحات"
 msgid "Your AI subscription is working on GitHub (%s)…"
 msgstr "اشتراک هوش مصنوعی شما روی گیت‌هاب در حال کار است (%s)…"
 
+msgid "Yes"
+msgstr "بله"
+
+msgid "No"
+msgstr "خیر"
+
 msgid "Something went wrong."
 msgstr "مشکلی پیش آمد."
 
@@ -4549,7 +4554,7 @@ msgid "Product tags"
 msgstr "برچسب‌های محصول"
 
 msgid "robots.txt"
-msgstr ""
+msgstr "robots.txt"
 
 msgid "Approval mode"
 msgstr "حالت تأیید"
