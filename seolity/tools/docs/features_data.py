@@ -612,6 +612,9 @@ External worker mode | Offload jobs to a separate worker service | Enterprise sc
 cat('UI/UX, Accessibility & Internationalization', intro='A modern SaaS-style interface that is RTL-native and translatable.',
     deps='—', ui='All SEOlity screens', auto='Auto', risk='None', db='—', api='—', features='''
 Single-page admin app | Fast hash-routed SPA (23 sections) without a build step | Smooth, app-like experience | — | UI
+ARIAGH visual language | Same top bar, grouped icon sidebar, icon cards, toggle rows, save bar and palette as ARIAGH AI Writer | One familiar interface across your plugins | — | Consistent UI
+Line icon set | 80+ 24px stroke icons for navigation, cards and stats | Faster scanning | Icon name | Inline SVG
+Vazirmatn webfont (optional) | Persian-first typeface loaded from Google Fonts | Beautiful Persian typography | Setting | Webfont | deps=Google Fonts; ui=Settings → General
 Persian (fa_IR) complete | 1,600 strings translated | Native experience for Persian users | — | Translated UI
 Translatable (.pot) | Standard gettext workflow for new languages | English and more | — | POT file
 UI language switch | Auto / فارسی / English independent of site locale | Work in your language | Setting | UI language | ui=Settings → General

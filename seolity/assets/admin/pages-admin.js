@@ -244,12 +244,13 @@
 		experiment_window: 'Experiment window (days)',
 		kb_repo: 'Knowledge repository (owner/repo)', kb_branch: 'Knowledge branch', kb_path: 'Knowledge folder', kb_auto_sync: 'Sync knowledge daily', kb_contribute: 'Contribute anonymized learnings to GitHub',
 		storage_enabled: 'Enable GitHub data storage', storage_repo: 'Data repository (owner/repo, private!)', storage_branch: 'Data branch', storage_path: 'Data folder', storage_archive_days: 'Archive data older than (days)', storage_prune_local: 'Delete archived rows from the WordPress database',
+		admin_webfont: 'Load the Vazirmatn font from Google Fonts in the admin',
 		anonymize_ip: 'Anonymize IP addresses', delete_on_uninstall: 'Delete all data on uninstall',
 		ai_model_sub_claude: 'Claude model (opus, sonnet, haiku or a full model id)', ai_model_sub_codex: 'ChatGPT / Codex model (empty = default)',
 		sub_repo: 'Runner repository (owner/name, private)', sub_branch: 'Queue branch', sub_callback: 'Send results directly to this site (faster when the site is public)', sub_wait_minutes: 'Maximum wait per request (minutes)',
 	};
 	var GROUPS = [
-		[ 'general', 'General', [ 'approval_mode', 'ui_language', 'frontend_output', 'title_separator', 'brand_name', 'brand_logo', 'brand_color' ] ],
+		[ 'general', 'General', [ 'approval_mode', 'ui_language', 'admin_webfont', 'frontend_output', 'title_separator', 'brand_name', 'brand_logo', 'brand_color' ] ],
 		[ 'ai', 'AI', [ 'ai_provider', 'ai_model_anthropic', 'ai_model_openai', 'ai_model_gemini', 'ai_model_openrouter', 'ai_model_ollama', 'ollama_base_url', 'ai_model_custom', 'custom_base_url', 'ai_effort', 'ai_content_language', 'ai_brand_voice', 'ai_use_knowledge', 'ai_max_tokens', 'ai_timeout', 'ai_monthly_budget', 'ai_cache_hours' ] ],
 		[ 'subscription', 'Subscription AI', [ 'sub_repo', 'ai_model_sub_claude', 'ai_model_sub_codex', 'sub_callback', 'sub_wait_minutes', 'sub_branch' ] ],
 		[ 'crawler', 'Crawler & audits', [ 'crawl_frequency', 'crawl_max_urls', 'crawl_batch_size', 'crawl_timeout', 'thin_content_words', 'crawl_check_external', 'competitor_max_pages', 'experiment_window', 'gsc_sync_days', 'gsc_row_limit' ] ],
@@ -259,6 +260,7 @@
 		[ 'github', 'GitHub (knowledge & storage)', [ 'kb_repo', 'kb_branch', 'kb_path', 'kb_auto_sync', 'kb_contribute', 'storage_enabled', 'storage_repo', 'storage_branch', 'storage_path', 'storage_archive_days', 'storage_prune_local' ] ],
 		[ 'privacy', 'Privacy & data', [ 'anonymize_ip', 'retention_days', 'delete_on_uninstall' ] ],
 	];
+	var GROUP_ICONS = { general: 'settings', ai: 'cpu', subscription: 'sparkles', crawler: 'pulse', reports: 'bell', technical: 'wrench', schema: 'braces', github: 'github', privacy: 'lock' };
 	var SECRETS = {
 		ai: [ [ 'anthropic_api_key', 'Anthropic API key' ], [ 'openai_api_key', 'OpenAI API key' ], [ 'gemini_api_key', 'Google Gemini API key' ], [ 'openrouter_api_key', 'OpenRouter API key' ], [ 'custom_api_key', 'Custom API key' ] ],
 		subscription: [ [ 'claude_oauth_token', 'Claude subscription token (output of: claude setup-token)' ], [ 'codex_auth_json', 'ChatGPT login (contents of ~/.codex/auth.json after: codex login)' ] ],
@@ -299,11 +301,9 @@
 		function input( key, def, value, dirty, providers ) {
 			var el;
 			if ( def.type === 'bool' ) {
-				el = h( 'input', { type: 'checkbox', checked: !! value } );
-				el.addEventListener( 'change', function () {
-					dirty[ key ] = el.checked;
+				return App.toggle( t( LABELS[ key ] || key ), value, function ( on ) {
+					dirty[ key ] = on;
 				} );
-				return h( 'label', { class: 'sl-check sl-field' }, el, h( 'span', { text: t( LABELS[ key ] || key ) } ) );
 			}
 			if ( def.type === 'enum' ) {
 				var names = {};
@@ -345,7 +345,7 @@
 					el.placeholder = '';
 					SL.toast( t( 'Removed.' ) );
 				} );
-			}, 'sm' ) : null ), t( 'Write-only: secrets are encrypted on the server and never sent back to the browser.' ) );
+			}, 'sm' ) : null ) );
 		}
 
 		function subscriptionGuide( data, dirty ) {
@@ -416,20 +416,33 @@
 					return SL.api( 'subscription' ).then( render );
 				} )
 			);
-			wrap.appendChild( App.card( t( 'GitHub runner' ), h( 'div', null, actions, st ) ) );
+			wrap.appendChild( App.card( t( 'GitHub runner' ), h( 'div', null, actions, st ), { icon: 'github' } ) );
 			App.load( st, SL.api( 'subscription' ), render );
 			return wrap;
 		}
 
 		function group( g, data, dirty ) {
-			var box = h( 'div', { class: 'sl-form' } );
+			var box = h( 'div', { class: 'sl-settings' } );
 			if ( g[ 0 ] === 'ai' ) {
+				var MONO = { anthropic: [ 'AN', '#d97757' ], openai: [ 'OA', '#10a37f' ], gemini: [ 'GE', '#4285f4' ], openrouter: [ 'OR', '#6366f1' ], ollama: [ 'OL', '#0f172a' ], custom: [ 'API', '#64748b' ], sub_claude: [ 'CL', '#d97757' ], sub_codex: [ 'GPT', '#10a37f' ] };
 				box.appendChild( h( 'div', { class: 'sl-providers' }, data.providers.map( function ( p ) {
-					return h( 'div', { class: 'sl-provider' + ( p.configured ? ' is-ok' : '' ) }, h( 'strong', { text: p.label } ), h( 'span', { class: 'sl-small', text: p.model || '—' } ), SL.badge( p.configured ? t( 'configured' ) : t( 'not configured' ), p.configured ? 'good' : 'default' ), p.configured ? App.abtn( t( 'Test' ), function () {
-						return SL.api( 'settings/test-ai', { body: { provider: p.id } } ).then( function ( r ) {
-							SL.toast( t( 'Connection OK — model %s', r.model ), 'success' );
-						} );
-					}, 'sm' ) : null );
+					var mono = MONO[ p.id ] || [ p.id.slice( 0, 2 ).toUpperCase(), '#1D4ED8' ];
+					var active = data.settings.ai_provider === p.id;
+					return h( 'div', { class: 'sl-provider' + ( p.configured ? ' is-ok' : '' ) + ( active ? ' is-active' : '' ), 'data-active-label': t( 'Active' ) },
+						h( 'div', { class: 'sl-provider__head' },
+							h( 'span', { class: 'sl-mono', style: { '--c': mono[ 1 ] }, text: mono[ 0 ] } ),
+							h( 'div', null, h( 'b', { text: p.label } ), h( 'small', { dir: 'ltr', text: p.model || '—' } ) ),
+							h( 'span', { class: 'sl-provider__state', title: p.configured ? t( 'configured' ) : t( 'not configured' ) }, SL.icon( p.configured ? 'check-circle' : 'x-circle', 20 ) )
+						),
+						h( 'div', { class: 'sl-provider__actions' },
+							SL.badge( p.configured ? t( 'configured' ) : t( 'not configured' ), p.configured ? 'good' : 'default' ),
+							p.configured ? App.abtn( t( 'Test' ), function () {
+								return SL.api( 'settings/test-ai', { body: { provider: p.id } } ).then( function ( r ) {
+									SL.toast( t( 'Connection OK — model %s', r.model ), 'success' );
+								} );
+							}, 'sm' ) : null
+						)
+					);
 				} ) ) );
 			}
 			if ( g[ 0 ] === 'subscription' ) {
@@ -438,17 +451,23 @@
 			if ( g[ 0 ] === 'privacy' ) {
 				box.appendChild( h( 'div', { class: 'sl-alert sl-alert--info', text: t( 'Encryption' ) + ': ' + data.encryption + '. ' + t( 'For maximum security define SEOLITY_ENCRYPTION_KEY in wp-config.php. You can also define any secret as a constant, e.g. SEOLITY_ANTHROPIC_API_KEY.' ) } ) );
 			}
+			var fields = h( 'div', { class: 'sl-form' } );
 			g[ 2 ].forEach( function ( key ) {
 				if ( data.schema[ key ] ) {
-					box.appendChild( input( key, data.schema[ key ], data.settings[ key ], dirty, data.providers ) );
+					fields.appendChild( input( key, data.schema[ key ], data.settings[ key ], dirty, data.providers ) );
 				}
 			} );
-			( SECRETS[ g[ 0 ] ] || [] ).forEach( function ( s ) {
-				box.appendChild( secretField( s[ 0 ], s[ 1 ], data.secrets ) );
-			} );
+			box.appendChild( App.card( t( g[ 1 ] ), fields, { icon: GROUP_ICONS[ g[ 0 ] ] || 'settings' } ) );
+			if ( ( SECRETS[ g[ 0 ] ] || [] ).length ) {
+				var keys = h( 'div', { class: 'sl-form' } );
+				SECRETS[ g[ 0 ] ].forEach( function ( s ) {
+					keys.appendChild( secretField( s[ 0 ], s[ 1 ], data.secrets ) );
+				} );
+				box.appendChild( App.card( t( 'Keys & tokens' ), keys, { icon: 'key', sub: t( 'Write-only: secrets are encrypted on the server and never sent back to the browser.' ) } ) );
+			}
 			if ( g[ 0 ] === 'ai' ) {
 				var usage = h( 'div' );
-				box.appendChild( App.card( t( 'AI usage this month' ), usage ) );
+				box.appendChild( App.card( t( 'AI usage this month' ), usage, { icon: 'chart' } ) );
 				App.load( usage, SL.api( 'ai/usage' ), function ( u ) {
 					usage.appendChild( h( 'div', { class: 'sl-kpis sl-kpis--sm' }, App.kpi( t( 'Spend (est.)' ), '$' + SL.num( u.month_spend, 2 ) ), App.kpi( t( 'Budget' ), u.budget ? '$' + SL.num( u.budget, 2 ) : t( 'unlimited' ) ), App.kpi( t( 'Requests (30d)' ), SL.num( u.requests_30d, 0 ) ) ) );
 					usage.appendChild( App.table( [ { label: t( 'Task' ), key: 'task' }, { label: t( 'Requests' ), key: 'requests' }, { label: t( 'Tokens in/out' ), render: function ( r ) {
@@ -460,7 +479,7 @@
 			}
 			if ( g[ 0 ] === 'github' ) {
 				var st = h( 'div' );
-				box.appendChild( App.card( t( 'GitHub data storage' ), st ) );
+				box.appendChild( App.card( t( 'GitHub data storage' ), st, { icon: 'database' } ) );
 				App.load( st, SL.api( 'storage' ), function ( s ) {
 					st.appendChild( h( 'p', { class: 'sl-small', text: t( 'Cold data (old Search Console rows, audit logs, reports, change history backups, crawl snapshots, config) is committed to your private GitHub repository and pruned locally, keeping your hosting database small. SEOlity reads it back when needed.' ) } ) );
 					st.appendChild( h( 'div', { class: 'sl-kpis sl-kpis--sm' }, App.kpi( t( 'SEOlity tables size' ), s.db_size_mb === null ? '—' : SL.num( s.db_size_mb ) + ' MB' ), App.kpi( t( 'GSC rows (local)' ), SL.num( s.local_rows.gsc_page_query, 0 ) ), App.kpi( t( 'Last archive' ), s.last ? SL.date( new Date( s.last.time * 1000 ).toISOString() ) : '—', null, { sub: s.last ? ( s.last.ok ? t( '%s files', s.last.files ) : s.last.error ) : '' } ) ) );

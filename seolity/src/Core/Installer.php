@@ -48,8 +48,18 @@ final class Installer {
 			self::create_tables();
 			Capabilities::install();
 			Settings::install_defaults();
+			self::migrate_settings();
 			self::ensure_default_project();
 			update_option( self::DB_OPTION, SEOLITY_DB_VERSION, false );
+		}
+	}
+
+	/** One-off settings migrations between versions. */
+	private static function migrate_settings() {
+		$s = get_option( Settings::OPTION, array() );
+		if ( is_array( $s ) && isset( $s['brand_color'] ) && '#6d28d9' === strtolower( (string) $s['brand_color'] ) ) {
+			$s['brand_color'] = '#1D4ED8'; // 1.2: new blue default (ARIAGH visual language).
+			update_option( Settings::OPTION, $s, false );
 		}
 	}
 

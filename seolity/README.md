@@ -49,7 +49,7 @@
 SEOlity is an AI-powered SEO operating system for WordPress and WooCommerce. It **measures** (crawler with ~60 checks, Search Console page × query × day analytics, content analysis, competitors), **decides** (SEO Doctor, prioritized Action Center with "Why?" explanations, rules, daily briefing, data-grounded chat), **acts safely** (AI optimizer in every editor with preview, approval modes, versions and undo) and **learns** (every applied change becomes a measured experiment; results feed future suggestions).
 
 - Architecture, database schema, API, AI, security, queue, OAuth and roadmap: [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md)
-- Feature catalog (576 features, 520 implemented in 1.0, the rest marked as roadmap): [`docs/FEATURES.md`](docs/FEATURES.md)
+- Feature catalog (579 features, 523 implemented in 1.0, the rest marked as roadmap): [`docs/FEATURES.md`](docs/FEATURES.md)
 - Installation, external services and FAQ: [`readme.txt`](readme.txt)
 - Knowledge base format and contribution rules: [`knowledge/README.md`](knowledge/README.md)
 

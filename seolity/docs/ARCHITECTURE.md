@@ -349,13 +349,20 @@ generates prioritized actions, `HealthScore` computes the explainable score.
 ## 14. UI architecture
 
 * Single admin page (`admin.php?page=seolity`) hosting a hash-routed SPA (23 routes) written in vanilla
-  JS (no build step, no React dependency on the main app), using the REST API.
-* Design system in CSS variables (light/dark via `[data-theme]`, respects `prefers-color-scheme`),
-  logical properties for automatic RTL, responsive layouts (mobile drawer navigation), focus states,
-  `aria-*` labels, reduced motion support.
+  JS (no build step), using the REST API.
+* **Visual language shared with the ARIAGH AI Writer admin**: full-width glass top bar (wordmark, status
+  chips, "What should I do today?" CTA, theme toggle); sidebar with AI / Search Console engine cards and
+  grouped navigation (Overview, Content & SEO, Analysis, Technical SEO, System) with the same 24px line-icon
+  set (`SL.ICONS` / `SL.icon()`); page heads with icons; 16px cards with icon tiles; stat tiles with tinted
+  icons; ARIAGH form rows (label + help | control) with toggle switches; floating glass save bar; provider
+  cards with monogram badges and an "Active" ribbon; pill tabs; blue palette (`#1D4ED8`) and Vazirmatn
+  (Google Fonts, optional via Settings → General).
+* Design tokens are CSS variables on `.sl-root` (light by default, dark via `[data-theme]`), logical
+  properties give automatic RTL, explicit `dir` on the app root and modals, responsive drawer navigation,
+  focus states, `aria-*` labels, reduced-motion support. A custom white-label colour replaces the blue.
 * Shared components: cards, KPI tiles, tables with pagination, badges, gauges, SVG charts, modals,
   toasts, tabs, diff viewer (word-level Myers diff with line fallback), sandboxed previews, "Why?"
-  explainability modal, version history with restore.
+  explainability modal, version history with restore, subscription-AI waiting indicator.
 * Editor integrations: Gutenberg sidebar (wp.plugins), Classic editor button + meta box, Elementor panel
   (`$e` commands), term and user profile fields, WooCommerce product screens; all open the same
   optimizer modal (Original / Suggested / Compare / HTML, scores before/after, keyword and semantic coverage).

@@ -47,7 +47,8 @@ final class Settings {
 			'ui_language'          => array( 'enum', 'auto', array( 'auto', 'fa', 'en' ) ),
 			'brand_name'           => array( 'string', 'SEOlity' ),
 			'brand_logo'           => array( 'url', '' ),
-			'brand_color'          => array( 'string', '#6d28d9' ),
+			'brand_color'          => array( 'string', '#1D4ED8' ),
+			'admin_webfont'        => array( 'bool', true ),
 			'frontend_output'      => array( 'enum', 'auto', array( 'auto', 'on', 'off' ) ),
 			'title_separator'      => array( 'string', '|' ),
 			// AI.

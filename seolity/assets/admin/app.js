@@ -12,16 +12,29 @@
 	var App = ( SL.app = { pages: {}, state: {} } );
 
 	/* ================================================================ helpers */
+	/**
+	 * Card with an ARIAGH-style header: icon tile + title + optional subtitle.
+	 * extra: { icon, sub, actions, class }. The icon defaults to the current page's icon.
+	 */
 	App.card = function ( title, body, extra ) {
-		return h( 'section', { class: 'sl-card' + ( extra && extra.class ? ' ' + extra.class : '' ) },
-			title || ( extra && extra.actions ) ? h( 'header', { class: 'sl-card__head' }, h( 'h3', { text: title || '' } ), extra && extra.actions ? h( 'div', { class: 'sl-card__actions' }, extra.actions ) : null ) : null,
+		extra = extra || {};
+		var icon = extra.icon === false ? null : extra.icon || ( App.current ? App.icon( App.current ) : null );
+		return h( 'section', { class: 'sl-card' + ( extra.class ? ' ' + extra.class : '' ) },
+			title || extra.actions ? h( 'header', { class: 'sl-card__head' },
+				h( 'div', { class: 'sl-card__title' },
+					title && icon ? h( 'span', { class: 'sl-card__ic' }, SL.icon( icon, 18 ) ) : null,
+					h( 'div', null, h( 'h3', { text: title || '' } ), extra.sub ? h( 'p', { text: extra.sub } ) : null )
+				),
+				extra.actions ? h( 'div', { class: 'sl-card__actions' }, extra.actions ) : null
+			) : null,
 			h( 'div', { class: 'sl-card__body' }, body )
 		);
 	};
 	App.kpi = function ( label, value, delta, opts ) {
 		opts = opts || {};
 		var good = delta === null || delta === undefined ? null : opts.invert ? delta < 0 : delta > 0;
-		return h( 'div', { class: 'sl-kpi' },
+		return h( 'div', { class: 'sl-kpi' + ( opts.icon ? ' has-icon' : '' ) },
+			opts.icon ? h( 'span', { class: 'sl-kpi__ic is-' + ( opts.tone || 'blue' ) }, SL.icon( opts.icon, 22 ) ) : null,
 			h( 'div', { class: 'sl-kpi__label', text: label } ),
 			h( 'div', { class: 'sl-kpi__value', text: value } ),
 			delta === null || delta === undefined ? h( 'div', { class: 'sl-kpi__delta sl-muted', text: opts.sub || '' } ) : h( 'div', { class: 'sl-kpi__delta ' + ( good ? 'is-up' : delta === 0 ? '' : 'is-down' ), text: ( delta > 0 ? '▲ ' : delta < 0 ? '▼ ' : '' ) + ( opts.abs ? SL.num( Math.abs( delta ) ) : SL.pct( delta ) ) } ),
@@ -83,8 +96,29 @@
 		} ) );
 		return s;
 	};
+	var fieldSeq = 0;
+	/** Form row: label + help on one side, control on the other (two columns inside .sl-form). */
 	App.field = function ( label, input, help ) {
-		return h( 'label', { class: 'sl-field' }, h( 'span', { class: 'sl-field__label', text: label } ), input, help ? h( 'span', { class: 'sl-field__help', text: help } ) : null );
+		var target = input && input.matches && input.matches( 'input,select,textarea' ) ? input : ( input && input.querySelector ? input.querySelector( 'input,select,textarea' ) : null );
+		if ( target && ! target.id ) {
+			target.id = 'sl-f' + ( ++fieldSeq );
+		}
+		return h( 'div', { class: 'sl-field' },
+			h( 'div', { class: 'sl-field__text' }, h( 'label', { class: 'sl-field__label', for: target ? target.id : null, text: label } ), help ? h( 'small', { class: 'sl-field__help', text: help } ) : null ),
+			h( 'div', { class: 'sl-field__control' }, input )
+		);
+	};
+	/** Toggle switch row (ARIAGH style) for boolean settings. */
+	App.toggle = function ( label, checked, onChange, help ) {
+		var cb = h( 'input', { type: 'checkbox', checked: !! checked, onChange: function () {
+			onChange( cb.checked );
+		} } );
+		return h( 'div', { class: 'sl-field sl-field--toggle' },
+			h( 'div', { class: 'sl-field__text' }, h( 'label', { class: 'sl-field__label', text: label, onClick: function () {
+				cb.click();
+			} } ), help ? h( 'small', { class: 'sl-field__help', text: help } ) : null ),
+			h( 'div', { class: 'sl-field__control' }, h( 'label', { class: 'sl-switch', 'aria-label': label }, cb, h( 'span' ) ) )
+		);
 	};
 	App.pager = function ( total, page, per, onPage ) {
 		var pages = Math.ceil( ( total || 0 ) / per );
@@ -116,7 +150,10 @@
 		location.hash = '#/' + route.replace( /^#?\//, '' );
 	};
 	App.header = function ( title, subtitle, actions ) {
-		return h( 'div', { class: 'sl-page-head' }, h( 'div', null, h( 'h1', { text: title } ), subtitle ? h( 'p', { class: 'sl-muted', text: subtitle } ) : null ), actions ? h( 'div', { class: 'sl-page-head__actions' }, actions ) : null );
+		return h( 'div', { class: 'sl-page-head' },
+			h( 'div', null, h( 'h1', null, App.current ? SL.icon( App.icon( App.current ), 24 ) : null, h( 'span', { text: title } ) ), subtitle ? h( 'p', { class: 'sl-muted', text: subtitle } ) : null ),
+			actions ? h( 'div', { class: 'sl-page-head__actions' }, actions ) : null
+		);
 	};
 	App.load = function ( view, promise, render ) {
 		SL.clear( view );
@@ -242,7 +279,34 @@
 	var root;
 	var view;
 	var nav;
-	var ICONS = { dashboard: '◧', actions: '⚡', ai: '✦', audit: '⛑', gsc: '📈', keywords: '🔑', content: '✎', products: '🛍', images: '🖼', links: '🔗', competitors: '⚔', experiments: '🧪', changes: '⟲', redirects: '↪', 404: '⚠', schema: '{}', sitemap: '🗺', robots: '🤖', reports: '📄', alerts: '🔔', automation: '⚙', knowledge: '📚', settings: '☰' };
+	var ICONS = { dashboard: 'dashboard', actions: 'wand', ai: 'prompt', audit: 'pulse', gsc: 'chart', keywords: 'key', content: 'content', products: 'bag', images: 'image', links: 'link', competitors: 'swords', experiments: 'flask', changes: 'undo', redirects: 'corner', 404: 'unlink', schema: 'braces', sitemap: 'map', robots: 'bot', reports: 'review', alerts: 'bell', automation: 'zap', knowledge: 'book', settings: 'settings' };
+	/** Sidebar groups (ARIAGH-style navigation sections). */
+	var NAV_GROUPS = [
+		[ 'Overview', [ 'dashboard', 'actions', 'ai', 'alerts', 'reports' ] ],
+		[ 'Content & SEO', [ 'content', 'products', 'images', 'keywords', 'links' ] ],
+		[ 'Analysis', [ 'audit', 'gsc', 'competitors', 'experiments' ] ],
+		[ 'Technical SEO', [ 'redirects', '404', 'schema', 'sitemap', 'robots' ] ],
+		[ 'System', [ 'changes', 'automation', 'knowledge', 'settings' ] ],
+	];
+	App.icon = function ( slug ) {
+		return ICONS[ slug ] || 'info';
+	};
+
+	function navItem( r ) {
+		return h( 'a', { href: '#/' + r.slug, class: 'sl-nav__item', 'data-route': r.slug }, SL.icon( App.icon( r.slug ), 18, 'sl-nav__icon' ), h( 'span', { class: 'sl-nav__label', text: r.label } ), h( 'em', { class: 'sl-nav__count', 'data-count': r.slug } ) );
+	}
+
+	function brandMark() {
+		var name = ( C.brand && C.brand.name ) || 'SEOlity';
+		var custom = name.toLowerCase() !== 'seolity';
+		return h( 'a', { href: '#/dashboard', class: 'sl-brand', 'aria-label': name },
+			C.brand && C.brand.logo ? h( 'img', { src: C.brand.logo, alt: '', class: 'sl-brand__logo' } ) : null,
+			h( 'span', { class: 'sl-brand__text' },
+				custom ? h( 'span', { class: 'sl-wordmark', text: name } ) : h( 'span', { class: 'sl-wordmark', dir: 'ltr' }, 'SEOLITY.', h( 'b', { text: 'AI SEO' } ) ),
+				h( 'small', { text: t( 'AI SEO Intelligence for WordPress' ) + ' · ' + t( 'version %s', C.version ) } )
+			)
+		);
+	}
 
 	function shell() {
 		root = d.getElementById( 'seolity-app' );
@@ -257,9 +321,30 @@
 			root.classList.add( 'is-rtl' );
 		}
 		SL.applyTheme( root );
-		nav = h( 'nav', { class: 'sl-nav', 'aria-label': t( 'SEOlity navigation' ) } );
+		var bySlug = {};
 		( C.routes || [] ).forEach( function ( r ) {
-			nav.appendChild( h( 'a', { href: '#/' + r.slug, class: 'sl-nav__item', 'data-route': r.slug }, h( 'span', { class: 'sl-nav__icon', 'aria-hidden': 'true' }, ICONS[ r.slug ] || '•' ), h( 'span', { class: 'sl-nav__label', text: r.label } ), h( 'span', { class: 'sl-nav__count', 'data-count': r.slug } ) ) );
+			bySlug[ r.slug ] = r;
+		} );
+		nav = h( 'nav', { class: 'sl-nav', 'aria-label': t( 'SEOlity navigation' ) } );
+		var used = {};
+		NAV_GROUPS.forEach( function ( g ) {
+			var items = g[ 1 ].filter( function ( slug ) {
+				return bySlug[ slug ];
+			} );
+			if ( ! items.length ) {
+				return;
+			}
+			var GROUP_LABELS = { 'Overview': t( 'Overview' ), 'Content & SEO': t( 'Content & SEO' ), 'Analysis': t( 'Analysis' ), 'Technical SEO': t( 'Technical SEO' ), 'System': t( 'System' ) };
+			nav.appendChild( h( 'div', { class: 'sl-nav__group', text: GROUP_LABELS[ g[ 0 ] ] || g[ 0 ] } ) );
+			items.forEach( function ( slug ) {
+				used[ slug ] = true;
+				nav.appendChild( navItem( bySlug[ slug ] ) );
+			} );
+		} );
+		( C.routes || [] ).forEach( function ( r ) {
+			if ( ! used[ r.slug ] ) {
+				nav.appendChild( navItem( r ) ); // Routes added by extensions.
+			}
 		} );
 		var themeBtn = h( 'button', { class: 'sl-icon-btn', type: 'button', title: t( 'Toggle dark mode' ), 'aria-label': t( 'Toggle dark mode' ), onClick: function () {
 			var cur = root.getAttribute( 'data-theme' ) === 'dark' ? 'light' : 'dark';
@@ -267,14 +352,36 @@
 				w.localStorage.setItem( 'seolity-theme', cur );
 			} catch ( e ) {}
 			SL.applyTheme( root );
-		} }, '◐' );
-		var brand = h( 'div', { class: 'sl-brand' }, C.brand && C.brand.logo ? h( 'img', { src: C.brand.logo, alt: '' } ) : h( 'span', { class: 'sl-brand__mark', 'aria-hidden': 'true' }, '✦' ), h( 'div', null, h( 'strong', { text: ( C.brand && C.brand.name ) || 'SEOlity' } ), h( 'small', { text: t( 'AI SEO Intelligence for WordPress' ) } ) ) );
-		var top = h( 'header', { class: 'sl-top' }, h( 'button', { class: 'sl-icon-btn sl-menu-btn', type: 'button', 'aria-label': t( 'Menu' ), onClick: function () {
-			root.classList.toggle( 'nav-open' );
-		} }, '☰' ), h( 'div', { class: 'sl-top__status', id: 'sl-top-status' } ), themeBtn );
+		} }, SL.icon( 'moon', 17 ) );
+		var top = h( 'header', { class: 'sl-top' },
+			h( 'button', { class: 'sl-icon-btn sl-menu-btn', type: 'button', 'aria-label': t( 'Menu' ), onClick: function () {
+				root.classList.toggle( 'nav-open' );
+			} }, SL.icon( 'menu', 18 ) ),
+			brandMark(),
+			h( 'div', { class: 'sl-top__status', id: 'sl-top-status' } ),
+			h( 'div', { class: 'sl-top__actions' }, themeBtn, h( 'a', { href: '#/actions', class: 'sl-btn sl-btn--primary sl-top__cta' }, SL.icon( 'wand', 17 ), h( 'span', { text: t( 'What should I do today?' ) } ) ) )
+		);
 		view = h( 'main', { class: 'sl-view', id: 'sl-view', tabindex: '-1' } );
-		root.appendChild( h( 'div', { class: 'sl-layout' }, h( 'aside', { class: 'sl-side' }, brand, nav, h( 'div', { class: 'sl-side__foot', text: 'v' + C.version } ) ), h( 'div', { class: 'sl-main' }, top, view ) ) );
+		root.appendChild( top );
+		root.appendChild( h( 'div', { class: 'sl-layout' }, h( 'aside', { class: 'sl-side' }, h( 'div', { class: 'sl-engines', id: 'sl-engines' } ), nav, h( 'div', { class: 'sl-side__foot', text: ( ( C.brand && C.brand.name ) || 'SEOlity' ) + ' ' + C.version } ) ), view ) );
 		return true;
+	}
+
+	/** Engine cards at the top of the sidebar (like ARIAGH's text/image AI cards). */
+	function engines( b ) {
+		var box = d.getElementById( 'sl-engines' );
+		if ( ! box ) {
+			return;
+		}
+		SL.clear( box );
+		var card = function ( icon, title, sub, ok, route ) {
+			return h( 'a', { href: '#/' + route, class: 'sl-engine' + ( ok ? ' is-ok' : ' is-off' ) },
+				h( 'span', { class: 'sl-engine__ic' }, SL.icon( icon, 18 ) ),
+				h( 'span', { class: 'sl-engine__text' }, h( 'b', { text: title } ), h( 'small', { dir: 'auto', text: sub } ) )
+			);
+		};
+		box.appendChild( card( 'cpu', t( 'AI engine' ), b.ai_ready ? ( b.ai_label || t( 'AI connected' ) ) : t( 'AI not configured' ), b.ai_ready, b.ai_ready ? 'settings?tab=ai' : 'settings?tab=ai' ) );
+		box.appendChild( card( 'chart', t( 'Search Console' ), b.gsc ? ( b.gsc_property || t( 'Search Console connected' ) ).replace( /^sc-domain:/, '' ) : t( 'Search Console not connected' ), b.gsc, 'gsc' ) );
 	}
 
 	function topStatus( b ) {
@@ -283,13 +390,14 @@
 			return;
 		}
 		SL.clear( box );
+		engines( b );
+		var chip = function ( icon, text, kind, href ) {
+			return h( href ? 'a' : 'span', { class: 'sl-chip-status' + ( kind ? ' is-' + kind : '' ), href: href || null }, SL.icon( icon, 15 ), h( 'span', { text: text } ) );
+		};
 		var modes = { manual: t( 'Manual approval' ), semi: t( 'Semi-automatic' ), autonomous: t( 'Autonomous' ) };
-		box.appendChild( SL.badge( modes[ b.mode ] || b.mode, b.mode === 'autonomous' ? 'warn' : 'default' ) );
-		box.appendChild( SL.badge( b.ai_ready ? t( 'AI connected' ) : t( 'AI not configured' ), b.ai_ready ? 'good' : 'bad' ) );
-		box.appendChild( SL.badge( b.gsc ? t( 'Search Console connected' ) : t( 'Search Console not connected' ), b.gsc ? 'good' : 'warn' ) );
-		if ( b.pending_changes ) {
-			box.appendChild( h( 'a', { href: '#/changes', class: 'sl-badge sl-badge--brand' }, t( '%s changes awaiting review', b.pending_changes ) ) );
-		}
+		box.appendChild( chip( 'shield', modes[ b.mode ] || b.mode, b.mode === 'autonomous' ? 'warn' : 'info', '#/automation' ) );
+		box.appendChild( chip( 'cpu', b.ai_ready ? t( 'AI connected' ) : t( 'AI not configured' ), b.ai_ready ? 'ok' : 'warn', '#/settings?tab=ai' ) );
+		box.appendChild( chip( 'chart', b.gsc ? t( 'Search Console connected' ) : t( 'Search Console not connected' ), b.gsc ? 'ok' : 'warn', '#/gsc' ) );
 		var setCount = function ( slug, n ) {
 			var el = root.querySelector( '[data-count="' + slug + '"]' );
 			if ( el ) {
@@ -362,9 +470,7 @@
 
 	/* ================================================================ Dashboard */
 	App.pages.dashboard = function ( v ) {
-		v.appendChild( App.header( t( 'Dashboard' ), t( 'Your SEO command center: health, traffic, opportunities and AI activity.' ), [ App.btn( t( 'What should I do today?' ), function () {
-			App.go( 'actions' );
-		}, 'primary' ) ] ) );
+		v.appendChild( App.header( t( 'Dashboard' ), t( 'Your SEO command center: health, traffic, opportunities and AI activity.' ) ) );
 		var body = h( 'div' );
 		v.appendChild( body );
 		App.load( body, SL.api( 'dashboard' ), function ( dsh ) {
@@ -378,15 +484,15 @@
 				h( 'div', { class: 'sl-kpi sl-kpi--health' }, h( 'div', { class: 'sl-kpi__label', text: t( 'SEO Health Score' ) } ), SL.scoreRing( dsh.health.score, 84 ), h( 'a', { href: '#/audit?tab=health', class: 'sl-link sl-small' }, t( 'Why this score?' ) ) ),
 				App.kpi( t( 'Organic clicks' ), g ? SL.num( g.current.clicks, 0 ) : '—', g ? g.delta.clicks : null, { spark: series.map( function ( r ) {
 					return r.clicks;
-				} ), sub: g ? '' : t( 'Connect Search Console' ) } ),
+				} ), sub: g ? '' : t( 'Connect Search Console' ), icon: 'trending', tone: 'blue' } ),
 				App.kpi( t( 'Impressions' ), g ? SL.num( g.current.impressions, 0 ) : '—', g ? g.delta.impressions : null, { spark: series.map( function ( r ) {
 					return r.impressions;
-				} ) } ),
-				App.kpi( t( 'CTR' ), g ? SL.num( g.current.ctr ) + '%' : '—', g ? g.delta.ctr : null ),
+				} ), icon: 'eye', tone: 'violet' } ),
+				App.kpi( t( 'CTR' ), g ? SL.num( g.current.ctr ) + '%' : '—', g ? g.delta.ctr : null, { icon: 'target', tone: 'green' } ),
 				App.kpi( t( 'Avg. position' ), g ? SL.num( g.current.position ) : '—', g ? g.delta.position : null, { abs: true, spark: series.map( function ( r ) {
 					return r.position;
-				} ), invert: true } ),
-				App.kpi( t( 'Indexable pages' ), SL.num( dsh.indexed.indexable, 0 ), null, { sub: t( '%s crawled', SL.num( dsh.indexed.crawled, 0 ) ) } )
+				} ), invert: true, icon: 'chart', tone: 'amber' } ),
+				App.kpi( t( 'Indexable pages' ), SL.num( dsh.indexed.indexable, 0 ), null, { sub: t( '%s crawled', SL.num( dsh.indexed.crawled, 0 ) ), icon: 'layers', tone: 'green' } )
 			);
 			body.appendChild( kpis );
 

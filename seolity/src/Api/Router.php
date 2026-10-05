@@ -138,6 +138,8 @@ final class Router {
 				'caps'      => array_combine( array_keys( self::TIERS ), array_map( 'current_user_can', array_values( self::TIERS ) ) ),
 				'user'      => array( 'id' => $user->ID, 'name' => $user->display_name ),
 				'ai_ready'  => $p->ai->is_ready(),
+				'ai_label'  => ( $prov = \SEOlity\AI\ProviderRegistry::get( $p, (string) $p->settings->get( 'ai_provider' ) ) ) ? $prov->label() : '',
+				'gsc_property' => (string) $p->settings->get( 'gsc_property' ),
 				'gsc'       => $p->gsc_oauth->is_connected(),
 				'woo'       => class_exists( 'WooCommerce' ),
 				'serp'      => $p->serp->available(),

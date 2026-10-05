@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: SEOlity 1.0.0\n"
-"POT-Creation-Date: 2026-10-04 13:52+0000\n"
+"POT-Creation-Date: 2026-10-05 13:56+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1905,26 +1905,39 @@ msgstr "علامت‌گذاری به‌عنوان انجام‌شده"
 msgid "Dismiss"
 msgstr "رد کردن"
 
+msgid "AI SEO Intelligence for WordPress"
+msgstr "هوش سئوی مبتنی بر هوش مصنوعی برای وردپرس"
+
+#, php-format
+msgid "version %s"
+msgstr "نسخه %s"
+
 msgid "SEOlity navigation"
 msgstr "ناوبری سئولیتی"
+
+msgid "Overview"
+msgstr "نمای کلی"
+
+msgid "Content & SEO"
+msgstr "محتوا و سئو"
+
+msgid "Analysis"
+msgstr "تحلیل"
+
+msgid "Technical SEO"
+msgstr "سئوی فنی"
+
+msgid "System"
+msgstr "سیستم"
 
 msgid "Toggle dark mode"
 msgstr "تغییر حالت تاریک"
 
-msgid "AI SEO Intelligence for WordPress"
-msgstr "هوش سئوی مبتنی بر هوش مصنوعی برای وردپرس"
-
 msgid "Menu"
 msgstr "منو"
 
-msgid "Manual approval"
-msgstr "تأیید دستی"
-
-msgid "Semi-automatic"
-msgstr "نیمه‌خودکار"
-
-msgid "Autonomous"
-msgstr "خودمختار"
+msgid "AI engine"
+msgstr "موتور هوش مصنوعی"
 
 msgid "AI connected"
 msgstr "هوش مصنوعی متصل است"
@@ -1937,6 +1950,15 @@ msgstr "سرچ کنسول متصل است"
 
 msgid "Search Console not connected"
 msgstr "سرچ کنسول متصل نیست"
+
+msgid "Manual approval"
+msgstr "تأیید دستی"
+
+msgid "Semi-automatic"
+msgstr "نیمه‌خودکار"
+
+msgid "Autonomous"
+msgstr "خودمختار"
 
 #, php-format
 msgid "%s changes awaiting review"
@@ -2657,9 +2679,6 @@ msgstr "ایجاد"
 msgid "User"
 msgstr "کاربر"
 
-msgid "System"
-msgstr "سیستم"
-
 msgid "Action"
 msgstr "اقدام"
 
@@ -2730,9 +2749,6 @@ msgstr "حذف"
 msgid "Removed."
 msgstr "حذف شد."
 
-msgid "Write-only: secrets are encrypted on the server and never sent back to the browser."
-msgstr "فقط‌نوشتنی: اطلاعات محرمانه روی سرور رمزنگاری می‌شوند و هرگز به مرورگر برگردانده نمی‌شوند."
-
 msgid "Use the AI subscription you already pay for"
 msgstr "از اشتراک هوش مصنوعی‌ای که همین حالا دارید استفاده کنید"
 
@@ -2799,6 +2815,9 @@ msgstr "به‌روزرسانی وضعیت"
 msgid "GitHub runner"
 msgstr "اجراکننده گیت‌هاب"
 
+msgid "Active"
+msgstr "فعال"
+
 msgid "configured"
 msgstr "تنظیم‌شده"
 
@@ -2817,6 +2836,12 @@ msgstr "رمزنگاری"
 
 msgid "For maximum security define SEOLITY_ENCRYPTION_KEY in wp-config.php. You can also define any secret as a constant, e.g. SEOLITY_ANTHROPIC_API_KEY."
 msgstr "برای بیشترین امنیت، SEOLITY_ENCRYPTION_KEY را در wp-config.php تعریف کنید. هر کلید محرمانه را هم می‌توانید به‌صورت ثابت تعریف کنید، مثلاً SEOLITY_ANTHROPIC_API_KEY."
+
+msgid "Keys & tokens"
+msgstr "کلیدها و توکن‌ها"
+
+msgid "Write-only: secrets are encrypted on the server and never sent back to the browser."
+msgstr "فقط‌نوشتنی: اطلاعات محرمانه روی سرور رمزنگاری می‌شوند و هرگز به مرورگر برگردانده نمی‌شوند."
 
 msgid "AI usage this month"
 msgstr "مصرف هوش مصنوعی در این ماه"
@@ -3107,9 +3132,6 @@ msgstr "آخرین استفاده"
 
 msgid "Origin"
 msgstr "منشأ"
-
-msgid "Active"
-msgstr "فعال"
 
 msgid "Delete this redirect?"
 msgstr "این ریدایرکت حذف شود؟"
@@ -4719,6 +4741,9 @@ msgstr "بایگانی داده‌های قدیمی‌تر از (روز)"
 msgid "Delete archived rows from the WordPress database"
 msgstr "حذف ردیف‌های بایگانی‌شده از دیتابیس وردپرس"
 
+msgid "Load the Vazirmatn font from Google Fonts in the admin"
+msgstr "بارگذاری فونت وزیرمتن از Google Fonts در پیشخوان"
+
 msgid "Anonymize IP addresses"
 msgstr "ناشناس‌سازی آدرس‌های IP"
 
@@ -4754,9 +4779,6 @@ msgstr "خزنده و ممیزی‌ها"
 
 msgid "Alerts & reports"
 msgstr "هشدارها و گزارش‌ها"
-
-msgid "Technical SEO"
-msgstr "سئوی فنی"
 
 msgid "Schema & entity"
 msgstr "اسکیما و موجودیت"

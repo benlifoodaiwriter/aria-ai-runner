@@ -46,7 +46,12 @@ final class EditorIntegration {
 	}
 
 	private function enqueue_core( array $extra = array() ) {
-		wp_enqueue_style( 'seolity-editor', SEOLITY_URL . 'assets/admin/editor.css', array(), SEOLITY_VERSION );
+		$deps = array();
+		if ( $this->plugin->settings->get( 'admin_webfont' ) ) {
+			wp_register_style( 'seolity-font', 'https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&display=swap', array(), null ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
+			$deps[] = 'seolity-font';
+		}
+		wp_enqueue_style( 'seolity-editor', SEOLITY_URL . 'assets/admin/editor.css', $deps, SEOLITY_VERSION );
 		wp_enqueue_script( 'seolity-ui', SEOLITY_URL . 'assets/admin/ui.js', array(), SEOLITY_VERSION, true );
 		wp_enqueue_script( 'seolity-editor', SEOLITY_URL . 'assets/admin/editor.js', array( 'seolity-ui' ), SEOLITY_VERSION, true );
 		wp_localize_script( 'seolity-ui', 'SEOLITY', $this->config( $extra ) );

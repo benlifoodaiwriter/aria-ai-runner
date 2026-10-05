@@ -4,7 +4,7 @@ Tags: seo, ai, search console, woocommerce, schema
 Requires at least: 6.2
 Tested up to: 6.6
 Requires PHP: 7.4
-Stable tag: 1.1.0
+Stable tag: 1.2.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -23,7 +23,7 @@ White-hat only: guardrails reject keyword stuffing, hidden text, removed links a
 
 Works alongside Yoast SEO, Rank Math, SEOPress and AIOSEO (reads/writes their fields) or standalone. WooCommerce HPOS compatible.
 
-Full documentation: `docs/ARCHITECTURE.md` and the 576-feature catalog in `docs/FEATURES.md`.
+Full documentation: `docs/ARCHITECTURE.md` and the 579-feature catalog in `docs/FEATURES.md`.
 
 == Installation ==
 
@@ -50,6 +50,7 @@ SEOlity only contacts external services that you configure:
 * **Google PageSpeed Insights API** – the URL you test.
 * **SerpApi** – the keyword and market you analyze (https://serpapi.com/legal).
 * **GitHub API** – knowledge base sync (public repository by default) and, if enabled, archiving of your SEO data to the private repository you choose (https://docs.github.com/site-policy).
+* **Google Fonts** (admin only, optional) – the Vazirmatn typeface for the admin screens; turn it off in Settings → General (https://policies.google.com/privacy).
 * **Competitor websites** – their public sitemaps and pages, fetched politely (robots.txt respected).
 
 No data is sent to the plugin authors.
@@ -69,6 +70,9 @@ Yes. The interface is fully translated and RTL-native, text analysis understands
 Enable "Delete all data on uninstall" in Settings → Privacy, then delete the plugin.
 
 == Changelog ==
+
+= 1.2.0 =
+* New admin design shared with ARIAGH AI Writer: full-width top bar with status chips, grouped sidebar with line icons and AI/Search Console engine cards, icon cards, two-column settings rows with toggle switches, floating save bar, provider cards, blue palette and Vazirmatn font (light by default, dark mode kept).
 
 = 1.1.0 =
 * Subscription AI: use your Claude Pro/Max or ChatGPT Plus/Pro plan (official Claude Code / Codex CLI on GitHub Actions in your private repository) instead of an API key. Encrypted job queue, signed callback, local-site mode, automatic waiting in every AI feature.

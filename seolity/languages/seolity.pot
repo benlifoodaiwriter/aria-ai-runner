@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: SEOlity 1.0.0\n"
-"POT-Creation-Date: 2026-10-04 13:52+0000\n"
+"POT-Creation-Date: 2026-10-05 13:56+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1904,25 +1904,38 @@ msgstr ""
 msgid "Dismiss"
 msgstr ""
 
+msgid "AI SEO Intelligence for WordPress"
+msgstr ""
+
+#, php-format
+msgid "version %s"
+msgstr ""
+
 msgid "SEOlity navigation"
+msgstr ""
+
+msgid "Overview"
+msgstr ""
+
+msgid "Content & SEO"
+msgstr ""
+
+msgid "Analysis"
+msgstr ""
+
+msgid "Technical SEO"
+msgstr ""
+
+msgid "System"
 msgstr ""
 
 msgid "Toggle dark mode"
 msgstr ""
 
-msgid "AI SEO Intelligence for WordPress"
-msgstr ""
-
 msgid "Menu"
 msgstr ""
 
-msgid "Manual approval"
-msgstr ""
-
-msgid "Semi-automatic"
-msgstr ""
-
-msgid "Autonomous"
+msgid "AI engine"
 msgstr ""
 
 msgid "AI connected"
@@ -1935,6 +1948,15 @@ msgid "Search Console connected"
 msgstr ""
 
 msgid "Search Console not connected"
+msgstr ""
+
+msgid "Manual approval"
+msgstr ""
+
+msgid "Semi-automatic"
+msgstr ""
+
+msgid "Autonomous"
 msgstr ""
 
 #, php-format
@@ -2656,9 +2678,6 @@ msgstr ""
 msgid "User"
 msgstr ""
 
-msgid "System"
-msgstr ""
-
 msgid "Action"
 msgstr ""
 
@@ -2729,9 +2748,6 @@ msgstr ""
 msgid "Removed."
 msgstr ""
 
-msgid "Write-only: secrets are encrypted on the server and never sent back to the browser."
-msgstr ""
-
 msgid "Use the AI subscription you already pay for"
 msgstr ""
 
@@ -2798,6 +2814,9 @@ msgstr ""
 msgid "GitHub runner"
 msgstr ""
 
+msgid "Active"
+msgstr ""
+
 msgid "configured"
 msgstr ""
 
@@ -2815,6 +2834,12 @@ msgid "Encryption"
 msgstr ""
 
 msgid "For maximum security define SEOLITY_ENCRYPTION_KEY in wp-config.php. You can also define any secret as a constant, e.g. SEOLITY_ANTHROPIC_API_KEY."
+msgstr ""
+
+msgid "Keys & tokens"
+msgstr ""
+
+msgid "Write-only: secrets are encrypted on the server and never sent back to the browser."
 msgstr ""
 
 msgid "AI usage this month"
@@ -3105,9 +3130,6 @@ msgid "Last used"
 msgstr ""
 
 msgid "Origin"
-msgstr ""
-
-msgid "Active"
 msgstr ""
 
 msgid "Delete this redirect?"
@@ -4718,6 +4740,9 @@ msgstr ""
 msgid "Delete archived rows from the WordPress database"
 msgstr ""
 
+msgid "Load the Vazirmatn font from Google Fonts in the admin"
+msgstr ""
+
 msgid "Anonymize IP addresses"
 msgstr ""
 
@@ -4752,9 +4777,6 @@ msgid "Crawler & audits"
 msgstr ""
 
 msgid "Alerts & reports"
-msgstr ""
-
-msgid "Technical SEO"
 msgstr ""
 
 msgid "Schema & entity"

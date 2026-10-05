@@ -93,7 +93,13 @@ final class Admin {
 	}
 
 	public function assets( $hook ) {
-		wp_register_style( 'seolity-editor', SEOLITY_URL . 'assets/admin/editor.css', array(), SEOLITY_VERSION );
+		$deps = array();
+		if ( $this->plugin->settings->get( 'admin_webfont' ) ) {
+			// Vazirmatn, the same typeface as the ARIAGH AI Writer admin (optional: Settings → General).
+			wp_register_style( 'seolity-font', 'https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&display=swap', array(), null ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
+			$deps[] = 'seolity-font';
+		}
+		wp_register_style( 'seolity-editor', SEOLITY_URL . 'assets/admin/editor.css', $deps, SEOLITY_VERSION );
 		if ( ! $this->is_our_screen() ) {
 			return;
 		}
