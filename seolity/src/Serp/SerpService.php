@@ -48,6 +48,17 @@ final class SerpService {
 		return (bool) $this->plugin->settings->secret( 'serp_api_key' );
 	}
 
+	/** A SERP fetched earlier for this keyword (default market), without calling the API. */
+	public function cached( $keyword ) {
+		$keyword = trim( sanitize_text_field( (string) $keyword ) );
+		if ( '' === $keyword ) {
+			return null;
+		}
+		list( $gl, $hl ) = $this->locale( '' );
+		$data            = get_transient( 'seolity_serp_' . md5( $keyword . '|' . $gl . '|' . $hl ) );
+		return is_array( $data ) ? $data : null;
+	}
+
 	/** Google country + interface language for a market code. */
 	private function locale( $market ) {
 		$market = strtolower( (string) $market );

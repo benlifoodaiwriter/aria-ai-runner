@@ -187,6 +187,7 @@ caller (Optimizer, Woo\ProductSeo, ChatService, …)
         ├─ cache lookup              ai_cache (hash of provider, model, task version, input)
         ├─ KnowledgeBase::retrieve   top chunks for the task's topics (RAG)
         ├─ Learning::insights        site-specific results of past experiments
+        ├─ Engine::market_context    content tasks: cached SERP + PAA, matching competitor pages, GSC standing
         ├─ system prompt             role + policy (white-hat rules) + brand voice + language + knowledge
         ├─ Provider::complete        structured output (JSON schema) via the selected provider
         ├─ Schema::validate          strict validation; one self-repair round with the validation errors
@@ -311,6 +312,13 @@ generates prioritized actions, `HealthScore` computes the explainable score.
   `SEOlity knowledge builder` GitHub Action, and user notes. Documents are chunked by `##` headings;
   retrieval scores topic match, term overlap and language. A newer GitHub copy supersedes the bundled
   copy of the same file; identical files are skipped.
+* **Unified repository**: "Create & set up everything" puts the runner (default branch), the own knowledge
+  base (`seolity/knowledge`) and the data archive (branch `seolity-data`) in one private `<login>/seolity-ai`.
+* **Knowledge collection**: `POST /github/knowledge/collect` commits the builder + a site brief (top GSC
+  queries and pages, competitors) and dispatches `seolity-knowledge.yml`; the builder (`llm.mjs`) uses
+  Claude Code (subscription token), Codex (ChatGPT login) or the Anthropic API, writes
+  `knowledge/site/<host>/{playbook,topics,keywords,competitors}.md` and `last-run.json`; `GET` polls the run,
+  then syncs. Retrieval always includes this host's site documents with a boost.
 * **GitHub data storage**: with a fine-grained token, cold data (old GSC rows, audit logs, reports, AI
   request logs) is archived as compressed JSON to a private repository via the Git Data API (one commit
   per run) and pruned locally to keep the host database small. Reports read archived data transparently
@@ -348,7 +356,8 @@ generates prioritized actions, `HealthScore` computes the explainable score.
 
 ## 14. UI architecture
 
-* Single admin page (`admin.php?page=seolity`) hosting a hash-routed SPA (23 routes) written in vanilla
+* Single admin page (`admin.php?page=seolity`) hosting a hash-routed SPA (28 routes grouped into 9 sections;
+  the sidebar and the WordPress menu show sections, pages inside a section are pill sub-tabs) written in vanilla
   JS (no build step), using the REST API.
 * **Visual language shared with the ARIAGH AI Writer admin**: full-width glass top bar (wordmark, status
   chips, "What should I do today?" CTA, theme toggle); sidebar with AI / Search Console engine cards and

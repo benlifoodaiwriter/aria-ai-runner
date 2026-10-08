@@ -199,6 +199,13 @@
 			} );
 		}, 'primary' ) ] : null ) );
 		var body = h( 'div' );
+		if ( App.cap( 'manage' ) && App.knowledgeCollector ) {
+			var kc = h( 'div' );
+			v.appendChild( kc );
+			SL.api( 'github' ).then( function ( g ) {
+				kc.appendChild( App.card( t( 'Collect knowledge for this site' ), App.knowledgeCollector( g.knowledge.mode === 'own' && g.knowledge.exists ), { icon: 'brain' } ) );
+			} ).catch( function () {} );
+		}
 		v.appendChild( body );
 		App.load( body, SL.api( 'knowledge' ), function ( r ) {
 			body.appendChild( h( 'p', { class: 'sl-muted sl-small' }, t( 'Repository' ) + ': ', h( 'code', { dir: 'ltr', text: r.repo + '/' + r.path } ), ' · ', t( 'Last sync' ) + ': ', r.synced ? SL.date( new Date( r.synced.time * 1000 ).toISOString() ) : '—' ) );
@@ -236,7 +243,7 @@
 	/* ================================================================ Settings */
 	var LABELS = {
 		approval_mode: 'Approval mode', ui_language: 'Interface language', brand_name: 'Brand name (white label)', brand_logo: 'Brand logo URL', brand_color: 'Brand color', frontend_output: 'Output SEO tags on the frontend', title_separator: 'Title separator',
-		ai_provider: 'AI provider', ai_model_openai: 'OpenAI model', ai_model_anthropic: 'Anthropic model', ai_model_gemini: 'Gemini model', ai_model_openrouter: 'OpenRouter model', ai_model_ollama: 'Ollama model', ai_model_custom: 'Custom model', ai_effort: 'Reasoning effort (Claude)', ollama_base_url: 'Ollama URL', custom_base_url: 'Custom API base URL', ai_max_tokens: 'Max output tokens', ai_timeout: 'Request timeout (s)', ai_monthly_budget: 'Monthly AI budget (USD, 0 = unlimited)', ai_cache_hours: 'Cache AI answers (hours)', ai_content_language: 'Content language', ai_brand_voice: 'Brand voice & editorial rules', ai_use_knowledge: 'Use the SEO knowledge base in prompts',
+		ai_provider: 'AI provider', ai_model_openai: 'OpenAI model', ai_model_anthropic: 'Anthropic model', ai_model_gemini: 'Gemini model', ai_model_openrouter: 'OpenRouter model', ai_model_ollama: 'Ollama model', ai_model_custom: 'Custom model', ai_effort: 'Reasoning effort (Claude)', ollama_base_url: 'Ollama URL', custom_base_url: 'Custom API base URL', ai_max_tokens: 'Max output tokens', ai_timeout: 'Request timeout (s)', ai_monthly_budget: 'Monthly AI budget (USD, 0 = unlimited)', ai_cache_hours: 'Cache AI answers (hours)', ai_content_language: 'Content language', ai_brand_voice: 'Brand voice & editorial rules', ai_use_knowledge: 'Use the SEO knowledge base in prompts', ai_media_on_upload: 'Write ALT text with AI when an image is uploaded',
 		gsc_sync_days: 'Initial import (days)', gsc_row_limit: 'Rows per API call',
 		crawl_max_urls: 'Max URLs per crawl', crawl_batch_size: 'Parallel requests per batch', crawl_check_external: 'Check external links', crawl_frequency: 'Full audit frequency', crawl_timeout: 'Request timeout (s)', thin_content_words: 'Thin content threshold (words)', competitor_max_pages: 'Max pages per competitor',
 		alert_email: 'Alert email', alert_email_enabled: 'Email high-priority alerts', alert_drop_percent: 'Drop alert threshold (%)', report_frequency: 'Scheduled report', report_recipients: 'Report recipients (one per line)',
@@ -252,7 +259,7 @@
 	};
 	var GROUPS = [
 		[ 'general', 'General', [ 'approval_mode', 'ui_language', 'admin_webfont', 'frontend_output', 'title_separator', 'brand_name', 'brand_logo', 'brand_color' ] ],
-		[ 'ai', 'AI', [ 'ai_provider', 'ai_model_anthropic', 'ai_model_openai', 'ai_model_gemini', 'ai_model_openrouter', 'ai_model_ollama', 'ollama_base_url', 'ai_effort', 'ai_content_language', 'ai_brand_voice', 'ai_use_knowledge', 'ai_max_tokens', 'ai_timeout', 'ai_monthly_budget', 'ai_cache_hours' ] ],
+		[ 'ai', 'AI', [ 'ai_provider', 'ai_model_anthropic', 'ai_model_openai', 'ai_model_gemini', 'ai_model_openrouter', 'ai_model_ollama', 'ollama_base_url', 'ai_effort', 'ai_content_language', 'ai_brand_voice', 'ai_use_knowledge', 'ai_media_on_upload', 'ai_max_tokens', 'ai_timeout', 'ai_monthly_budget', 'ai_cache_hours' ] ],
 		[ 'crawler', 'Crawler & audits', [ 'crawl_frequency', 'crawl_max_urls', 'crawl_batch_size', 'crawl_timeout', 'thin_content_words', 'crawl_check_external', 'competitor_max_pages', 'experiment_window', 'gsc_sync_days', 'gsc_row_limit' ] ],
 		[ 'reports', 'Alerts & reports', [ 'alert_email_enabled', 'alert_email', 'alert_drop_percent', 'report_frequency', 'report_recipients' ] ],
 		[ 'technical', 'Technical SEO', [ 'sitemap_enabled', 'sitemap_exclude_types', 'redirects_enabled', 'log_404', 'log_404_bots' ] ],

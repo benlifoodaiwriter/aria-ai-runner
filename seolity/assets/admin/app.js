@@ -293,14 +293,31 @@
 	var nav;
 	var ICONS = { dashboard: 'dashboard', actions: 'wand', ai: 'prompt', audit: 'pulse', gsc: 'chart', keywords: 'key', content: 'content', products: 'bag', images: 'image', links: 'link', competitors: 'swords', experiments: 'flask', changes: 'undo', redirects: 'corner', 404: 'unlink', schema: 'braces', sitemap: 'map', robots: 'bot', reports: 'review', alerts: 'bell', automation: 'zap', knowledge: 'book', settings: 'settings', rankmath: 'target', guide: 'lifebuoy', subscription: 'sparkles', github: 'github', cloudflare: 'cloud' };
 	/** Sidebar groups (ARIAGH-style navigation sections). */
-	var NAV_GROUPS = [
-		[ 'Overview', [ 'dashboard', 'actions', 'ai', 'alerts', 'reports' ] ],
-		[ 'Content & SEO', [ 'content', 'products', 'images', 'keywords', 'rankmath', 'links' ] ],
-		[ 'Analysis', [ 'audit', 'gsc', 'competitors', 'experiments' ] ],
-		[ 'Technical SEO', [ 'redirects', '404', 'schema', 'sitemap', 'robots' ] ],
-		[ 'Connections', [ 'subscription', 'github', 'cloudflare', 'guide' ] ],
-		[ 'System', [ 'changes', 'automation', 'knowledge', 'settings' ] ],
+	/**
+	 * Simple navigation: a few sections; related pages are tabs inside a section.
+	 * [ hub id, label, icon, child route slugs ] — every page keeps its own URL (#/slug).
+	 */
+	var HUBS = [
+		[ 'home', 'Dashboard', 'dashboard', [ 'dashboard', 'alerts', 'reports' ] ],
+		[ 'aicenter', 'AI Center', 'wand', [ 'actions', 'ai', 'changes' ] ],
+		[ 'contenthub', 'Content', 'content', [ 'content', 'products', 'images' ] ],
+		[ 'kwhub', 'Keywords & links', 'key', [ 'keywords', 'rankmath', 'links' ] ],
+		[ 'gschub', 'Search Console', 'chart', [ 'gsc' ] ],
+		[ 'analysis', 'Analysis', 'pulse', [ 'audit', 'competitors', 'experiments' ] ],
+		[ 'technical', 'Technical SEO', 'wrench', [ 'redirects', '404', 'schema', 'sitemap', 'robots' ] ],
+		[ 'connections', 'Connections', 'link', [ 'subscription', 'github', 'cloudflare', 'guide' ] ],
+		[ 'system', 'Settings', 'settings', [ 'settings', 'automation', 'knowledge' ] ],
 	];
+	var HUB_LABELS = { Dashboard: t( 'Dashboard' ), 'AI Center': t( 'AI Center' ), Content: t( 'Content' ), 'Keywords & links': t( 'Keywords & links' ), 'Search Console': t( 'Search Console' ), Analysis: t( 'Analysis' ), 'Technical SEO': t( 'Technical SEO' ), Connections: t( 'Connections' ), Settings: t( 'Settings' ) };
+	var HUB_COUNT = { home: 'alerts', aicenter: 'changes' }; // Counters shown on a section item.
+	App.hubOf = function ( slug ) {
+		for ( var i = 0; i < HUBS.length; i++ ) {
+			if ( HUBS[ i ][ 3 ].indexOf( slug ) !== -1 ) {
+				return HUBS[ i ];
+			}
+		}
+		return null;
+	};
 	App.icon = function ( slug ) {
 		return ICONS[ slug ] || 'info';
 	};
@@ -310,12 +327,12 @@
 	}
 
 	function brandMark() {
-		var name = ( C.brand && C.brand.name ) || 'SEOlity';
+		var name = ( C.brand && C.brand.name ) || 'SEOLITY';
 		var custom = name.toLowerCase() !== 'seolity';
 		return h( 'a', { href: '#/dashboard', class: 'sl-brand', 'aria-label': name },
 			C.brand && C.brand.logo ? h( 'img', { src: C.brand.logo, alt: '', class: 'sl-brand__logo' } ) : null,
 			h( 'span', { class: 'sl-brand__text' },
-				custom ? h( 'span', { class: 'sl-wordmark', text: name } ) : h( 'span', { class: 'sl-wordmark', dir: 'ltr' }, 'SEOLITY.', h( 'b', { text: 'AI SEO' } ) ),
+				custom ? h( 'span', { class: 'sl-wordmark', text: name } ) : h( 'span', { class: 'sl-wordmark', dir: 'ltr' }, 'ARIAGH.', h( 'b', { text: 'SEOLITY' } ) ),
 				h( 'small', { text: t( 'AI SEO Intelligence for WordPress' ) + ' · ' + t( 'version %s', C.version ) } )
 			)
 		);
@@ -340,25 +357,27 @@
 		} );
 		nav = h( 'nav', { class: 'sl-nav', 'aria-label': t( 'SEOlity navigation' ) } );
 		var used = {};
-		NAV_GROUPS.forEach( function ( g ) {
-			var items = g[ 1 ].filter( function ( slug ) {
+		HUBS.forEach( function ( hub, i ) {
+			var kids = hub[ 3 ].filter( function ( slug ) {
 				return bySlug[ slug ];
 			} );
-			if ( ! items.length ) {
+			if ( ! kids.length ) {
 				return;
 			}
-			var GROUP_LABELS = { 'Overview': t( 'Overview' ), 'Content & SEO': t( 'Content & SEO' ), 'Analysis': t( 'Analysis' ), 'Technical SEO': t( 'Technical SEO' ), 'Connections': t( 'Connections' ), 'System': t( 'System' ) };
-			nav.appendChild( h( 'div', { class: 'sl-nav__group', text: GROUP_LABELS[ g[ 0 ] ] || g[ 0 ] } ) );
-			items.forEach( function ( slug ) {
-				used[ slug ] = true;
-				nav.appendChild( navItem( bySlug[ slug ] ) );
+			if ( i === 7 ) {
+				nav.appendChild( h( 'div', { class: 'sl-nav__group', text: t( 'Setup' ) } ) );
+			}
+			kids.forEach( function ( k ) {
+				used[ k ] = true;
 			} );
+			nav.appendChild( h( 'a', { href: '#/' + kids[ 0 ], class: 'sl-nav__item', 'data-hub': hub[ 0 ] }, SL.icon( hub[ 2 ], 18, 'sl-nav__icon' ), h( 'span', { class: 'sl-nav__label', text: HUB_LABELS[ hub[ 1 ] ] || hub[ 1 ] } ), h( 'em', { class: 'sl-nav__count', 'data-count': HUB_COUNT[ hub[ 0 ] ] || kids[ 0 ] } ) ) );
 		} );
 		( C.routes || [] ).forEach( function ( r ) {
 			if ( ! used[ r.slug ] ) {
 				nav.appendChild( navItem( r ) ); // Routes added by extensions.
 			}
 		} );
+		App.routeLabels = bySlug;
 		var themeBtn = h( 'button', { class: 'sl-icon-btn', type: 'button', title: t( 'Toggle dark mode' ), 'aria-label': t( 'Toggle dark mode' ), onClick: function () {
 			var cur = root.getAttribute( 'data-theme' ) === 'dark' ? 'light' : 'dark';
 			try {
@@ -376,7 +395,7 @@
 		);
 		view = h( 'main', { class: 'sl-view', id: 'sl-view', tabindex: '-1' } );
 		root.appendChild( top );
-		root.appendChild( h( 'div', { class: 'sl-layout' }, h( 'aside', { class: 'sl-side' }, h( 'div', { class: 'sl-engines', id: 'sl-engines' } ), nav, h( 'div', { class: 'sl-side__foot', text: ( ( C.brand && C.brand.name ) || 'SEOlity' ) + ' ' + C.version } ) ), view ) );
+		root.appendChild( h( 'div', { class: 'sl-layout' }, h( 'aside', { class: 'sl-side' }, h( 'div', { class: 'sl-engines', id: 'sl-engines' } ), nav, h( 'div', { class: 'sl-side__foot', text: ( ( C.brand && C.brand.name ) === 'SEOLITY' ? 'ARIAGH.SEOLITY' : ( C.brand && C.brand.name ) || 'SEOLITY' ) + ' ' + C.version } ) ), view ) );
 		return true;
 	}
 
@@ -438,8 +457,9 @@
 		if ( ! App.pages[ slug ] ) {
 			slug = 'dashboard';
 		}
+		var hub = App.hubOf( slug );
 		Array.prototype.forEach.call( nav.querySelectorAll( '.sl-nav__item' ), function ( a ) {
-			var on = a.getAttribute( 'data-route' ) === slug;
+			var on = a.getAttribute( 'data-route' ) === slug || ( hub && a.getAttribute( 'data-hub' ) === hub[ 0 ] );
 			a.classList.toggle( 'is-active', on );
 			if ( on ) {
 				a.setAttribute( 'aria-current', 'page' );
@@ -450,6 +470,14 @@
 		root.classList.remove( 'nav-open' );
 		SL.clear( view );
 		App.current = slug;
+		var kids = hub ? hub[ 3 ].filter( function ( k ) {
+			return App.routeLabels && App.routeLabels[ k ];
+		} ) : [];
+		if ( kids.length > 1 ) {
+			view.appendChild( h( 'nav', { class: 'sl-subtabs', 'aria-label': HUB_LABELS[ hub[ 1 ] ] || hub[ 1 ] }, kids.map( function ( k ) {
+				return h( 'a', { href: '#/' + k, class: 'sl-subtab' + ( k === slug ? ' is-active' : '' ), 'aria-current': k === slug ? 'page' : null }, SL.icon( App.icon( k ), 16 ), h( 'span', { text: App.routeLabels[ k ].label } ) );
+			} ) ) );
+		}
 		try {
 			App.pages[ slug ]( view, App.query() );
 		} catch ( e ) {

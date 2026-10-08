@@ -606,6 +606,165 @@ final class SubscriptionRunner {
 		return false;
 	}
 
+	/**
+	 * Validate a pasted subscription credential.
+	 *
+	 * @return string|\WP_Error Normalized value.
+	 */
+	public static function validate_credential( $engine, $value ) {
+		$value = trim( (string) $value );
+		if ( 'codex' === $engine ) {
+			$json = json_decode( $value, true );
+			if ( ! is_array( $json ) ) {
+				return new \WP_Error( 'seolity_sub', __( 'This is not the whole auth.json file. Copy everything from { to }.', 'seolity' ), array( 'status' => 400 ) );
+			}
+			if ( empty( $json['tokens'] ) ) {
+				return new \WP_Error( 'seolity_sub', __( 'This auth.json was made with an API key, not a ChatGPT account. Run “codex login” and choose “Sign in with ChatGPT”.', 'seolity' ), array( 'status' => 400 ) );
+			}
+			return (string) wp_json_encode( $json, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE );
+		}
+		if ( 0 === strpos( $value, 'sk-ant-api' ) ) {
+			return new \WP_Error( 'seolity_sub', __( 'This is an Anthropic API key, not a subscription token. Run “claude setup-token” and paste the token that starts with sk-ant-oat01-, or use the Anthropic API provider instead.', 'seolity' ), array( 'status' => 400 ) );
+		}
+		if ( ! preg_match( '/^sk-ant-oat[0-9A-Za-z_-]{20,}$/', $value ) ) {
+			return new \WP_Error( 'seolity_sub', __( 'This does not look like a Claude token. It starts with sk-ant-oat01- (output of: claude setup-token).', 'seolity' ), array( 'status' => 400 ) );
+		}
+		return $value;
+	}
+
+	/**
+	 * One-shot deployment, ARIAGH-style: every step runs on the server and is
+	 * reported back, then verified from GitHub's side.
+	 *
+	 * @param array $o engine, credential (optional when already saved), model, github_token (optional), repo, activate (bool), test (bool)
+	 * @return array{ok:bool,steps:array[]}
+	 */
+	public function deploy( array $o ) {
+		$engine = isset( $o['engine'] ) && 'codex' === $o['engine'] ? 'codex' : 'claude';
+		$steps  = array();
+		$step   = static function ( $id, $title, $result, $ok_detail = '' ) use ( &$steps ) {
+			$ok      = ! is_wp_error( $result ) && false !== $result;
+			$steps[] = array( 'id' => $id, 'title' => $title, 'ok' => $ok, 'detail' => $ok ? $ok_detail : ( is_wp_error( $result ) ? $result->get_error_message() : '' ) );
+			return $ok;
+		};
+		$done = function ( $ok ) use ( &$steps ) {
+			return array( 'ok' => $ok, 'steps' => $steps, 'status' => $this->status() );
+		};
+		if ( function_exists( 'set_time_limit' ) ) {
+			@set_time_limit( 180 ); // phpcs:ignore WordPress.PHP.NoSilencedErrors
+		}
+
+		// 1. Account credential (validated before anything touches GitHub).
+		$cred_key = self::ENGINE_SECRETS[ $engine ][1];
+		if ( ! empty( $o['credential'] ) ) {
+			$cred = self::validate_credential( $engine, $o['credential'] );
+			if ( ! $step( 'credential', 'claude' === $engine ? __( 'Claude subscription token', 'seolity' ) : __( 'ChatGPT login (auth.json)', 'seolity' ), $cred, __( 'Valid format, saved encrypted.', 'seolity' ) ) ) {
+				return $done( false );
+			}
+			$this->plugin->settings->set_secret( $cred_key, $cred );
+		} elseif ( ! $step( 'credential', 'claude' === $engine ? __( 'Claude subscription token', 'seolity' ) : __( 'ChatGPT login (auth.json)', 'seolity' ), $this->plugin->settings->has_secret( $cred_key ) ? true : new \WP_Error( 'x', __( 'Paste the token from your computer first (step 2).', 'seolity' ) ), __( 'Already saved.', 'seolity' ) ) ) {
+			return $done( false );
+		}
+		if ( isset( $o['model'] ) && '' !== (string) $o['model'] ) {
+			$this->plugin->settings->update( array( 'ai_model_sub_' . $engine => sanitize_text_field( (string) $o['model'] ) ) );
+		}
+
+		// 2. GitHub account.
+		if ( ! empty( $o['github_token'] ) ) {
+			$con = $this->plugin->githubhub->connect( $o['github_token'] );
+			if ( ! $step( 'github', __( 'GitHub account', 'seolity' ), is_wp_error( $con ) ? $con : true, isset( $con['token']['account']['login'] ) ? '@' . $con['token']['account']['login'] : '' ) ) {
+				return $done( false );
+			}
+		} else {
+			$me = $this->plugin->github->has_token() ? $this->plugin->github->whoami() : new \WP_Error( 'x', __( 'Connect GitHub: paste a token created with the ready link.', 'seolity' ) );
+			if ( ! $step( 'github', __( 'GitHub account', 'seolity' ), $me, is_array( $me ) ? '@' . $me['login'] : '' ) ) {
+				return $done( false );
+			}
+		}
+		$me = $this->plugin->github->whoami();
+		if ( is_array( $me ) && is_array( $me['scopes'] ) ) {
+			$missing = array_diff( array( 'repo', 'workflow' ), $me['scopes'] );
+			if ( ! $step( 'scopes', __( 'Token permissions', 'seolity' ), $missing ? new \WP_Error( 'x', sprintf( __( 'The token is missing: %s', 'seolity' ), implode( ', ', $missing ) ) . ' — ' . __( 'create a new one with the ready link.', 'seolity' ) ) : true, 'repo, workflow' ) ) {
+				return $done( false );
+			}
+		}
+
+		// 3. Repository (created private when missing).
+		$repo = trim( (string) ( isset( $o['repo'] ) ? $o['repo'] : '' ) );
+		if ( '' === $repo ) {
+			$repo = '' !== $this->repo() ? $this->repo() : $this->plugin->githubhub->defaults()['runner'];
+		}
+		if ( false === strpos( $repo, '/' ) && is_array( $me ) ) {
+			$repo = $me['login'] . '/' . $repo;
+		}
+		if ( ! $step( 'repo_name', __( 'Repository name', 'seolity' ), GitHubClient::valid_repo( $repo ) ? true : new \WP_Error( 'x', __( 'Repository must look like owner/name.', 'seolity' ) ), $repo ) ) {
+			return $done( false );
+		}
+		$this->plugin->settings->update( array( 'sub_repo' => $repo ) );
+
+		// 4–6. Repository, files, branch and secrets (SubscriptionRunner::setup does them in order).
+		$setup = $this->setup();
+		if ( ! $step( 'install', __( 'Private repository, runner, workflow, queue branch and secrets', 'seolity' ), is_wp_error( $setup ) ? $setup : true, 'https://github.com/' . $repo ) ) {
+			return $done( false );
+		}
+
+		// 7. GitHub Actions enabled + workflow registered.
+		$step( 'actions', __( 'GitHub Actions enabled', 'seolity' ), $this->plugin->github->ensure_actions( $repo ), __( 'Enabled', 'seolity' ) );
+		$state = 'missing';
+		for ( $i = 0; $i < 4 && 'active' !== $state; $i++ ) {
+			$state = $this->plugin->github->workflow_state( $repo, self::WORKFLOW, true );
+			if ( 'active' !== $state ) {
+				sleep( 2 );
+			}
+		}
+		$step( 'workflow', __( 'Workflow “SEOlity AI” registered', 'seolity' ), 'active' === $state ? true : new \WP_Error( 'x', is_wp_error( $state ) ? $state->get_error_message() : sprintf( __( 'GitHub reports the workflow as “%s”. It usually becomes active within a minute.', 'seolity' ), $state ) ), __( 'Active', 'seolity' ) );
+
+		// 8. Secrets really on GitHub.
+		$names    = $this->plugin->github->secret_names( $repo );
+		$need     = array( 'SEOLITY_SHARED_SECRET', self::ENGINE_SECRETS[ $engine ][0] );
+		$absent   = is_wp_error( $names ) ? $need : array_diff( $need, $names );
+		$step( 'secrets', __( 'Secrets stored on GitHub', 'seolity' ), is_wp_error( $names ) ? $names : ( $absent ? new \WP_Error( 'x', sprintf( __( 'Missing on GitHub: %s', 'seolity' ), implode( ', ', $absent ) ) ) : true ), implode( ', ', $need ) );
+
+		// 9. Use it.
+		if ( ! isset( $o['activate'] ) || $o['activate'] ) {
+			$this->plugin->settings->update( array( 'ai_provider' => 'sub_' . $engine ) );
+			$step( 'activate', __( 'Set as the AI engine', 'seolity' ), true, 'claude' === $engine ? 'Claude Pro / Max' : 'ChatGPT Plus / Pro' );
+		}
+		$ok = ! array_filter(
+			$steps,
+			static function ( $x ) {
+				return ! $x['ok'] && in_array( $x['id'], array( 'credential', 'github', 'scopes', 'repo_name', 'install' ), true );
+			}
+		);
+		$this->plugin->audit_log->log( 'subscription.deployed', 'site', null, array( 'engine' => $engine, 'repo' => $repo, 'ok' => $ok ) );
+		return $done( $ok );
+	}
+
+	/**
+	 * Read-only verification from GitHub's side (what is really deployed).
+	 */
+	public function verify() {
+		$repo = $this->repo();
+		$out  = array( 'repo' => $repo, 'checked' => gmdate( 'c' ) );
+		if ( ! GitHubClient::valid_repo( $repo ) || ! $this->plugin->github->has_token() ) {
+			$out['deployed'] = false;
+			return $out;
+		}
+		$info               = $this->plugin->github->inspect( $repo );
+		$out['exists']      = $info['exists'];
+		$out['private']     = $info['private'];
+		$out['workflow']    = $info['exists'] ? $this->plugin->github->workflow_state( $repo, self::WORKFLOW ) : 'missing';
+		$out['workflow']    = is_wp_error( $out['workflow'] ) ? 'unknown' : $out['workflow'];
+		$names              = $info['exists'] ? $this->plugin->github->secret_names( $repo ) : array();
+		$out['secrets']     = is_wp_error( $names ) ? null : $names;
+		$out['deployed']    = $info['exists'] && $info['private'] && 'active' === $out['workflow'] && is_array( $out['secrets'] ) && in_array( 'SEOLITY_SHARED_SECRET', $out['secrets'], true );
+		$out['engines']     = array(
+			'claude' => is_array( $out['secrets'] ) && in_array( 'CLAUDE_CODE_OAUTH_TOKEN', $out['secrets'], true ),
+			'codex'  => is_array( $out['secrets'] ) && in_array( 'CODEX_AUTH_JSON', $out['secrets'], true ),
+		);
+		return $out;
+	}
+
 	/** Tell the runner where the Cloudflare mailbox is (after deploying or removing the worker). */
 	public function sync_relay() {
 		if ( empty( $this->state()['setup'] ) || ! GitHubClient::valid_repo( $this->repo() ) || ! $this->plugin->github->has_token() ) {

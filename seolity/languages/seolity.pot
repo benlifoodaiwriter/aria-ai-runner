@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: SEOlity 1.0.0\n"
-"POT-Creation-Date: 2026-10-08 07:16+0000\n"
+"POT-Creation-Date: 2026-10-08 08:24+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -125,6 +125,84 @@ msgstr ""
 msgid "The runner repository must be private."
 msgstr ""
 
+msgid "This is not the whole auth.json file. Copy everything from { to }."
+msgstr ""
+
+msgid "This auth.json was made with an API key, not a ChatGPT account. Run “codex login” and choose “Sign in with ChatGPT”."
+msgstr ""
+
+msgid "This is an Anthropic API key, not a subscription token. Run “claude setup-token” and paste the token that starts with sk-ant-oat01-, or use the Anthropic API provider instead."
+msgstr ""
+
+msgid "This does not look like a Claude token. It starts with sk-ant-oat01- (output of: claude setup-token)."
+msgstr ""
+
+msgid "Claude subscription token"
+msgstr ""
+
+msgid "ChatGPT login (auth.json)"
+msgstr ""
+
+msgid "Valid format, saved encrypted."
+msgstr ""
+
+msgid "Paste the token from your computer first (step 2)."
+msgstr ""
+
+msgid "Already saved."
+msgstr ""
+
+msgid "GitHub account"
+msgstr ""
+
+msgid "Connect GitHub: paste a token created with the ready link."
+msgstr ""
+
+msgid "Token permissions"
+msgstr ""
+
+#, php-format
+msgid "The token is missing: %s"
+msgstr ""
+
+msgid "create a new one with the ready link."
+msgstr ""
+
+msgid "Repository name"
+msgstr ""
+
+msgid "Repository must look like owner/name."
+msgstr ""
+
+msgid "Private repository, runner, workflow, queue branch and secrets"
+msgstr ""
+
+msgid "GitHub Actions enabled"
+msgstr ""
+
+msgid "Enabled"
+msgstr ""
+
+msgid "Workflow “SEOlity AI” registered"
+msgstr ""
+
+#, php-format
+msgid "GitHub reports the workflow as “%s”. It usually becomes active within a minute."
+msgstr ""
+
+msgid "Active"
+msgstr ""
+
+msgid "Secrets stored on GitHub"
+msgstr ""
+
+#, php-format
+msgid "Missing on GitHub: %s"
+msgstr ""
+
+msgid "Set as the AI engine"
+msgstr ""
+
 msgid "PHP extensions (OpenSSL, sodium)"
 msgstr ""
 
@@ -135,10 +213,6 @@ msgid "GitHub account connected"
 msgstr ""
 
 msgid "No GitHub token saved yet."
-msgstr ""
-
-#, php-format
-msgid "The token is missing: %s"
 msgstr ""
 
 #, php-format
@@ -280,6 +354,21 @@ msgstr ""
 msgid "Settings"
 msgstr ""
 
+msgid "AI Center"
+msgstr ""
+
+msgid "Keywords & links"
+msgstr ""
+
+msgid "Analysis"
+msgstr ""
+
+msgid "Technical SEO"
+msgstr ""
+
+msgid "Connections"
+msgstr ""
+
 msgid "You are not allowed to access this page."
 msgstr ""
 
@@ -300,6 +389,22 @@ msgid "%1$d critical and %2$d high-priority actions waiting."
 msgstr ""
 
 msgid "What should I do today?"
+msgstr ""
+
+msgid "What is in the image? (optional hint)"
+msgstr ""
+
+msgid "Write ALT, title, caption & description with AI"
+msgstr ""
+
+msgid "Uses the page this image belongs to, its focus keyword, the SEO knowledge base and competitor data. Review, then the fields save as usual."
+msgstr ""
+
+msgid "Write ALT text with SEOlity AI"
+msgstr ""
+
+#, php-format
+msgid "SEOlity AI is writing ALT text for %d images in the background. Review them in AI Center → AI Changes."
 msgstr ""
 
 msgid "Optimize with SEOlity AI"
@@ -591,16 +696,13 @@ msgstr ""
 msgid "You are not allowed to edit this product."
 msgstr ""
 
+msgid "Sorry, you are not allowed to do that."
+msgstr ""
+
 msgid "Unknown secret."
 msgstr ""
 
 msgid "auth.json must be valid JSON (copy the whole file from ~/.codex/auth.json)."
-msgstr ""
-
-msgid "This is not the whole auth.json file. Copy everything from { to }."
-msgstr ""
-
-msgid "This does not look like a Claude token. It starts with sk-ant-oat01- (output of: claude setup-token)."
 msgstr ""
 
 msgid "Dates must be YYYY-MM-DD."
@@ -1459,6 +1561,12 @@ msgstr ""
 msgid "Cloudflare did not accept this token. Create it again with the permissions listed in the guide."
 msgstr ""
 
+msgid "The token works and has access to several accounts. Pick the account to use."
+msgstr ""
+
+msgid "The token works, but the Account ID could not be read automatically. Copy it from the Cloudflare dashboard (Workers & Pages → Account ID on the right) and save again."
+msgstr ""
+
 msgid "Your workers.dev subdomain is not set up yet. Open Workers & Pages once in the Cloudflare dashboard, then deploy again."
 msgstr ""
 
@@ -1925,9 +2033,6 @@ msgstr ""
 msgid "The PHP sodium extension is required to store GitHub secrets."
 msgstr ""
 
-msgid "Repository must look like owner/name."
-msgstr ""
-
 #, php-format
 msgid "The token is missing the “%s” scope."
 msgstr ""
@@ -1951,7 +2056,28 @@ msgstr ""
 msgid "Save an Anthropic API key in AI engine settings first."
 msgstr ""
 
+msgid "Create your own knowledge repository first (one click on the GitHub & data page); the shared one cannot learn about your site."
+msgstr ""
+
+msgid "The knowledge builder needs an AI account: deploy subscription AI (Claude or ChatGPT) or give it your Anthropic key first."
+msgstr ""
+
 msgid "The shared knowledge base is updated by SEOlity. Create your own knowledge repository to run the builder yourself."
+msgstr ""
+
+msgid "Private repository"
+msgstr ""
+
+msgid "AI runner (workflow, queue branch, secrets)"
+msgstr ""
+
+msgid "Own knowledge base (knowledge + weekly builder)"
+msgstr ""
+
+msgid "Data archive (branch seolity-data)"
+msgstr ""
+
+msgid "Ready"
 msgstr ""
 
 msgid "The data repository must be private. Change its visibility on GitHub or choose another name."
@@ -2144,22 +2270,7 @@ msgstr ""
 msgid "SEOlity navigation"
 msgstr ""
 
-msgid "Overview"
-msgstr ""
-
-msgid "Content & SEO"
-msgstr ""
-
-msgid "Analysis"
-msgstr ""
-
-msgid "Technical SEO"
-msgstr ""
-
-msgid "Connections"
-msgstr ""
-
-msgid "System"
+msgid "Setup"
 msgstr ""
 
 msgid "Toggle dark mode"
@@ -2671,6 +2782,31 @@ msgstr ""
 msgid "Google will generate a snippet from your content. Write a description to control it."
 msgstr ""
 
+msgid "Writing with AI…"
+msgstr ""
+
+#, php-format
+msgid "Filled: %s. Review and keep or edit — changes save like any edit."
+msgstr ""
+
+msgid "No editable fields found on this screen."
+msgstr ""
+
+#, php-format
+msgid "Suggested file name: %s"
+msgstr ""
+
+#, php-format
+msgid "Check the ALT text: %s"
+msgstr ""
+
+#, php-format
+msgid "Knowledge used: %s"
+msgstr ""
+
+msgid "Something went wrong."
+msgstr ""
+
 msgid "Select a Text Editor or Heading widget first."
 msgstr ""
 
@@ -2910,6 +3046,9 @@ msgstr ""
 msgid "User"
 msgstr ""
 
+msgid "System"
+msgstr ""
+
 msgid "Action"
 msgstr ""
 
@@ -2927,6 +3066,9 @@ msgstr ""
 
 #, php-format
 msgid "Synced: %1$s bundled, %2$s from GitHub."
+msgstr ""
+
+msgid "Collect knowledge for this site"
 msgstr ""
 
 msgid "Repository"
@@ -3136,9 +3278,6 @@ msgid "Custom API (any provider)"
 msgstr ""
 
 msgid "DeepSeek, Groq, Mistral, Together, xAI, Perplexity, Azure OpenAI, Cloudflare Workers AI, LM Studio, vLLM, LiteLLM or any compatible gateway."
-msgstr ""
-
-msgid "Active"
 msgstr ""
 
 msgid "configured"
@@ -4737,9 +4876,6 @@ msgstr ""
 msgid "No"
 msgstr ""
 
-msgid "Something went wrong."
-msgstr ""
-
 msgid "Close"
 msgstr ""
 
@@ -5210,6 +5346,9 @@ msgid "Brand voice & editorial rules"
 msgstr ""
 
 msgid "Use the SEO knowledge base in prompts"
+msgstr ""
+
+msgid "Write ALT text with AI when an image is uploaded"
 msgstr ""
 
 msgid "Initial import (days)"

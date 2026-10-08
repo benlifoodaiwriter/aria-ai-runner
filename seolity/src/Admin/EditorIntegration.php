@@ -34,6 +34,62 @@ final class EditorIntegration {
 		add_action( 'init', array( $this, 'term_hooks' ), 99 );
 		add_action( 'show_user_profile', array( $this, 'user_hint' ) );
 		add_action( 'edit_user_profile', array( $this, 'user_hint' ) );
+		// Media library, upload screen and media modal: AI for ALT / title / caption / description.
+		add_filter( 'attachment_fields_to_edit', array( $this, 'media_field' ), 20, 2 );
+		add_action( 'add_attachment', array( $this, 'on_upload' ) );
+		add_filter( 'bulk_actions-upload', array( $this, 'media_bulk_action' ) );
+		add_filter( 'handle_bulk_actions-upload', array( $this, 'media_bulk_handle' ), 10, 3 );
+		add_action( 'admin_notices', array( $this, 'media_bulk_notice' ) );
+	}
+
+	/** "Write with SEOlity AI" row in the attachment details (modal + edit screen). */
+	public function media_field( $fields, $post ) {
+		if ( ! $this->can() || ! $post || 0 !== strpos( (string) $post->post_mime_type, 'image/' ) ) {
+			return $fields;
+		}
+		$html = '<div class="seolity-media-ai" data-id="' . (int) $post->ID . '">'
+			. '<input type="text" class="seolity-media-hint" placeholder="' . esc_attr__( 'What is in the image? (optional hint)', 'seolity' ) . '">'
+			. '<button type="button" class="button button-primary seolity-media-btn" data-id="' . (int) $post->ID . '">' . esc_html__( 'Write ALT, title, caption & description with AI', 'seolity' ) . '</button>'
+			. '<p class="description">' . esc_html__( 'Uses the page this image belongs to, its focus keyword, the SEO knowledge base and competitor data. Review, then the fields save as usual.', 'seolity' ) . '</p>'
+			. '<div class="seolity-media-out" aria-live="polite"></div></div>';
+		$fields['seolity_ai'] = array(
+			'label' => 'SEOlity AI',
+			'input' => 'html',
+			'html'  => $html,
+		);
+		return $fields;
+	}
+
+	/** Optional: queue AI ALT text for every new image (follows the automation mode). */
+	public function on_upload( $id ) {
+		if ( ! $this->plugin->settings->get( 'ai_media_on_upload' ) || ! $this->plugin->ai->is_ready() || 0 !== strpos( (string) get_post_mime_type( $id ), 'image/' ) ) {
+			return;
+		}
+		$this->plugin->optimizer->queue_bulk( 'alt', array( (int) $id ), 'attachment' );
+	}
+
+	public function media_bulk_action( $actions ) {
+		if ( $this->can() ) {
+			$actions['seolity_alt'] = __( 'Write ALT text with SEOlity AI', 'seolity' );
+		}
+		return $actions;
+	}
+
+	public function media_bulk_handle( $redirect, $action, $ids ) {
+		if ( 'seolity_alt' !== $action || ! $this->can() ) {
+			return $redirect;
+		}
+		$res = $this->plugin->optimizer->queue_bulk( 'alt', (array) $ids, 'attachment' );
+		return add_query_arg( 'seolity_alt_queued', is_wp_error( $res ) ? 0 : count( (array) $ids ), $redirect );
+	}
+
+	public function media_bulk_notice() {
+		if ( empty( $_GET['seolity_alt_queued'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
+			return;
+		}
+		$n = (int) $_GET['seolity_alt_queued']; // phpcs:ignore WordPress.Security.NonceVerification
+		/* translators: %d: number of images */
+		echo '<div class="notice notice-success is-dismissible"><p>' . esc_html( sprintf( __( 'SEOlity AI is writing ALT text for %d images in the background. Review them in AI Center → AI Changes.', 'seolity' ), $n ) ) . '</p></div>';
 	}
 
 	/** Display name of an SEO plugin engine. */
@@ -77,6 +133,8 @@ final class EditorIntegration {
 			$ctx = array( 'context' => array( 'object_type' => 'post', 'object_id' => $post ? (int) $post->ID : 0, 'post_type' => $screen->post_type, 'block_editor' => method_exists( $screen, 'is_block_editor' ) && $screen->is_block_editor() ) );
 		} elseif ( 'term.php' === $hook || 'edit-tags.php' === $hook ) {
 			$ctx = array( 'context' => array( 'object_type' => 'term', 'object_id' => isset( $_GET['tag_ID'] ) ? (int) $_GET['tag_ID'] : 0, 'taxonomy' => $screen->taxonomy ) ); // phpcs:ignore WordPress.Security.NonceVerification
+		} elseif ( in_array( $hook, array( 'upload.php', 'media-new.php' ), true ) ) {
+			$ctx = array( 'context' => array( 'object_type' => 'media', 'object_id' => 0 ) );
 		} elseif ( in_array( $hook, array( 'profile.php', 'user-edit.php' ), true ) ) {
 			$uid = isset( $_GET['user_id'] ) ? (int) $_GET['user_id'] : get_current_user_id(); // phpcs:ignore WordPress.Security.NonceVerification
 			$ctx = array( 'context' => array( 'object_type' => 'user', 'object_id' => $uid ) );

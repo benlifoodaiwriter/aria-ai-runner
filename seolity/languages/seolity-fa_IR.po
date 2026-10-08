@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: SEOlity 1.0.0\n"
-"POT-Creation-Date: 2026-10-08 07:16+0000\n"
+"POT-Creation-Date: 2026-10-08 08:24+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -126,6 +126,84 @@ msgstr "افزونه OpenSSL در PHP لازم است."
 msgid "The runner repository must be private."
 msgstr "مخزن اجراکننده باید خصوصی باشد."
 
+msgid "This is not the whole auth.json file. Copy everything from { to }."
+msgstr "این کل فایل auth.json نیست. همه چیز را از { تا } کپی کنید."
+
+msgid "This auth.json was made with an API key, not a ChatGPT account. Run “codex login” and choose “Sign in with ChatGPT”."
+msgstr "این auth.json با کلید API ساخته شده، نه با حساب ChatGPT. دستور «codex login» را اجرا کنید و «Sign in with ChatGPT» را انتخاب کنید."
+
+msgid "This is an Anthropic API key, not a subscription token. Run “claude setup-token” and paste the token that starts with sk-ant-oat01-, or use the Anthropic API provider instead."
+msgstr "این کلید API آنتروپیک است، نه توکن اشتراک. دستور «claude setup-token» را اجرا کنید و توکنی را که با sk-ant-oat01- شروع می‌شود وارد کنید، یا از ارائه‌دهندهٔ API آنتروپیک استفاده کنید."
+
+msgid "This does not look like a Claude token. It starts with sk-ant-oat01- (output of: claude setup-token)."
+msgstr "این توکن Claude به نظر نمی‌رسد. با sk-ant-oat01- شروع می‌شود (خروجی claude setup-token)."
+
+msgid "Claude subscription token"
+msgstr "توکن اشتراک Claude"
+
+msgid "ChatGPT login (auth.json)"
+msgstr "ورود ChatGPT ‏(auth.json)"
+
+msgid "Valid format, saved encrypted."
+msgstr "قالب درست است؛ رمزنگاری‌شده ذخیره شد."
+
+msgid "Paste the token from your computer first (step 2)."
+msgstr "اول توکن را از کامپیوترتان وارد کنید (مرحلهٔ ۲)."
+
+msgid "Already saved."
+msgstr "از قبل ذخیره شده است."
+
+msgid "GitHub account"
+msgstr "حساب گیت‌هاب"
+
+msgid "Connect GitHub: paste a token created with the ready link."
+msgstr "گیت‌هاب را وصل کنید: توکنی را که با لینک آماده ساختید وارد کنید."
+
+msgid "Token permissions"
+msgstr "دسترسی‌های توکن"
+
+#, php-format
+msgid "The token is missing: %s"
+msgstr "توکن این دسترسی‌ها را ندارد: %s"
+
+msgid "create a new one with the ready link."
+msgstr "با لینک آماده یک توکن جدید بسازید."
+
+msgid "Repository name"
+msgstr "نام مخزن"
+
+msgid "Repository must look like owner/name."
+msgstr "مخزن باید به شکل owner/name باشد."
+
+msgid "Private repository, runner, workflow, queue branch and secrets"
+msgstr "مخزن خصوصی، رانر، ورک‌فلو، شاخهٔ صف و سکرت‌ها"
+
+msgid "GitHub Actions enabled"
+msgstr "GitHub Actions فعال است"
+
+msgid "Enabled"
+msgstr "فعال"
+
+msgid "Workflow “SEOlity AI” registered"
+msgstr "ورک‌فلو «SEOlity AI» ثبت شد"
+
+#, php-format
+msgid "GitHub reports the workflow as “%s”. It usually becomes active within a minute."
+msgstr "گیت‌هاب وضعیت ورک‌فلو را «%s» گزارش می‌دهد. معمولاً ظرف یک دقیقه فعال می‌شود."
+
+msgid "Active"
+msgstr "فعال"
+
+msgid "Secrets stored on GitHub"
+msgstr "سکرت‌ها روی گیت‌هاب ذخیره شدند"
+
+#, php-format
+msgid "Missing on GitHub: %s"
+msgstr "روی گیت‌هاب موجود نیست: %s"
+
+msgid "Set as the AI engine"
+msgstr "به‌عنوان موتور هوش مصنوعی تنظیم شد"
+
 msgid "PHP extensions (OpenSSL, sodium)"
 msgstr "افزونه‌های PHP (OpenSSL، sodium)"
 
@@ -137,10 +215,6 @@ msgstr "حساب GitHub متصل است"
 
 msgid "No GitHub token saved yet."
 msgstr "هنوز توکن GitHub ذخیره نشده است."
-
-#, php-format
-msgid "The token is missing: %s"
-msgstr "توکن این دسترسی‌ها را ندارد: %s"
 
 #, php-format
 msgid "Signed in as @%s"
@@ -281,6 +355,21 @@ msgstr "راهنمای اتصال"
 msgid "Settings"
 msgstr "تنظیمات"
 
+msgid "AI Center"
+msgstr "مرکز هوش مصنوعی"
+
+msgid "Keywords & links"
+msgstr "کلمات کلیدی و لینک‌ها"
+
+msgid "Analysis"
+msgstr "تحلیل"
+
+msgid "Technical SEO"
+msgstr "سئوی فنی"
+
+msgid "Connections"
+msgstr "اتصال‌ها"
+
 msgid "You are not allowed to access this page."
 msgstr "شما اجازه دسترسی به این صفحه را ندارید."
 
@@ -302,6 +391,22 @@ msgstr "%1$d اقدام بحرانی و %2$d اقدام با اولویت بال
 
 msgid "What should I do today?"
 msgstr "امروز چه کار کنم؟"
+
+msgid "What is in the image? (optional hint)"
+msgstr "در تصویر چه چیزی هست؟ (راهنمای اختیاری)"
+
+msgid "Write ALT, title, caption & description with AI"
+msgstr "نوشتن ALT، عنوان، کپشن و توضیحات با هوش مصنوعی"
+
+msgid "Uses the page this image belongs to, its focus keyword, the SEO knowledge base and competitor data. Review, then the fields save as usual."
+msgstr "از صفحه‌ای که تصویر به آن تعلق دارد، کلمهٔ کلیدی کانونی، پایگاه دانش سئو و داده‌های رقبا استفاده می‌کند. بررسی کنید؛ فیلدها مثل همیشه ذخیره می‌شوند."
+
+msgid "Write ALT text with SEOlity AI"
+msgstr "نوشتن ALT با هوش مصنوعی SEOlity"
+
+#, php-format
+msgid "SEOlity AI is writing ALT text for %d images in the background. Review them in AI Center → AI Changes."
+msgstr "هوش مصنوعی SEOlity در پس‌زمینه برای %d تصویر ALT می‌نویسد. آن‌ها را در مرکز هوش مصنوعی ← تغییرات AI بررسی کنید."
 
 msgid "Optimize with SEOlity AI"
 msgstr "بهینه‌سازی با هوش مصنوعی سئولیتی"
@@ -592,17 +697,14 @@ msgstr "این پراپرتی برای حساب متصل در دسترس نیس�
 msgid "You are not allowed to edit this product."
 msgstr "شما اجازه ویرایش این محصول را ندارید."
 
+msgid "Sorry, you are not allowed to do that."
+msgstr "متأسفیم، اجازهٔ انجام این کار را ندارید."
+
 msgid "Unknown secret."
 msgstr "کلید محرمانه ناشناخته."
 
 msgid "auth.json must be valid JSON (copy the whole file from ~/.codex/auth.json)."
 msgstr "auth.json باید JSON معتبر باشد (کل فایل ~/.codex/auth.json را کپی کنید)."
-
-msgid "This is not the whole auth.json file. Copy everything from { to }."
-msgstr "این کل فایل auth.json نیست. همه چیز را از { تا } کپی کنید."
-
-msgid "This does not look like a Claude token. It starts with sk-ant-oat01- (output of: claude setup-token)."
-msgstr "این توکن Claude به نظر نمی‌رسد. با sk-ant-oat01- شروع می‌شود (خروجی claude setup-token)."
 
 msgid "Dates must be YYYY-MM-DD."
 msgstr "تاریخ‌ها باید به‌صورت YYYY-MM-DD باشند."
@@ -1460,6 +1562,12 @@ msgstr "ابتدا توکن API کلادفلر را بچسبانید."
 msgid "Cloudflare did not accept this token. Create it again with the permissions listed in the guide."
 msgstr "کلادفلر این توکن را نپذیرفت. آن را با دسترسی‌های گفته‌شده در راهنما دوباره بسازید."
 
+msgid "The token works and has access to several accounts. Pick the account to use."
+msgstr "توکن کار می‌کند و به چند حساب دسترسی دارد. حسابی را که می‌خواهید انتخاب کنید."
+
+msgid "The token works, but the Account ID could not be read automatically. Copy it from the Cloudflare dashboard (Workers & Pages → Account ID on the right) and save again."
+msgstr "توکن کار می‌کند اما Account ID خودکار خوانده نشد. آن را از داشبورد کلادفلر (Workers & Pages ← Account ID در سمت راست) کپی کنید و دوباره ذخیره کنید."
+
 msgid "Your workers.dev subdomain is not set up yet. Open Workers & Pages once in the Cloudflare dashboard, then deploy again."
 msgstr "زیردامنه workers.dev شما هنوز ساخته نشده است. یک‌بار بخش Workers & Pages را در داشبورد کلادفلر باز کنید و دوباره مستقر کنید."
 
@@ -1926,9 +2034,6 @@ msgstr "ذخیره‌سازی گیت‌هاب تنظیم نشده است."
 msgid "The PHP sodium extension is required to store GitHub secrets."
 msgstr "برای ذخیره Secretهای گیت‌هاب، افزونه sodium در PHP لازم است."
 
-msgid "Repository must look like owner/name."
-msgstr "مخزن باید به شکل owner/name باشد."
-
 #, php-format
 msgid "The token is missing the “%s” scope."
 msgstr "توکن دسترسی «%s» را ندارد."
@@ -1952,8 +2057,29 @@ msgstr "ابتدا مخزن دانش اختصاصی خود را بسازید."
 msgid "Save an Anthropic API key in AI engine settings first."
 msgstr "ابتدا یک کلید API از Anthropic در تنظیمات هوش مصنوعی ذخیره کنید."
 
+msgid "Create your own knowledge repository first (one click on the GitHub & data page); the shared one cannot learn about your site."
+msgstr "اول مخزن دانش خودتان را بسازید (یک کلیک در صفحهٔ گیت‌هاب و داده)؛ مخزن مشترک نمی‌تواند دربارهٔ سایت شما یاد بگیرد."
+
+msgid "The knowledge builder needs an AI account: deploy subscription AI (Claude or ChatGPT) or give it your Anthropic key first."
+msgstr "سازندهٔ دانش به یک حساب هوش مصنوعی نیاز دارد: اول هوش مصنوعی اشتراکی (Claude یا ChatGPT) را مستقر کنید یا کلید آنتروپیک بدهید."
+
 msgid "The shared knowledge base is updated by SEOlity. Create your own knowledge repository to run the builder yourself."
 msgstr "دانش مشترک را SEOlity به‌روز می‌کند. برای اجرای سازنده توسط خودتان، مخزن دانش اختصاصی بسازید."
+
+msgid "Private repository"
+msgstr "مخزن خصوصی"
+
+msgid "AI runner (workflow, queue branch, secrets)"
+msgstr "رانر هوش مصنوعی (ورک‌فلو، شاخهٔ صف، سکرت‌ها)"
+
+msgid "Own knowledge base (knowledge + weekly builder)"
+msgstr "پایگاه دانش اختصاصی (دانش + سازندهٔ هفتگی)"
+
+msgid "Data archive (branch seolity-data)"
+msgstr "آرشیو داده (شاخهٔ seolity-data)"
+
+msgid "Ready"
+msgstr "آماده"
 
 msgid "The data repository must be private. Change its visibility on GitHub or choose another name."
 msgstr "مخزن داده باید خصوصی باشد. حالت آن را در GitHub تغییر دهید یا نام دیگری انتخاب کنید."
@@ -2145,23 +2271,8 @@ msgstr "نسخه %s"
 msgid "SEOlity navigation"
 msgstr "ناوبری سئولیتی"
 
-msgid "Overview"
-msgstr "نمای کلی"
-
-msgid "Content & SEO"
-msgstr "محتوا و سئو"
-
-msgid "Analysis"
-msgstr "تحلیل"
-
-msgid "Technical SEO"
-msgstr "سئوی فنی"
-
-msgid "Connections"
-msgstr "اتصال‌ها"
-
-msgid "System"
-msgstr "سیستم"
+msgid "Setup"
+msgstr "راه‌اندازی"
 
 msgid "Toggle dark mode"
 msgstr "تغییر حالت تاریک"
@@ -2672,6 +2783,31 @@ msgstr "درج در ویرایشگر"
 msgid "Google will generate a snippet from your content. Write a description to control it."
 msgstr "گوگل از محتوای شما یک خلاصه می‌سازد. برای کنترل آن، توضیحات بنویسید."
 
+msgid "Writing with AI…"
+msgstr "در حال نوشتن با هوش مصنوعی…"
+
+#, php-format
+msgid "Filled: %s. Review and keep or edit — changes save like any edit."
+msgstr "پر شد: %s. بررسی کنید و نگه دارید یا ویرایش کنید — مثل هر ویرایشی ذخیره می‌شود."
+
+msgid "No editable fields found on this screen."
+msgstr "در این صفحه فیلد قابل ویرایشی پیدا نشد."
+
+#, php-format
+msgid "Suggested file name: %s"
+msgstr "نام فایل پیشنهادی: %s"
+
+#, php-format
+msgid "Check the ALT text: %s"
+msgstr "متن ALT را بررسی کنید: %s"
+
+#, php-format
+msgid "Knowledge used: %s"
+msgstr "دانش استفاده‌شده: %s"
+
+msgid "Something went wrong."
+msgstr "مشکلی پیش آمد."
+
 msgid "Select a Text Editor or Heading widget first."
 msgstr "ابتدا یک ویجت ویرایشگر متن یا عنوان را انتخاب کنید."
 
@@ -2911,6 +3047,9 @@ msgstr "ایجاد"
 msgid "User"
 msgstr "کاربر"
 
+msgid "System"
+msgstr "سیستم"
+
 msgid "Action"
 msgstr "اقدام"
 
@@ -2929,6 +3068,9 @@ msgstr "همگام‌سازی از گیت‌هاب"
 #, php-format
 msgid "Synced: %1$s bundled, %2$s from GitHub."
 msgstr "همگام شد: %1$s داخلی، %2$s از گیت‌هاب."
+
+msgid "Collect knowledge for this site"
+msgstr "جمع‌آوری دانش برای این سایت"
 
 msgid "Repository"
 msgstr "مخزن"
@@ -3138,9 +3280,6 @@ msgstr "API سفارشی (هر ارائه‌دهنده)"
 
 msgid "DeepSeek, Groq, Mistral, Together, xAI, Perplexity, Azure OpenAI, Cloudflare Workers AI, LM Studio, vLLM, LiteLLM or any compatible gateway."
 msgstr "DeepSeek، Groq، Mistral، Together، xAI، Perplexity، Azure OpenAI، Cloudflare Workers AI، LM Studio، vLLM، LiteLLM یا هر درگاه سازگار."
-
-msgid "Active"
-msgstr "فعال"
 
 msgid "configured"
 msgstr "تنظیم‌شده"
@@ -4738,9 +4877,6 @@ msgstr "بله"
 msgid "No"
 msgstr "خیر"
 
-msgid "Something went wrong."
-msgstr "مشکلی پیش آمد."
-
 msgid "Close"
 msgstr "بستن"
 
@@ -5212,6 +5348,9 @@ msgstr "لحن برند و قوانین نگارشی"
 
 msgid "Use the SEO knowledge base in prompts"
 msgstr "استفاده از پایگاه دانش سئو در پرامپت‌ها"
+
+msgid "Write ALT text with AI when an image is uploaded"
+msgstr "نوشتن خودکار ALT با هوش مصنوعی هنگام آپلود تصویر"
 
 msgid "Initial import (days)"
 msgstr "ورود اولیه (روز)"

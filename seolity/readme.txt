@@ -1,10 +1,10 @@
-=== SEOlity – AI SEO Intelligence for WordPress ===
+=== ARIAGH.SEOLITY – AI SEO Intelligence for WordPress ===
 Contributors: seolity
 Tags: seo, ai, search console, woocommerce, schema
 Requires at least: 6.2
 Tested up to: 6.6
 Requires PHP: 7.4
-Stable tag: 1.4.0
+Stable tag: 1.5.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -72,6 +72,16 @@ Yes. The interface is fully translated and RTL-native, text analysis understands
 Enable "Delete all data on uninstall" in Settings → Privacy, then delete the plugin.
 
 == Changelog ==
+
+= 1.5.0 =
+* ARIAGH.SEOLITY branding: new icon, logo, banners and menu icon in the ARIAGH style.
+* Simpler navigation: 9 sections instead of 28 menu items; related pages are tabs inside each section (nothing removed, every page keeps its link).
+* Subscription AI really deploys now (like ARIAGH AI Writer): one card, one "Deploy now" button. It checks the token type (rejects API keys), creates or repairs the private repository, enables GitHub Actions and the workflow, stores and verifies the secrets on GitHub and activates the engine — with a live checklist and a status read from GitHub.
+* GitHub: "Create & set up everything" builds a single private repository (runner + own knowledge + data archive on the seolity-data branch).
+* Cloudflare: the connected state is now remembered and shown (account, ID, verified token); account picker when a token sees several accounts; clear message when the Account ID cannot be detected.
+* Knowledge collection: "Collect knowledge now" runs a GitHub workflow that learns from SEO sources, your Search Console queries, pages and competitors using your Claude/ChatGPT subscription (or an Anthropic key) and writes a site playbook to GitHub; live status and report; the AI always uses this site's playbook.
+* AI everywhere: media modal, Media Library and attachment screens get an AI button for ALT, title, caption and description (with optional hint), a bulk action and optional auto-ALT on upload.
+* Content-writing AI tasks now receive market evidence: cached SERP top results and People Also Ask, matching competitor pages (length, FAQ, schema) and this site's Search Console standing.
 
 = 1.4.0 =
 * Subscription AI wizard (like ARIAGH AI Writer, simpler): prerequisite check first, then GitHub, optional Cloudflare, the Claude Pro/Max or ChatGPT Plus/Pro account (copyable Windows / macOS commands) and a real test request.

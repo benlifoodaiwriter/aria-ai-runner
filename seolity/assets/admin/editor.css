@@ -347,3 +347,10 @@ input[type="color"].sl-input { padding: 4px; width: 80px; }
 .seolity-svg, .components-button svg.seolity-svg, .seolity-ic { fill: none !important; }
 .seolity-g-btn .seolity-svg { width: 18px; height: 18px; }
 .seolity-kw-line .seolity-ic { vertical-align: -3px; }
+
+/* Media: AI for ALT / title / caption / description. */
+.seolity-media-ai { display: grid; gap: 6px; }
+.seolity-media-ai .seolity-media-hint { width: 100%; }
+.seolity-media-ai .button { white-space: normal; height: auto; line-height: 1.5; padding: 4px 10px; text-align: center; }
+.seolity-media-out p { margin: 4px 0 0; }
+.seolity-media-ok { color: #047857; font-weight: 600; }

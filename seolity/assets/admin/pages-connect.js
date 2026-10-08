@@ -73,6 +73,52 @@
 		}
 	}
 
+	/* ================================================================ Knowledge collection (shared) */
+	/**
+	 * "Collect knowledge now" panel: starts the GitHub workflow that studies this site's
+	 * Search Console data, competitors and top SEO documentation, shows live progress
+	 * and syncs the result.
+	 */
+	App.knowledgeCollector = function ( own ) {
+		var box = h( 'div', { class: 'sl-collect' } );
+		var status = h( 'div' );
+		var timer = null;
+		function show( st ) {
+			SL.clear( status );
+			if ( ! st || st.state === 'idle' ) {
+				return;
+			}
+			var map = { starting: [ 'loader', T( 'در حال شروع روی GitHub…', 'Starting on GitHub…' ), 'info' ], running: [ 'loader', T( 'در حال یادگیری: خواندن داده سرچ کنسول، صفحات رقبا و منابع سئو…', 'Learning: reading Search Console data, competitor pages and SEO sources…' ), 'info' ], done: [ 'check-circle', T( 'دانش جدید جمع‌آوری و همگام شد.', 'New knowledge collected and synced.' ), 'success' ], failed: [ 'x-circle', T( 'اجرا ناموفق بود؛ جزئیات را در GitHub Actions ببینید.', 'The run failed; see the details in GitHub Actions.' ), 'error' ] }[ st.state ] || [ 'info', st.state, 'info' ];
+			status.appendChild( h( 'div', { class: 'sl-alert sl-alert--' + map[ 2 ] + ' sl-iconline' }, SL.icon( map[ 0 ], 18, st.state === 'running' || st.state === 'starting' ? 'sl-spin' : '' ), h( 'span', { text: map[ 1 ] } ), st.run ? SL.xlink( st.run.url, T( 'مشاهده اجرا', 'View run' ) ) : null ) );
+			if ( st.report && st.report.report ) {
+				status.appendChild( h( 'details', { class: 'sl-more' }, h( 'summary', { text: T( 'گزارش جمع‌آوری', 'Collection report' ) + ' · ' + ( st.report.engine || '' ) } ), h( 'ul', { class: 'sl-small', dir: 'ltr' }, st.report.report.slice( 0, 30 ).map( function ( l ) {
+					return h( 'li', { text: l.replace( /^\|\s*|\s*\|$/g, '' ).replace( /\s*\|\s*/g, ' — ' ) } );
+				} ) ) ) );
+			}
+			if ( st.state === 'starting' || st.state === 'running' ) {
+				timer = setTimeout( poll, 15000 );
+			}
+		}
+		function poll() {
+			if ( ! box.isConnected ) {
+				return;
+			}
+			SL.api( 'github/knowledge/collect' ).then( show ).catch( function () {} );
+		}
+		box.appendChild( h( 'p', { class: 'sl-small sl-muted', text: T( 'با یک کلیک، یک Workflow در GitHub اجرا می‌شود که داده واقعی سرچ کنسول سایت شما، صفحات رقبا و بهترین منابع سئو را می‌خواند و یک راهنمای اختصاصی (مخاطب، نقشه موضوعی، خوشه‌های کلمات کلیدی، شکاف‌های محتوا، الگوهای رقبا و کارهای سریع) در مخزن می‌نویسد. از آن به بعد همه پاسخ‌های هوش مصنوعی از این دانش استفاده می‌کنند.', 'One click runs a GitHub workflow that reads your real Search Console data, competitor pages and top SEO sources, and writes a site-specific playbook (audience, topic map, keyword clusters, content gaps, competitor patterns, quick wins) into the repository. From then on every AI answer uses this knowledge.' ) } ) );
+		box.appendChild( own ? App.abtn( SL.il( 'brain', T( 'جمع‌آوری دانش همین حالا', 'Collect knowledge now' ) ), function () {
+			return SL.api( 'github/knowledge/collect', { method: 'POST' } ).then( function () {
+				SL.toast( T( 'جمع‌آوری در GitHub شروع شد (۳ تا ۱۰ دقیقه).', 'Collection started on GitHub (3–10 minutes).' ), 'success' );
+				show( { state: 'starting' } );
+			} );
+		}, 'primary' ) : h( 'a', { class: 'sl-btn sl-btn--primary', href: '#/github' }, SL.il( 'rocket', T( 'اول مخزن دانش اختصاصی را بسازید (یک کلیک)', 'First create your own knowledge repository (one click)' ) ) ) );
+		box.appendChild( status );
+		if ( own ) {
+			poll();
+		}
+		return box;
+	};
+
 	/* ================================================================ GitHub token form (shared) */
 	function githubConnect( st, onDone ) {
 		var acct = st.token.account;
@@ -160,12 +206,44 @@
 			// Step 1 — account.
 			body.appendChild( SL.wizStep( { n: 1, id: 'gh-account', done: connected, title: T( 'اتصال حساب GitHub', 'Connect your GitHub account' ), sub: T( 'فقط یک توکن لازم است؛ بقیه کارها خودکار انجام می‌شود.', 'All SEOlity needs is one token; everything else is automatic.' ), state: connected ? [ t( 'Connected' ), 'good' ] : [ t( 'Not set' ), 'neutral' ], body: githubConnect( st, render ) } ) );
 
-			// Step 2 — repositories.
+			// Step 2 — one repository for everything (details below for separate repositories).
 			var grid = h( 'div', { class: 'sl-repos' } );
 			grid.appendChild( runnerCard( st, connected, render ) );
 			grid.appendChild( knowledgeCard( st, connected, render ) );
 			grid.appendChild( storageCard( st, connected, render ) );
-			body.appendChild( SL.wizStep( { n: 2, id: 'gh-repos', done: !! ( st.runner.exists && st.runner.setup ) || !! ( st.storage.exists && st.storage.enabled ), title: T( 'مخزن‌ها (هر کدام با یک کلیک)', 'Repositories (one click each)' ), sub: T( 'هر کدام را که لازم دارید بسازید. همه خصوصی ساخته می‌شوند و نام پیش‌فرض قابل تغییر است.', 'Create the ones you need. All are created private; the default names can be changed.' ), body: grid } ) );
+			var oneName = h( 'input', { class: 'sl-input', dir: 'ltr', value: st.runner.repo || st.defaults.runner } );
+			var parts = {};
+			var partBox = h( 'div', { class: 'sl-stack' }, [ [ 'runner', T( 'اجراکننده هوش مصنوعی اشتراکی (Claude / ChatGPT)', 'Subscription AI runner (Claude / ChatGPT)' ), true ], [ 'knowledge', T( 'پایگاه دانش اختصاصی + جمع‌آوری خودکار دانش', 'Own knowledge base + automatic knowledge collection' ), true ], [ 'storage', T( 'بایگانی داده‌های قدیمی (دیتابیس سبک‌تر)', 'Archive of old data (a lighter database)' ), true ] ].map( function ( x ) {
+				parts[ x[ 0 ] ] = h( 'input', { type: 'checkbox', checked: x[ 2 ] } );
+				return h( 'label', { class: 'sl-check' }, parts[ x[ 0 ] ], h( 'span', { text: x[ 1 ] } ) );
+			} ) );
+			var shareKey = h( 'input', { type: 'checkbox', checked: !! st.knowledge.anthropic_key } );
+			var oneLog = h( 'div' );
+			var oneClick = h( 'div', { class: 'sl-grid-2 sl-grid-2--top' },
+				h( 'div', null, p( T( 'SEOlity یک مخزن خصوصی می‌سازد و همه چیز را در آن قرار می‌دهد: اجراکننده هوش مصنوعی، پایگاه دانش و بایگانی داده (روی شاخه جدا). نیازی نیست چیزی را در GitHub دستی بسازید.', 'SEOlity creates one private repository and puts everything in it: the AI runner, the knowledge base and the data archive (on its own branch). Nothing to create on GitHub by hand.' ) ), partBox,
+					st.knowledge.anthropic_key ? h( 'label', { class: 'sl-check' }, shareKey, h( 'span', { text: T( 'جمع‌آوری دانش با کلید Anthropic این سایت هم انجام شود (در غیر این صورت با اکانت اشتراکی)', 'Also let knowledge collection use this site’s Anthropic key (otherwise it uses your subscription account)' ) } ) ) : null ),
+				h( 'div', { class: 'sl-stack sl-formcol' }, h( 'label', { class: 'sl-label', text: T( 'نام مخزن خصوصی', 'Private repository name' ) } ), oneName,
+					App.abtn( SL.il( 'rocket', T( 'ساخت و راه‌اندازی همه با یک کلیک', 'Create & set up everything' ) ), function () {
+						SL.clear( oneLog ).appendChild( SL.spinner( T( 'در حال ساخت…', 'Setting up…' ) ) );
+						return SL.api( 'github/setup-all', { body: { repo: oneName.value.trim(), runner: parts.runner.checked, knowledge: parts.knowledge.checked, storage: parts.storage.checked, share_key: shareKey.checked } } ).then( function ( r ) {
+							SL.clear( oneLog ).appendChild( SL.checklist( r.steps.map( function ( x ) {
+								return { level: x.ok ? 'ok' : 'fail', title: x.title, detail: x.detail };
+							} ) ) );
+							SL.toast( r.ok ? T( 'همه چیز آماده است.', 'Everything is ready.' ) : T( 'یک مرحله خطا داد؛ متن آن را ببینید.', 'A step failed; see its message.' ), r.ok ? 'success' : 'error' );
+							if ( r.ok ) {
+								setTimeout( function () {
+									render( r.status );
+								}, 1800 );
+							}
+						} ).catch( function ( e ) {
+							SL.clear( oneLog ).appendChild( h( 'div', { class: 'sl-alert sl-alert--error', text: e.message } ) );
+						} );
+					}, 'primary', { disabled: ! connected } ),
+					oneLog
+				)
+			);
+			var anyReady = !! ( st.runner.exists && st.runner.setup ) || !! ( st.storage.exists && st.storage.enabled ) || st.knowledge.mode === 'own';
+			body.appendChild( SL.wizStep( { n: 2, id: 'gh-repos', done: anyReady, title: T( 'ساخت مخزن (یک کلیک)', 'Create the repository (one click)' ), sub: T( 'پیش‌فرض: یک مخزن خصوصی برای همه چیز. جزئیات و مخزن‌های جدا در پایین.', 'Default: one private repository for everything. Details and separate repositories below.' ), body: h( 'div', { class: 'sl-stack' }, oneClick, h( 'details', { class: 'sl-more', open: anyReady ? true : null }, h( 'summary', { text: T( 'وضعیت و جزئیات هر بخش (اجراکننده، دانش، داده)', 'Status and details of each part (runner, knowledge, data)' ) } ), grid ) ) } ) );
 
 			// Advanced settings.
 			body.appendChild( advancedCard() );
@@ -302,6 +380,7 @@
 				} );
 			} : null,
 			extra: h( 'div', { class: 'sl-stack' },
+				App.knowledgeCollector( own && k.exists ),
 				kv( [ [ T( 'اسناد', 'Documents' ), T( 'پیش‌فرض: ', 'bundled: ' ) + ( docs.bundled || 0 ) + ' · GitHub: ' + ( docs.github || 0 ) + ' · ' + T( 'یادداشت: ', 'notes: ' ) + ( docs.user || 0 ) ], [ T( 'آخرین همگام‌سازی', 'Last sync' ), k.last_sync && k.last_sync.time ? SL.date( new Date( k.last_sync.time * 1000 ).toISOString() ) : '—' ], own ? [ T( 'سازنده هفتگی', 'Weekly builder' ), k.builder_key ? T( 'کلید Anthropic در Secrets', 'Anthropic key in Secrets' ) : T( 'بدون کلید (فقط ذخیره یادداشت‌ها)', 'no key (stores notes only)' ) ] : null ] ),
 				k.anthropic_key ? h( 'label', { class: 'sl-check' }, shareKey, h( 'span', { text: T( 'کلید Anthropic این سایت برای سازنده هفتگی دانش در Secrets مخزن ذخیره شود (هزینه هر اجرا از همان کلید کم می‌شود).', 'Store this site’s Anthropic key in the repository Secrets for the weekly knowledge builder (each run is billed to that key).' ) } ) ) : null,
 				h( 'div', { class: 'sl-row' },
@@ -420,13 +499,36 @@
 					}, 'sm' ) : null ), accList,
 					App.abtn( SL.il( 'shield', T( 'ذخیره و بررسی توکن', 'Save & verify token' ) ), function () {
 						return SL.api( 'cloudflare/connect', { body: { token: tok.input.value, account_id: acc.value } } ).then( function ( r ) {
-							SL.toast( T( 'کلادفلر متصل شد.', 'Cloudflare connected.' ), 'success' );
+							if ( r.configured ) {
+								SL.toast( T( 'کلادفلر متصل شد.', 'Cloudflare connected.' ), 'success' );
+							}
 							render( r );
 						} );
 					}, 'primary' )
 				)
 			);
-			body.appendChild( SL.wizStep( { n: 1, done: st.configured, title: T( 'اتصال حساب کلادفلر', 'Connect your Cloudflare account' ), state: st.configured ? [ t( 'Connected' ), 'good' ] : [ t( 'Not set' ), 'neutral' ], body: s1 } ) );
+			var step1 = s1;
+			if ( st.notice ) {
+				// Token accepted but the account is not known yet: ask for it explicitly.
+				step1 = h( 'div', { class: 'sl-stack' }, h( 'div', { class: 'sl-alert sl-alert--warn sl-iconline' }, SL.icon( 'alert', 18 ), h( 'span', { text: st.notice } ) ),
+					st.accounts && st.accounts.length ? h( 'div', { class: 'sl-row' }, st.accounts.map( function ( a ) {
+						return App.abtn( SL.il( 'check', a.name + ' · ' + a.id.slice( 0, 8 ) + '…', 15 ), function () {
+							return SL.api( 'cloudflare/connect', { body: { token: '', account_id: a.id } } ).then( render );
+						}, 'sm' );
+					} ) ) : null, s1 );
+			} else if ( st.configured ) {
+				step1 = h( 'div', { class: 'sl-stack' },
+					h( 'div', { class: 'sl-connected' }, h( 'span', { class: 'sl-connected__ic' }, SL.icon( 'cloud', 22 ) ), h( 'div', null,
+						h( 'strong', { text: st.account_name || T( 'حساب کلادفلر', 'Cloudflare account' ) } ),
+						h( 'div', { class: 'sl-row' }, SL.badge( 'Account ID: ' + st.account_id.slice( 0, 8 ) + '…', 'neutral' ), SL.badge( T( 'توکن ذخیره و بررسی شده', 'Token saved & verified' ), 'good' ) )
+					) ),
+					h( 'details', { class: 'sl-more' }, h( 'summary', { text: T( 'تعویض توکن یا حساب', 'Change token or account' ) } ), s1,
+						App.abtn( SL.il( 'x', T( 'قطع اتصال کلادفلر', 'Disconnect Cloudflare' ), 15 ), function () {
+							return SL.api( 'cloudflare/disconnect', { method: 'POST' } ).then( render );
+						}, 'ghost' ) )
+				);
+			}
+			body.appendChild( SL.wizStep( { n: 1, done: st.configured, title: T( 'اتصال حساب کلادفلر', 'Connect your Cloudflare account' ), state: st.configured ? [ t( 'Connected' ), 'good' ] : ( st.token ? [ T( 'Account ID لازم است', 'Account ID needed' ), 'warn' ] : [ t( 'Not set' ), 'neutral' ] ), body: step1 } ) );
 
 			// Step 2 — deploy.
 			var settingsBox = h( 'div' );
@@ -531,175 +633,77 @@
 		load();
 	};
 
-	/* ================================================================ Subscription AI wizard */
+	/* ================================================================ Subscription AI (ARIAGH-style one-shot deploy) */
 	App.pages.subscription = function ( v, q ) {
-		v.appendChild( App.header( t( 'Subscription AI' ), T( 'برای کسانی که اکانت Claude Pro/Max یا ChatGPT Plus/Pro دارند ولی API پولی نمی‌خواهند: همان اکانت، همه امکانات هوش مصنوعی SEOlity را اجرا می‌کند.', 'For people with a Claude Pro/Max or ChatGPT Plus/Pro plan who don’t want a paid API: that same plan runs every SEOlity AI feature.' ) ) );
+		v.appendChild( App.header( t( 'Subscription AI' ), T( 'با همان اکانت Claude Pro/Max یا ChatGPT Plus/Pro که دارید، بدون API پولی، همه امکانات هوش مصنوعی SEOlity را اجرا کنید.', 'Run every SEOlity AI feature with the Claude Pro/Max or ChatGPT Plus/Pro plan you already have — no paid API.' ) ) );
 		var body = h( 'div' );
 		v.appendChild( body );
 		var engine = q.engine === 'codex' ? 'codex' : null;
 		function load() {
-			App.load( body, Promise.all( [ SL.api( 'subscription' ), SL.api( 'github' ), SL.api( 'cloudflare' ) ] ), function ( r ) {
+			App.load( body, Promise.all( [ SL.api( 'subscription' ), SL.api( 'github' ), SL.api( 'cloudflare' ), SL.api( 'subscription/verify' ).catch( function () {
+				return null;
+			} ) ] ), function ( r ) {
 				if ( ! engine ) {
 					engine = r[ 0 ].provider === 'sub_codex' || ( ! r[ 0 ].claude_token && r[ 0 ].codex_auth ) ? 'codex' : 'claude';
 				}
-				render( r[ 0 ], r[ 1 ], r[ 2 ] );
+				render( r[ 0 ], r[ 1 ], r[ 2 ], r[ 3 ] );
 			} );
 		}
-		function render( sub, gh, cf ) {
+		function render( sub, gh, cf, ver ) {
 			SL.clear( body );
-			// Hero.
-			body.appendChild( h( 'section', { class: 'sl-card sl-hero' }, h( 'div', { class: 'sl-card__body' },
-				h( 'h2', { text: T( 'با همان اکانت چتی که خریده‌اید، سئو کنید', 'Do your SEO with the chat plan you already pay for' ) } ),
-				p( T( 'SEOlity به‌جای API پولی از ابزارهای رسمی خود سازنده‌ها (Claude Code و OpenAI Codex) استفاده می‌کند که ورود با اکانت اشتراکی را پشتیبانی می‌کنند. این ابزارها روی سرورهای رایگان GitHub Actions در مخزن خصوصی خودتان اجرا می‌شوند.', 'Instead of a paid API, SEOlity uses the vendors’ official tools (Claude Code and OpenAI Codex), which support signing in with a subscription. They run on free GitHub Actions servers in your own private repository.' ) ),
-				h( 'div', { class: 'sl-row' }, [ [ 'check-circle', T( 'بدون هزینه اضافه', 'No extra cost' ), 'good' ], [ 'shield', T( 'روش رسمی سازنده‌ها', 'Official vendor tools' ), 'good' ], [ 'key', T( 'بدون نیاز به API', 'No API needed' ), 'info' ], [ 'lock', T( 'رمزنگاری سرتاسری', 'End-to-end encrypted' ), 'info' ] ].map( function ( b ) {
-					return h( 'span', { class: 'sl-badge sl-badge--' + b[ 2 ] + ' sl-iconline' }, SL.icon( b[ 0 ], 13 ), h( 'span', { text: b[ 1 ] } ) );
-				} ) ),
-				h( 'div', { class: 'sl-flow' }, [ [ 'globe', T( 'وردپرس', 'WordPress' ), T( 'درخواست رمزنگاری‌شده', 'encrypted request' ) ], [ 'server', T( 'GitHub Actions (رایگان)', 'GitHub Actions (free)' ), T( 'ماشین موقت', 'temporary machine' ) ], [ 'sparkles', T( 'اکانت شما', 'Your plan' ), engine === 'codex' ? 'Codex · ChatGPT' : 'Claude Code · Claude' ], [ 'cloud', T( 'کلادفلر (اختیاری)', 'Cloudflare (optional)' ), T( 'تحویل سریع', 'fast delivery' ) ], [ 'review', T( 'وردپرس', 'WordPress' ), T( 'پاسخ آماده', 'answer ready' ) ] ].map( function ( x, i ) {
-					return [ i ? h( 'i', null, SL.icon( C.rtl ? 'arrow-left' : 'arrow-right', 16 ) ) : null, h( 'div', { class: 'sl-flow__step' + ( i === 2 ? ' is-accent' : '' ) }, h( 'span', null, SL.icon( x[ 0 ], 20 ) ), h( 'b', { text: x[ 1 ] } ), h( 'small', { text: x[ 2 ] } ) ) ];
+			var isClaude = engine === 'claude';
+			var saved = isClaude ? sub.claude_token : sub.codex_auth;
+			var active = sub.provider === 'sub_' + engine;
+			var deployed = ver && ver.deployed && ver.engines && ver.engines[ engine ];
+
+			// Status hero: what is really deployed on GitHub right now.
+			var items = [
+				[ T( 'مخزن خصوصی', 'Private repository' ), ver && ver.exists ? ( ver.private ? 'ok' : 'fail' ) : 'fail', ver && ver.exists ? ver.repo : T( 'ساخته نشده', 'not created' ) ],
+				[ T( 'Workflow اجراکننده', 'Runner workflow' ), ver && ver.workflow === 'active' ? 'ok' : 'fail', ver ? ( ver.workflow || '—' ) : '—' ],
+				[ isClaude ? T( 'توکن Claude در GitHub', 'Claude token on GitHub' ) : T( 'ورود ChatGPT در GitHub', 'ChatGPT login on GitHub' ), ver && ver.engines && ver.engines[ engine ] ? 'ok' : 'fail', ver && ver.engines && ver.engines[ engine ] ? 'Secrets ✓' : T( 'ذخیره نشده', 'not stored' ) ],
+				[ T( 'موتور هوش مصنوعی فعال', 'Active AI engine' ), active ? 'ok' : 'warn', active ? ( isClaude ? 'Claude' : 'ChatGPT' ) : T( 'ارائه‌دهنده دیگر', 'another provider' ) ],
+				[ T( 'تحویل سریع (کلادفلر)', 'Fast delivery (Cloudflare)' ), cf.deployed ? 'ok' : 'info', cf.deployed ? T( 'فعال', 'active' ) : T( 'اختیاری', 'optional' ) ],
+			];
+			body.appendChild( h( 'section', { class: 'sl-card sl-hero sl-deploy' + ( deployed && active ? ' is-ok' : '' ) }, h( 'div', { class: 'sl-card__body' },
+				h( 'div', { class: 'sl-row sl-row--between' },
+					h( 'div', null, h( 'h2', { text: deployed && active ? T( 'هوش مصنوعی اشتراکی مستقر و فعال است', 'Subscription AI is deployed and active' ) : T( 'هوش مصنوعی اشتراکی هنوز کامل مستقر نشده', 'Subscription AI is not fully deployed yet' ) } ), h( 'p', { text: T( 'این وضعیت مستقیماً از GitHub خوانده شده است، نه از حافظه افزونه.', 'This status is read directly from GitHub, not from the plugin’s memory.' ) } ) ),
+					h( 'div', { class: 'sl-row' }, sub.repo_url ? SL.xlink( sub.repo_url + '/actions', 'GitHub Actions' ) : null, App.abtn( SL.il( 'refresh', T( 'بررسی دوباره', 'Check again' ), 15 ), function () {
+						return Promise.resolve( load() );
+					}, 'sm' ) )
+				),
+				SL.checklist( items.map( function ( x ) {
+					return { level: x[ 1 ], title: x[ 0 ], detail: x[ 2 ] };
 				} ) )
 			) ) );
 
 			// Account pick.
-			var pick = function ( id, mono, color, title, desc, saved ) {
+			var pick = function ( id, mono, color, title, desc, has ) {
 				return h( 'button', { type: 'button', class: 'sl-acct' + ( engine === id ? ' is-picked' : '' ), onClick: function () {
 					engine = id;
-					render( sub, gh, cf );
-				} }, h( 'span', { class: 'sl-mono', style: { '--c': color }, text: mono } ), h( 'div', null, h( 'b', { text: title } ), h( 'small', { text: desc } ), h( 'span', { class: 'sl-acct__state sl-iconline' }, SL.icon( saved ? 'check-circle' : 'key', 14, saved ? 'is-good' : '' ), h( 'span', { text: saved ? T( 'ثبت شده', 'saved' ) : T( 'ثبت نشده', 'not saved' ) } ) ) ) );
+					render( sub, gh, cf, ver );
+				} }, h( 'span', { class: 'sl-mono', style: { '--c': color }, text: mono } ), h( 'div', null, h( 'b', { text: title } ), h( 'small', { text: desc } ), h( 'span', { class: 'sl-acct__state sl-iconline' }, SL.icon( has ? 'check-circle' : 'key', 14, has ? 'is-good' : '' ), h( 'span', { text: has ? T( 'ثبت شده', 'saved' ) : T( 'ثبت نشده', 'not saved' ) } ) ) ) );
 			};
 			body.appendChild( h( 'div', { class: 'sl-accts' },
-				pick( 'claude', 'CL', '#d97757', 'Claude Pro / Max', T( 'پیشنهادی · روش رسمی Anthropic برای GitHub Actions با توکن یک‌ساله · فارسی‌نویسی عالی', 'Recommended · Anthropic’s official GitHub Actions method with a one-year token · excellent Persian' ), sub.claude_token ),
-				pick( 'codex', 'GPT', '#10a37f', 'ChatGPT Plus / Pro', T( 'از طریق OpenAI Codex با ورود ChatGPT · تمدید ورود خودکار انجام می‌شود', 'Through OpenAI Codex with ChatGPT sign-in · the login is refreshed automatically' ), sub.codex_auth )
+				pick( 'claude', 'CL', '#d97757', 'Claude Pro / Max', T( 'پیشنهادی · روش رسمی Anthropic با توکن یک‌ساله · فارسی‌نویسی عالی', 'Recommended · Anthropic’s official method with a one-year token · excellent Persian' ), sub.claude_token ),
+				pick( 'codex', 'GPT', '#10a37f', 'ChatGPT Plus / Pro', T( 'از طریق OpenAI Codex با ورود ChatGPT · تمدید خودکار', 'Through OpenAI Codex with ChatGPT sign-in · refreshed automatically' ), sub.codex_auth )
 			) );
 
-			// Step 0 — readiness check.
-			var checkBox = h( 'div' );
-			function runCheck() {
-				return SL.api( 'subscription/check?engine=' + engine ).then( function ( c ) {
-					SL.clear( checkBox );
-					checkBox.appendChild( SL.checklist( c.checks, function ( fix ) {
-						scrollTo( { github: 'sub-github', runner: 'sub-github', cloudflare: 'sub-cloudflare', account: 'sub-account', activate: 'sub-test' }[ fix ] || 'sub-test' );
-					} ) );
-					checkBox.appendChild( h( 'div', { class: 'sl-alert sl-alert--' + ( c.ready ? 'success' : 'info' ) + ' sl-iconline' }, SL.icon( c.ready ? 'check-circle' : 'info', 18 ), h( 'span', { text: c.ready ? T( 'همه پیش‌نیازها آماده است. به مرحله ۴ بروید و تست کنید.', 'Everything is ready. Go to step 4 and run the test.' ) : T( 'موارد قرمز را به ترتیب انجام دهید؛ دکمه «رفع» شما را به همان مرحله می‌برد.', 'Fix the red items in order; “Fix” takes you to the right step.' ) } ) ) );
-				} );
-			}
-			body.appendChild( SL.wizStep( { n: 0, id: 'sub-check', title: T( 'بررسی پیش‌نیازها', 'Check the prerequisites' ), sub: T( 'قبل از هر کاری، SEOlity همه چیز را بررسی می‌کند و می‌گوید کدام مرحله مانده است.', 'Before anything else, SEOlity checks everything and tells you which step is left.' ), body: h( 'div', { class: 'sl-stack' }, checkBox, h( 'div', { class: 'sl-row' }, App.abtn( SL.il( 'refresh', T( 'بررسی دوباره', 'Check again' ), 15 ), runCheck, 'sm' ) ) ) } ) );
-			checkBox.appendChild( SL.spinner( T( 'در حال بررسی…', 'Checking…' ) ) );
-			runCheck().catch( function ( e ) {
-				SL.clear( checkBox ).appendChild( h( 'div', { class: 'sl-alert sl-alert--error', text: e.message } ) );
-			} );
-
-			// Step 1 — GitHub.
-			var ghConnected = !! gh.token.account;
-			var runnerName = h( 'input', { class: 'sl-input', dir: 'ltr', value: sub.repo || gh.defaults.runner } );
-			var s1 = h( 'div', { class: 'sl-stack' },
-				ghConnected ? null : githubConnect( gh, function () {
-					load();
-				} ),
-				ghConnected ? h( 'div', { class: 'sl-connected' }, h( 'span', { class: 'sl-connected__ic' }, SL.icon( 'github', 20 ) ), h( 'div', null, h( 'strong', { dir: 'ltr', text: '@' + gh.token.account.login } ), h( 'small', { class: 'sl-muted' }, ' · ', h( 'a', { href: '#/github' }, T( 'مدیریت در «GitHub و داده»', 'Manage in “GitHub & data”' ) ) ) ) ) : null,
-				h( 'div', { class: 'sl-grid-2 sl-grid-2--top' },
-					SL.steps( [
-						T( 'نام مخزن خصوصی را تأیید کنید (پیش‌فرض مناسب است).', 'Confirm the private repository name (the default is fine).' ),
-						T( 'دکمه را بزنید: مخزن خصوصی ساخته می‌شود، فایل اجراکننده و Workflow در آن قرار می‌گیرد، شاخه صف ساخته می‌شود و کلیدها در GitHub Secrets ذخیره می‌شوند.', 'Press the button: the private repository is created, the runner and workflow are added, the queue branch is created and keys are stored in GitHub Secrets.' ),
-						T( 'هر بار افزونه به‌روز شود، فایل‌های اجراکننده هم خودکار به‌روز می‌شوند.', 'Whenever the plugin updates, the runner files update automatically.' ),
-					] ),
-					h( 'div', { class: 'sl-stack sl-formcol' }, h( 'label', { class: 'sl-label', text: T( 'مخزن خصوصی اجراکننده', 'Private runner repository' ) } ), runnerName,
-						App.abtn( SL.il( sub.setup ? 'refresh' : 'rocket', sub.setup ? T( 'نصب دوباره / به‌روزرسانی', 'Reinstall / update' ) : T( 'ساخت مخزن و نصب اجراکننده', 'Create repository & install runner' ) ), function () {
-							return SL.api( 'github/runner', { body: { repo: runnerName.value.trim() } } ).then( function () {
-								SL.toast( T( 'اجراکننده آماده است.', 'The runner is ready.' ), 'success' );
-								load();
-							} );
-						}, 'primary', { disabled: ! ghConnected } ),
-						sub.repo_url ? h( 'div', { class: 'sl-row' }, SL.xlink( sub.repo_url, sub.repo ), SL.xlink( sub.repo_url + '/actions', 'Actions' ) ) : null
-					)
-				)
-			);
-			body.appendChild( SL.wizStep( { n: 1, id: 'sub-github', done: ghConnected && !! sub.setup, title: T( 'اتصال GitHub و ساخت مخزن اجراکننده', 'Connect GitHub and create the runner repository' ), sub: T( 'سرور رایگانی که کار را انجام می‌دهد.', 'The free server that does the work.' ), body: s1 } ) );
-
-			// Step 2 — Cloudflare (optional).
-			body.appendChild( SL.wizStep( { n: 2, id: 'sub-cloudflare', optional: true, done: cf.deployed, title: T( 'کلادفلر (اختیاری، پیشنهادی)', 'Cloudflare (optional, recommended)' ), state: cf.deployed ? [ T( 'فعال', 'Active' ), 'good' ] : [ T( 'اختیاری', 'Optional' ), 'neutral' ], body: h( 'div', { class: 'sl-stack' },
-				p( cf.site_public ? T( 'سایت شما عمومی است؛ پاسخ‌ها بدون کلادفلر هم مستقیم می‌رسند. با کلادفلر سریع‌تر و مطمئن‌تر می‌رسند و صف پس‌زمینه سر وقت اجرا می‌شود.', 'Your site is public, so answers arrive directly without Cloudflare too. With Cloudflare they arrive faster and more reliably, and the background queue runs on time.' ) : T( 'سایت شما از اینترنت در دسترس نیست (لوکال). بدون کلادفلر پاسخ‌ها هر ۳۰ ثانیه از GitHub خوانده می‌شوند؛ با ورکر رایگان کلادفلر سریع‌تر می‌رسند.', 'Your site is not reachable from the internet (local). Without Cloudflare answers are read from GitHub every 30 seconds; the free Cloudflare worker makes this faster.' ) ),
-				cf.deployed ? kv( [ [ T( 'ورکر', 'Worker' ), h( 'code', { dir: 'ltr', text: cf.url } ) ], [ T( 'حالت', 'Mode' ), cf.mode === 'push' ? T( 'مستقیم', 'Push' ) : T( 'معکوس', 'Pull' ) ] ] ) : null,
-				h( 'a', { class: 'sl-btn sl-btn--sm', href: '#/cloudflare' }, SL.il( 'cloud', cf.deployed ? T( 'مدیریت کلادفلر', 'Manage Cloudflare' ) : T( 'راه‌اندازی کلادفلر (۳ دقیقه)', 'Set up Cloudflare (3 minutes)' ), 15 ) )
-			) } ) );
-
-			// Step 3 — account.
-			body.appendChild( accountStep( sub, ghConnected && !! sub.setup ) );
-
-			// Step 4 — test & activate.
-			var out = h( 'div' );
-			var active = sub.provider === ( engine === 'codex' ? 'sub_codex' : 'sub_claude' );
-			body.appendChild( SL.wizStep( { n: 4, id: 'sub-test', done: active, title: T( 'تست و فعال‌سازی', 'Test and activate' ), sub: T( 'یک درخواست کوچک واقعی فرستاده می‌شود؛ اولین پاسخ معمولاً ۱ تا ۳ دقیقه طول می‌کشد.', 'A small real request is sent; the first answer usually takes 1–3 minutes.' ), body: h( 'div', { class: 'sl-stack' },
-				h( 'div', { class: 'sl-row' },
-					App.abtn( SL.il( 'zap', T( 'ارسال درخواست تست', 'Send a test request' ) ), function () {
-						return SL.api( 'subscription/test', { body: { engine: engine } } ).then( function ( r ) {
-							SL.clear( out );
-							out.appendChild( h( 'div', { class: 'sl-alert sl-alert--success sl-iconline' }, SL.icon( 'check-circle', 18 ), h( 'span', { text: T( 'کار می‌کند! مدل: ', 'It works! Model: ' ) + ( r.model || '' ) } ) ) );
-						} );
-					}, 'primary' ),
-					active ? SL.badge( T( 'موتور هوش مصنوعی فعلی', 'Current AI engine' ), 'good' ) : App.abtn( SL.il( 'check', T( 'استفاده به‌عنوان موتور هوش مصنوعی', 'Use as AI engine' ) ), function () {
-						return SL.api( 'subscription/activate', { body: { engine: engine } } ).then( function () {
-							SL.toast( T( 'موتور هوش مصنوعی تغییر کرد.', 'AI engine switched.' ), 'success' );
-							App.refreshBoot();
-							load();
-						} );
-					} ),
-					App.abtn( SL.il( 'play', T( 'روشن کردن اجراکننده', 'Start runner now' ), 15 ), function () {
-						return SL.api( 'subscription/run', { method: 'POST' } ).then( function () {
-							SL.toast( T( 'اجرا در GitHub شروع شد.', 'Run started on GitHub.' ), 'success' );
-						} );
-					}, 'sm' )
-				),
-				out,
-				runsTable( sub )
-			) } ) );
-
-			// Costs + FAQ.
-			body.appendChild( h( 'div', { class: 'sl-grid-2' },
-				App.card( T( 'هزینه و محدودیت‌ها', 'Costs and limits' ), h( 'table', { class: 'sl-info' }, h( 'tbody', null, [
-					[ T( 'هوش مصنوعی', 'AI' ), T( 'از سهمیه همان اشتراکی که خریده‌اید (سهمیه چت)', 'From the plan you already pay for (your chat quota)' ) ],
-					[ 'GitHub Actions', T( 'رایگان در سهمیه ماهانه؛ هر درخواست حدود ۱ تا ۳ دقیقه', 'Free within the monthly quota; about 1–3 minutes per request' ) ],
-					[ T( 'کلادفلر', 'Cloudflare' ), T( 'پلن رایگان (اختیاری)', 'Free plan (optional)' ) ],
-					[ T( 'تمدید', 'Renewal' ), T( 'Claude: سالی یک‌بار claude setup-token · ChatGPT: خودکار', 'Claude: run claude setup-token once a year · ChatGPT: automatic' ) ],
-					[ T( 'پیشنهاد', 'Tip' ), T( 'کارهای گروهی سنگین را کم‌کم انجام دهید تا سهمیه چت شما آزاد بماند', 'Run heavy bulk jobs gradually so your chat quota stays free' ) ],
-				].map( function ( r ) {
-					return h( 'tr', null, h( 'th', { text: r[ 0 ] } ), h( 'td', { text: r[ 1 ] } ) );
-				} ) ) ), { icon: 'info' } ),
-				App.card( T( 'سؤالات متداول', 'Frequently asked questions' ), faq( [
-					[ T( 'آیا این روش مجاز است؟', 'Is this allowed?' ), p( T( 'بله. Anthropic در مستند رسمی GitHub Actions ورود با توکن اشتراک (CLAUDE_CODE_OAUTH_TOKEN برای Pro و Max) را پشتیبانی می‌کند و OpenAI هم ورود Codex با اکانت ChatGPT را مستند کرده است. هیچ اسکرپینگی انجام نمی‌شود. ', 'Yes. Anthropic’s official GitHub Actions docs support signing in with a subscription token (CLAUDE_CODE_OAUTH_TOKEN for Pro and Max), and OpenAI documents signing in to Codex with a ChatGPT account. Nothing is scraped. ' ), SL.xlink( LINKS.claudeActions, 'Claude Code GitHub Actions' ), ' · ', SL.xlink( LINKS.codexAuth, 'Codex authentication' ) ) ],
-					[ T( 'توکن من کجا ذخیره می‌شود؟', 'Where is my token stored?' ), p( T( 'رمزنگاری‌شده در وردپرس و در Secrets مخزن خصوصی GitHub شما. مخزن حتماً خصوصی است و درخواست‌ها و پاسخ‌ها هم رمزنگاری می‌شوند.', 'Encrypted in WordPress and in the Secrets of your private GitHub repository. The repository is always private and requests/answers are encrypted too.' ) ) ],
-					[ T( 'اگر سهمیه اشتراک تمام شود؟', 'What if my plan’s quota runs out?' ), p( T( 'SEOlity پیام «سقف استفاده اشتراک» را نشان می‌دهد؛ صبر کنید تا سهمیه آزاد شود یا موقتاً ارائه‌دهنده دیگری انتخاب کنید.', 'SEOlity reports “subscription usage limit reached”; wait for the quota to reset or switch provider for a while.' ) ) ],
-					[ T( 'روی چت روزمره‌ام اثر دارد؟', 'Does it affect my daily chat?' ), p( T( 'مصرف مشترک است. هر درخواست تقریباً مثل یک پیام در claude.ai یا ChatGPT حساب می‌شود.', 'The quota is shared. Each request counts roughly like one message in claude.ai or ChatGPT.' ) ) ],
-					[ T( 'اجرا در GitHub شروع نشد؟', 'The GitHub run did not start?' ), p( T( 'جدول اجراها یا صفحه Actions مخزن را ببینید. رایج‌ترین دلایل: توکن GitHub بدون دسترسی workflow، Actions غیرفعال در تنظیمات مخزن، یا توکن اشتراک منقضی/ناقص. «بررسی پیش‌نیازها» دقیقاً می‌گوید کدام است.', 'Look at the runs table or the repository’s Actions page. Common causes: a GitHub token without the workflow permission, Actions disabled in the repository settings, or an expired/incomplete subscription token. “Check the prerequisites” tells you which.' ) ) ],
-					[ T( 'چطور کاملاً متوقفش کنم؟', 'How do I stop it completely?' ), p( T( 'ارائه‌دهنده دیگری را در «تنظیمات ← هوش مصنوعی» انتخاب کنید. برای حذف کامل، مخزن اجراکننده را در GitHub پاک کنید و در Claude/ChatGPT نشست‌های فعال را لغو کنید.', 'Choose another provider in Settings → AI. To remove everything, delete the runner repository on GitHub and revoke the sessions in Claude/ChatGPT.' ) ) ],
-				] ), { icon: 'book' } )
-			) );
-			if ( q.step ) {
-				setTimeout( function () {
-					scrollTo( 'sub-' + q.step );
-				}, 200 );
-			}
-		}
-
-		function accountStep( sub, runnerReady ) {
-			var isClaude = engine === 'claude';
+			// One card, three parts, one button.
 			var os = w.navigator && /Win/i.test( w.navigator.platform || '' ) ? 'win' : 'unix';
 			var cmdBox = h( 'div' );
 			function cmds() {
 				SL.clear( cmdBox );
 				var win = os === 'win';
-				var list = isClaude ? [
-					span( SL.xlink( LINKS.node, 'Node.js' ), T( ' (نسخه LTS) را روی کامپیوتر خودتان نصب کنید.', ' (LTS) on your own computer.' ) ),
-					span( T( win ? 'PowerShell را باز کنید و Claude Code را نصب کنید:' : 'Terminal را باز کنید و Claude Code را نصب کنید:', win ? 'Open PowerShell and install Claude Code:' : 'Open Terminal and install Claude Code:' ), SL.cmd( 'npm install -g @anthropic-ai/claude-code' ) ),
-					span( T( 'این دستور را بزنید؛ مرورگر باز می‌شود. با همان اکانت Claude Pro/Max وارد شوید و «Authorize» را بزنید:', 'Run this; a browser opens. Sign in with your Claude Pro/Max account and press “Authorize”:' ), SL.cmd( 'claude setup-token' ) ),
-					span( T( 'توکنی که در ترمینال چاپ می‌شود و با ', 'Copy the token printed in the terminal (it starts with ' ), code( 'sk-ant-oat01-' ), T( ' شروع می‌شود را کامل کپی کنید. این توکن یک سال اعتبار دارد و جایی ذخیره نمی‌شود.', ') completely. It is valid for one year and is not saved anywhere else.' ) ),
+				cmdBox.appendChild( SL.steps( isClaude ? [
+					span( SL.xlink( LINKS.node, 'Node.js' ), T( ' را روی کامپیوتر خودتان نصب کنید، سپس در ', ' on your computer, then in ' ), win ? 'PowerShell' : 'Terminal', ':', SL.cmd( 'npm install -g @anthropic-ai/claude-code' ) ),
+					span( T( 'این دستور را بزنید، در مرورگر با اکانت Claude Pro/Max وارد شوید و Authorize بزنید:', 'Run this, sign in with your Claude Pro/Max account in the browser and press Authorize:' ), SL.cmd( 'claude setup-token' ) ),
+					span( T( 'توکن یک‌ساله‌ای که چاپ می‌شود (', 'Copy the one-year token it prints (' ), code( 'sk-ant-oat01-…' ), T( ') را کامل کپی و پایین بچسبانید.', ') completely and paste it below.' ) ),
 				] : [
-					span( SL.xlink( LINKS.node, 'Node.js' ), T( ' را نصب کنید، سپس Codex را نصب کنید:', ', then install Codex:' ), SL.cmd( 'npm install -g @openai/codex' ) ),
-					span( T( 'یک‌بار تنظیم کنید که ورود در فایل ذخیره شود (نه در Keychain سیستم):', 'Once, make Codex store the login in a file (not the system keychain):' ), SL.cmd( win ? [ 'mkdir $env:USERPROFILE\\.codex -Force', "Add-Content $env:USERPROFILE\\.codex\\config.toml 'cli_auth_credentials_store = \"file\"'" ] : [ 'mkdir -p ~/.codex', "echo 'cli_auth_credentials_store = \"file\"' >> ~/.codex/config.toml" ] ) ),
-					span( T( 'وارد شوید و گزینه «Sign in with ChatGPT» را انتخاب کنید:', 'Sign in and choose “Sign in with ChatGPT”:' ), SL.cmd( 'codex login' ) ),
-					span( T( 'فایل اعتبارنامه را باز کنید و کل محتوا را (از { تا }) کپی کنید:', 'Open the credentials file and copy everything (from { to }):' ), SL.cmd( win ? 'notepad $env:USERPROFILE\\.codex\\auth.json' : 'cat ~/.codex/auth.json' ) ),
-					T( 'بعد از ذخیره در SEOlity، فایل auth.json را از کامپیوتر پاک کنید (logout نزنید). هر نسخه بهتر است فقط روی یک سیستم استفاده شود؛ SEOlity نسخه تمدیدشده را خودش نگه می‌دارد.', 'After saving it in SEOlity, delete auth.json from your computer (do not log out). Each copy should be used on one machine only; SEOlity keeps the refreshed copy itself.' ),
-				];
-				cmdBox.appendChild( SL.steps( list ) );
+					span( SL.xlink( LINKS.node, 'Node.js' ), T( ' را نصب کنید، سپس:', ', then:' ), SL.cmd( 'npm install -g @openai/codex' ) ),
+					span( T( 'یک‌بار تنظیم کنید ورود در فایل ذخیره شود:', 'Once, store the login in a file:' ), SL.cmd( win ? [ 'mkdir $env:USERPROFILE\\.codex -Force', "Add-Content $env:USERPROFILE\\.codex\\config.toml 'cli_auth_credentials_store = \"file\"'" ] : [ 'mkdir -p ~/.codex', "echo 'cli_auth_credentials_store = \"file\"' >> ~/.codex/config.toml" ] ) ),
+					span( T( 'وارد شوید («Sign in with ChatGPT»):', 'Sign in (“Sign in with ChatGPT”):' ), SL.cmd( 'codex login' ) ),
+					span( T( 'کل فایل را کپی و پایین بچسبانید:', 'Copy the whole file and paste it below:' ), SL.cmd( win ? 'notepad $env:USERPROFILE\\.codex\\auth.json' : 'cat ~/.codex/auth.json' ) ),
+				] ) );
 			}
 			cmds();
 			var osTabs = h( 'div', { class: 'sl-seg' }, [ [ 'win', 'Windows' ], [ 'unix', 'macOS / Linux' ] ].map( function ( o ) {
@@ -711,44 +715,94 @@
 					cmds();
 				} }, o[ 1 ] );
 			} ) );
-			var saved = isClaude ? sub.claude_token : sub.codex_auth;
-			var secret = SL.secretInput( saved ? T( '•••••• (ذخیره شده — برای تعویض، مقدار جدید را وارد کنید)', '•••••• (saved — paste a new value to replace it)' ) : ( isClaude ? 'sk-ant-oat01-…' : '{"auth_mode":"chatgpt","tokens":{…}}' ), ! isClaude );
+			var cred = SL.secretInput( saved ? T( '•••••• ذخیره شده — برای تعویض، مقدار جدید را بچسبانید', '•••••• saved — paste a new value to replace it' ) : ( isClaude ? 'sk-ant-oat01-…' : '{"auth_mode":"chatgpt","tokens":{…}}' ), ! isClaude );
+			var ghConnected = !! gh.token.account;
+			var ghTok = SL.secretInput( 'ghp_…' );
+			var repo = h( 'input', { class: 'sl-input', dir: 'ltr', value: sub.repo || gh.defaults.runner } );
 			var model;
 			if ( isClaude ) {
-				var cur = ( sub.models && sub.models.claude ) || 'sonnet';
-				model = h( 'div', { class: 'sl-seg' }, [ [ 'sonnet', T( 'Sonnet (پیشنهادی)', 'Sonnet (recommended)' ) ], [ 'opus', T( 'Opus (قوی‌تر، سهمیه بیشتر)', 'Opus (stronger, uses more quota)' ) ], [ 'haiku', T( 'Haiku (سریع)', 'Haiku (fast)' ) ] ].map( function ( o ) {
-					return h( 'button', { type: 'button', class: cur === o[ 0 ] ? 'is-active' : '', 'data-v': o[ 0 ], onClick: function ( e ) {
-						Array.prototype.forEach.call( e.currentTarget.parentNode.children, function ( b ) {
-							b.classList.toggle( 'is-active', b === e.currentTarget );
-						} );
-					} }, o[ 1 ] );
-				} ) );
-				model.value = function () {
-					var a = model.querySelector( '.is-active' );
-					return a ? a.getAttribute( 'data-v' ) : 'sonnet';
-				};
+				model = App.select( [ [ 'sonnet', T( 'Sonnet (پیشنهادی)', 'Sonnet (recommended)' ) ], [ 'opus', T( 'Opus (قوی‌تر، سهمیه بیشتر)', 'Opus (stronger, more quota)' ) ], [ 'haiku', T( 'Haiku (سریع)', 'Haiku (fast)' ) ] ], ( sub.models && sub.models.claude ) || 'sonnet' );
 			} else {
-				var mi = h( 'input', { class: 'sl-input', dir: 'ltr', value: ( sub.models && sub.models.codex ) || '', placeholder: T( 'خالی = مدل پیش‌فرض پلن شما', 'empty = your plan’s default model' ) } );
-				model = h( 'div', null, mi );
-				model.value = function () {
-					return mi.value.trim();
-				};
+				model = h( 'input', { class: 'sl-input', dir: 'ltr', value: ( sub.models && sub.models.codex ) || '', placeholder: T( 'خالی = پیش‌فرض پلن شما', 'empty = your plan’s default' ) } );
 			}
-			var form = h( 'div', { class: 'sl-stack sl-formcol' },
-				h( 'label', { class: 'sl-label', text: isClaude ? T( 'توکن اشتراک Claude', 'Claude subscription token' ) : T( 'محتوای کامل auth.json', 'Entire auth.json' ) } ), secret,
-				h( 'label', { class: 'sl-label', text: T( 'مدل', 'Model' ) } ), model,
-				App.abtn( SL.il( 'lock', T( 'ذخیره امن در GitHub Secrets', 'Save securely to GitHub Secrets' ) ), function () {
-					return SL.api( 'subscription/account', { body: { engine: engine, value: secret.input.value, model: model.value() } } ).then( function () {
-						SL.toast( T( 'ذخیره شد و در Secrets اجراکننده قرار گرفت.', 'Saved and stored in the runner’s secrets.' ), 'success' );
-						load();
-					} );
-				}, 'primary' ),
-				runnerReady ? null : h( 'p', { class: 'sl-small sl-muted sl-iconline' }, SL.icon( 'info', 14 ), h( 'span', { text: T( 'اگر مرحله ۱ هنوز انجام نشده، توکن اینجا ذخیره می‌شود و هنگام نصب اجراکننده به GitHub منتقل می‌شود.', 'If step 1 is not done yet, the token is saved here and copied to GitHub when the runner is installed.' ) } ) )
-			);
-			return SL.wizStep( { n: 3, id: 'sub-account', done: saved, title: isClaude ? T( 'اتصال اکانت Claude Pro / Max', 'Connect your Claude Pro / Max account' ) : T( 'اتصال اکانت ChatGPT Plus / Pro', 'Connect your ChatGPT Plus / Pro account' ), sub: T( 'فقط یک‌بار روی کامپیوتر خودتان انجام می‌شود.', 'Done once on your own computer.' ), body: h( 'div', { class: 'sl-grid-2 sl-grid-2--top' },
-				h( 'div', null, osTabs, cmdBox, h( 'p', { class: 'sl-small sl-muted sl-iconline' }, SL.icon( 'book', 14 ), span( T( 'مرجع رسمی: ', 'Official reference: ' ), isClaude ? [ SL.xlink( LINKS.claudeToken, 'claude setup-token' ), ' · ', SL.xlink( LINKS.claudeActions, 'Claude Code GitHub Actions' ) ] : [ SL.xlink( LINKS.codexAuth, 'Codex authentication' ), ' · ', SL.xlink( LINKS.codexRepo, 'openai/codex' ) ] ) ) ),
-				form
-			) } );
+			var activate = h( 'input', { type: 'checkbox', checked: true } );
+			var log = h( 'div' );
+			body.appendChild( h( 'section', { class: 'sl-card sl-wiz-one', id: 'sub-account' }, h( 'div', { class: 'sl-card__body sl-stack' },
+				h( 'div', { class: 'sl-part' }, h( 'div', { class: 'sl-part__num', text: '1' } ), h( 'div', { class: 'sl-stack' },
+					h( 'h3', { text: isClaude ? T( 'توکن اکانت Claude را بگیرید', 'Get your Claude account token' ) : T( 'ورود ChatGPT را بگیرید', 'Get your ChatGPT login' ) } ),
+					osTabs, cmdBox,
+					h( 'label', { class: 'sl-label', text: isClaude ? T( 'توکن اشتراک Claude', 'Claude subscription token' ) : T( 'محتوای کامل auth.json', 'Entire auth.json' ) } ), cred
+				) ),
+				h( 'div', { class: 'sl-part' }, h( 'div', { class: 'sl-part__num', text: '2' } ), h( 'div', { class: 'sl-stack' },
+					h( 'h3', { text: T( 'GitHub (سرور رایگان اجرا)', 'GitHub (the free server that runs it)' ) } ),
+					ghConnected ? h( 'div', { class: 'sl-connected' }, h( 'span', { class: 'sl-connected__ic' }, SL.icon( 'github', 20 ) ), h( 'div', null, h( 'strong', { dir: 'ltr', text: '@' + gh.token.account.login } ), h( 'small', { class: 'sl-muted', text: ' · ' + T( 'متصل', 'connected' ) } ) ) ) : h( 'div', { class: 'sl-stack' },
+						SL.steps( [
+							span( T( 'حساب ندارید؟ ', 'No account? ' ), SL.xlink( LINKS.ghSignup, T( 'رایگان بسازید', 'create one for free' ) ) ),
+							span( SL.xlink( LINKS.ghClassic, T( 'این لینک را باز کنید', 'Open this link' ) ), T( ' (دسترسی‌ها از قبل انتخاب شده‌اند) ← «Generate token» ← توکن ', ' (permissions are preselected) → “Generate token” → paste the ' ), code( 'ghp_' ), T( ' را اینجا بچسبانید:', ' token here:' ) ),
+						] ), ghTok ),
+					h( 'details', { class: 'sl-more' }, h( 'summary', { text: T( 'نام مخزن خصوصی (اختیاری)', 'Private repository name (optional)' ) } ), repo )
+				) ),
+				h( 'div', { class: 'sl-part' }, h( 'div', { class: 'sl-part__num', text: '3' } ), h( 'div', { class: 'sl-stack' },
+					h( 'h3', { text: T( 'استقرار', 'Deploy' ) } ),
+					App.field( T( 'مدل', 'Model' ), model ),
+					h( 'label', { class: 'sl-check' }, activate, h( 'span', { text: T( 'از این به بعد همه کارهای هوش مصنوعی با این اکانت انجام شود', 'Use this account for all AI work from now on' ) } ) ),
+					App.abtn( SL.il( 'rocket', T( 'استقرار همین حالا (حدود ۳۰ ثانیه)', 'Deploy now (about 30 seconds)' ) ), function () {
+						SL.clear( log );
+						log.appendChild( SL.spinner( T( 'در حال ساخت مخزن، نصب اجراکننده، ذخیره Secrets و بررسی…', 'Creating the repository, installing the runner, storing secrets and verifying…' ) ) );
+						return SL.api( 'subscription/deploy', { body: { engine: engine, credential: cred.input.value, github_token: ghTok.input.value, repo: repo.value.trim(), model: model.value, activate: activate.checked } } ).then( function ( r ) {
+							SL.clear( log );
+							log.appendChild( SL.checklist( r.steps.map( function ( x ) {
+								return { level: x.ok ? 'ok' : 'fail', title: x.title, detail: x.detail };
+							} ) ) );
+							log.appendChild( h( 'div', { class: 'sl-alert sl-alert--' + ( r.ok ? 'success' : 'error' ) + ' sl-iconline' }, SL.icon( r.ok ? 'check-circle' : 'x-circle', 18 ), h( 'span', { text: r.ok ? T( 'مستقر شد. حالا «ارسال درخواست تست» را بزنید.', 'Deployed. Now press “Send a test request”.' ) : T( 'مرحله قرمز را درست کنید و دوباره «استقرار» را بزنید.', 'Fix the red step and press “Deploy” again.' ) } ) ) );
+							App.refreshBoot();
+							if ( r.ok ) {
+								setTimeout( load, 2500 );
+							}
+						} ).catch( function ( e ) {
+							SL.clear( log ).appendChild( h( 'div', { class: 'sl-alert sl-alert--error', text: e.message } ) );
+						} );
+					}, 'primary' ),
+					log
+				) )
+			) ) );
+
+			// Test & runs.
+			var out = h( 'div' );
+			body.appendChild( App.card( T( 'تست و اجراها', 'Test and runs' ), h( 'div', { class: 'sl-stack' },
+				h( 'p', { class: 'sl-muted sl-small', text: T( 'یک درخواست کوچک واقعی از طریق GitHub Actions فرستاده می‌شود؛ اولین پاسخ معمولاً ۱ تا ۳ دقیقه طول می‌کشد و SEOlity خودش منتظر می‌ماند.', 'A small real request goes through GitHub Actions; the first answer usually takes 1–3 minutes and SEOlity waits for it.' ) } ),
+				h( 'div', { class: 'sl-row' },
+					App.abtn( SL.il( 'zap', T( 'ارسال درخواست تست', 'Send a test request' ) ), function () {
+						return SL.api( 'subscription/test', { body: { engine: engine } } ).then( function ( r ) {
+							SL.clear( out ).appendChild( h( 'div', { class: 'sl-alert sl-alert--success sl-iconline' }, SL.icon( 'check-circle', 18 ), h( 'span', { text: T( 'کار می‌کند! مدل: ', 'It works! Model: ' ) + ( r.model || '' ) } ) ) );
+						} );
+					}, 'primary', { disabled: ! deployed } ),
+					App.abtn( SL.il( 'play', T( 'روشن کردن اجراکننده', 'Start runner now' ), 15 ), function () {
+						return SL.api( 'subscription/run', { method: 'POST' } ).then( function () {
+							SL.toast( T( 'اجرا در GitHub شروع شد.', 'Run started on GitHub.' ), 'success' );
+						} );
+					}, 'sm', { disabled: ! deployed } )
+				),
+				out, runsTable( sub )
+			), { icon: 'zap' } ) );
+
+			// Optional Cloudflare.
+			body.appendChild( h( 'a', { class: 'sl-promo', href: '#/cloudflare' }, h( 'span', { class: 'sl-card__ic' }, SL.icon( 'cloud', 20 ) ), h( 'div', null, h( 'b', { text: cf.deployed ? T( 'رله کلادفلر فعال است', 'Cloudflare relay is active' ) : T( 'اختیاری: رله رایگان کلادفلر', 'Optional: free Cloudflare relay' ) } ), h( 'small', { text: cf.site_public ? T( 'پاسخ‌ها سریع‌تر می‌رسند و صف پس‌زمینه سر وقت اجرا می‌شود.', 'Answers arrive faster and the background queue runs on time.' ) : T( 'سایت شما لوکال است؛ با کلادفلر پاسخ‌ها بسیار سریع‌تر می‌رسند.', 'Your site is local; Cloudflare makes answers arrive much faster.' ) } ) ), SL.icon( C.rtl ? 'arrow-left' : 'arrow-right', 18 ) ) );
+
+			// Help.
+			body.appendChild( h( 'details', { class: 'sl-card sl-advanced' }, h( 'summary', null, SL.icon( 'book', 16 ), h( 'span', { text: T( 'هزینه‌ها، محدودیت‌ها و سؤالات متداول', 'Costs, limits and FAQ' ) } ) ), h( 'div', { class: 'sl-card__body' }, faq( [
+				[ T( 'هزینه دارد؟', 'Does it cost anything?' ), p( T( 'هوش مصنوعی از سهمیه همان اشتراکی که خریده‌اید استفاده می‌کند. GitHub Actions در سهمیه ماهانه رایگان است (هر درخواست حدود ۱ تا ۳ دقیقه). کلادفلر هم پلن رایگان دارد.', 'AI uses the quota of the plan you already pay for. GitHub Actions is free within the monthly quota (about 1–3 minutes per request). Cloudflare has a free plan too.' ) ) ],
+				[ T( 'آیا مجاز است؟', 'Is it allowed?' ), p( T( 'بله؛ ابزارهای رسمی Claude Code و Codex ورود با اشتراک را برای اجرا در GitHub Actions مستند کرده‌اند. ', 'Yes; the official Claude Code and Codex tools document signing in with a subscription for GitHub Actions. ' ), SL.xlink( LINKS.claudeActions, 'Claude Code GitHub Actions' ), ' · ', SL.xlink( LINKS.codexAuth, 'Codex authentication' ) ) ],
+				[ T( 'توکن‌ها کجا ذخیره می‌شوند؟', 'Where are the tokens stored?' ), p( T( 'رمزنگاری‌شده در وردپرس و در Secrets مخزن خصوصی GitHub شما. درخواست‌ها و پاسخ‌ها هم رمزنگاری می‌شوند.', 'Encrypted in WordPress and in your private GitHub repository’s secrets. Requests and answers are encrypted too.' ) ) ],
+				[ T( 'تمدید', 'Renewal' ), p( T( 'Claude: سالی یک‌بار claude setup-token را دوباره بزنید. ChatGPT: خودکار.', 'Claude: run claude setup-token again once a year. ChatGPT: automatic.' ) ) ],
+				[ T( 'اگر سهمیه تمام شود؟', 'If the quota runs out?' ), p( T( 'پیام «سقف استفاده اشتراک» نشان داده می‌شود؛ صبر کنید یا موقتاً ارائه‌دهنده دیگری انتخاب کنید.', 'You’ll see “subscription usage limit reached”; wait, or switch provider for a while.' ) ) ],
+				[ T( 'یک مرحله قرمز شد', 'A step turned red' ), p( T( 'متن کنار آن دقیقاً دلیل را می‌گوید. رایج‌ترین‌ها: توکن GitHub بدون دسترسی workflow (با لینک آماده دوباره بسازید)، توکن اشتباه Claude (کلید API به‌جای setup-token)، یا افزونه sodium در PHP.', 'The text next to it says exactly why. Most common: a GitHub token without the workflow permission (recreate it with the ready link), a wrong Claude token (an API key instead of setup-token), or the PHP sodium extension.' ) ) ],
+			] ) ) ) );
+			if ( q.step ) {
+				setTimeout( function () {
+					scrollTo( 'sub-' + q.step );
+				}, 200 );
+			}
 		}
 
 		function runsTable( sub ) {

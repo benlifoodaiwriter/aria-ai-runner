@@ -201,11 +201,13 @@ final class KnowledgeBase {
 		$db   = $this->plugin->db;
 		$args = array();
 		$sql  = 'SELECT id, source, path, title, lang, topic, tags, content FROM {knowledge}';
+		$site = 'site/' . \SEOlity\Storage\GitHubHub::site_host() . '/';
 		if ( $topics ) {
-			$sql .= ' WHERE topic IN (' . implode( ',', array_fill( 0, count( $topics ), '%s' ) ) . ') OR tags REGEXP %s';
+			// This site's own playbook (written by the knowledge builder) is always a candidate.
+			$sql .= ' WHERE topic IN (' . implode( ',', array_fill( 0, count( $topics ), '%s' ) ) . ') OR tags REGEXP %s OR path LIKE %s';
 			$args = array_merge( array_map( 'sanitize_key', $topics ), array( implode( '|', array_map( static function ( $t ) {
 				return preg_quote( sanitize_key( $t ), '/' );
-			}, $topics ) ) ) );
+			}, $topics ) ) ), array( $db->wpdb->esc_like( $site ) . '%' ) );
 		}
 		$rows = $db->rows( $sql . ' LIMIT 600', $args );
 		if ( ! $rows && $topics ) {
@@ -226,7 +228,11 @@ final class KnowledgeBase {
 			if ( 'bundled' === $r['source'] && isset( $superseded[ $r['path'] ] ) ) {
 				continue; // A fresher GitHub version of this document exists.
 			}
-			$score = in_array( $r['topic'], $topics, true ) ? 3 : 0;
+			if ( 0 === strpos( $r['path'], 'site/' ) && 0 !== strpos( $r['path'], $site ) ) {
+				continue; // Another site's playbook (shared repositories).
+			}
+			$score  = in_array( $r['topic'], $topics, true ) ? 3 : 0;
+			$score += 0 === strpos( $r['path'], $site ) ? 2.5 : 0; // Knowledge about THIS site beats generic advice.
 			$score += $r['lang'] === $site_lang ? 1.5 : 0;
 			$score += 'github' === $r['source'] ? 0.3 : 0; // Fresher distilled knowledge.
 			$hay    = Text::normalize( $r['title'] . ' ' . $r['tags'] . ' ' . $r['content'] );

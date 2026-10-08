@@ -532,6 +532,13 @@ final class Router {
 			}
 			return $p->images->generate( $ids );
 		} );
+		$this->route( 'POST', '/images/suggest', 'ai', function ( Req $r ) use ( $p ) {
+			$id = (int) $r->get_param( 'id' );
+			if ( ! current_user_can( 'edit_post', $id ) ) {
+				return new \WP_Error( 'seolity_forbidden', __( 'Sorry, you are not allowed to do that.', 'seolity' ), array( 'status' => 403 ) );
+			}
+			return $p->images->suggest( $id, (int) $r->get_param( 'post_id' ), (string) $r->get_param( 'hint' ) );
+		} );
 		$this->route( 'GET', '/links', 'view', function ( Req $r ) use ( $p ) {
 			return $p->links->query( self::filters( $r, array( 'status' ) ) );
 		} );
@@ -762,8 +769,12 @@ final class Router {
 				'settings' => $p->settings->all(),
 				'secrets'  => $p->settings->secret_flags(),
 				'schema'   => $schema,
-				'providers' => array_map( static function ( $pr ) {
-					return array( 'id' => $pr->id(), 'label' => $pr->label(), 'configured' => $pr->is_configured(), 'model' => $pr->model() );
+				'providers' => array_map( static function ( $pr ) use ( $p ) {
+					$hint = '';
+					if ( ! $pr->is_configured() && in_array( $pr->id(), array( 'sub_claude', 'sub_codex' ), true ) ) {
+						$hint = implode( ' · ', $p->subscription->missing( 'sub_codex' === $pr->id() ? 'codex' : 'claude' ) );
+					}
+					return array( 'id' => $pr->id(), 'label' => $pr->label(), 'configured' => $pr->is_configured(), 'model' => $pr->model(), 'hint' => $hint );
 				}, array_values( \SEOlity\AI\ProviderRegistry::all( $p ) ) ),
 				'gsc_redirect_uri' => \SEOlity\GSC\OAuth::redirect_uri(),
 				'encryption' => defined( 'SEOLITY_ENCRYPTION_KEY' ) ? 'custom_key' : ( function_exists( 'sodium_crypto_secretbox' ) ? 'sodium_salts' : 'openssl_salts' ),
@@ -811,13 +822,11 @@ final class Router {
 		} );
 		$this->route( 'POST', '/subscription/account', 'manage', function ( Req $r ) use ( $p ) {
 			$engine = 'codex' === self::key( $r, 'engine' ) ? 'codex' : 'claude';
-			$value  = trim( wp_unslash( (string) $r->get_param( 'value' ) ) );
-			if ( '' !== $value ) {
-				if ( 'codex' === $engine && null === json_decode( $value ) ) {
-					return new \WP_Error( 'seolity_sub', __( 'This is not the whole auth.json file. Copy everything from { to }.', 'seolity' ), array( 'status' => 400 ) );
-				}
-				if ( 'claude' === $engine && ! preg_match( '/^sk-ant-[A-Za-z0-9_-]{20,}$/', $value ) ) {
-					return new \WP_Error( 'seolity_sub', __( 'This does not look like a Claude token. It starts with sk-ant-oat01- (output of: claude setup-token).', 'seolity' ), array( 'status' => 400 ) );
+			$value  = wp_unslash( (string) $r->get_param( 'value' ) );
+			if ( '' !== trim( $value ) ) {
+				$value = \SEOlity\AI\Remote\SubscriptionRunner::validate_credential( $engine, $value );
+				if ( is_wp_error( $value ) ) {
+					return $value;
 				}
 				$key = 'codex' === $engine ? 'codex_auth_json' : 'claude_oauth_token';
 				$p->settings->set_secret( $key, $value );
@@ -829,8 +838,26 @@ final class Router {
 			if ( null !== $r->get_param( 'model' ) ) {
 				$p->settings->update( array( 'ai_model_sub_' . $engine => self::str( $r, 'model' ) ) );
 			}
+			if ( false !== $r->get_param( 'activate' ) && '0' !== (string) $r->get_param( 'activate' ) ) {
+				$p->settings->update( array( 'ai_provider' => 'sub_' . $engine ) ); // Like ARIAGH: saving the account makes it the AI engine.
+			}
 			$p->audit_log->log( 'subscription.account', 'site', null, array( 'engine' => $engine ) );
 			return $p->subscription->check( $engine );
+		} );
+		$this->route( 'POST', '/subscription/deploy', 'manage', function ( Req $r ) use ( $p ) {
+			return $p->subscription->deploy(
+				array(
+					'engine'       => self::key( $r, 'engine', 'claude' ),
+					'credential'   => wp_unslash( (string) $r->get_param( 'credential' ) ),
+					'model'        => self::str( $r, 'model' ),
+					'github_token' => trim( wp_unslash( (string) $r->get_param( 'github_token' ) ) ),
+					'repo'         => self::str( $r, 'repo' ),
+					'activate'     => null === $r->get_param( 'activate' ) ? true : (bool) $r->get_param( 'activate' ),
+				)
+			);
+		} );
+		$this->route( 'GET', '/subscription/verify', 'manage', function () use ( $p ) {
+			return $p->subscription->verify();
 		} );
 		$this->route( 'POST', '/subscription/activate', 'manage', function ( Req $r ) use ( $p ) {
 			$p->settings->update( array( 'ai_provider' => 'codex' === self::key( $r, 'engine' ) ? 'sub_codex' : 'sub_claude' ) );
@@ -859,6 +886,9 @@ final class Router {
 		$this->route( 'POST', '/github/disconnect', 'manage', function () use ( $p ) {
 			return $p->githubhub->disconnect();
 		} );
+		$this->route( 'POST', '/github/setup-all', 'manage', function ( Req $r ) use ( $p ) {
+			return $p->githubhub->setup_all( self::str( $r, 'repo' ), array( 'runner' => (bool) $r->get_param( 'runner' ), 'knowledge' => (bool) $r->get_param( 'knowledge' ), 'storage' => (bool) $r->get_param( 'storage' ) ), (bool) $r->get_param( 'share_key' ) );
+		} );
 		$this->route( 'POST', '/github/runner', 'manage', function ( Req $r ) use ( $p ) {
 			return $p->githubhub->setup_runner( self::str( $r, 'repo' ) );
 		} );
@@ -873,6 +903,12 @@ final class Router {
 		} );
 		$this->route( 'POST', '/github/knowledge/key', 'manage', function () use ( $p ) {
 			return $p->githubhub->share_builder_key();
+		} );
+		$this->route( 'POST', '/github/knowledge/collect', 'manage', function () use ( $p ) {
+			return $p->githubhub->collect_knowledge();
+		} );
+		$this->route( 'GET', '/github/knowledge/collect', 'manage', function () use ( $p ) {
+			return $p->githubhub->collect_status();
 		} );
 		$this->route( 'POST', '/github/knowledge/build', 'manage', function () use ( $p ) {
 			return $p->githubhub->run_builder();

@@ -68,18 +68,49 @@ final class Admin {
 
 	private function brand() {
 		$name = (string) $this->plugin->settings->get( 'brand_name' );
-		return '' !== $name ? $name : 'SEOlity';
+		return '' === $name || 'seolity' === strtolower( $name ) ? 'SEOLITY' : $name;
 	}
 
 	public function menu() {
-		$icon = 'data:image/svg+xml;base64,' . base64_encode( '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path fill="#a7aaad" d="M10 1.5a8.5 8.5 0 1 0 5.2 15.2l2.6 2.6 1.4-1.4-2.6-2.6A8.5 8.5 0 0 0 10 1.5Zm0 2a6.5 6.5 0 1 1 0 13 6.5 6.5 0 0 1 0-13Zm.8 2.2-.9 2.8-2.8.9 2.8.9.9 2.8.9-2.8 2.8-.9-2.8-.9-.9-2.8Z"/></svg>' ); // phpcs:ignore
-		add_menu_page( $this->brand(), $this->brand(), Capabilities::VIEW, 'seolity', array( $this, 'render' ), $icon, 3 );
+		$icon = 'data:image/svg+xml;base64,' . base64_encode( (string) file_get_contents( SEOLITY_DIR . 'assets/img/menu-icon.svg' ) ); // phpcs:ignore
+		add_menu_page( 'SEOLITY' === $this->brand() ? 'ARIAGH.SEOLITY' : $this->brand(), $this->brand(), Capabilities::VIEW, 'seolity', array( $this, 'render' ), $icon, 3 );
 		foreach ( self::routes() as $slug => $r ) {
 			if ( 'products' === $slug && ! class_exists( 'WooCommerce' ) ) {
 				continue;
 			}
 			add_submenu_page( 'seolity', $r[0], $r[0], $r[1], 'dashboard' === $slug ? 'seolity' : 'seolity-' . $slug, array( $this, 'render' ) );
 		}
+		// Keep the WordPress menu short: only the section entry pages stay visible; every page stays reachable.
+		$hubs = self::hubs();
+		foreach ( array_keys( self::routes() ) as $slug ) {
+			if ( 'dashboard' !== $slug && ! isset( $hubs[ $slug ] ) ) {
+				remove_submenu_page( 'seolity', 'seolity-' . $slug );
+			}
+		}
+		global $submenu;
+		if ( isset( $submenu['seolity'] ) ) {
+			foreach ( $submenu['seolity'] as $i => $item ) {
+				$slug = 'seolity' === $item[2] ? 'dashboard' : substr( $item[2], 8 );
+				if ( isset( $hubs[ $slug ] ) ) {
+					$submenu['seolity'][ $i ][0] = $hubs[ $slug ]; // phpcs:ignore WordPress.WP.GlobalVariablesOverride
+				}
+			}
+		}
+	}
+
+	/** First page of each sidebar section => section label (mirrors HUBS in app.js). */
+	public static function hubs() {
+		return array(
+			'dashboard'    => __( 'Dashboard', 'seolity' ),
+			'actions'      => __( 'AI Center', 'seolity' ),
+			'content'      => __( 'Content', 'seolity' ),
+			'keywords'     => __( 'Keywords & links', 'seolity' ),
+			'gsc'          => __( 'Search Console', 'seolity' ),
+			'audit'        => __( 'Analysis', 'seolity' ),
+			'redirects'    => __( 'Technical SEO', 'seolity' ),
+			'subscription' => __( 'Connections', 'seolity' ),
+			'settings'     => __( 'Settings', 'seolity' ),
+		);
 	}
 
 	private function is_our_screen() {

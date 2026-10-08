@@ -66,10 +66,13 @@ final class GitHubHub {
 	public function defaults() {
 		$me    = $this->account();
 		$login = is_array( $me ) && ! empty( $me['login'] ) ? $me['login'] : 'your-user';
+		// One private repository holds everything (runner on the default branch, knowledge
+		// in seolity/knowledge, archive on the seolity-data branch); separate names still work.
+		$one = $login . '/seolity-ai';
 		return array(
-			'runner'    => $login . '/seolity-runner',
-			'knowledge' => $login . '/seolity-knowledge',
-			'storage'   => $login . '/seolity-data',
+			'runner'    => $one,
+			'knowledge' => $one,
+			'storage'   => $one,
 		);
 	}
 
@@ -221,7 +224,7 @@ final class GitHubHub {
 				$files[ 'seolity/knowledge/' . $rel ] = $f->getPathname();
 			}
 		}
-		foreach ( array( 'build.mjs', 'package.json', 'sources.json' ) as $name ) {
+		foreach ( array( 'build.mjs', 'llm.mjs', 'package.json', 'sources.json' ) as $name ) {
 			if ( file_exists( SEOLITY_DIR . 'tools/knowledge-builder/' . $name ) ) {
 				$files[ 'seolity/tools/knowledge-builder/' . $name ] = SEOLITY_DIR . 'tools/knowledge-builder/' . $name;
 			}
@@ -296,6 +299,142 @@ final class GitHubHub {
 		return array( 'ok' => true );
 	}
 
+	/** Host name used for this site's folder in the knowledge repository. */
+	public static function site_host() {
+		return preg_replace( '/[^a-z0-9.-]/', '', strtolower( (string) wp_parse_url( home_url(), PHP_URL_HOST ) ) );
+	}
+
+	/** What the knowledge builder should study for this site. */
+	public function site_brief() {
+		$p       = $this->plugin;
+		$a       = $p->gsc_analytics;
+		$queries = array();
+		$pages   = array();
+		if ( $a->has_data() ) {
+			foreach ( $a->grouped( 'query', 90, 60, 'impressions' ) as $q ) {
+				$queries[] = array( 'query' => $q['query'], 'impressions' => (int) $q['impressions'], 'clicks' => (int) $q['clicks'], 'position' => $q['position'] );
+			}
+			foreach ( $a->grouped( 'page', 90, 25, 'impressions' ) as $row ) {
+				$id      = url_to_postid( $row['page'] );
+				$pages[] = array( 'url' => $row['page'], 'title' => $id ? get_the_title( $id ) : '', 'impressions' => (int) $row['impressions'] );
+			}
+		}
+		if ( ! $pages ) {
+			foreach ( get_posts( array( 'post_type' => array( 'page', 'post', 'product' ), 'posts_per_page' => 25, 'post_status' => 'publish' ) ) as $post ) {
+				$pages[] = array( 'url' => get_permalink( $post ), 'title' => $post->post_title, 'impressions' => 0 );
+			}
+		}
+		$competitors = array();
+		$urls        = array();
+		foreach ( $p->db->rows( "SELECT id, domain FROM {competitors} WHERE project_id = %d AND status = 'active' LIMIT 6", array( $p->db->project_id() ) ) as $c ) {
+			$competitors[] = $c['domain'];
+			$top           = $p->db->column( 'SELECT url FROM {competitor_pages} WHERE competitor_id = %d AND status_code = 200 ORDER BY word_count DESC LIMIT 3', array( (int) $c['id'] ) );
+			$urls          = array_merge( $urls, $top ? $top : array( 'https://' . $c['domain'] . '/' ) );
+		}
+		$key     = $p->meta->meta_key( 'focus_keyword' );
+		$focus   = $p->db->column( "SELECT DISTINCT meta_value FROM {$p->db->wpdb->postmeta} WHERE meta_key = %s AND meta_value <> '' LIMIT 60", array( $key ) );
+		$lang    = (string) $p->settings->get( 'ai_content_language' );
+		$lang    = in_array( $lang, array( 'fa', 'en' ), true ) ? $lang : ( 0 === strpos( get_locale(), 'fa' ) ? 'fa' : 'en' );
+		return array(
+			'site_name'       => get_bloginfo( 'name' ),
+			'url'             => home_url( '/' ),
+			'description'     => get_bloginfo( 'description' ),
+			'language'        => $lang,
+			'is_store'        => class_exists( 'WooCommerce' ),
+			'queries'         => $queries,
+			'pages'           => $pages,
+			'focus_keywords'  => array_values( array_slice( $focus, 0, 60 ) ),
+			'competitors'     => $competitors,
+			'competitor_urls' => array_values( array_slice( array_unique( $urls ), 0, 12 ) ),
+			'generated'       => gmdate( 'c' ),
+		);
+	}
+
+	/**
+	 * "Collect knowledge now": write the site brief, make sure the builder can use the
+	 * subscription account, and start the workflow. The page polls collect_status().
+	 */
+	public function collect_knowledge() {
+		if ( $this->shared_knowledge() ) {
+			return new \WP_Error( 'seolity_github', __( 'Create your own knowledge repository first (one click on the GitHub & data page); the shared one cannot learn about your site.', 'seolity' ), array( 'status' => 400 ) );
+		}
+		$ok = $this->need_token();
+		if ( is_wp_error( $ok ) ) {
+			return $ok;
+		}
+		$s      = $this->plugin->settings;
+		$repo   = (string) $s->get( 'kb_repo' );
+		$branch = (string) $s->get( 'kb_branch' );
+		$host   = self::site_host();
+		// Builder files may be from an older plugin version: refresh them with the brief in one commit.
+		$files = array();
+		foreach ( self::knowledge_files() as $path => $file ) {
+			if ( 0 !== strpos( $path, 'seolity/knowledge/' ) ) {
+				$files[ $path ] = (string) file_get_contents( $file ); // phpcs:ignore WordPress.WP.AlternativeFunctions
+			}
+		}
+		$files[ trim( (string) $s->get( 'kb_path' ), '/' ) . '/site/' . $host . '/brief.json' ] = (string) wp_json_encode( $this->site_brief(), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES );
+		$res = $this->gh()->commit_files( $repo, $branch, $files, 'SEOlity: knowledge brief for ' . $host );
+		if ( is_wp_error( $res ) ) {
+			return $res;
+		}
+		// The builder needs an AI account in this repository.
+		$names = $this->gh()->secret_names( $repo );
+		$names = is_wp_error( $names ) ? array() : $names;
+		foreach ( array( 'CLAUDE_CODE_OAUTH_TOKEN' => 'claude_oauth_token', 'CODEX_AUTH_JSON' => 'codex_auth_json' ) as $secret => $local ) {
+			if ( ! in_array( $secret, $names, true ) && $s->has_secret( $local ) ) {
+				$v = $s->secret( $local );
+				$this->gh()->put_secret( $repo, $secret, is_array( $v ) ? wp_json_encode( $v ) : (string) $v );
+				$names[] = $secret;
+			}
+		}
+		if ( ! array_intersect( array( 'ANTHROPIC_API_KEY', 'CLAUDE_CODE_OAUTH_TOKEN', 'CODEX_AUTH_JSON' ), $names ) ) {
+			return new \WP_Error( 'seolity_github', __( 'The knowledge builder needs an AI account: deploy subscription AI (Claude or ChatGPT) or give it your Anthropic key first.', 'seolity' ), array( 'status' => 400 ) );
+		}
+		$this->gh()->ensure_actions( $repo );
+		$this->gh()->workflow_state( $repo, self::KB_WORKFLOW, true );
+		$run = $this->gh()->dispatch( $repo, self::KB_WORKFLOW, $branch, array( 'site' => $host, 'max_sources' => '8' ) );
+		if ( is_wp_error( $run ) ) {
+			return $run;
+		}
+		update_option( 'seolity_kb_collect', array( 'started' => time(), 'host' => $host, 'synced' => false ), false );
+		$this->plugin->audit_log->log( 'knowledge.collect', 'site', null, array( 'repo' => $repo ) );
+		return array( 'dispatched' => true, 'url' => 'https://github.com/' . $repo . '/actions' );
+	}
+
+	/** Progress of the last collection; syncs the new knowledge once the run succeeded. */
+	public function collect_status() {
+		$job = get_option( 'seolity_kb_collect' );
+		if ( ! is_array( $job ) || $this->shared_knowledge() ) {
+			return array( 'state' => 'idle' );
+		}
+		$repo = (string) $this->plugin->settings->get( 'kb_repo' );
+		$runs = $this->gh()->runs( $repo, self::KB_WORKFLOW, 3 );
+		$run  = null;
+		foreach ( is_wp_error( $runs ) ? array() : $runs as $r ) {
+			if ( strtotime( $r['created_at'] ) >= (int) $job['started'] - 60 ) {
+				$run = $r;
+				break;
+			}
+		}
+		$out = array( 'state' => 'starting', 'started' => gmdate( 'c', (int) $job['started'] ), 'run' => $run );
+		if ( $run ) {
+			$out['state'] = 'completed' === $run['status'] ? ( 'success' === $run['conclusion'] ? 'done' : 'failed' ) : 'running';
+		} elseif ( time() - (int) $job['started'] > 15 * MINUTE_IN_SECONDS ) {
+			$out['state'] = 'failed';
+		}
+		if ( 'done' === $out['state'] && empty( $job['synced'] ) ) {
+			$out['sync']   = $this->plugin->knowledge->sync( false );
+			$job['synced'] = true;
+			update_option( 'seolity_kb_collect', $job, false );
+		}
+		if ( 'done' === $out['state'] ) {
+			$f = $this->gh()->get_file( $repo, trim( (string) $this->plugin->settings->get( 'kb_path' ), '/' ) . '/last-run.json', (string) $this->plugin->settings->get( 'kb_branch' ) );
+			$out['report'] = is_wp_error( $f ) ? null : json_decode( $f['content'], true );
+		}
+		return $out;
+	}
+
 	/** Start the knowledge builder now. */
 	public function run_builder() {
 		if ( $this->shared_knowledge() ) {
@@ -304,6 +443,54 @@ final class GitHubHub {
 		$repo = (string) $this->plugin->settings->get( 'kb_repo' );
 		$res  = $this->gh()->dispatch( $repo, self::KB_WORKFLOW, (string) $this->plugin->settings->get( 'kb_branch' ), array( 'max_sources' => '12' ) );
 		return is_wp_error( $res ) ? $res : array( 'dispatched' => true, 'url' => 'https://github.com/' . $repo . '/actions' );
+	}
+
+	/**
+	 * One click: one private repository with the runner, an own knowledge base and the data archive.
+	 *
+	 * @param array $parts runner, knowledge, storage (bools).
+	 * @return array{ok:bool,steps:array[],status:array}
+	 */
+	public function setup_all( $repo, array $parts, $share_key = false ) {
+		$ok = $this->need_token();
+		if ( is_wp_error( $ok ) ) {
+			return $ok;
+		}
+		$repo = $this->pick_repo( $repo, 'runner' );
+		if ( is_wp_error( $repo ) ) {
+			return $repo;
+		}
+		if ( function_exists( 'set_time_limit' ) ) {
+			@set_time_limit( 240 ); // phpcs:ignore WordPress.PHP.NoSilencedErrors
+		}
+		$steps = array();
+		$all   = true;
+		$info  = $this->gh()->ensure_repo( $repo, 'SEOlity AI: subscription runner, SEO knowledge and data archive (private)' );
+		$steps[] = array( 'title' => __( 'Private repository', 'seolity' ), 'ok' => ! is_wp_error( $info ) && ! empty( $info['private'] ), 'detail' => is_wp_error( $info ) ? $info->get_error_message() : ( empty( $info['private'] ) ? __( 'The repository is PUBLIC. Make it private on GitHub (Settings → General → Danger Zone → Change visibility).', 'seolity' ) : $repo ) );
+		if ( ! $steps[0]['ok'] ) {
+			return array( 'ok' => false, 'steps' => $steps, 'status' => $this->status( true ) );
+		}
+		$jobs = array(
+			'runner'    => array( __( 'AI runner (workflow, queue branch, secrets)', 'seolity' ), function () use ( $repo ) {
+				$this->plugin->settings->update( array( 'sub_repo' => $repo ) );
+				return $this->plugin->subscription->setup();
+			} ),
+			'knowledge' => array( __( 'Own knowledge base (knowledge + weekly builder)', 'seolity' ), function () use ( $repo, $share_key ) {
+				return $this->setup_knowledge( $repo, $share_key );
+			} ),
+			'storage'   => array( __( 'Data archive (branch seolity-data)', 'seolity' ), function () use ( $repo ) {
+				return $this->setup_storage( $repo );
+			} ),
+		);
+		foreach ( $jobs as $key => $job ) {
+			if ( empty( $parts[ $key ] ) ) {
+				continue;
+			}
+			$res     = call_user_func( $job[1] );
+			$steps[] = array( 'title' => $job[0], 'ok' => ! is_wp_error( $res ), 'detail' => is_wp_error( $res ) ? $res->get_error_message() : __( 'Ready', 'seolity' ) );
+			$all     = $all && ! is_wp_error( $res );
+		}
+		return array( 'ok' => $all, 'steps' => $steps, 'status' => $this->status( true ) );
 	}
 
 	/* ------------------------------------------------------------------ data storage */
@@ -325,14 +512,24 @@ final class GitHubHub {
 		if ( empty( $info['private'] ) ) {
 			return new \WP_Error( 'seolity_github', __( 'The data repository must be private. Change its visibility on GitHub or choose another name.', 'seolity' ), array( 'status' => 400 ) );
 		}
-		$host = preg_replace( '/[^a-z0-9.-]/', '', strtolower( (string) wp_parse_url( home_url(), PHP_URL_HOST ) ) );
-		$path = trim( (string) $this->plugin->settings->get( 'storage_path' ), '/' );
-		$path = '' === $path ? 'seolity-data' : $path;
-		$res  = $this->gh()->put_file( $repo, $path . '/' . $host . '/README.md', "# SEOlity data — {$host}\n\nArchived automatically by SEOlity. Do not edit by hand.\n", 'SEOlity: data archive for ' . $host, (string) $info['default_branch'] );
+		$host   = preg_replace( '/[^a-z0-9.-]/', '', strtolower( (string) wp_parse_url( home_url(), PHP_URL_HOST ) ) );
+		$path   = trim( (string) $this->plugin->settings->get( 'storage_path' ), '/' );
+		$path   = '' === $path ? 'seolity-data' : $path;
+		$branch = (string) $info['default_branch'];
+		$shared = in_array( $repo, array( (string) $this->plugin->settings->get( 'sub_repo' ), (string) $this->plugin->settings->get( 'kb_repo' ) ), true );
+		if ( $shared ) {
+			// Same repository as the runner/knowledge: keep archives on their own branch.
+			$b = $this->gh()->ensure_branch( $repo, 'seolity-data', $branch );
+			if ( is_wp_error( $b ) ) {
+				return $b;
+			}
+			$branch = 'seolity-data';
+		}
+		$res = $this->gh()->put_file( $repo, $path . '/' . $host . '/README.md', "# SEOlity data — {$host}\n\nArchived automatically by SEOlity. Do not edit by hand.\n", 'SEOlity: data archive for ' . $host, $branch );
 		if ( is_wp_error( $res ) ) {
 			return $res;
 		}
-		$this->plugin->settings->update( array( 'storage_repo' => $repo, 'storage_branch' => (string) $info['default_branch'], 'storage_path' => $path, 'storage_enabled' => true ) );
+		$this->plugin->settings->update( array( 'storage_repo' => $repo, 'storage_branch' => $branch, 'storage_path' => $path, 'storage_enabled' => true ) );
 		$this->plugin->audit_log->log( 'github.storage_setup', 'site', null, array( 'repo' => $repo ) );
 		return $this->status( true );
 	}

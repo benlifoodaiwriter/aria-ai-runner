@@ -323,6 +323,48 @@ final class GitHubClient {
 		return is_wp_error( $res ) ? $res : true;
 	}
 
+	/** Names of the repository's Actions secrets (values are never readable). */
+	public function secret_names( $repo ) {
+		$res = $this->request( 'GET', '/repos/' . $repo . '/actions/secrets?per_page=100' );
+		if ( is_wp_error( $res ) ) {
+			return $res;
+		}
+		return array_values( array_map( static function ( $x ) {
+			return (string) $x['name'];
+		}, isset( $res['secrets'] ) ? (array) $res['secrets'] : array() ) );
+	}
+
+	/** Make sure GitHub Actions is enabled for the repository. */
+	public function ensure_actions( $repo ) {
+		$perm = $this->request( 'GET', '/repos/' . $repo . '/actions/permissions' );
+		if ( ! is_wp_error( $perm ) && ! empty( $perm['enabled'] ) ) {
+			return true;
+		}
+		$res = $this->request( 'PUT', '/repos/' . $repo . '/actions/permissions', array( 'enabled' => true, 'allowed_actions' => 'all' ) );
+		return is_wp_error( $res ) ? $res : true;
+	}
+
+	/**
+	 * Workflow registration state (active / disabled_manually / missing).
+	 *
+	 * @return string|\WP_Error
+	 */
+	public function workflow_state( $repo, $file, $enable = false ) {
+		$wf = $this->request( 'GET', '/repos/' . $repo . '/actions/workflows/' . rawurlencode( $file ) );
+		if ( is_wp_error( $wf ) ) {
+			$data = $wf->get_error_data();
+			return is_array( $data ) && 404 === (int) ( isset( $data['status'] ) ? $data['status'] : 0 ) ? 'missing' : $wf;
+		}
+		$state = (string) $wf['state'];
+		if ( $enable && 'active' !== $state ) {
+			$on = $this->request( 'PUT', '/repos/' . $repo . '/actions/workflows/' . rawurlencode( $file ) . '/enable' );
+			if ( ! is_wp_error( $on ) ) {
+				$state = 'active';
+			}
+		}
+		return $state;
+	}
+
 	/** Start a workflow_dispatch run. */
 	public function dispatch( $repo, $workflow, $ref, array $inputs ) {
 		$res = $this->request( 'POST', '/repos/' . $repo . '/actions/workflows/' . rawurlencode( $workflow ) . '/dispatches', array( 'ref' => $ref, 'inputs' => $inputs ) );

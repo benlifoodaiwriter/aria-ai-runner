@@ -13,6 +13,7 @@
 
 namespace SEOlity\AI;
 
+use SEOlity\Analysis\Text;
 use SEOlity\Core\Database;
 use SEOlity\Plugin;
 
@@ -84,7 +85,11 @@ final class Engine {
 			$knowledge = $this->plugin->knowledge->retrieve( $query, $def['topics'], 4 );
 		}
 
-		$system   = $this->build_system( $def, $task, $knowledge, $input );
+		$system = $this->build_system( $def, $task, $knowledge, $input );
+		$market = in_array( $task, self::MARKET_TASKS, true ) && empty( $opts['no_market'] ) ? $this->market_context( $input, isset( $opts['knowledge_query'] ) ? $opts['knowledge_query'] : '' ) : '';
+		if ( '' !== $market ) {
+			$system = str_replace( "\nTASK INSTRUCTIONS:\n", "\n" . $market . "\n\nTASK INSTRUCTIONS:\n", $system );
+		}
 		$messages = array();
 		if ( ! empty( $opts['history'] ) ) {
 			foreach ( $opts['history'] as $m ) {
@@ -177,6 +182,75 @@ final class Engine {
 				return $k['title'];
 			}, $knowledge ) ) ),
 		);
+	}
+
+	/** Tasks that write or judge SEO content and therefore get competitor/SERP/Search Console evidence. */
+	const MARKET_TASKS = array( 'optimize_content', 'meta_tags', 'product_seo', 'image_alt', 'ctr_rewrite', 'faq_generate', 'content_brief', 'keyword_research', 'keyword_plan', 'eeat_analysis', 'schema_suggest', 'content_plan', 'search_intent' );
+
+	/**
+	 * Evidence from the market for the topic of this task: what ranks (cached SERP, People Also Ask),
+	 * how tracked competitors cover it, and the queries this site already earns impressions for.
+	 * Uses stored data only — never calls a paid API on its own.
+	 */
+	public function market_context( array $input, $query = '' ) {
+		$query = trim( '' !== $query ? (string) $query : $this->knowledge_query( $input ) );
+		if ( '' === $query ) {
+			return '';
+		}
+		$focus = $query;
+		foreach ( array( 'focus_keyword', 'keyword' ) as $k ) {
+			if ( ! empty( $input[ $k ] ) && is_string( $input[ $k ] ) ) {
+				$focus = $input[ $k ];
+				break;
+			}
+		}
+		$focus = trim( mb_substr( $focus, 0, 80 ) );
+		$lines = array();
+		$serp  = $this->plugin->serp->cached( $focus );
+		if ( $serp && ! empty( $serp['results'] ) ) {
+			$lines[] = '- Google top results for "' . $focus . '":';
+			foreach ( array_slice( $serp['results'], 0, 6 ) as $r ) {
+				$lines[] = '  ' . $r['position'] . '. ' . $r['title'] . ' (' . $r['domain'] . ')';
+			}
+			if ( ! empty( $serp['questions'] ) ) {
+				$lines[] = '- People also ask: ' . implode( ' | ', array_slice( $serp['questions'], 0, 6 ) );
+			}
+			if ( ! empty( $serp['features'] ) ) {
+				$lines[] = '- SERP features: ' . implode( ', ', $serp['features'] );
+			}
+		}
+		$db    = $this->plugin->db;
+		$terms = array_slice( array_filter( Text::words( $focus ), static function ( $w ) {
+			return mb_strlen( $w ) > 2;
+		} ), 0, 3 );
+		if ( $terms ) {
+			$where = array();
+			$args  = array( $db->project_id() );
+			foreach ( $terms as $w ) {
+				$where[] = '(p.title LIKE %s OR p.h1 LIKE %s)';
+				$like    = '%' . $db->wpdb->esc_like( $w ) . '%';
+				$args[]  = $like;
+				$args[]  = $like;
+			}
+			$rows = $db->rows( 'SELECT c.domain, p.title, p.word_count, p.faq_count, p.schema_types FROM {competitor_pages} p JOIN {competitors} c ON c.id = p.competitor_id WHERE c.project_id = %d AND p.status_code = 200 AND ' . implode( ' AND ', $where ) . ' ORDER BY p.word_count DESC LIMIT 5', $args );
+			if ( $rows ) {
+				$words   = array_map( 'intval', wp_list_pluck( $rows, 'word_count' ) );
+				$lines[] = '- Competitor pages on this topic (median ' . (int) $words[ (int) floor( count( $words ) / 2 ) ] . ' words):';
+				foreach ( $rows as $r ) {
+					$lines[] = '  · ' . $r['domain'] . ': "' . $r['title'] . '" — ' . (int) $r['word_count'] . ' words' . ( (int) $r['faq_count'] ? ', FAQ ' . (int) $r['faq_count'] : '' ) . ( $r['schema_types'] ? ', schema ' . $r['schema_types'] : '' );
+				}
+			}
+		}
+		if ( $this->plugin->gsc_oauth->is_connected() && method_exists( $this->plugin->gsc_analytics, 'query_pages' ) ) {
+			$pages = array_slice( (array) $this->plugin->gsc_analytics->query_pages( $focus, 90 ), 0, 3 );
+			foreach ( $pages as $p ) {
+				$lines[] = '- This site in Search Console for "' . $focus . '": ' . $p['page'] . ' — position ' . round( (float) $p['position'], 1 ) . ', ' . (int) $p['impressions'] . ' impressions, ' . (int) $p['clicks'] . ' clicks';
+			}
+		}
+		if ( ! $lines ) {
+			return '';
+		}
+		return "MARKET EVIDENCE (real data — match or beat what ranks, cover the questions searchers ask, never copy competitor wording):\n" . implode( "\n", $lines );
 	}
 
 	private function knowledge_query( array $input ) {

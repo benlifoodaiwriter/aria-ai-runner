@@ -166,12 +166,29 @@ final class Cloudflare {
 		}
 		$this->plugin->settings->set_secret( 'cloudflare_api_token', $token );
 		$accounts = $this->accounts();
-		if ( '' === $acc && is_array( $accounts ) && 1 === count( $accounts ) ) {
-			$acc = $accounts[0]['id'];
+		$name     = '';
+		if ( is_array( $accounts ) ) {
+			if ( '' === $acc && 1 === count( $accounts ) ) {
+				$acc = $accounts[0]['id'];
+			}
+			foreach ( $accounts as $a ) {
+				if ( $a['id'] === $acc ) {
+					$name = $a['name'];
+				}
+			}
 		}
-		if ( 32 === strlen( $acc ) ) {
-			$this->plugin->settings->update( array( 'cf_account_id' => $acc ) );
+		if ( 32 !== strlen( $acc ) ) {
+			// Token is fine but we cannot tell which account to use: never report "connected" in this state.
+			$this->plugin->settings->update( array( 'cf_account_id' => '' ) );
+			$out             = $this->status();
+			$out['accounts'] = is_array( $accounts ) ? $accounts : array();
+			$out['notice']   = is_array( $accounts ) && count( $accounts ) > 1
+				? __( 'The token works and has access to several accounts. Pick the account to use.', 'seolity' )
+				: __( 'The token works, but the Account ID could not be read automatically. Copy it from the Cloudflare dashboard (Workers & Pages → Account ID on the right) and save again.', 'seolity' );
+			return $out;
 		}
+		$this->plugin->settings->update( array( 'cf_account_id' => $acc ) );
+		$this->set_state( array( 'account_name' => $name ) );
 		$this->plugin->audit_log->log( 'cloudflare.connected', 'site', null, array( 'account' => $acc ) );
 		return $this->status();
 	}
@@ -422,6 +439,8 @@ final class Cloudflare {
 		return array(
 			'token'          => '' !== $this->token(),
 			'account_id'     => $this->account(),
+			'account_name'   => isset( $state['account_name'] ) ? $state['account_name'] : '',
+			'notice'         => '' !== $this->token() && 32 !== strlen( $this->account() ) ? __( 'The token works, but the Account ID could not be read automatically. Copy it from the Cloudflare dashboard (Workers & Pages → Account ID on the right) and save again.', 'seolity' ) : null,
 			'configured'     => $this->is_configured(),
 			'deployed'       => $this->is_deployed(),
 			'url'            => $this->endpoint(),

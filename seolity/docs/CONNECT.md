@@ -266,7 +266,7 @@ http://localhost:1234/v1   (LM Studio)
    ```
    ghp_…
    ```
-4. در مرحله ۲ هر مخزنی را که لازم دارید با یک کلیک بسازید (اجراکننده اشتراکی، دانش اختصاصی، بایگانی داده).
+4. در مرحله ۲ «ساخت و راه‌اندازی همه‌چیز» را بزنید: یک مخزن خصوصی seolity-ai ساخته می‌شود که اجراکننده اشتراکی، دانش اختصاصی و بایگانی داده (شاخه seolity-data) را با هم دارد.
 5. توکن محدودتر (Fine-grained) می‌خواهید؟ مخزن‌های خصوصی را اول خودتان بسازید و دسترسی Contents، Actions، Secrets و Workflows را Read and write بدهید. [ساخت توکن Fine-grained](https://github.com/settings/personal-access-tokens/new) · [ساخت مخزن جدید](https://github.com/new)
 
 **رفع مشکل**
@@ -281,15 +281,16 @@ http://localhost:1234/v1   (LM Studio)
 
 `اختیاری` `رایگان` `۱ دقیقه`
 
-به‌طور پیش‌فرض SEOlity از دانش مشترک و رایگان استفاده می‌کند (هر هفته به‌روز می‌شود). اگر یادداشت‌ها و یادگیری‌های اختصاصی و سازنده دانش خودتان را می‌خواهید، مخزن دانش خصوصی بسازید.
+به‌طور پیش‌فرض SEOlity از دانش مشترک و رایگان استفاده می‌کند. با مخزن اختصاصی، دکمه «جمع‌آوری دانش الان» یک Workflow در گیت‌هاب اجرا می‌کند که منابع سئو، کوئری‌های سرچ کنسول، صفحات سایت و رقبای شما را با هوش مصنوعی (اشتراک Claude/ChatGPT یا کلید Anthropic) تحلیل می‌کند و یک «پلی‌بوک اختصاصی سایت» (استراتژی، موضوعات، کلمات کلیدی، رقبا) در گیت‌هاب می‌نویسد؛ هوش مصنوعی در همه تولیدها از آن استفاده می‌کند.
 
 1. در «GitHub و داده» کارت «پایگاه دانش سئو» را پیدا کنید و «ساخت مخزن دانش اختصاصی» را بزنید؛ دانش فعلی، سازنده دانش و Workflow هفتگی در آن قرار می‌گیرد و SEOlity به آن وصل می‌شود.
-2. برای یادگیری خودکار هفتگی، کلید Anthropic سایت را با تیک مربوط در Secrets مخزن ذخیره کنید (یا دستی یک Secret به نام ANTHROPIC_API_KEY بسازید).
+2. هوش مصنوعی اشتراکی را مستقر کنید (یا کلید Anthropic را ذخیره کنید)؛ سازنده دانش از همان حساب استفاده می‌کند: CLAUDE_CODE_OAUTH_TOKEN، CODEX_AUTH_JSON یا ANTHROPIC_API_KEY.
 
    ```
-   ANTHROPIC_API_KEY
+   CLAUDE_CODE_OAUTH_TOKEN
    ```
-3. منابع دلخواه را در فایل sources.json مخزن اضافه کنید؛ «اجرای سازنده دانش» آن‌ها را خلاصه می‌کند و SEOlity همگام می‌شود.
+3. در صفحه «پایگاه دانش» دکمه «جمع‌آوری دانش الان» را بزنید. وضعیت اجرا هر ۱۵ ثانیه به‌روز می‌شود و در پایان گزارش (منابع، اسناد ساخته‌شده، پلی‌بوک سایت) نمایش داده و دانش همگام می‌شود.
+4. منابع دلخواه را در فایل sources.json مخزن اضافه کنید؛ «اجرای سازنده دانش» آن‌ها را خلاصه می‌کند و SEOlity همگام می‌شود.
 
    ```
    seolity/tools/knowledge-builder/sources.json
@@ -298,7 +299,7 @@ http://localhost:1234/v1   (LM Studio)
 **رفع مشکل**
 
 - **همگام‌سازی خطا می‌دهد** — توکن GitHub به مخزن دانش دسترسی ندارد یا نام شاخه/پوشه در تنظیمات پیشرفته اشتباه است.
-- **سازنده دانش اجرا نمی‌شود** — Secret ANTHROPIC_API_KEY وجود ندارد یا Actions در مخزن غیرفعال است.
+- **سازنده دانش اجرا نمی‌شود** — هیچ‌کدام از Secretهای CLAUDE_CODE_OAUTH_TOKEN، CODEX_AUTH_JSON یا ANTHROPIC_API_KEY در مخزن نیست یا Actions غیرفعال است. اول هوش مصنوعی اشتراکی را مستقر کنید.
 
 **مستندات رسمی:** [اسرار رمزنگاری‌شده در GitHub Actions](https://docs.github.com/en/actions/security-for-github-actions/security-guides/using-secrets-in-github-actions)
 
@@ -680,7 +681,7 @@ One token is all it takes: SEOlity creates and configures the private runner, kn
    ```
    ghp_…
    ```
-4. In step 2 create the repositories you need in one click (subscription runner, own knowledge, data archive).
+4. In step 2 press “Create & set up everything”: one private seolity-ai repository is created that holds the subscription runner, your own knowledge and the data archive (branch seolity-data).
 5. Want a more limited fine-grained token? Create the private repositories yourself first and grant Contents, Actions, Secrets and Workflows: Read and write. [New fine-grained token](https://github.com/settings/personal-access-tokens/new) · [Create a repository](https://github.com/new)
 
 **Troubleshooting**
@@ -695,15 +696,16 @@ One token is all it takes: SEOlity creates and configures the private runner, kn
 
 `Optional` `Free` `1 min`
 
-By default SEOlity uses the shared, free knowledge base (updated weekly). For your own notes, learnings and your own knowledge builder, create a private knowledge repository.
+By default SEOlity uses the shared, free knowledge base. With your own repository, “Collect knowledge now” runs a GitHub workflow that analyses SEO sources, your Search Console queries, your pages and your competitors with AI (Claude/ChatGPT subscription or an Anthropic key) and writes a site playbook (strategy, topics, keywords, competitors) to GitHub; the AI uses it in every generation.
 
 1. In “GitHub & data” find the “SEO knowledge base” card and press “Create my knowledge repository”; the current knowledge, the builder and a weekly workflow are added and SEOlity switches to it.
-2. For weekly self-learning, tick the box to store the site’s Anthropic key in the repository secrets (or add a secret named ANTHROPIC_API_KEY by hand).
+2. Deploy subscription AI (or store an Anthropic key); the knowledge builder uses the same account: CLAUDE_CODE_OAUTH_TOKEN, CODEX_AUTH_JSON or ANTHROPIC_API_KEY.
 
    ```
-   ANTHROPIC_API_KEY
+   CLAUDE_CODE_OAUTH_TOKEN
    ```
-3. Add your own sources to sources.json in the repository; “Run knowledge builder” distils them and SEOlity syncs.
+3. On the “Knowledge Base” page press “Collect knowledge now”. The run status refreshes every 15 seconds; at the end the report (sources, documents written, site playbook) is shown and the knowledge syncs.
+4. Add your own sources to sources.json in the repository; “Run knowledge builder” distils them and SEOlity syncs.
 
    ```
    seolity/tools/knowledge-builder/sources.json
@@ -712,7 +714,7 @@ By default SEOlity uses the shared, free knowledge base (updated weekly). For yo
 **Troubleshooting**
 
 - **Sync fails** — The GitHub token cannot read the knowledge repository or the branch/folder in advanced settings is wrong.
-- **The knowledge builder does not run** — The ANTHROPIC_API_KEY secret is missing or Actions is disabled in the repository.
+- **The knowledge builder does not run** — None of the CLAUDE_CODE_OAUTH_TOKEN, CODEX_AUTH_JSON or ANTHROPIC_API_KEY secrets exist in the repository, or Actions is disabled. Deploy subscription AI first.
 
 **Official docs:** [Encrypted secrets in GitHub Actions](https://docs.github.com/en/actions/security-for-github-actions/security-guides/using-secrets-in-github-actions)
 

@@ -45,7 +45,7 @@ final class Settings {
 			// General.
 			'approval_mode'        => array( 'enum', 'manual', array( 'manual', 'semi', 'autonomous' ) ),
 			'ui_language'          => array( 'enum', 'auto', array( 'auto', 'fa', 'en' ) ),
-			'brand_name'           => array( 'string', 'SEOlity' ),
+			'brand_name'           => array( 'string', 'SEOLITY' ),
 			'brand_logo'           => array( 'url', '' ),
 			'brand_color'          => array( 'string', '#1D4ED8' ),
 			'admin_webfont'        => array( 'bool', true ),
@@ -94,6 +94,7 @@ final class Settings {
 			'ai_content_language'  => array( 'enum', 'auto', array( 'auto', 'fa', 'en', 'ar', 'tr', 'de', 'fr', 'es' ) ),
 			'ai_brand_voice'       => array( 'text', '' ),
 			'ai_use_knowledge'     => array( 'bool', true ),
+			'ai_media_on_upload'   => array( 'bool', false ),
 			// Google Search Console.
 			'gsc_client_id'        => array( 'string', '' ),
 			'gsc_property'         => array( 'string', '' ),

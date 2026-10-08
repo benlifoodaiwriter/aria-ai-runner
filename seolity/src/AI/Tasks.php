@@ -168,6 +168,23 @@ final class Tasks {
 					)
 				),
 			),
+			'media_seo'          => array(
+				'version'      => 'media_seo@1.0',
+				'max_tokens'   => 2000,
+				'topics'       => array( 'images', 'accessibility', 'on-page' ),
+				'cache'        => false,
+				'instructions' => 'Write SEO metadata for ONE uploaded media file, using the page it belongs to, its focus keyword, nearby text, product data, the filename, the uploader hint and the market evidence. alt: what the image shows for a screen-reader user, 5-15 words, the focus keyword only if it truthfully describes the image, never "image of". title: short, human, 3-8 words. caption: one helpful sentence a reader would see under the image (may be empty for decorative images). description: 1-3 sentences for the attachment page that add context (who/what/where, product or topic) and can rank in image search — no keyword lists. filename: a short lowercase latin slug (a-z, 0-9, hyphens) describing the image, without extension. Never invent facts (brands, places, people) that are not supported by the context.',
+				'schema'       => S::obj(
+					array(
+						'alt'         => S::str(),
+						'title'       => S::str(),
+						'caption'     => S::str(),
+						'description' => S::str(),
+						'filename'    => S::str(),
+						'reason'      => S::str(),
+					)
+				),
+			),
 			'keyword_research'   => array(
 				'version'      => 'keyword_research@1.2',
 				'max_tokens'   => 8000,

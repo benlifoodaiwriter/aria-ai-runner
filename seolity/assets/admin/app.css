@@ -397,3 +397,19 @@ button.sl-segcard { cursor: pointer; }
 .sl-promo > div { flex: 1; display: grid; gap: 2px; }
 .sl-promo small { color: var(--sl-muted); }
 .sl-promo:hover { box-shadow: var(--sl-shadow-lg); }
+.sl-wiz-one { margin-block-end: 16px; }
+.sl-part { display: grid; grid-template-columns: auto 1fr; gap: 14px; padding-block: 14px; border-block-end: 1px solid var(--sl-border); }
+.sl-part:last-child { border-block-end: 0; }
+.sl-part h3 { margin: 0; font-size: 15.5px; }
+.sl-part__num { width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center; background: var(--sl-brand); color: #fff; font-weight: 800; }
+.sl-deploy.is-ok { background: linear-gradient(135deg, var(--sl-good-50), var(--sl-surface) 60%); }
+.sl-deploy .sl-checks { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+.sl-ic.sl-spin { animation: sl-spin 1s linear infinite; }
+
+/* Section sub-tabs (simplified navigation). */
+.sl-subtabs { display: flex; gap: 6px; margin: 0 0 16px; padding: 4px; background: var(--sl-surface); border: 1px solid var(--sl-border); border-radius: 12px; overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+.sl-subtabs::-webkit-scrollbar { display: none; }
+.sl-subtab { display: inline-flex; align-items: center; gap: 6px; flex: 0 0 auto; padding: 8px 14px; border-radius: 9px; color: var(--sl-muted); font-weight: 600; font-size: 13px; text-decoration: none; white-space: nowrap; transition: background .15s, color .15s; }
+.sl-subtab:hover { color: var(--sl-text); background: var(--sl-brand-50); }
+.sl-subtab.is-active { background: var(--sl-brand); color: #fff; }
+.sl-subtab:focus-visible { outline: 2px solid var(--sl-brand); outline-offset: 2px; }

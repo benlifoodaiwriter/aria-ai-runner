@@ -1,0 +1,44 @@
+This auth.json was made with an API key, not a ChatGPT account. Run “codex login” and choose “Sign in with ChatGPT”.	این auth.json با کلید API ساخته شده، نه با حساب ChatGPT. دستور «codex login» را اجرا کنید و «Sign in with ChatGPT» را انتخاب کنید.
+This is an Anthropic API key, not a subscription token. Run “claude setup-token” and paste the token that starts with sk-ant-oat01-, or use the Anthropic API provider instead.	این کلید API آنتروپیک است، نه توکن اشتراک. دستور «claude setup-token» را اجرا کنید و توکنی را که با sk-ant-oat01- شروع می‌شود وارد کنید، یا از ارائه‌دهندهٔ API آنتروپیک استفاده کنید.
+Valid format, saved encrypted.	قالب درست است؛ رمزنگاری‌شده ذخیره شد.
+Paste the token from your computer first (step 2).	اول توکن را از کامپیوترتان وارد کنید (مرحلهٔ ۲).
+Already saved.	از قبل ذخیره شده است.
+GitHub account	حساب گیت‌هاب
+Connect GitHub: paste a token created with the ready link.	گیت‌هاب را وصل کنید: توکنی را که با لینک آماده ساختید وارد کنید.
+Token permissions	دسترسی‌های توکن
+create a new one with the ready link.	با لینک آماده یک توکن جدید بسازید.
+Repository name	نام مخزن
+Private repository, runner, workflow, queue branch and secrets	مخزن خصوصی، رانر، ورک‌فلو، شاخهٔ صف و سکرت‌ها
+GitHub Actions enabled	GitHub Actions فعال است
+Enabled	فعال
+Workflow “SEOlity AI” registered	ورک‌فلو «SEOlity AI» ثبت شد
+GitHub reports the workflow as “%s”. It usually becomes active within a minute.	گیت‌هاب وضعیت ورک‌فلو را «%s» گزارش می‌دهد. معمولاً ظرف یک دقیقه فعال می‌شود.
+Secrets stored on GitHub	سکرت‌ها روی گیت‌هاب ذخیره شدند
+Missing on GitHub: %s	روی گیت‌هاب موجود نیست: %s
+Set as the AI engine	به‌عنوان موتور هوش مصنوعی تنظیم شد
+AI Center	مرکز هوش مصنوعی
+Keywords & links	کلمات کلیدی و لینک‌ها
+What is in the image? (optional hint)	در تصویر چه چیزی هست؟ (راهنمای اختیاری)
+Write ALT, title, caption & description with AI	نوشتن ALT، عنوان، کپشن و توضیحات با هوش مصنوعی
+Uses the page this image belongs to, its focus keyword, the SEO knowledge base and competitor data. Review, then the fields save as usual.	از صفحه‌ای که تصویر به آن تعلق دارد، کلمهٔ کلیدی کانونی، پایگاه دانش سئو و داده‌های رقبا استفاده می‌کند. بررسی کنید؛ فیلدها مثل همیشه ذخیره می‌شوند.
+Write ALT text with SEOlity AI	نوشتن ALT با هوش مصنوعی SEOlity
+SEOlity AI is writing ALT text for %d images in the background. Review them in AI Center → AI Changes.	هوش مصنوعی SEOlity در پس‌زمینه برای %d تصویر ALT می‌نویسد. آن‌ها را در مرکز هوش مصنوعی ← تغییرات AI بررسی کنید.
+Sorry, you are not allowed to do that.	متأسفیم، اجازهٔ انجام این کار را ندارید.
+The token works and has access to several accounts. Pick the account to use.	توکن کار می‌کند و به چند حساب دسترسی دارد. حسابی را که می‌خواهید انتخاب کنید.
+The token works, but the Account ID could not be read automatically. Copy it from the Cloudflare dashboard (Workers & Pages → Account ID on the right) and save again.	توکن کار می‌کند اما Account ID خودکار خوانده نشد. آن را از داشبورد کلادفلر (Workers & Pages ← Account ID در سمت راست) کپی کنید و دوباره ذخیره کنید.
+Create your own knowledge repository first (one click on the GitHub & data page); the shared one cannot learn about your site.	اول مخزن دانش خودتان را بسازید (یک کلیک در صفحهٔ گیت‌هاب و داده)؛ مخزن مشترک نمی‌تواند دربارهٔ سایت شما یاد بگیرد.
+The knowledge builder needs an AI account: deploy subscription AI (Claude or ChatGPT) or give it your Anthropic key first.	سازندهٔ دانش به یک حساب هوش مصنوعی نیاز دارد: اول هوش مصنوعی اشتراکی (Claude یا ChatGPT) را مستقر کنید یا کلید آنتروپیک بدهید.
+Private repository	مخزن خصوصی
+AI runner (workflow, queue branch, secrets)	رانر هوش مصنوعی (ورک‌فلو، شاخهٔ صف، سکرت‌ها)
+Own knowledge base (knowledge + weekly builder)	پایگاه دانش اختصاصی (دانش + سازندهٔ هفتگی)
+Data archive (branch seolity-data)	آرشیو داده (شاخهٔ seolity-data)
+Ready	آماده
+Setup	راه‌اندازی
+Writing with AI…	در حال نوشتن با هوش مصنوعی…
+Filled: %s. Review and keep or edit — changes save like any edit.	پر شد: %s. بررسی کنید و نگه دارید یا ویرایش کنید — مثل هر ویرایشی ذخیره می‌شود.
+No editable fields found on this screen.	در این صفحه فیلد قابل ویرایشی پیدا نشد.
+Suggested file name: %s	نام فایل پیشنهادی: %s
+Check the ALT text: %s	متن ALT را بررسی کنید: %s
+Knowledge used: %s	دانش استفاده‌شده: %s
+Collect knowledge for this site	جمع‌آوری دانش برای این سایت
+Write ALT text with AI when an image is uploaded	نوشتن خودکار ALT با هوش مصنوعی هنگام آپلود تصویر

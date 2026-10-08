@@ -260,6 +260,62 @@ final class ImageSeo {
 		return array( 'batch_id' => $batch, 'changes' => $changes, 'meta' => $res['meta'] );
 	}
 
+	/**
+	 * ALT, title, caption, description and a filename slug for one attachment (media library,
+	 * upload screen, attachment page). Returns suggestions only — the screen fills its own fields.
+	 *
+	 * @param int    $id      Attachment id.
+	 * @param int    $post_id Post the media modal was opened from (0 = parent / none).
+	 * @param string $hint    Optional words from the uploader ("red mug on a wooden desk").
+	 * @return array|\WP_Error
+	 */
+	public function suggest( $id, $post_id = 0, $hint = '' ) {
+		$id = (int) $id;
+		if ( ! $id || 'attachment' !== get_post_type( $id ) ) {
+			return new \WP_Error( 'seolity_images', __( 'No images selected.', 'seolity' ), array( 'status' => 400 ) );
+		}
+		$ctx = $this->context( $id );
+		if ( $post_id && empty( $ctx['page_title'] ) ) {
+			$post = get_post( (int) $post_id );
+			if ( $post && current_user_can( 'edit_post', $post->ID ) ) {
+				$ctx['page_title']    = $post->post_title;
+				$ctx['page_type']     = $post->post_type;
+				$ctx['focus_keyword'] = $this->plugin->meta->get_post( $post->ID, 'focus_keyword' );
+				$ctx['nearby_text']   = Text::truncate( Text::strip( (string) $post->post_content ), 400 );
+			}
+		}
+		$att = get_post( $id );
+		$ctx['description'] = $att ? Text::truncate( Text::strip( $att->post_content ), 300 ) : '';
+		$ctx['mime']        = (string) get_post_mime_type( $id );
+		$meta               = wp_get_attachment_metadata( $id );
+		if ( is_array( $meta ) && ! empty( $meta['width'] ) ) {
+			$ctx['size'] = (int) $meta['width'] . 'x' . (int) $meta['height'];
+		}
+		$hint = trim( sanitize_text_field( (string) $hint ) );
+		if ( '' !== $hint ) {
+			$ctx['uploader_hint'] = $hint;
+		}
+		$query = trim( ( isset( $ctx['focus_keyword'] ) ? $ctx['focus_keyword'] : '' ) . ' ' . ( isset( $ctx['page_title'] ) ? $ctx['page_title'] : $ctx['title'] ) );
+		$res   = $this->plugin->ai->run( 'media_seo', array( 'image' => $ctx, 'site_language' => get_locale() ), array( 'knowledge_query' => $query ) );
+		if ( is_wp_error( $res ) ) {
+			return $res;
+		}
+		$d    = $res['data'];
+		$alt  = sanitize_text_field( $d['alt'] );
+		$warn = array_values( array_intersect( $this->detect( $alt, 'ok' ), array( 'stuffed_alt', 'generic_alt', 'long_alt' ) ) );
+		return array(
+			'id'          => $id,
+			'alt'         => $alt,
+			'title'       => sanitize_text_field( $d['title'] ),
+			'caption'     => sanitize_textarea_field( $d['caption'] ),
+			'description' => sanitize_textarea_field( $d['description'] ),
+			'filename'    => sanitize_title( $d['filename'] ),
+			'reason'      => (string) $d['reason'],
+			'warnings'    => $warn,
+			'meta'        => $res['meta'],
+		);
+	}
+
 	/** Refresh a single row after ALT changes. */
 	public function reindex( $attachment_id ) {
 		$seen = array();

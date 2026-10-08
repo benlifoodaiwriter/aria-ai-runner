@@ -429,6 +429,59 @@
 		} );
 	}
 
+	/* ------------------------------------------------------------------ Media (modal, library, attachment page) */
+	function mediaFields( btn ) {
+		var box = btn.closest( '.media-sidebar, .attachment-info, .media-frame-content, form#post' ) || d;
+		var q = function ( sel ) {
+			return box.querySelector( sel ) || d.querySelector( sel );
+		};
+		return {
+			alt: q( '[data-setting="alt"] textarea, [data-setting="alt"] input, #attachment_alt' ),
+			title: q( '[data-setting="title"] input, #title' ),
+			caption: q( '[data-setting="caption"] textarea, #attachment_caption' ),
+			description: q( '[data-setting="description"] textarea, #attachment_content' ),
+		};
+	}
+	d.addEventListener( 'click', function ( e ) {
+		var btn = e.target.closest && e.target.closest( '.seolity-media-btn' );
+		if ( ! btn ) {
+			return;
+		}
+		e.preventDefault();
+		var wrap = btn.closest( '.seolity-media-ai' );
+		var out = wrap.querySelector( '.seolity-media-out' );
+		var hint = wrap.querySelector( '.seolity-media-hint' );
+		var settings = w.wp && w.wp.media && w.wp.media.view && w.wp.media.view.settings;
+		var postId = ( settings && settings.post && settings.post.id ) || ( ctx.object_type === 'post' ? ctx.object_id : 0 );
+		btn.disabled = true;
+		out.textContent = t( 'Writing with AI…' );
+		SL.api( 'images/suggest', { body: { id: Number( btn.getAttribute( 'data-id' ) ), post_id: postId || 0, hint: hint ? hint.value : '' } } ).then( function ( r ) {
+			var f = mediaFields( btn );
+			var filled = [];
+			[ 'alt', 'title', 'caption', 'description' ].forEach( function ( k ) {
+				if ( f[ k ] && r[ k ] ) {
+					Editors.element( f[ k ] ).set( r[ k ] );
+					filled.push( k );
+				}
+			} );
+			SL.clear( out );
+			out.appendChild( h( 'p', { class: 'seolity-media-ok', text: filled.length ? t( 'Filled: %s. Review and keep or edit — changes save like any edit.', filled.join( ', ' ) ) : t( 'No editable fields found on this screen.' ) } ) );
+			if ( r.filename ) {
+				out.appendChild( h( 'p', { class: 'description', text: t( 'Suggested file name: %s', r.filename ) } ) );
+			}
+			if ( r.warnings && r.warnings.length ) {
+				out.appendChild( h( 'p', { class: 'description', text: t( 'Check the ALT text: %s', r.warnings.join( ', ' ) ) } ) );
+			}
+			if ( r.meta && r.meta.knowledge_refs && r.meta.knowledge_refs.length ) {
+				out.appendChild( h( 'p', { class: 'description', text: t( 'Knowledge used: %s', r.meta.knowledge_refs.join( ' · ' ) ) } ) );
+			}
+		} ).catch( function ( err ) {
+			out.textContent = ( err && err.message ) || t( 'Something went wrong.' );
+		} ).then( function () {
+			btn.disabled = false;
+		} );
+	} );
+
 	/* ------------------------------------------------------------------ Author bio + ACF */
 	function addButtonAfter( el, field ) {
 		if ( ! el || el._seolity ) {
