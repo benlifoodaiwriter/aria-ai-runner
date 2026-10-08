@@ -6,6 +6,7 @@
 	'use strict';
 	var SL = w.SL;
 	var App = SL.app;
+	var C = SL.config || {};
 	var t = SL.t;
 	var h = SL.h;
 
@@ -251,25 +252,25 @@
 	};
 	var GROUPS = [
 		[ 'general', 'General', [ 'approval_mode', 'ui_language', 'admin_webfont', 'frontend_output', 'title_separator', 'brand_name', 'brand_logo', 'brand_color' ] ],
-		[ 'ai', 'AI', [ 'ai_provider', 'ai_model_anthropic', 'ai_model_openai', 'ai_model_gemini', 'ai_model_openrouter', 'ai_model_ollama', 'ollama_base_url', 'ai_model_custom', 'custom_base_url', 'ai_effort', 'ai_content_language', 'ai_brand_voice', 'ai_use_knowledge', 'ai_max_tokens', 'ai_timeout', 'ai_monthly_budget', 'ai_cache_hours' ] ],
-		[ 'subscription', 'Subscription AI', [ 'sub_repo', 'ai_model_sub_claude', 'ai_model_sub_codex', 'sub_callback', 'sub_wait_minutes', 'sub_branch' ] ],
+		[ 'ai', 'AI', [ 'ai_provider', 'ai_model_anthropic', 'ai_model_openai', 'ai_model_gemini', 'ai_model_openrouter', 'ai_model_ollama', 'ollama_base_url', 'ai_effort', 'ai_content_language', 'ai_brand_voice', 'ai_use_knowledge', 'ai_max_tokens', 'ai_timeout', 'ai_monthly_budget', 'ai_cache_hours' ] ],
 		[ 'crawler', 'Crawler & audits', [ 'crawl_frequency', 'crawl_max_urls', 'crawl_batch_size', 'crawl_timeout', 'thin_content_words', 'crawl_check_external', 'competitor_max_pages', 'experiment_window', 'gsc_sync_days', 'gsc_row_limit' ] ],
 		[ 'reports', 'Alerts & reports', [ 'alert_email_enabled', 'alert_email', 'alert_drop_percent', 'report_frequency', 'report_recipients' ] ],
 		[ 'technical', 'Technical SEO', [ 'sitemap_enabled', 'sitemap_exclude_types', 'redirects_enabled', 'log_404', 'log_404_bots' ] ],
 		[ 'schema', 'Schema & entity', [ 'schema_enabled', 'org_type', 'org_name', 'org_logo', 'org_phone', 'org_address', 'org_same_as' ] ],
-		[ 'github', 'GitHub (knowledge & storage)', [ 'kb_repo', 'kb_branch', 'kb_path', 'kb_auto_sync', 'kb_contribute', 'storage_enabled', 'storage_repo', 'storage_branch', 'storage_path', 'storage_archive_days', 'storage_prune_local' ] ],
 		[ 'privacy', 'Privacy & data', [ 'anonymize_ip', 'retention_days', 'delete_on_uninstall' ] ],
 	];
 	var GROUP_ICONS = { general: 'settings', ai: 'cpu', subscription: 'sparkles', crawler: 'pulse', reports: 'bell', technical: 'wrench', schema: 'braces', github: 'github', privacy: 'lock' };
 	var SECRETS = {
-		ai: [ [ 'anthropic_api_key', 'Anthropic API key' ], [ 'openai_api_key', 'OpenAI API key' ], [ 'gemini_api_key', 'Google Gemini API key' ], [ 'openrouter_api_key', 'OpenRouter API key' ], [ 'custom_api_key', 'Custom API key' ] ],
-		subscription: [ [ 'claude_oauth_token', 'Claude subscription token (output of: claude setup-token)' ], [ 'codex_auth_json', 'ChatGPT login (contents of ~/.codex/auth.json after: codex login)' ] ],
+		ai: [ [ 'anthropic_api_key', 'Anthropic API key' ], [ 'openai_api_key', 'OpenAI API key' ], [ 'gemini_api_key', 'Google Gemini API key' ], [ 'openrouter_api_key', 'OpenRouter API key' ] ],
 		crawler: [ [ 'pagespeed_api_key', 'PageSpeed Insights API key (optional)' ], [ 'serp_api_key', 'SERP data API key (optional)' ] ],
-		github: [ [ 'github_token', 'GitHub fine-grained token (Contents: read & write on the chosen repos only)' ] ],
 	};
 
 	App.pages.settings = function ( v, q ) {
 		v.appendChild( App.header( t( 'Settings' ) ) );
+		if ( q.tab === 'github' || q.tab === 'subscription' ) {
+			App.go( q.tab ); // These moved to their own pages.
+			return;
+		}
 		var body = h( 'div' );
 		v.appendChild( body );
 		App.load( body, SL.api( 'settings' ), function ( data ) {
@@ -348,77 +349,208 @@
 			}, 'sm' ) : null, App.guideFor && App.guideFor( key ) ? h( 'a', { class: 'sl-btn sl-btn--sm sl-btn--ghost', href: '#/guide?service=' + App.guideFor( key ), title: t( 'How to get this key' ) }, SL.il( 'lifebuoy', t( 'Guide' ), 15 ) ) : null ) );
 		}
 
-		function subscriptionGuide( data, dirty ) {
+		/** Custom API: any service, configured exactly as its documentation says. */
+		function customApiCard( data, dirty ) {
+			var S = data.settings;
 			var wrap = h( 'div', { class: 'sl-stack' } );
-			wrap.appendChild( h( 'div', { class: 'sl-alert sl-alert--info' },
-				h( 'strong', { text: t( 'Use the AI subscription you already pay for' ) } ),
-				h( 'p', { text: t( 'Instead of a pay-per-token API key, SEOlity can run every AI feature with your Claude Pro/Max or ChatGPT Plus/Pro plan. The official Claude Code / Codex command-line tools run on GitHub Actions in your own private repository; requests and answers are encrypted. Answers take about 1–3 minutes, so SEOlity waits for them automatically.' ) } ),
-				h( 'ol', null,
-					h( 'li', { text: t( 'GitHub → Settings → Developer settings → create a token with access to the runner repository: Contents, Actions, Secrets and Workflows (read & write) — or a classic token with the "repo" and "workflow" scopes. Save it in the GitHub tab.' ) } ),
-					h( 'li', { text: t( 'Enter a repository name below, e.g. your-user/seolity-runner (it is created as a private repository if it does not exist) and save settings.' ) } ),
-					h( 'li', { text: t( 'Claude: on your computer run “claude setup-token” (Claude Code CLI) and paste the token below. ChatGPT: run “codex login”, then paste the contents of ~/.codex/auth.json below.' ) } ),
-					h( 'li', { text: t( 'Click “Set up GitHub runner”, then choose the subscription provider in the AI tab and press Test.' ) } )
-				)
-			) );
-			var st = h( 'div' );
-			var render = function ( s ) {
-				SL.clear( st );
-				var ok = function ( v ) {
-					return SL.yes( !! v, 16 );
-				};
-				st.appendChild( h( 'ul', { class: 'sl-checklist' },
-					h( 'li', { class: 'sl-iconline' }, ok( s.github_token ), h( 'span', { text: t( 'GitHub token' ) } ) ),
-					h( 'li', { class: 'sl-iconline' }, ok( s.setup ), h( 'span', { text: t( 'Runner repository set up' ) + ( s.setup ? ' (' + SL.date( s.setup ) + ')' : '' ) } ) ),
-					h( 'li', { class: 'sl-iconline' }, ok( s.claude_token ), h( 'span', { text: t( 'Claude subscription token' ) } ) ),
-					h( 'li', { class: 'sl-iconline' }, ok( s.codex_auth ), h( 'span', { text: t( 'ChatGPT login (auth.json)' ) } ) )
-				) );
-				if ( s.repo_url ) {
-					st.appendChild( h( 'p', { class: 'sl-small' }, t( 'Repository' ) + ': ', App.ext( s.repo_url, s.repo ), s.files_current ? null : h( 'span', { class: 'sl-muted', text: ' — ' + t( 'runner files will be updated on the next request' ) } ) ) );
+			var presets = {};
+			var keyLinks = h( 'div', { class: 'sl-row' } );
+			var preview = h( 'div' );
+			var models = h( 'datalist', { id: 'sl-custom-models' } );
+			function bind( el, key, type ) {
+				el.addEventListener( type || 'input', function () {
+					dirty[ key ] = el.type === 'checkbox' ? el.checked : el.value;
+					refreshPreview();
+				} );
+				return el;
+			}
+			var label = bind( h( 'input', { class: 'sl-input', value: S.custom_label || '', placeholder: t( 'e.g. DeepSeek' ) } ), 'custom_label' );
+			var base = bind( h( 'input', { class: 'sl-input', dir: 'ltr', value: S.custom_base_url || '', placeholder: 'https://api.example.com/v1' } ), 'custom_base_url' );
+			var format = bind( App.select( [ [ 'openai', t( 'OpenAI-compatible (Chat Completions)' ) ], [ 'anthropic', t( 'Anthropic-compatible (Messages)' ) ] ], S.custom_format ), 'custom_format', 'change' );
+			var auth = bind( App.select( [ [ 'bearer', 'Authorization: Bearer <key>' ], [ 'x-api-key', 'x-api-key: <key>' ], [ 'api-key', 'api-key: <key> (Azure)' ], [ 'header', t( 'Other header (name below)' ) ], [ 'query', t( 'Query parameter (name below)' ) ], [ 'none', t( 'No key (local server)' ) ] ], S.custom_auth ), 'custom_auth', 'change' );
+			var authName = bind( h( 'input', { class: 'sl-input', dir: 'ltr', value: S.custom_auth_name || '', placeholder: 'X-Api-Key / key' } ), 'custom_auth_name' );
+			var headers = bind( h( 'textarea', { class: 'sl-input sl-mono-input', dir: 'ltr', rows: 3, placeholder: 'HTTP-Referer: https://example.com\nX-Title: SEOlity' } ), 'custom_headers' );
+			headers.value = S.custom_headers || '';
+			var query = bind( h( 'input', { class: 'sl-input', dir: 'ltr', value: S.custom_query || '', placeholder: 'api-version=2024-10-21' } ), 'custom_query' );
+			var model = bind( h( 'input', { class: 'sl-input', dir: 'ltr', value: S.ai_model_custom || '', list: 'sl-custom-models', placeholder: 'model-id' } ), 'ai_model_custom' );
+			var json = bind( App.select( [ [ 'auto', t( 'Automatic (try and remember)' ) ], [ 'json_schema', 'json_schema (' + t( 'strict schema' ) + ')' ], [ 'json_object', 'json_object (' + t( 'JSON mode' ) + ')' ], [ 'prompt', t( 'Instructions in the prompt only' ) ] ], S.custom_json_mode ), 'custom_json_mode', 'change' );
+			var tokens = bind( App.select( [ [ 'auto', t( 'Automatic' ) ], [ 'max_tokens', 'max_tokens' ], [ 'max_completion_tokens', 'max_completion_tokens' ], [ 'none', t( 'Do not send' ) ] ], S.custom_token_param ), 'custom_token_param', 'change' );
+			var temp = bind( h( 'input', { class: 'sl-input', dir: 'ltr', type: 'number', step: '0.1', min: 0, max: 2, value: S.custom_temperature || '', placeholder: t( 'empty = server default' ) } ), 'custom_temperature' );
+			var authNameRow = App.field( t( 'Header / parameter name' ), authName );
+			function syncAuthName() {
+				authNameRow.style.display = auth.value === 'header' || auth.value === 'query' ? '' : 'none';
+			}
+			auth.addEventListener( 'change', syncAuthName );
+			syncAuthName();
+			var key = secretField( 'custom_api_key', 'API key', data.secrets );
+			var presetSel = App.select( [ [ 'custom', t( 'Choose a service…' ) ] ], S.custom_preset || 'custom' );
+			function applyPreset( id, init ) {
+				var pr = presets[ id ];
+				if ( ! pr ) {
+					return;
 				}
-				var counts = s.requests_24h || {};
-				st.appendChild( h( 'p', { class: 'sl-small sl-muted', text: t( 'Last 24 hours' ) + ': ' + t( 'done' ) + ' ' + ( counts.done || 0 ) + ' · ' + t( 'waiting' ) + ' ' + ( ( counts.queued || 0 ) + ( counts.submitted || 0 ) ) + ' · ' + t( 'failed' ) + ' ' + ( counts.failed || 0 ) } ) );
-				if ( Array.isArray( s.runs ) && s.runs.length ) {
-					st.appendChild( App.table( [ { label: t( 'Workflow run' ), render: function ( r ) {
-						return App.ext( r.url, '#' + r.id );
-					} }, { label: t( 'Status' ), render: function ( r ) {
-						return SL.badge( r.conclusion || r.status, r.conclusion === 'success' ? 'good' : ( r.conclusion === 'failure' ? 'bad' : 'default' ) );
-					} }, { label: t( 'Started' ), render: function ( r ) {
-						return SL.date( r.created_at );
-					} } ], s.runs ) );
-				} else if ( s.runs && s.runs.error ) {
-					st.appendChild( h( 'div', { class: 'sl-alert sl-alert--error', text: s.runs.error } ) );
+				if ( ! init ) {
+					dirty.custom_preset = id;
 				}
-			};
-			var actions = h( 'div', { class: 'sl-toolbar' },
-				App.abtn( t( 'Set up GitHub runner' ), function () {
-					var pending = Object.keys( dirty ).filter( function ( k ) {
-						return /^(sub_|ai_model_sub_)/.test( k );
+				if ( id !== 'custom' && ! init ) {
+					[ [ base, 'custom_base_url', pr.base ], [ query, 'custom_query', pr.query || '' ] ].forEach( function ( x ) {
+						x[ 0 ].value = x[ 2 ];
+						dirty[ x[ 1 ] ] = x[ 2 ];
 					} );
-					var save = pending.length ? SL.api( 'settings', { body: dirty } ).then( function ( r ) {
-						data.settings = r.settings;
-						pending.forEach( function ( k ) {
-							delete dirty[ k ];
-						} );
-					} ) : Promise.resolve();
-					return save.then( function () {
-						return SL.api( 'subscription/setup', { method: 'POST' } );
-					} ).then( function ( r ) {
-						render( r );
-						SL.toast( t( 'GitHub runner is ready.' ), 'success' );
+					[ [ format, 'custom_format', pr.format ], [ auth, 'custom_auth', pr.auth ], [ json, 'custom_json_mode', pr.json ] ].forEach( function ( x ) {
+						x[ 0 ].value = x[ 2 ];
+						dirty[ x[ 1 ] ] = x[ 2 ];
+					} );
+					if ( ! label.value || Object.keys( presets ).some( function ( k ) {
+						return presets[ k ].label === label.value;
+					} ) ) {
+						label.value = pr.label;
+						dirty.custom_label = pr.label;
+					}
+					if ( pr.models && pr.models.length && ! model.value ) {
+						model.value = pr.models[ 0 ];
+						dirty.ai_model_custom = pr.models[ 0 ];
+					}
+					syncAuthName();
+				}
+				SL.clear( models );
+				( pr.models || [] ).forEach( function ( m ) {
+					models.appendChild( h( 'option', { value: m } ) );
+				} );
+				SL.clear( keyLinks );
+				if ( pr.keys ) {
+					keyLinks.appendChild( SL.xlink( pr.keys, t( 'Get an API key' ) ) );
+				}
+				if ( pr.docs ) {
+					keyLinks.appendChild( SL.xlink( pr.docs, t( 'API documentation' ) ) );
+				}
+				if ( /\{[A-Z_]+\}/.test( base.value ) ) {
+					keyLinks.appendChild( h( 'span', { class: 'sl-badge sl-badge--warn', text: t( 'Replace the {PLACEHOLDERS} in the base URL' ) } ) );
+				}
+				refreshPreview();
+			}
+			presetSel.addEventListener( 'change', function () {
+				applyPreset( presetSel.value );
+			} );
+			function finalUrl() {
+				var b = base.value.trim().replace( /\/+$/, '' );
+				if ( ! b ) {
+					return '';
+				}
+				var path = b.replace( /^https?:\/\/[^/]+/, '' );
+				if ( format.value === 'anthropic' ) {
+					if ( ! /\/messages$/.test( path ) ) {
+						b += /\/v1$/.test( path ) ? '/messages' : '/v1/messages';
+					}
+				} else if ( ! /\/chat\/completions$/.test( path ) ) {
+					b += '/chat/completions';
+				}
+				var q = query.value.trim().replace( /^[?&]+/, '' );
+				if ( auth.value === 'query' ) {
+					q += ( q ? '&' : '' ) + ( authName.value.trim() || 'key' ) + '=••••';
+				}
+				return b + ( q ? ( b.indexOf( '?' ) === -1 ? '?' : '&' ) + q : '' );
+			}
+			function refreshPreview() {
+				SL.clear( preview );
+				var url = finalUrl();
+				if ( ! url ) {
+					return;
+				}
+				var hdrs = { bearer: 'Authorization: Bearer ••••', 'x-api-key': 'x-api-key: ••••', 'api-key': 'api-key: ••••', header: ( authName.value.trim() || 'Header' ) + ': ••••' }[ auth.value ];
+				preview.appendChild( h( 'div', { class: 'sl-kv' },
+					h( 'div', null, h( 'small', { text: t( 'Request URL' ) } ), h( 'code', { dir: 'ltr', text: 'POST ' + url } ) ),
+					h( 'div', null, h( 'small', { text: t( 'Authentication' ) } ), h( 'code', { dir: 'ltr', text: hdrs || ( auth.value === 'query' ? t( 'in the URL' ) : t( 'none' ) ) } ) )
+				) );
+			}
+			function save() {
+				var keys = Object.keys( dirty ).filter( function ( k ) {
+					return /^custom_|^ai_model_custom$/.test( k );
+				} );
+				if ( ! keys.length ) {
+					return Promise.resolve();
+				}
+				var bodyData = {};
+				keys.forEach( function ( k ) {
+					bodyData[ k ] = dirty[ k ];
+				} );
+				return SL.api( 'settings', { body: bodyData } ).then( function ( r ) {
+					data.settings = r.settings;
+					keys.forEach( function ( k ) {
+						delete dirty[ k ];
+					} );
+				} );
+			}
+			var modelRow = h( 'div', { class: 'sl-row' }, model, models, App.abtn( SL.il( 'download', t( 'Fetch models' ), 15 ), function () {
+				return save().then( function () {
+					return SL.api( 'settings/custom-models', { method: 'POST' } );
+				} ).then( function ( r ) {
+					SL.clear( models );
+					r.models.forEach( function ( m ) {
+						models.appendChild( h( 'option', { value: m } ) );
+					} );
+					SL.toast( t( '%s models found. Pick one in the model field.', r.models.length ), 'success' );
+					model.focus();
+				} );
+			}, 'sm' ) );
+			wrap.appendChild( h( 'p', { class: 'sl-muted sl-small', text: t( 'Use any AI service with exactly the settings its documentation gives: choose a ready-made service or fill in the base URL, API format, how the key is sent, extra headers and the model. SEOlity shows the exact request it will send.' ) } ) );
+			var form = h( 'div', { class: 'sl-form' },
+				App.field( t( 'Service' ), h( 'div', { class: 'sl-stack' }, presetSel, keyLinks ) ),
+				App.field( t( 'Display name' ), label ),
+				App.field( t( 'Base URL' ), base, t( 'From the service documentation, e.g. https://api.example.com/v1. A full …/chat/completions URL also works.' ) ),
+				App.field( t( 'API format' ), format, t( 'Most services are OpenAI-compatible. Choose Anthropic only for Claude-style /v1/messages gateways.' ) ),
+				App.field( t( 'How the key is sent' ), auth ),
+				authNameRow,
+				key,
+				App.field( t( 'Model' ), modelRow, t( 'Exact model id from the service (use “Fetch models” to list them).' ) ),
+				App.field( t( 'Structured output' ), json, t( 'Automatic tries strict JSON schema, then JSON mode, then prompt instructions, and remembers what works.' ) ),
+				h( 'details', { class: 'sl-more' }, h( 'summary', { text: t( 'Advanced: extra headers, query parameters, token limit, temperature' ) } ), h( 'div', { class: 'sl-form' },
+					App.field( t( 'Extra headers (one per line)' ), headers, t( 'Name: value. Use {key} to insert the API key, e.g. Authorization: Token {key}' ) ),
+					App.field( t( 'Query parameters' ), query, t( 'e.g. api-version=2024-10-21 (Azure OpenAI)' ) ),
+					App.field( t( 'Token limit parameter' ), tokens ),
+					App.field( t( 'Temperature' ), temp, t( 'Leave empty for reasoning models that reject it.' ) )
+				) )
+			);
+			wrap.appendChild( form );
+			wrap.appendChild( preview );
+			wrap.appendChild( h( 'div', { class: 'sl-toolbar' },
+				App.abtn( SL.il( 'save', t( 'Save Custom API' ) ), function () {
+					return save().then( function () {
+						SL.toast( t( 'Settings saved.' ), 'success' );
 					} );
 				}, 'primary' ),
-				App.abtn( t( 'Start runner now' ), function () {
-					return SL.api( 'subscription/run', { method: 'POST' } ).then( function () {
-						SL.toast( t( 'Workflow started on GitHub.' ), 'success' );
+				App.abtn( SL.il( 'zap', t( 'Test connection' ) ), function () {
+					return save().then( function () {
+						return SL.api( 'settings/test-ai', { body: { provider: 'custom' } } );
+					} ).then( function ( r ) {
+						SL.toast( t( 'Connection OK — model %s', r.model ), 'success' );
 					} );
 				} ),
-				App.abtn( t( 'Refresh status' ), function () {
-					return SL.api( 'subscription' ).then( render );
-				} )
-			);
-			wrap.appendChild( App.card( t( 'GitHub runner' ), h( 'div', null, actions, st ), { icon: 'github' } ) );
-			App.load( st, SL.api( 'subscription' ), render );
-			return wrap;
+				App.abtn( SL.il( 'check', t( 'Use as AI engine' ) ), function () {
+					return save().then( function () {
+						return SL.api( 'settings', { body: { ai_provider: 'custom' } } );
+					} ).then( function ( r ) {
+						data.settings = r.settings;
+						App.refreshBoot();
+						SL.toast( t( 'AI engine switched.' ), 'success' );
+					} );
+				} ),
+				h( 'a', { class: 'sl-btn sl-btn--ghost', href: '#/guide?service=custom' }, SL.il( 'lifebuoy', t( 'Guide' ), 15 ) )
+			) );
+			SL.api( 'settings/custom-describe' ).then( function ( d2 ) {
+				presets = d2.presets || {};
+				SL.clear( presetSel );
+				Object.keys( presets ).forEach( function ( id ) {
+					var o = h( 'option', { value: id }, id === 'custom' ? t( 'Custom (fill in by hand)' ) : presets[ id ].label );
+					if ( id === ( S.custom_preset || 'custom' ) ) {
+						o.selected = true;
+					}
+					presetSel.appendChild( o );
+				} );
+				applyPreset( S.custom_preset || 'custom', true );
+			} ).catch( function () {} );
+			refreshPreview();
+			return App.card( t( 'Custom API (any provider)' ), wrap, { icon: 'braces', sub: t( 'DeepSeek, Groq, Mistral, Together, xAI, Perplexity, Azure OpenAI, Cloudflare Workers AI, LM Studio, vLLM, LiteLLM or any compatible gateway.' ) } );
 		}
 
 		function group( g, data, dirty ) {
@@ -445,8 +577,8 @@
 					);
 				} ) ) );
 			}
-			if ( g[ 0 ] === 'subscription' ) {
-				box.appendChild( subscriptionGuide( data, dirty ) );
+			if ( g[ 0 ] === 'ai' ) {
+				box.appendChild( h( 'a', { class: 'sl-promo', href: '#/subscription' }, h( 'span', { class: 'sl-card__ic' }, SL.icon( 'sparkles', 20 ) ), h( 'div', null, h( 'b', { text: t( 'Use your Claude or ChatGPT subscription instead of an API key' ) } ), h( 'small', { text: t( 'Step-by-step setup with GitHub (free) and an optional Cloudflare relay.' ) } ) ), SL.icon( C.rtl ? 'arrow-left' : 'arrow-right', 18 ) ) );
 			}
 			if ( g[ 0 ] === 'privacy' ) {
 				box.appendChild( h( 'div', { class: 'sl-alert sl-alert--info', text: t( 'Encryption' ) + ': ' + data.encryption + '. ' + t( 'For maximum security define SEOLITY_ENCRYPTION_KEY in wp-config.php. You can also define any secret as a constant, e.g. SEOLITY_ANTHROPIC_API_KEY.' ) } ) );
@@ -458,6 +590,9 @@
 				}
 			} );
 			box.appendChild( App.card( t( g[ 1 ] ), fields, { icon: GROUP_ICONS[ g[ 0 ] ] || 'settings' } ) );
+			if ( g[ 0 ] === 'ai' ) {
+				box.appendChild( customApiCard( data, dirty ) );
+			}
 			if ( ( SECRETS[ g[ 0 ] ] || [] ).length ) {
 				var keys = h( 'div', { class: 'sl-form' } );
 				SECRETS[ g[ 0 ] ].forEach( function ( s ) {
@@ -475,30 +610,6 @@
 					} }, { label: t( 'Cost' ), render: function ( r ) {
 						return '$' + SL.num( r.cost, 3 );
 					} } ], u.by_task ) );
-				} );
-			}
-			if ( g[ 0 ] === 'github' ) {
-				var st = h( 'div' );
-				box.appendChild( App.card( t( 'GitHub data storage' ), st, { icon: 'database' } ) );
-				App.load( st, SL.api( 'storage' ), function ( s ) {
-					st.appendChild( h( 'p', { class: 'sl-small', text: t( 'Cold data (old Search Console rows, audit logs, reports, change history backups, crawl snapshots, config) is committed to your private GitHub repository and pruned locally, keeping your hosting database small. SEOlity reads it back when needed.' ) } ) );
-					st.appendChild( h( 'div', { class: 'sl-kpis sl-kpis--sm' }, App.kpi( t( 'SEOlity tables size' ), s.db_size_mb === null ? '—' : SL.num( s.db_size_mb ) + ' MB' ), App.kpi( t( 'GSC rows (local)' ), SL.num( s.local_rows.gsc_page_query, 0 ) ), App.kpi( t( 'Last archive' ), s.last ? SL.date( new Date( s.last.time * 1000 ).toISOString() ) : '—', null, { sub: s.last ? ( s.last.ok ? t( '%s files', s.last.files ) : s.last.error ) : '' } ) ) );
-					st.appendChild( h( 'div', { class: 'sl-toolbar' }, App.abtn( t( 'Test repository access' ), function () {
-						return SL.api( 'storage/test', { body: { repo: data.settings.storage_repo } } ).then( function ( r ) {
-							SL.toast( r.full_name + ' · ' + ( r.private ? t( 'private' ) : t( 'PUBLIC — use a private repo!' ) ) + ' · ' + ( r.can_push ? t( 'write access' ) : t( 'read only' ) ), r.private && r.can_push ? 'success' : 'error' );
-						} );
-					} ), App.abtn( t( 'Archive now' ), function () {
-						return SL.api( 'storage/run', { method: 'POST' } ).then( function ( r ) {
-							SL.toast( t( 'Archived %s files to GitHub.', r.files ), 'success' );
-						} );
-					} ) ) );
-					var start = h( 'input', { class: 'sl-input sl-input--sm', type: 'date' } );
-					var end = h( 'input', { class: 'sl-input sl-input--sm', type: 'date' } );
-					st.appendChild( h( 'div', { class: 'sl-toolbar' }, h( 'span', { class: 'sl-small', text: t( 'Restore archived Search Console data:' ) } ), start, end, App.abtn( t( 'Restore' ), function () {
-						return SL.api( 'storage/restore', { body: { start: start.value, end: end.value } } ).then( function ( r ) {
-							SL.toast( t( 'Restored %1$s rows from %2$s days.', r.rows, r.days ), 'success' );
-						} );
-					} ) ) );
 				} );
 			}
 			if ( g[ 0 ] === 'general' ) {

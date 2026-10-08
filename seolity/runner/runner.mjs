@@ -10,8 +10,10 @@
  * Queue (branch SEOLITY_JOBS_BRANCH, default "seolity-jobs"):
  *   jobs/<id>.json     written by WordPress  – AES-256-GCM encrypted request
  *   results/<id>.json  written by this runner – AES-256-GCM encrypted answer
- * Results are also POSTed (HMAC-signed) to SEOLITY_CALLBACK_URL when the site is
- * reachable; local sites simply collect them from GitHub.
+ * Results are also POSTed (HMAC-signed) to SEOLITY_RELAY_URL (the site owner's
+ * Cloudflare worker mailbox, which forwards them or keeps them until WordPress
+ * pulls) and/or to SEOLITY_CALLBACK_URL when the site is reachable. Without
+ * either, SEOlity simply collects the results from GitHub.
  *
  * Node 18+ – no npm dependencies.
  */
@@ -25,6 +27,7 @@ import { join } from 'node:path';
 const E = process.env;
 const SECRET = E.SEOLITY_SHARED_SECRET || '';
 const CALLBACK = /^https?:\/\//.test((E.SEOLITY_CALLBACK_URL || '').trim()) ? E.SEOLITY_CALLBACK_URL.trim() : '';
+const RELAY = /^https:\/\//.test((E.SEOLITY_RELAY_URL || '').trim()) ? E.SEOLITY_RELAY_URL.trim().replace(/\/+$/, '') : '';
 const BRANCH = /^[A-Za-z0-9._\/-]{1,100}$/.test(E.SEOLITY_JOBS_BRANCH || '') ? E.SEOLITY_JOBS_BRANCH : 'seolity-jobs';
 const ENGINES = (E.SEOLITY_ENGINES || 'claude').split(',').map((s) => s.trim()).filter((s) => s === 'claude' || s === 'codex');
 const BUDGET_MS = Math.min(Math.max(Number(E.SEOLITY_BUDGET_MIN || 40), 5), 55) * 60000;
@@ -57,22 +60,31 @@ export function decrypt(env) {
   return JSON.parse(plain);
 }
 
-async function callback(results) {
-  if (!CALLBACK || !results.length) return;
-  const body = JSON.stringify({ results });
-  const ts = String(Math.floor(Date.now() / 1000));
-  const sig = createHmac('sha256', macKey()).update(`${ts}.${body}`).digest('hex');
+async function post(url, body, ts, sig, label) {
   try {
-    const res = await fetch(CALLBACK, {
+    const res = await fetch(url, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'User-Agent': 'SEOlity-Runner/1.0', 'X-SEOlity-Timestamp': ts, 'X-SEOlity-Signature': sig },
+      headers: { 'Content-Type': 'application/json', 'User-Agent': 'SEOlity-Runner/1.1', 'X-SEOlity-Timestamp': ts, 'X-SEOlity-Signature': sig },
       body,
       signal: AbortSignal.timeout(30000),
     });
-    log(`callback → HTTP ${res.status}`);
+    log(`${label} → HTTP ${res.status}`);
+    return res.ok;
   } catch (e) {
-    log('callback skipped (site not reachable – it will collect results from GitHub):', e.message);
+    log(`${label} skipped:`, e.message);
+    return false;
   }
+}
+
+async function callback(results) {
+  if (!results.length || (!CALLBACK && !RELAY)) return;
+  const body = JSON.stringify({ results });
+  const ts = String(Math.floor(Date.now() / 1000));
+  const sig = createHmac('sha256', macKey()).update(`${ts}.${body}`).digest('hex');
+  // Cloudflare mailbox first: it forwards to the site or keeps the result until WordPress pulls it.
+  if (RELAY && (await post(`${RELAY}/mailbox`, body, ts, sig, 'relay'))) return;
+  if (CALLBACK && (await post(CALLBACK, body, ts, sig, 'callback'))) return;
+  log('site not reachable – it will collect results from GitHub');
 }
 
 /* ------------------------------ process helper ------------------------------ */

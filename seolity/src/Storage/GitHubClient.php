@@ -190,6 +190,42 @@ final class GitHubClient {
 		return $last;
 	}
 
+	/**
+	 * Who owns the token, what it may do and when it expires.
+	 *
+	 * Classic tokens report their scopes in X-OAuth-Scopes; fine-grained tokens
+	 * have none (their permissions are checked per repository instead).
+	 *
+	 * @return array|\WP_Error
+	 */
+	public function whoami( $token = null ) {
+		$headers = $this->headers();
+		if ( null !== $token ) {
+			$headers['Authorization'] = 'Bearer ' . $token;
+		}
+		$res = Http::json( 'GET', self::API . '/user', null, $headers, 30 );
+		if ( is_wp_error( $res ) ) {
+			return $res;
+		}
+		if ( $res['status'] >= 400 ) {
+			$msg = isset( $res['body']['message'] ) ? $res['body']['message'] : 'HTTP ' . $res['status'];
+			return new \WP_Error( 'seolity_github', 'GitHub: ' . $msg, array( 'status' => 401 === $res['status'] ? 400 : $res['status'] ) );
+		}
+		$h      = $res['headers'];
+		$scopes = isset( $h['x-oauth-scopes'] ) ? array_filter( array_map( 'trim', explode( ',', (string) $h['x-oauth-scopes'] ) ) ) : null;
+		$tok    = null !== $token ? $token : (string) $this->plugin->settings->secret( 'github_token' );
+		$type   = 0 === strpos( $tok, 'github_pat_' ) ? 'fine-grained' : ( 0 === strpos( $tok, 'ghp_' ) ? 'classic' : ( null !== $scopes ? 'classic' : 'other' ) );
+		return array(
+			'login'     => (string) $res['body']['login'],
+			'name'      => isset( $res['body']['name'] ) ? (string) $res['body']['name'] : '',
+			'avatar'    => isset( $res['body']['avatar_url'] ) ? esc_url_raw( $res['body']['avatar_url'] ) : '',
+			'type'      => $type,
+			'scopes'    => null === $scopes ? null : array_values( $scopes ),
+			'expires'   => isset( $h['github-authentication-token-expiration'] ) && strtotime( (string) $h['github-authentication-token-expiration'] ) ? gmdate( 'c', strtotime( (string) $h['github-authentication-token-expiration'] ) ) : null,
+			'rate_left' => isset( $h['x-ratelimit-remaining'] ) ? (int) $h['x-ratelimit-remaining'] : null,
+		);
+	}
+
 	/** Login of the token owner. */
 	public function login() {
 		$u = $this->request( 'GET', '/user' );
@@ -205,6 +241,48 @@ final class GitHubClient {
 		}
 		$path = 0 === strcasecmp( $owner, $login ) ? '/user/repos' : '/orgs/' . rawurlencode( $owner ) . '/repos';
 		return $this->request( 'POST', $path, array( 'name' => $name, 'private' => true, 'auto_init' => true, 'description' => $description ) );
+	}
+
+	/**
+	 * Repository facts for the setup screens (never fails: errors are reported in the array).
+	 */
+	public function inspect( $repo ) {
+		$out = array( 'repo' => (string) $repo, 'valid' => self::valid_repo( $repo ), 'exists' => false, 'private' => null, 'can_push' => null, 'url' => self::valid_repo( $repo ) ? 'https://github.com/' . $repo : '', 'error' => null );
+		if ( ! $out['valid'] || ! $this->has_token() ) {
+			return $out;
+		}
+		$r = $this->repo( $repo );
+		if ( is_wp_error( $r ) ) {
+			$data          = $r->get_error_data();
+			$out['error']  = 404 === (int) ( is_array( $data ) && isset( $data['status'] ) ? $data['status'] : 0 ) ? null : $r->get_error_message();
+			return $out;
+		}
+		$out['exists']         = true;
+		$out['private']        = ! empty( $r['private'] );
+		$out['can_push']       = ! empty( $r['permissions']['push'] );
+		$out['default_branch'] = (string) $r['default_branch'];
+		$out['pushed_at']      = isset( $r['pushed_at'] ) ? (string) $r['pushed_at'] : null;
+		return $out;
+	}
+
+	/** Create the repository when it does not exist yet and wait until it is readable. */
+	public function ensure_repo( $repo, $description ) {
+		$info = $this->repo( $repo );
+		if ( ! is_wp_error( $info ) ) {
+			return $info;
+		}
+		$created = $this->create_repo( $repo, $description );
+		if ( is_wp_error( $created ) ) {
+			return $created;
+		}
+		for ( $i = 0; $i < 4; $i++ ) {
+			sleep( 1 + $i ); // GitHub needs a moment before the initial commit is readable.
+			$info = $this->repo( $repo );
+			if ( ! is_wp_error( $info ) && ! is_wp_error( $this->request( 'GET', '/repos/' . $repo . '/git/ref/heads/' . rawurlencode( $info['default_branch'] ) ) ) ) {
+				return $info;
+			}
+		}
+		return $info;
 	}
 
 	/** Make sure a branch exists (created from $from when missing). */

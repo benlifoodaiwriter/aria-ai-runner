@@ -23,7 +23,7 @@ final class Settings {
 	const SECRET_FIELDS = array(
 		'openai_api_key', 'anthropic_api_key', 'gemini_api_key', 'openrouter_api_key', 'custom_api_key',
 		'gsc_client_secret', 'gsc_tokens', 'github_token', 'pagespeed_api_key', 'serp_api_key',
-		'claude_oauth_token', 'codex_auth_json', 'sub_shared_secret',
+		'claude_oauth_token', 'codex_auth_json', 'sub_shared_secret', 'cloudflare_api_token',
 	);
 
 	/** @var Plugin|null */
@@ -68,7 +68,25 @@ final class Settings {
 			'sub_wait_minutes'     => array( 'int', 45, array( 10, 180 ) ),
 			'ai_effort'            => array( 'enum', 'medium', array( 'low', 'medium', 'high', 'xhigh', 'max' ) ),
 			'ollama_base_url'      => array( 'url', 'http://localhost:11434' ),
-			'custom_base_url'      => array( 'url', '' ),
+			'custom_base_url'      => array( 'string', '' ), // Not 'url': esc_url_raw() would strip {PLACEHOLDERS}.
+			// Custom API: any provider's own settings (format, auth, headers, query, JSON mode).
+			'custom_preset'        => array( 'string', 'custom' ),
+			'custom_format'        => array( 'enum', 'openai', array( 'openai', 'anthropic' ) ),
+			'custom_auth'          => array( 'enum', 'bearer', array( 'bearer', 'x-api-key', 'api-key', 'header', 'query', 'none' ) ),
+			'custom_auth_name'     => array( 'string', '' ),
+			'custom_headers'       => array( 'text', '' ),
+			'custom_query'         => array( 'string', '' ),
+			'custom_json_mode'     => array( 'enum', 'auto', array( 'auto', 'json_schema', 'json_object', 'prompt' ) ),
+			'custom_token_param'   => array( 'enum', 'auto', array( 'auto', 'max_tokens', 'max_completion_tokens', 'none' ) ),
+			'custom_temperature'   => array( 'string', '' ),
+			'custom_label'         => array( 'string', '' ),
+			// Cloudflare relay (subscription answers mailbox + reliable cron).
+			'cf_account_id'        => array( 'string', '' ),
+			'cf_worker_name'       => array( 'string', 'seolity-relay' ),
+			'cf_custom_url'        => array( 'url', '' ),
+			'cf_mode'              => array( 'enum', 'auto', array( 'auto', 'push', 'pull' ) ),
+			'cf_cron_minutes'      => array( 'int', 10, array( 5, 60 ) ),
+			'cf_wp_api'            => array( 'url', '' ),
 			'ai_max_tokens'        => array( 'int', 8000, array( 512, 64000 ) ),
 			'ai_timeout'           => array( 'int', 120, array( 15, 600 ) ),
 			'ai_monthly_budget'    => array( 'float', 0.0, array( 0, 100000 ) ),
@@ -283,7 +301,7 @@ final class Settings {
 	public function secret_flags() {
 		$out = array();
 		foreach ( self::SECRET_FIELDS as $key ) {
-			if ( 'gsc_tokens' === $key || 'sub_shared_secret' === $key ) {
+			if ( 'gsc_tokens' === $key || 'sub_shared_secret' === $key ) { // Internal, never entered by hand.
 				continue;
 			}
 			$out[ $key ] = $this->has_secret( $key );

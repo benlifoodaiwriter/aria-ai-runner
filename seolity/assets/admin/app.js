@@ -55,7 +55,7 @@
 		return h( 'button', Object.assign( { type: 'button', class: 'sl-btn' + ( kind ? ' sl-btn--' + kind : '' ), onClick: onClick }, attrs ), label );
 	};
 	/** Async button: disables itself while the promise runs. */
-	App.abtn = function ( label, fn, kind ) {
+	App.abtn = function ( label, fn, kind, attrs ) {
 		var b = App.btn( label, function () {
 			b.disabled = true;
 			b.classList.add( 'is-busy' );
@@ -63,7 +63,7 @@
 				b.disabled = false;
 				b.classList.remove( 'is-busy' );
 			} );
-		}, kind );
+		}, kind, attrs );
 		return b;
 	};
 	App.link = function ( label, route ) {
@@ -291,14 +291,15 @@
 	var root;
 	var view;
 	var nav;
-	var ICONS = { dashboard: 'dashboard', actions: 'wand', ai: 'prompt', audit: 'pulse', gsc: 'chart', keywords: 'key', content: 'content', products: 'bag', images: 'image', links: 'link', competitors: 'swords', experiments: 'flask', changes: 'undo', redirects: 'corner', 404: 'unlink', schema: 'braces', sitemap: 'map', robots: 'bot', reports: 'review', alerts: 'bell', automation: 'zap', knowledge: 'book', settings: 'settings', rankmath: 'target', guide: 'lifebuoy' };
+	var ICONS = { dashboard: 'dashboard', actions: 'wand', ai: 'prompt', audit: 'pulse', gsc: 'chart', keywords: 'key', content: 'content', products: 'bag', images: 'image', links: 'link', competitors: 'swords', experiments: 'flask', changes: 'undo', redirects: 'corner', 404: 'unlink', schema: 'braces', sitemap: 'map', robots: 'bot', reports: 'review', alerts: 'bell', automation: 'zap', knowledge: 'book', settings: 'settings', rankmath: 'target', guide: 'lifebuoy', subscription: 'sparkles', github: 'github', cloudflare: 'cloud' };
 	/** Sidebar groups (ARIAGH-style navigation sections). */
 	var NAV_GROUPS = [
 		[ 'Overview', [ 'dashboard', 'actions', 'ai', 'alerts', 'reports' ] ],
 		[ 'Content & SEO', [ 'content', 'products', 'images', 'keywords', 'rankmath', 'links' ] ],
 		[ 'Analysis', [ 'audit', 'gsc', 'competitors', 'experiments' ] ],
 		[ 'Technical SEO', [ 'redirects', '404', 'schema', 'sitemap', 'robots' ] ],
-		[ 'System', [ 'changes', 'automation', 'knowledge', 'guide', 'settings' ] ],
+		[ 'Connections', [ 'subscription', 'github', 'cloudflare', 'guide' ] ],
+		[ 'System', [ 'changes', 'automation', 'knowledge', 'settings' ] ],
 	];
 	App.icon = function ( slug ) {
 		return ICONS[ slug ] || 'info';
@@ -346,7 +347,7 @@
 			if ( ! items.length ) {
 				return;
 			}
-			var GROUP_LABELS = { 'Overview': t( 'Overview' ), 'Content & SEO': t( 'Content & SEO' ), 'Analysis': t( 'Analysis' ), 'Technical SEO': t( 'Technical SEO' ), 'System': t( 'System' ) };
+			var GROUP_LABELS = { 'Overview': t( 'Overview' ), 'Content & SEO': t( 'Content & SEO' ), 'Analysis': t( 'Analysis' ), 'Technical SEO': t( 'Technical SEO' ), 'Connections': t( 'Connections' ), 'System': t( 'System' ) };
 			nav.appendChild( h( 'div', { class: 'sl-nav__group', text: GROUP_LABELS[ g[ 0 ] ] || g[ 0 ] } ) );
 			items.forEach( function ( slug ) {
 				used[ slug ] = true;
@@ -394,6 +395,10 @@
 		};
 		box.appendChild( card( 'cpu', t( 'AI engine' ), b.ai_ready ? ( b.ai_label || t( 'AI connected' ) ) : t( 'AI not configured' ), b.ai_ready, b.ai_ready ? 'settings?tab=ai' : 'settings?tab=ai' ) );
 		box.appendChild( card( 'chart', t( 'Search Console' ), b.gsc ? ( b.gsc_property || t( 'Search Console connected' ) ).replace( /^sc-domain:/, '' ) : t( 'Search Console not connected' ), b.gsc, 'gsc' ) );
+		if ( App.cap( 'manage' ) ) {
+			var gh = b.github || {};
+			box.appendChild( card( 'github', 'GitHub', gh.token ? ( gh.login ? '@' + gh.login : t( 'GitHub connected' ) ) : t( 'GitHub not connected' ), !! gh.token, 'github' ) );
+		}
 	}
 
 	function topStatus( b ) {

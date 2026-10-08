@@ -175,7 +175,7 @@ Main route groups: `bootstrap`, `dashboard`, `action-center`, `health`, `doctor`
 `urls`, `pagespeed`, `gsc/*`, `keywords/*`, `products/*`, `images/*`, `links/*`, `competitors/*`,
 `experiments/*`, `redirects/*`, `404/*`, `schema/*`, `sitemap/*`, `robots/*`, `reports/*`, `alerts/*`,
 `briefing/*`, `chat/*`, `rules/*`, `queue/*`, `audit-log`, `planner/*`, `clusters/*`, `settings/*`,
-`ai/usage`, `knowledge/*`, `storage/*`, `focus/*` (insights, apply, plan, bulk), `rankmath/*` (status, import-redirects, sync-pillars).
+`ai/usage`, `knowledge/*`, `storage/*`, `focus/*` (insights, apply, plan, bulk), `rankmath/*` (status, import-redirects, sync-pillars), `github/*` (status, connect, runner, knowledge, storage), `cloudflare/*` (connect, accounts, deploy, diagnose, pull, remove), `subscription/check|account|activate|test`, `settings/custom-models|custom-describe`; public signed `remote/callback`, `remote/heartbeat`, `remote/ping`.
 
 ## 6. AI architecture
 
@@ -387,6 +387,22 @@ generates prioritized actions, `HealthScore` computes the explainable score.
   fields: `focus_keywords` (full list, primary first: Rank Math comma list, Yoast `_yoast_wpseo_focuskeywords`,
   SEOPress target keywords), `pillar_content` (Rank Math pillar / Yoast cornerstone), `social_title` and
   `social_description` (Open Graph). Setting only the primary keyword keeps Rank Math's secondaries.
+* **GitHub hub** (`Storage\GitHubHub`): token verification (owner, classic scopes from X-OAuth-Scopes,
+  expiry header), one-click private repositories: runner (delegates to SubscriptionRunner::setup), knowledge
+  (bundled knowledge + builder + `runner/seolity-knowledge.yml`, same layout as the shared repo so the builder
+  runs unchanged; optional ANTHROPIC_API_KEY secret) and data archive (write test, enables archiving).
+* **Cloudflare relay** (`Integrations\Cloudflare` + `cloudflare/worker.js`): deployed through the Cloudflare
+  API as an ES module (KV binding SEOLITY_KV, plain-text SITE_URL/WP_API/MODE/VERSION, secret
+  SEOLITY_SHARED_SECRET, workers.dev, cron in push mode). Runner → `POST /mailbox` (HMAC over "ts.body");
+  push mode forwards to `/remote/callback`, pull mode keeps it in KV until WordPress calls `/mailbox/list` +
+  `/mailbox/ack` (signed). Cron → `POST /remote/heartbeat` (signed) runs the queue and collects results.
+  `/diagnose` checks the site from Cloudflare's side (`/remote/ping`). The relay URL is stored as the runner
+  secret SEOLITY_RELAY_URL. Mode auto = push for public hosts, pull for localhost/private addresses.
+* **Custom API** (`AI\Providers\CustomApi`): presets, OpenAI or Anthropic format, base or full endpoint URL,
+  {ACCOUNT_ID} placeholder, auth bearer/x-api-key/api-key/header/query/none, extra headers ({key} template)
+  and query parameters, structured output auto = json_schema → json_object → prompt (remembered per
+  endpoint+model), max_tokens ↔ max_completion_tokens swap, optional temperature, <think> stripping,
+  GET …/models listing.
 * **Rank Math** (`Integrations\RankMath`): status (version, Pro, modules), score triage by GSC demand,
   redirection import (exact/regex/contains/start/end → SEOlity redirects), pillar sync from topic clusters.
   In the editor `SL.seoSync()` dispatches to the `rank-math` / `yoast-seo/editor` data stores (guarded

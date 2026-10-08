@@ -141,6 +141,9 @@ final class Router {
 				'ai_label'  => ( $prov = \SEOlity\AI\ProviderRegistry::get( $p, (string) $p->settings->get( 'ai_provider' ) ) ) ? $prov->label() : '',
 				'gsc_property' => (string) $p->settings->get( 'gsc_property' ),
 				'gsc'       => $p->gsc_oauth->is_connected(),
+				'github'    => array( 'token' => $p->github->has_token(), 'login' => is_array( get_transient( 'seolity_gh_whoami' ) ) && ! empty( get_transient( 'seolity_gh_whoami' )['login'] ) ? get_transient( 'seolity_gh_whoami' )['login'] : '' ),
+				'cloudflare' => $p->cloudflare->is_deployed(),
+				'subscription' => in_array( $p->settings->get( 'ai_provider' ), array( 'sub_claude', 'sub_codex' ), true ),
 				'woo'       => class_exists( 'WooCommerce' ),
 				'serp'      => $p->serp->available(),
 				'engine'    => $p->meta->engine(),
@@ -803,6 +806,106 @@ final class Router {
 			$res = $p->subscription->dispatch( true );
 			return is_wp_error( $res ) ? $res : array( 'dispatched' => true );
 		} );
+		$this->route( 'GET', '/subscription/check', 'manage', function ( Req $r ) use ( $p ) {
+			return $p->subscription->check( self::key( $r, 'engine', 'claude' ) );
+		} );
+		$this->route( 'POST', '/subscription/account', 'manage', function ( Req $r ) use ( $p ) {
+			$engine = 'codex' === self::key( $r, 'engine' ) ? 'codex' : 'claude';
+			$value  = trim( wp_unslash( (string) $r->get_param( 'value' ) ) );
+			if ( '' !== $value ) {
+				if ( 'codex' === $engine && null === json_decode( $value ) ) {
+					return new \WP_Error( 'seolity_sub', __( 'This is not the whole auth.json file. Copy everything from { to }.', 'seolity' ), array( 'status' => 400 ) );
+				}
+				if ( 'claude' === $engine && ! preg_match( '/^sk-ant-[A-Za-z0-9_-]{20,}$/', $value ) ) {
+					return new \WP_Error( 'seolity_sub', __( 'This does not look like a Claude token. It starts with sk-ant-oat01- (output of: claude setup-token).', 'seolity' ), array( 'status' => 400 ) );
+				}
+				$key = 'codex' === $engine ? 'codex_auth_json' : 'claude_oauth_token';
+				$p->settings->set_secret( $key, $value );
+				$synced = $p->subscription->sync_secret( $key );
+				if ( is_wp_error( $synced ) ) {
+					return $synced;
+				}
+			}
+			if ( null !== $r->get_param( 'model' ) ) {
+				$p->settings->update( array( 'ai_model_sub_' . $engine => self::str( $r, 'model' ) ) );
+			}
+			$p->audit_log->log( 'subscription.account', 'site', null, array( 'engine' => $engine ) );
+			return $p->subscription->check( $engine );
+		} );
+		$this->route( 'POST', '/subscription/activate', 'manage', function ( Req $r ) use ( $p ) {
+			$p->settings->update( array( 'ai_provider' => 'codex' === self::key( $r, 'engine' ) ? 'sub_codex' : 'sub_claude' ) );
+			return array( 'provider' => $p->settings->get( 'ai_provider' ) );
+		} );
+		$this->route( 'POST', '/subscription/test', 'manage', function ( Req $r ) use ( $p ) {
+			return $p->ai->test( 'codex' === self::key( $r, 'engine' ) ? 'sub_codex' : 'sub_claude' );
+		} );
+		$this->route( 'POST', '/settings/custom-models', 'manage', function () use ( $p ) {
+			$custom = \SEOlity\AI\ProviderRegistry::get( $p, 'custom' );
+			$models = $custom ? $custom->list_models() : array();
+			return is_wp_error( $models ) ? $models : array( 'models' => $models );
+		} );
+		$this->route( 'GET', '/settings/custom-describe', 'manage', function () use ( $p ) {
+			$custom = \SEOlity\AI\ProviderRegistry::get( $p, 'custom' );
+			return $custom ? $custom->describe() : array();
+		} );
+
+		// GitHub hub: account + one-click repositories.
+		$this->route( 'GET', '/github', 'manage', function ( Req $r ) use ( $p ) {
+			return $p->githubhub->status( (bool) $r->get_param( 'fresh' ) );
+		} );
+		$this->route( 'POST', '/github/connect', 'manage', function ( Req $r ) use ( $p ) {
+			return $p->githubhub->connect( wp_unslash( (string) $r->get_param( 'token' ) ) );
+		} );
+		$this->route( 'POST', '/github/disconnect', 'manage', function () use ( $p ) {
+			return $p->githubhub->disconnect();
+		} );
+		$this->route( 'POST', '/github/runner', 'manage', function ( Req $r ) use ( $p ) {
+			return $p->githubhub->setup_runner( self::str( $r, 'repo' ) );
+		} );
+		$this->route( 'POST', '/github/knowledge', 'manage', function ( Req $r ) use ( $p ) {
+			return $p->githubhub->setup_knowledge( self::str( $r, 'repo' ), (bool) $r->get_param( 'share_key' ) );
+		} );
+		$this->route( 'POST', '/github/knowledge/shared', 'manage', function () use ( $p ) {
+			return $p->githubhub->use_shared_knowledge();
+		} );
+		$this->route( 'POST', '/github/knowledge/sync', 'manage', function () use ( $p ) {
+			return $p->githubhub->sync_knowledge();
+		} );
+		$this->route( 'POST', '/github/knowledge/key', 'manage', function () use ( $p ) {
+			return $p->githubhub->share_builder_key();
+		} );
+		$this->route( 'POST', '/github/knowledge/build', 'manage', function () use ( $p ) {
+			return $p->githubhub->run_builder();
+		} );
+		$this->route( 'POST', '/github/storage', 'manage', function ( Req $r ) use ( $p ) {
+			return $p->githubhub->setup_storage( self::str( $r, 'repo' ) );
+		} );
+
+		// Cloudflare relay.
+		$this->route( 'GET', '/cloudflare', 'manage', function () use ( $p ) {
+			return $p->cloudflare->status();
+		} );
+		$this->route( 'GET', '/cloudflare/accounts', 'manage', function () use ( $p ) {
+			return $p->cloudflare->accounts();
+		} );
+		$this->route( 'POST', '/cloudflare/connect', 'manage', function ( Req $r ) use ( $p ) {
+			return $p->cloudflare->connect( wp_unslash( (string) $r->get_param( 'token' ) ), self::str( $r, 'account_id' ) );
+		} );
+		$this->route( 'POST', '/cloudflare/deploy', 'manage', function () use ( $p ) {
+			return $p->cloudflare->deploy();
+		} );
+		$this->route( 'POST', '/cloudflare/remove', 'manage', function () use ( $p ) {
+			return $p->cloudflare->remove();
+		} );
+		$this->route( 'POST', '/cloudflare/disconnect', 'manage', function () use ( $p ) {
+			return $p->cloudflare->disconnect();
+		} );
+		$this->route( 'POST', '/cloudflare/diagnose', 'manage', function () use ( $p ) {
+			return $p->cloudflare->diagnose();
+		} );
+		$this->route( 'POST', '/cloudflare/pull', 'manage', function () use ( $p ) {
+			return array( 'stored' => $p->cloudflare->pull() );
+		} );
 		$this->route( 'GET', '/ai/usage', 'manage', function () use ( $p ) {
 			return $p->ai->usage_summary();
 		} );
@@ -849,6 +952,30 @@ final class Router {
 				'permission_callback' => '__return_true',
 				'callback'            => function ( Req $r ) use ( $p ) {
 					return $p->subscription->handle_callback( $r );
+				},
+			)
+		);
+		// Cloudflare relay cron: signed heartbeat that runs the background queue on time.
+		register_rest_route(
+			self::NS,
+			'/remote/heartbeat',
+			array(
+				'methods'             => 'POST',
+				'permission_callback' => '__return_true',
+				'callback'            => function ( Req $r ) use ( $p ) {
+					return $p->subscription->handle_heartbeat( $r );
+				},
+			)
+		);
+		// Reachability probe for diagnostics (reveals nothing but "SEOlity is here").
+		register_rest_route(
+			self::NS,
+			'/remote/ping',
+			array(
+				'methods'             => 'GET',
+				'permission_callback' => '__return_true',
+				'callback'            => static function () {
+					return array( 'ok' => true, 'service' => 'seolity' );
 				},
 			)
 		);

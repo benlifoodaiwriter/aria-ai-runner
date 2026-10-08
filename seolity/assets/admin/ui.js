@@ -306,6 +306,7 @@
 		'wand': '<path d="m15 4-1-1M21 10l-1-1M18 3v2M22 7h-2"/><path d="M3 21 14.5 9.5"/><path d="m12.5 7.5 4 4"/>',
 		'wrench': '<path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94z"/>',
 		'x': '<path d="M18 6 6 18M6 6l12 12"/>',
+		'check-circle': '<circle cx="12" cy="12" r="9"/><path d="m8.5 12 2.5 2.5 4.5-5"/>',
 		'x-circle': '<circle cx="12" cy="12" r="9"/><path d="m15 9-6 6M9 9l6 6"/>',
 		'zap': '<path d="M13 2 3 14h9l-1 8 10-12h-9z"/>',
 	};
@@ -1321,6 +1322,66 @@
 			m.close();
 			SL.fail( e );
 		} );
+	};
+
+	/* ------------------------------------------------------------------ Setup-wizard building blocks */
+	/** Copyable command / code block (LTR). */
+	SL.cmd = function ( text ) {
+		text = Array.isArray( text ) ? text.join( '\n' ) : String( text );
+		return h( 'div', { class: 'sl-cmd', dir: 'ltr' }, h( 'code', { text: text } ), h( 'button', { type: 'button', class: 'sl-btn sl-btn--sm sl-btn--icon', title: t( 'Copy' ), 'aria-label': t( 'Copy' ), onClick: function () {
+			( navigator.clipboard ? navigator.clipboard.writeText( text ) : Promise.reject() ).then( function () {
+				SL.toast( t( 'Copied.' ) );
+			} ).catch( function () {
+				SL.toast( text );
+			} );
+		} }, SL.icon( 'copy', 15 ) ) );
+	};
+	/** Password field with a show/hide button. Returns the wrapper; the input is .input. */
+	SL.secretInput = function ( placeholder, multiline ) {
+		var input = multiline ? h( 'textarea', { class: 'sl-input sl-mono-input', rows: 5, dir: 'ltr', placeholder: placeholder || '', spellcheck: 'false', autocomplete: 'off' } ) : h( 'input', { class: 'sl-input', type: 'password', dir: 'ltr', placeholder: placeholder || '', autocomplete: 'new-password', spellcheck: 'false' } );
+		var wrap = h( 'div', { class: 'sl-pass' }, input, multiline ? null : h( 'button', { type: 'button', class: 'sl-btn sl-btn--sm sl-btn--icon sl-btn--ghost', title: t( 'Show' ), 'aria-label': t( 'Show' ), onClick: function ( e ) {
+			input.type = input.type === 'password' ? 'text' : 'password';
+			SL.clear( e.currentTarget ).appendChild( SL.icon( input.type === 'password' ? 'eye' : 'eye-off', 16 ) );
+		} }, SL.icon( 'eye', 16 ) ) );
+		wrap.input = input;
+		return wrap;
+	};
+	/** Numbered guide list; items are nodes, strings or arrays. */
+	SL.steps = function ( items ) {
+		return h( 'ol', { class: 'sl-howto' }, items.filter( Boolean ).map( function ( x ) {
+			return h( 'li', null, x );
+		} ) );
+	};
+	/** External link that opens in a new tab with an icon. */
+	SL.xlink = function ( url, label ) {
+		return h( 'a', { href: url, target: '_blank', rel: 'noopener noreferrer', class: 'sl-xlink' }, h( 'span', { text: label } ), SL.icon( 'external', 13 ) );
+	};
+	/**
+	 * Wizard step card: number (or check when done), title, optional status badge.
+	 * opts: { n, title, sub, done, state: [text, kind], id, body }
+	 */
+	SL.wizStep = function ( opts ) {
+		return h( 'section', { class: 'sl-card sl-wiz' + ( opts.done ? ' is-done' : '' ) + ( opts.optional ? ' is-optional' : '' ), id: opts.id || null },
+			h( 'div', { class: 'sl-wiz__num', 'aria-hidden': 'true' }, opts.done ? SL.icon( 'check', 18 ) : String( opts.n ) ),
+			h( 'div', { class: 'sl-wiz__body' },
+				h( 'div', { class: 'sl-wiz__head' }, h( 'div', null, h( 'h3', { text: opts.title } ), opts.sub ? h( 'p', { class: 'sl-muted', text: opts.sub } ) : null ), opts.state ? SL.badge( opts.state[ 0 ], opts.state[ 1 ] ) : null ),
+				opts.body
+			)
+		);
+	};
+	/** Readiness list: [{level: ok|warn|fail|info, title, detail, fix}] */
+	SL.checklist = function ( checks, onFix ) {
+		var icon = { ok: [ 'check-circle', 'is-good' ], warn: [ 'alert', 'is-warn' ], fail: [ 'x-circle', 'is-bad' ], info: [ 'info', 'is-info' ] };
+		return h( 'ul', { class: 'sl-checks' }, checks.map( function ( c ) {
+			var ic = icon[ c.level ] || icon.info;
+			return h( 'li', { class: 'sl-checks__row is-' + c.level },
+				SL.icon( ic[ 0 ], 20, ic[ 1 ] ),
+				h( 'div', { class: 'sl-checks__text' }, h( 'strong', { text: c.title } ), c.detail ? h( 'small', { dir: 'auto', text: c.detail } ) : null ),
+				c.fix && c.level !== 'ok' && onFix ? h( 'button', { type: 'button', class: 'sl-btn sl-btn--sm', onClick: function () {
+					onFix( c.fix );
+				} }, c.level === 'info' ? t( 'Open' ) : t( 'Fix' ) ) : null
+			);
+		} ) );
 	};
 
 	/* ------------------------------------------------------------------ Shared list block */

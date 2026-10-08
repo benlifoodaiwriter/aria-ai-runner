@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: SEOlity 1.0.0\n"
-"POT-Creation-Date: 2026-10-05 16:16+0000\n"
+"POT-Creation-Date: 2026-10-08 07:16+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -54,10 +54,23 @@ msgstr ""
 msgid "The model declined this request."
 msgstr ""
 
-msgid "Custom (OpenAI-compatible)"
+msgid "Custom API"
+msgstr ""
+
+msgid "Replace the {placeholders} in the Custom API base URL with your own values."
 msgstr ""
 
 msgid "Custom AI endpoint URL is not allowed."
+msgstr ""
+
+msgid "The Custom API answered, but not in the selected format. Check “API format”."
+msgstr ""
+
+msgid "Enter the base URL first."
+msgstr ""
+
+#, php-format
+msgid "The models list answered HTTP %1$d: %2$s"
 msgstr ""
 
 msgid "Gemini blocked this response for safety reasons."
@@ -110,6 +123,74 @@ msgid "The PHP OpenSSL extension is required."
 msgstr ""
 
 msgid "The runner repository must be private."
+msgstr ""
+
+msgid "PHP extensions (OpenSSL, sodium)"
+msgstr ""
+
+msgid "Ask your host to enable the PHP sodium extension (needed to store GitHub secrets)."
+msgstr ""
+
+msgid "GitHub account connected"
+msgstr ""
+
+msgid "No GitHub token saved yet."
+msgstr ""
+
+#, php-format
+msgid "The token is missing: %s"
+msgstr ""
+
+#, php-format
+msgid "Signed in as @%s"
+msgstr ""
+
+msgid "Private runner repository"
+msgstr ""
+
+msgid "Not created yet — one click creates it with everything inside."
+msgstr ""
+
+msgid "The repository is PUBLIC. Make it private on GitHub (Settings → General → Danger Zone → Change visibility)."
+msgstr ""
+
+msgid "The repository exists but the runner is not installed yet."
+msgstr ""
+
+msgid "runner files will be updated on the next request"
+msgstr ""
+
+msgid "Claude subscription token saved"
+msgstr ""
+
+msgid "ChatGPT login (auth.json) saved"
+msgstr ""
+
+msgid "Stored in the runner’s GitHub Secrets."
+msgstr ""
+
+msgid "Saved here; press “Install / update runner” to copy it to GitHub Secrets."
+msgstr ""
+
+msgid "Fast delivery (Cloudflare relay)"
+msgstr ""
+
+msgid "pushes answers to this site"
+msgstr ""
+
+msgid "this site collects answers"
+msgstr ""
+
+msgid "Optional. Without it answers arrive through a direct callback or are read from GitHub."
+msgstr ""
+
+msgid "This site is not reachable from the internet (local or private address). It still works by reading answers from GitHub; the free Cloudflare relay makes it faster."
+msgstr ""
+
+msgid "Used as the AI engine"
+msgstr ""
+
+msgid "Another provider is active. Press “Use as AI engine” after the test."
 msgstr ""
 
 msgid "Dashboard"
@@ -182,6 +263,15 @@ msgid "Automation"
 msgstr ""
 
 msgid "Knowledge Base"
+msgstr ""
+
+msgid "Subscription AI"
+msgstr ""
+
+msgid "GitHub & data"
+msgstr ""
+
+msgid "Cloudflare relay"
 msgstr ""
 
 msgid "Connection guide"
@@ -505,6 +595,12 @@ msgid "Unknown secret."
 msgstr ""
 
 msgid "auth.json must be valid JSON (copy the whole file from ~/.codex/auth.json)."
+msgstr ""
+
+msgid "This is not the whole auth.json file. Copy everything from { to }."
+msgstr ""
+
+msgid "This does not look like a Claude token. It starts with sk-ant-oat01- (output of: claude setup-token)."
 msgstr ""
 
 msgid "Dates must be YYYY-MM-DD."
@@ -1354,6 +1450,34 @@ msgstr ""
 msgid "No images selected."
 msgstr ""
 
+msgid "Save your Cloudflare API token first."
+msgstr ""
+
+msgid "Paste the Cloudflare API token first."
+msgstr ""
+
+msgid "Cloudflare did not accept this token. Create it again with the permissions listed in the guide."
+msgstr ""
+
+msgid "Your workers.dev subdomain is not set up yet. Open Workers & Pages once in the Cloudflare dashboard, then deploy again."
+msgstr ""
+
+msgid "Save the Cloudflare API token and Account ID first."
+msgstr ""
+
+msgid "Cloudflare is not connected."
+msgstr ""
+
+msgid "Deploy the Cloudflare worker first."
+msgstr ""
+
+msgid "The Cloudflare worker is not reachable from this server."
+msgstr ""
+
+#, php-format
+msgid "Cloudflare worker answered HTTP %d. Deploy it again."
+msgstr ""
+
 msgid "No Rank Math redirections table was found."
 msgstr ""
 
@@ -1804,6 +1928,35 @@ msgstr ""
 msgid "Repository must look like owner/name."
 msgstr ""
 
+#, php-format
+msgid "The token is missing the “%s” scope."
+msgstr ""
+
+#, php-format
+msgid "The token expires on %s. Create a new one before then."
+msgstr ""
+
+msgid "Paste the GitHub token first."
+msgstr ""
+
+msgid "GitHub did not accept this token. Copy it again (it starts with ghp_ or github_pat_) or create a new one."
+msgstr ""
+
+msgid "Connect your GitHub account first (step 1)."
+msgstr ""
+
+msgid "Create your own knowledge repository first."
+msgstr ""
+
+msgid "Save an Anthropic API key in AI engine settings first."
+msgstr ""
+
+msgid "The shared knowledge base is updated by SEOlity. Create your own knowledge repository to run the builder yourself."
+msgstr ""
+
+msgid "The data repository must be private. Change its visibility on GitHub or choose another name."
+msgstr ""
+
 msgid "robots.txt is empty or missing. That allows all crawling, but you lose the chance to block crawl waste and reference your sitemap."
 msgstr ""
 
@@ -2003,6 +2156,9 @@ msgstr ""
 msgid "Technical SEO"
 msgstr ""
 
+msgid "Connections"
+msgstr ""
+
 msgid "System"
 msgstr ""
 
@@ -2025,6 +2181,12 @@ msgid "Search Console connected"
 msgstr ""
 
 msgid "Search Console not connected"
+msgstr ""
+
+msgid "GitHub connected"
+msgstr ""
+
+msgid "GitHub not connected"
 msgstr ""
 
 msgid "Manual approval"
@@ -2821,70 +2983,159 @@ msgstr ""
 msgid "Guide"
 msgstr ""
 
-msgid "Use the AI subscription you already pay for"
+msgid "e.g. DeepSeek"
 msgstr ""
 
-msgid "Instead of a pay-per-token API key, SEOlity can run every AI feature with your Claude Pro/Max or ChatGPT Plus/Pro plan. The official Claude Code / Codex command-line tools run on GitHub Actions in your own private repository; requests and answers are encrypted. Answers take about 1–3 minutes, so SEOlity waits for them automatically."
+msgid "OpenAI-compatible (Chat Completions)"
 msgstr ""
 
-msgid "GitHub → Settings → Developer settings → create a token with access to the runner repository: Contents, Actions, Secrets and Workflows (read & write) — or a classic token with the \"repo\" and \"workflow\" scopes. Save it in the GitHub tab."
+msgid "Anthropic-compatible (Messages)"
 msgstr ""
 
-msgid "Enter a repository name below, e.g. your-user/seolity-runner (it is created as a private repository if it does not exist) and save settings."
+msgid "Other header (name below)"
 msgstr ""
 
-msgid "Claude: on your computer run “claude setup-token” (Claude Code CLI) and paste the token below. ChatGPT: run “codex login”, then paste the contents of ~/.codex/auth.json below."
+msgid "Query parameter (name below)"
 msgstr ""
 
-msgid "Click “Set up GitHub runner”, then choose the subscription provider in the AI tab and press Test."
+msgid "No key (local server)"
 msgstr ""
 
-msgid "Runner repository set up"
+msgid "Automatic (try and remember)"
 msgstr ""
 
-msgid "Claude subscription token"
+msgid "strict schema"
 msgstr ""
 
-msgid "ChatGPT login (auth.json)"
+msgid "JSON mode"
 msgstr ""
 
-msgid "runner files will be updated on the next request"
+msgid "Instructions in the prompt only"
 msgstr ""
 
-msgid "Last 24 hours"
+msgid "Automatic"
 msgstr ""
 
-msgid "done"
+msgid "Do not send"
 msgstr ""
 
-msgid "waiting"
+msgid "empty = server default"
 msgstr ""
 
-msgid "failed"
+msgid "Header / parameter name"
 msgstr ""
 
-msgid "Workflow run"
+msgid "Choose a service…"
 msgstr ""
 
-msgid "Started"
+msgid "Get an API key"
 msgstr ""
 
-msgid "Set up GitHub runner"
+msgid "API documentation"
 msgstr ""
 
-msgid "GitHub runner is ready."
+msgid "Replace the {PLACEHOLDERS} in the base URL"
 msgstr ""
 
-msgid "Start runner now"
+msgid "Request URL"
 msgstr ""
 
-msgid "Workflow started on GitHub."
+msgid "Authentication"
 msgstr ""
 
-msgid "Refresh status"
+msgid "in the URL"
 msgstr ""
 
-msgid "GitHub runner"
+msgid "Fetch models"
+msgstr ""
+
+#, php-format
+msgid "%s models found. Pick one in the model field."
+msgstr ""
+
+msgid "Use any AI service with exactly the settings its documentation gives: choose a ready-made service or fill in the base URL, API format, how the key is sent, extra headers and the model. SEOlity shows the exact request it will send."
+msgstr ""
+
+msgid "Service"
+msgstr ""
+
+msgid "Display name"
+msgstr ""
+
+msgid "Base URL"
+msgstr ""
+
+msgid "From the service documentation, e.g. https://api.example.com/v1. A full …/chat/completions URL also works."
+msgstr ""
+
+msgid "API format"
+msgstr ""
+
+msgid "Most services are OpenAI-compatible. Choose Anthropic only for Claude-style /v1/messages gateways."
+msgstr ""
+
+msgid "How the key is sent"
+msgstr ""
+
+msgid "Model"
+msgstr ""
+
+msgid "Exact model id from the service (use “Fetch models” to list them)."
+msgstr ""
+
+msgid "Structured output"
+msgstr ""
+
+msgid "Automatic tries strict JSON schema, then JSON mode, then prompt instructions, and remembers what works."
+msgstr ""
+
+msgid "Advanced: extra headers, query parameters, token limit, temperature"
+msgstr ""
+
+msgid "Extra headers (one per line)"
+msgstr ""
+
+msgid "Name: value. Use {key} to insert the API key, e.g. Authorization: Token {key}"
+msgstr ""
+
+msgid "Query parameters"
+msgstr ""
+
+msgid "e.g. api-version=2024-10-21 (Azure OpenAI)"
+msgstr ""
+
+msgid "Token limit parameter"
+msgstr ""
+
+msgid "Temperature"
+msgstr ""
+
+msgid "Leave empty for reasoning models that reject it."
+msgstr ""
+
+msgid "Save Custom API"
+msgstr ""
+
+msgid "Test connection"
+msgstr ""
+
+#, php-format
+msgid "Connection OK — model %s"
+msgstr ""
+
+msgid "Use as AI engine"
+msgstr ""
+
+msgid "AI engine switched."
+msgstr ""
+
+msgid "Custom (fill in by hand)"
+msgstr ""
+
+msgid "Custom API (any provider)"
+msgstr ""
+
+msgid "DeepSeek, Groq, Mistral, Together, xAI, Perplexity, Azure OpenAI, Cloudflare Workers AI, LM Studio, vLLM, LiteLLM or any compatible gateway."
 msgstr ""
 
 msgid "Active"
@@ -2899,8 +3150,10 @@ msgstr ""
 msgid "Test"
 msgstr ""
 
-#, php-format
-msgid "Connection OK — model %s"
+msgid "Use your Claude or ChatGPT subscription instead of an API key"
+msgstr ""
+
+msgid "Step-by-step setup with GitHub (free) and an optional Cloudflare relay."
 msgstr ""
 
 msgid "Encryption"
@@ -2942,61 +3195,16 @@ msgstr ""
 msgid "Cost"
 msgstr ""
 
-msgid "GitHub data storage"
-msgstr ""
-
-msgid "Cold data (old Search Console rows, audit logs, reports, change history backups, crawl snapshots, config) is committed to your private GitHub repository and pruned locally, keeping your hosting database small. SEOlity reads it back when needed."
-msgstr ""
-
-msgid "SEOlity tables size"
-msgstr ""
-
-msgid "GSC rows (local)"
-msgstr ""
-
-msgid "Last archive"
-msgstr ""
-
-#, php-format
-msgid "%s files"
-msgstr ""
-
-msgid "Test repository access"
-msgstr ""
-
-msgid "private"
-msgstr ""
-
-msgid "PUBLIC — use a private repo!"
-msgstr ""
-
-msgid "write access"
-msgstr ""
-
-msgid "read only"
-msgstr ""
-
-msgid "Archive now"
-msgstr ""
-
-#, php-format
-msgid "Archived %s files to GitHub."
-msgstr ""
-
-msgid "Restore archived Search Console data:"
-msgstr ""
-
-msgid "Restore"
-msgstr ""
-
-#, php-format
-msgid "Restored %1$s rows from %2$s days."
-msgstr ""
-
 msgid "SEO engine detected"
 msgstr ""
 
 msgid "when another SEO plugin is active, SEOlity writes titles/descriptions into it and does not duplicate head tags."
+msgstr ""
+
+msgid "Connected"
+msgstr ""
+
+msgid "Not set"
 msgstr ""
 
 msgid "Focus keywords chosen from the queries Google already shows each page for — written straight into Rank Math (or your SEO plugin), cannibalization-safe, with approval and undo."
@@ -3166,12 +3374,6 @@ msgstr ""
 msgid "Official documentation"
 msgstr ""
 
-msgid "Connected"
-msgstr ""
-
-msgid "Not set"
-msgstr ""
-
 msgid "Step-by-step instructions with direct links for every key and account SEOlity can use. Open a service, follow the numbered steps, paste the key where shown and press Test."
 msgstr ""
 
@@ -3304,6 +3506,9 @@ msgstr ""
 
 #, php-format
 msgid "Window: %s days"
+msgstr ""
+
+msgid "Started"
 msgstr ""
 
 msgid "Revert"
@@ -4598,6 +4803,9 @@ msgstr ""
 msgid "Version restored."
 msgstr ""
 
+msgid "Restore"
+msgstr ""
+
 msgid "What did SEOlity find?"
 msgstr ""
 
@@ -4674,9 +4882,6 @@ msgid "Original"
 msgstr ""
 
 msgid "Edit HTML"
-msgstr ""
-
-msgid "Model"
 msgstr ""
 
 msgid "Knowledge"
@@ -4828,6 +5033,12 @@ msgid "Saved and synced with the SEO plugin in this editor."
 msgstr ""
 
 msgid "Focus keywords saved."
+msgstr ""
+
+msgid "Show"
+msgstr ""
+
+msgid "Fix"
 msgstr ""
 
 msgid "Checking experience, expertise, authority and trust signals…"
@@ -5149,9 +5360,6 @@ msgstr ""
 msgid "General"
 msgstr ""
 
-msgid "Subscription AI"
-msgstr ""
-
 msgid "Crawler & audits"
 msgstr ""
 
@@ -5159,9 +5367,6 @@ msgid "Alerts & reports"
 msgstr ""
 
 msgid "Schema & entity"
-msgstr ""
-
-msgid "GitHub (knowledge & storage)"
 msgstr ""
 
 msgid "Privacy & data"
@@ -5179,22 +5384,10 @@ msgstr ""
 msgid "OpenRouter API key"
 msgstr ""
 
-msgid "Custom API key"
-msgstr ""
-
-msgid "Claude subscription token (output of: claude setup-token)"
-msgstr ""
-
-msgid "ChatGPT login (contents of ~/.codex/auth.json after: codex login)"
-msgstr ""
-
 msgid "PageSpeed Insights API key (optional)"
 msgstr ""
 
 msgid "SERP data API key (optional)"
-msgstr ""
-
-msgid "GitHub fine-grained token (Contents: read & write on the chosen repos only)"
 msgstr ""
 
 msgid "manual"
@@ -5294,6 +5487,12 @@ msgid "evaluated"
 msgstr ""
 
 msgid "cancelled"
+msgstr ""
+
+msgid "done"
+msgstr ""
+
+msgid "failed"
 msgstr ""
 
 msgid "open"

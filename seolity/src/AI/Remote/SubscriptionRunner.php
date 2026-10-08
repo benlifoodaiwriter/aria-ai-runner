@@ -84,6 +84,24 @@ final class SubscriptionRunner {
 		return (string) $this->plugin->settings->secret( 'sub_shared_secret' );
 	}
 
+	/** Shared signing/encryption secret (created on first use). */
+	public function shared_secret( $create = false ) {
+		if ( $create && '' === $this->secret() ) {
+			$this->plugin->settings->set_secret( 'sub_shared_secret', bin2hex( random_bytes( 32 ) ) );
+		}
+		return $this->secret();
+	}
+
+	/** HMAC used between WordPress, the runner and the Cloudflare relay. */
+	public function sign( $message ) {
+		return hash_hmac( 'sha256', (string) $message, $this->mac_key() );
+	}
+
+	public function state_value( $key ) {
+		$s = $this->state();
+		return isset( $s[ $key ] ) ? $s[ $key ] : null;
+	}
+
 	/** Bundled runner files (path in the runner repository => local file). */
 	private static function files() {
 		return array(
@@ -367,6 +385,9 @@ final class SubscriptionRunner {
 			return 0;
 		}
 		set_transient( 'seolity_sub_collect', 1, 8 );
+		if ( $this->plugin->cloudflare->is_deployed() ) {
+			$this->plugin->cloudflare->pull(); // Mailbox first: one cheap request instead of reading git.
+		}
 		$db      = $this->plugin->db;
 		$pending = $db->rows( "SELECT id, status, created_at, submitted_at FROM {remote_jobs} WHERE status = 'submitted' ORDER BY created_at ASC LIMIT 200" );
 		if ( ! $pending || ! GitHubClient::valid_repo( $this->repo() ) ) {
@@ -444,12 +465,20 @@ final class SubscriptionRunner {
 		return true;
 	}
 
-	/** REST callback from the runner (HMAC-signed, 10-minute window). */
+	/** REST callback from the runner or the Cloudflare relay (HMAC-signed, 10-minute window). */
 	public function handle_callback( \WP_REST_Request $r ) {
-		$ts   = (int) $r->get_header( 'x_seolity_timestamp' );
-		$sig  = (string) $r->get_header( 'x_seolity_signature' );
-		$body = (string) $r->get_body();
-		if ( '' === $this->secret() || abs( time() - $ts ) > 600 || ! hash_equals( hash_hmac( 'sha256', $ts . '.' . $body, $this->mac_key() ), $sig ) ) {
+		return $this->ingest( (string) $r->get_body(), (string) $r->get_header( 'x_seolity_timestamp' ), (string) $r->get_header( 'x_seolity_signature' ), true );
+	}
+
+	/**
+	 * Verify and store a signed results body. Mailbox items pulled later skip the
+	 * time window (the relay channel is itself signed and results are encrypted).
+	 *
+	 * @return array|\WP_Error
+	 */
+	public function ingest( $body, $ts, $sig, $check_time = true ) {
+		$ts = (int) $ts;
+		if ( '' === $this->secret() || ( $check_time && abs( time() - $ts ) > 600 ) || ! hash_equals( $this->sign( $ts . '.' . $body ), (string) $sig ) ) {
 			return new \WP_Error( 'seolity_signature', 'Invalid signature.', array( 'status' => 401 ) );
 		}
 		$data   = json_decode( $body, true );
@@ -458,6 +487,23 @@ final class SubscriptionRunner {
 			$stored += $this->store( $this->decrypt( $env ) ) ? 1 : 0;
 		}
 		return array( 'stored' => $stored );
+	}
+
+	/** Cron heartbeat from the Cloudflare worker: run the background queue now. */
+	public function handle_heartbeat( \WP_REST_Request $r ) {
+		$ts   = (int) $r->get_header( 'x_seolity_timestamp' );
+		$body = (string) $r->get_body();
+		if ( '' === $this->secret() || abs( time() - $ts ) > 600 || ! hash_equals( $this->sign( $ts . '.' . $body ), (string) $r->get_header( 'x_seolity_signature' ) ) ) {
+			return new \WP_Error( 'seolity_signature', 'Invalid signature.', array( 'status' => 401 ) );
+		}
+		update_option( 'seolity_cf_heartbeat', time(), false );
+		if ( function_exists( 'set_time_limit' ) ) {
+			@set_time_limit( 60 ); // phpcs:ignore WordPress.PHP.NoSilencedErrors
+		}
+		$this->flush();
+		$this->collect( true );
+		$done = $this->plugin->queue->work( 15 );
+		return array( 'ok' => true, 'worked' => $done );
 	}
 
 	/** Status of one request (polled by the admin UI while it waits). */
@@ -529,7 +575,8 @@ final class SubscriptionRunner {
 		}
 		$secrets = array(
 			'SEOLITY_SHARED_SECRET' => $this->secret(),
-			'SEOLITY_CALLBACK_URL'  => $this->plugin->settings->get( 'sub_callback' ) ? rest_url( 'seolity/v1/remote/callback' ) : '',
+			'SEOLITY_CALLBACK_URL'  => $this->plugin->settings->get( 'sub_callback' ) && \SEOlity\Integrations\Cloudflare::site_is_public() ? rest_url( 'seolity/v1/remote/callback' ) : '',
+			'SEOLITY_RELAY_URL'     => $this->plugin->cloudflare->is_deployed() ? $this->plugin->cloudflare->endpoint() : '',
 		);
 		foreach ( self::ENGINE_SECRETS as $pair ) {
 			$value = $this->raw_secret( $pair[1] );
@@ -543,7 +590,7 @@ final class SubscriptionRunner {
 				return $res;
 			}
 		}
-		$this->set_state( array( 'setup' => time(), 'secrets' => array_keys( $secrets ) ) );
+		$this->set_state( array( 'setup' => time(), 'secrets' => array_keys( $secrets ), 'relay' => $secrets['SEOLITY_RELAY_URL'] ) );
 		$this->plugin->audit_log->log( 'subscription.setup', 'site', null, array( 'repo' => $repo, 'secrets' => array_keys( $secrets ) ) );
 		return $this->status();
 	}
@@ -557,6 +604,76 @@ final class SubscriptionRunner {
 			}
 		}
 		return false;
+	}
+
+	/** Tell the runner where the Cloudflare mailbox is (after deploying or removing the worker). */
+	public function sync_relay() {
+		if ( empty( $this->state()['setup'] ) || ! GitHubClient::valid_repo( $this->repo() ) || ! $this->plugin->github->has_token() ) {
+			return false;
+		}
+		$url = $this->plugin->cloudflare->is_deployed() ? $this->plugin->cloudflare->endpoint() : '';
+		$res = $this->plugin->github->put_secret( $this->repo(), 'SEOLITY_RELAY_URL', '' === $url ? 'disabled' : $url );
+		if ( ! is_wp_error( $res ) ) {
+			$this->set_state( array( 'relay' => $url ) );
+		}
+		return $res;
+	}
+
+	/**
+	 * Step-by-step readiness check for the subscription wizard.
+	 *
+	 * @return array{checks:array[],ready:bool}
+	 */
+	public function check( $engine ) {
+		$engine = 'codex' === $engine ? 'codex' : 'claude';
+		$state  = $this->state();
+		$checks = array();
+		$add    = static function ( $id, $level, $title, $detail = '', $fix = '' ) use ( &$checks ) {
+			$checks[] = array( 'id' => $id, 'level' => $level, 'title' => $title, 'detail' => $detail, 'fix' => $fix );
+		};
+		$add( 'php', function_exists( 'openssl_encrypt' ) && function_exists( 'sodium_crypto_box_seal' ) ? 'ok' : 'fail', __( 'PHP extensions (OpenSSL, sodium)', 'seolity' ), function_exists( 'sodium_crypto_box_seal' ) ? '' : __( 'Ask your host to enable the PHP sodium extension (needed to store GitHub secrets).', 'seolity' ) );
+
+		$me = $this->plugin->github->has_token() ? $this->plugin->github->whoami() : null;
+		if ( ! $this->plugin->github->has_token() ) {
+			$add( 'github', 'fail', __( 'GitHub account connected', 'seolity' ), __( 'No GitHub token saved yet.', 'seolity' ), 'github' );
+		} elseif ( is_wp_error( $me ) ) {
+			$add( 'github', 'fail', __( 'GitHub account connected', 'seolity' ), $me->get_error_message(), 'github' );
+		} else {
+			$missing = is_array( $me['scopes'] ) ? array_diff( array( 'repo', 'workflow' ), $me['scopes'] ) : array();
+			/* translators: %s: GitHub login */
+			$add( 'github', $missing ? 'fail' : 'ok', __( 'GitHub account connected', 'seolity' ), $missing ? sprintf( __( 'The token is missing: %s', 'seolity' ), implode( ', ', $missing ) ) : sprintf( __( 'Signed in as @%s', 'seolity' ), $me['login'] ), $missing ? 'github' : '' );
+		}
+
+		$repo = $this->plugin->github->inspect( $this->repo() );
+		if ( ! $repo['valid'] || ! $repo['exists'] ) {
+			$add( 'repo', 'fail', __( 'Private runner repository', 'seolity' ), __( 'Not created yet — one click creates it with everything inside.', 'seolity' ), 'runner' );
+		} elseif ( ! $repo['private'] ) {
+			$add( 'repo', 'fail', __( 'Private runner repository', 'seolity' ), __( 'The repository is PUBLIC. Make it private on GitHub (Settings → General → Danger Zone → Change visibility).', 'seolity' ), 'runner' );
+		} elseif ( empty( $state['setup'] ) || ( isset( $state['repo'] ) && $state['repo'] !== $this->repo() ) ) {
+			$add( 'repo', 'warn', __( 'Private runner repository', 'seolity' ), __( 'The repository exists but the runner is not installed yet.', 'seolity' ), 'runner' );
+		} else {
+			$add( 'repo', 'ok', __( 'Private runner repository', 'seolity' ), $this->repo() . ( self::files_hash() === ( isset( $state['files_hash'] ) ? $state['files_hash'] : '' ) ? '' : ' — ' . __( 'runner files will be updated on the next request', 'seolity' ) ) );
+		}
+
+		$cred = self::ENGINE_SECRETS[ $engine ][1];
+		$add( 'account', $this->plugin->settings->has_secret( $cred ) ? 'ok' : 'fail', 'claude' === $engine ? __( 'Claude subscription token saved', 'seolity' ) : __( 'ChatGPT login (auth.json) saved', 'seolity' ), $this->plugin->settings->has_secret( $cred ) ? ( in_array( self::ENGINE_SECRETS[ $engine ][0], isset( $state['secrets'] ) ? (array) $state['secrets'] : array(), true ) ? __( 'Stored in the runner’s GitHub Secrets.', 'seolity' ) : __( 'Saved here; press “Install / update runner” to copy it to GitHub Secrets.', 'seolity' ) ) : '', 'account' );
+
+		$cf = $this->plugin->cloudflare;
+		$public = \SEOlity\Integrations\Cloudflare::site_is_public();
+		if ( $cf->is_deployed() ) {
+			$add( 'relay', 'ok', __( 'Fast delivery (Cloudflare relay)', 'seolity' ), $cf->endpoint() . ' · ' . ( 'push' === $cf->mode() ? __( 'pushes answers to this site', 'seolity' ) : __( 'this site collects answers', 'seolity' ) ) );
+		} else {
+			$add( 'relay', $public ? 'info' : 'warn', __( 'Fast delivery (Cloudflare relay)', 'seolity' ), $public ? __( 'Optional. Without it answers arrive through a direct callback or are read from GitHub.', 'seolity' ) : __( 'This site is not reachable from the internet (local or private address). It still works by reading answers from GitHub; the free Cloudflare relay makes it faster.', 'seolity' ), 'cloudflare' );
+		}
+		$add( 'provider', in_array( $this->plugin->settings->get( 'ai_provider' ), array( 'sub_claude', 'sub_codex' ), true ) ? 'ok' : 'info', __( 'Used as the AI engine', 'seolity' ), in_array( $this->plugin->settings->get( 'ai_provider' ), array( 'sub_claude', 'sub_codex' ), true ) ? '' : __( 'Another provider is active. Press “Use as AI engine” after the test.', 'seolity' ), 'activate' );
+
+		$ready = ! array_filter(
+			$checks,
+			static function ( $c ) {
+				return 'fail' === $c['level'];
+			}
+		);
+		return array( 'engine' => $engine, 'checks' => $checks, 'ready' => $ready );
 	}
 
 	/** Overview for Settings → AI. */
@@ -585,6 +702,9 @@ final class SubscriptionRunner {
 			'requests_24h'   => $counts,
 			'runs'           => $runs,
 			'callback_url'   => rest_url( 'seolity/v1/remote/callback' ),
+			'relay'          => ! empty( $state['relay'] ) ? $state['relay'] : '',
+			'models'         => array( 'claude' => (string) $this->plugin->settings->get( 'ai_model_sub_claude' ), 'codex' => (string) $this->plugin->settings->get( 'ai_model_sub_codex' ) ),
+			'provider'       => (string) $this->plugin->settings->get( 'ai_provider' ),
 		);
 	}
 }

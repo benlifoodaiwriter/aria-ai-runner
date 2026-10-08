@@ -41,6 +41,9 @@ final class Admin {
 			'alerts'      => array( __( 'Alerts', 'seolity' ), Capabilities::VIEW ),
 			'automation'  => array( __( 'Automation', 'seolity' ), Capabilities::MANAGE ),
 			'knowledge'   => array( __( 'Knowledge Base', 'seolity' ), Capabilities::VIEW ),
+			'subscription' => array( __( 'Subscription AI', 'seolity' ), Capabilities::MANAGE ),
+			'github'      => array( __( 'GitHub & data', 'seolity' ), Capabilities::MANAGE ),
+			'cloudflare'  => array( __( 'Cloudflare relay', 'seolity' ), Capabilities::MANAGE ),
 			'guide'       => array( __( 'Connection guide', 'seolity' ), Capabilities::VIEW ),
 			'settings'    => array( __( 'Settings', 'seolity' ), Capabilities::MANAGE ),
 		);
@@ -111,7 +114,7 @@ final class Admin {
 		wp_enqueue_script( 'seolity-charts', SEOLITY_URL . 'assets/admin/charts.js', array(), SEOLITY_VERSION, true );
 		wp_enqueue_script( 'seolity-ui', SEOLITY_URL . 'assets/admin/ui.js', array( 'seolity-charts' ), SEOLITY_VERSION, true );
 		wp_enqueue_script( 'seolity-app', SEOLITY_URL . 'assets/admin/app.js', array( 'seolity-ui' ), SEOLITY_VERSION, true );
-		foreach ( array( 'pages-seo', 'pages-intel', 'pages-admin', 'pages-focus', 'pages-guide' ) as $module ) {
+		foreach ( array( 'pages-seo', 'pages-intel', 'pages-admin', 'pages-focus', 'pages-guide', 'pages-connect' ) as $module ) {
 			wp_enqueue_script( 'seolity-' . $module, SEOLITY_URL . 'assets/admin/' . $module . '.js', array( 'seolity-app' ), SEOLITY_VERSION, true );
 		}
 		wp_localize_script( 'seolity-ui', 'SEOLITY', $this->js_config( $route ) );
@@ -139,6 +142,7 @@ final class Admin {
 			'brand'     => array( 'name' => $this->brand(), 'logo' => (string) $this->plugin->settings->get( 'brand_logo' ), 'color' => (string) $this->plugin->settings->get( 'brand_color' ) ),
 			'adminUrl'  => admin_url(),
 			'homeUrl'   => home_url( '/' ),
+			'pluginUrl' => SEOLITY_URL,
 			'woo'       => class_exists( 'WooCommerce' ),
 			'version'   => SEOLITY_VERSION,
 			'i18n'      => I18n::strings(),

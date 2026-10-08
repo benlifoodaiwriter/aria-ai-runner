@@ -39,6 +39,8 @@ defined( 'ABSPATH' ) || exit;
  * @property-read Keywords\KeywordService    $keywords
  * @property-read Keywords\FocusKeywords        $focus
  * @property-read Integrations\RankMath         $rankmath
+ * @property-read Integrations\Cloudflare       $cloudflare
+ * @property-read Storage\GitHubHub             $githubhub
  * @property-read Competitors\CompetitorService $competitors
  * @property-read Experiments\ExperimentService $experiments
  * @property-read Experiments\Learning       $learning
@@ -135,6 +137,8 @@ final class Plugin {
 			'keywords'        => Keywords\KeywordService::class,
 			'focus'           => Keywords\FocusKeywords::class,
 			'rankmath'        => Integrations\RankMath::class,
+			'cloudflare'      => Integrations\Cloudflare::class,
+			'githubhub'       => Storage\GitHubHub::class,
 			'competitors'     => Competitors\CompetitorService::class,
 			'experiments'     => Experiments\ExperimentService::class,
 			'learning'        => Experiments\Learning::class,

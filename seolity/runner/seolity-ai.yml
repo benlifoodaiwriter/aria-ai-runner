@@ -49,5 +49,6 @@ jobs:
           SEOLITY_IDLE_SEC: ${{ inputs.idle }}
           SEOLITY_SHARED_SECRET: ${{ secrets.SEOLITY_SHARED_SECRET }}
           SEOLITY_CALLBACK_URL: ${{ secrets.SEOLITY_CALLBACK_URL }}
+          SEOLITY_RELAY_URL: ${{ secrets.SEOLITY_RELAY_URL }}
           CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           CODEX_AUTH_JSON: ${{ secrets.CODEX_AUTH_JSON }}

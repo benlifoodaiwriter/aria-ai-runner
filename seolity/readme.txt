@@ -4,7 +4,7 @@ Tags: seo, ai, search console, woocommerce, schema
 Requires at least: 6.2
 Tested up to: 6.6
 Requires PHP: 7.4
-Stable tag: 1.3.0
+Stable tag: 1.4.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -46,6 +46,8 @@ SEOlity only contacts external services that you configure:
 
 * **AI providers** (Anthropic, OpenAI, Google Gemini, OpenRouter, your own endpoint) – page content and SEO data needed for the requested task are sent when you (or a rule you created) run an AI action. Each provider's terms and privacy policy apply.
 * **GitHub Actions + Claude Code / OpenAI Codex** (subscription AI, optional) – AI requests are written encrypted to your private GitHub repository and processed there by the official CLI with your own Claude or ChatGPT plan; results are posted back to your site (HMAC-signed) or collected from GitHub.
+* **Cloudflare API + your Cloudflare Worker** (optional) – when you connect Cloudflare, SEOlity uses the Cloudflare API with your token to deploy a worker on your account; encrypted subscription results pass through its KV mailbox and its cron calls your site's REST API to run the background queue. Cloudflare terms: https://www.cloudflare.com/terms/ · Privacy: https://www.cloudflare.com/privacypolicy/
+* **Custom API** (optional) – prompts are sent to the AI service whose address you enter, under that service's terms.
 * **Google Search Console API / OAuth** – read-only Search Console data for the property you select (https://policies.google.com/privacy).
 * **Google PageSpeed Insights API** – the URL you test.
 * **SerpApi** – the keyword and market you analyze (https://serpapi.com/legal).
@@ -70,6 +72,14 @@ Yes. The interface is fully translated and RTL-native, text analysis understands
 Enable "Delete all data on uninstall" in Settings → Privacy, then delete the plugin.
 
 == Changelog ==
+
+= 1.4.0 =
+* Subscription AI wizard (like ARIAGH AI Writer, simpler): prerequisite check first, then GitHub, optional Cloudflare, the Claude Pro/Max or ChatGPT Plus/Pro account (copyable Windows / macOS commands) and a real test request.
+* New "GitHub & data" page: connect with one token (ready link with the right scopes), see owner, scopes and expiry, and create the private runner, knowledge and data repositories in one click each — with manual step-by-step guides, advanced settings and FAQ.
+* Own private knowledge repository in one click (bundled knowledge + weekly knowledge builder workflow + optional Anthropic key), or keep the shared one.
+* Cloudflare relay: deploys a free worker on your own Cloudflare account from WordPress (KV mailbox, signed requests, workers.dev, cron). Subscription answers arrive faster, local sites work in pull mode, and the background queue runs on time. Built-in diagnostics.
+* Custom API rebuilt: service presets (DeepSeek, Groq, Mistral, Together, Fireworks, xAI, Perplexity, Gemini, Cloudflare Workers AI, Azure OpenAI, LM Studio, vLLM, LiteLLM, Anthropic-compatible gateways), OpenAI or Anthropic format, any key method (Bearer, x-api-key, api-key, custom header, query), extra headers and query parameters, model list, automatic structured-output fallback that remembers what works, token parameter, temperature, request preview.
+* Connection guide: new entries for Custom API, GitHub, knowledge base, data archive and Cloudflare.
 
 = 1.3.0 =
 * Rank Math integration that goes beyond Rank Math Content AI: focus keywords chosen from the Search Console queries each page already ranks for, written to Rank Math's full keyword list (primary + secondary), cannibalization-safe across the whole site, with preview, approval and undo. Also works with Yoast, SEOPress and AIOSEO.

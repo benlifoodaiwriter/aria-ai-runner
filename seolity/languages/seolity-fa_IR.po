@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: SEOlity 1.0.0\n"
-"POT-Creation-Date: 2026-10-05 16:16+0000\n"
+"POT-Creation-Date: 2026-10-08 07:16+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -55,11 +55,24 @@ msgstr "عدد جدید «%s» در متن اصلی نبود — صحت آن ر�
 msgid "The model declined this request."
 msgstr "مدل این درخواست را رد کرد."
 
-msgid "Custom (OpenAI-compatible)"
-msgstr "سفارشی (سازگار با OpenAI)"
+msgid "Custom API"
+msgstr "API سفارشی"
+
+msgid "Replace the {placeholders} in the Custom API base URL with your own values."
+msgstr "{placeholders} را در Base URL API سفارشی با مقادیر خودتان جایگزین کنید."
 
 msgid "Custom AI endpoint URL is not allowed."
 msgstr "آدرس سرویس هوش مصنوعی سفارشی مجاز نیست."
+
+msgid "The Custom API answered, but not in the selected format. Check “API format”."
+msgstr "API سفارشی پاسخ داد، اما نه در قالب انتخاب‌شده. «قالب API» را بررسی کنید."
+
+msgid "Enter the base URL first."
+msgstr "ابتدا Base URL را وارد کنید."
+
+#, php-format
+msgid "The models list answered HTTP %1$d: %2$s"
+msgstr "فهرست مدل‌ها پاسخ HTTP %1$d داد: %2$s"
 
 msgid "Gemini blocked this response for safety reasons."
 msgstr "جمینای این پاسخ را به دلایل ایمنی مسدود کرد."
@@ -112,6 +125,74 @@ msgstr "افزونه OpenSSL در PHP لازم است."
 
 msgid "The runner repository must be private."
 msgstr "مخزن اجراکننده باید خصوصی باشد."
+
+msgid "PHP extensions (OpenSSL, sodium)"
+msgstr "افزونه‌های PHP (OpenSSL، sodium)"
+
+msgid "Ask your host to enable the PHP sodium extension (needed to store GitHub secrets)."
+msgstr "از هاست بخواهید افزونه sodium را برای PHP فعال کند (برای ذخیره Secrets در GitHub لازم است)."
+
+msgid "GitHub account connected"
+msgstr "حساب GitHub متصل است"
+
+msgid "No GitHub token saved yet."
+msgstr "هنوز توکن GitHub ذخیره نشده است."
+
+#, php-format
+msgid "The token is missing: %s"
+msgstr "توکن این دسترسی‌ها را ندارد: %s"
+
+#, php-format
+msgid "Signed in as @%s"
+msgstr "وارد شده با ‎@%s"
+
+msgid "Private runner repository"
+msgstr "مخزن خصوصی اجراکننده"
+
+msgid "Not created yet — one click creates it with everything inside."
+msgstr "هنوز ساخته نشده — یک کلیک آن را با همه محتوا می‌سازد."
+
+msgid "The repository is PUBLIC. Make it private on GitHub (Settings → General → Danger Zone → Change visibility)."
+msgstr "مخزن عمومی (PUBLIC) است. آن را در GitHub خصوصی کنید (Settings ← General ← Danger Zone ← Change visibility)."
+
+msgid "The repository exists but the runner is not installed yet."
+msgstr "مخزن وجود دارد اما اجراکننده هنوز نصب نشده است."
+
+msgid "runner files will be updated on the next request"
+msgstr "فایل‌های اجراکننده در درخواست بعدی به‌روز می‌شوند"
+
+msgid "Claude subscription token saved"
+msgstr "توکن اشتراک Claude ذخیره شده"
+
+msgid "ChatGPT login (auth.json) saved"
+msgstr "ورود ChatGPT (auth.json) ذخیره شده"
+
+msgid "Stored in the runner’s GitHub Secrets."
+msgstr "در GitHub Secrets اجراکننده ذخیره شده است."
+
+msgid "Saved here; press “Install / update runner” to copy it to GitHub Secrets."
+msgstr "اینجا ذخیره شده؛ «نصب دوباره / به‌روزرسانی» را بزنید تا به GitHub Secrets منتقل شود."
+
+msgid "Fast delivery (Cloudflare relay)"
+msgstr "تحویل سریع (رله کلادفلر)"
+
+msgid "pushes answers to this site"
+msgstr "پاسخ‌ها را به این سایت می‌فرستد"
+
+msgid "this site collects answers"
+msgstr "این سایت پاسخ‌ها را برمی‌دارد"
+
+msgid "Optional. Without it answers arrive through a direct callback or are read from GitHub."
+msgstr "اختیاری. بدون آن پاسخ‌ها از طریق اتصال مستقیم یا خواندن از GitHub می‌رسند."
+
+msgid "This site is not reachable from the internet (local or private address). It still works by reading answers from GitHub; the free Cloudflare relay makes it faster."
+msgstr "این سایت از اینترنت در دسترس نیست (آدرس لوکال یا خصوصی). باز هم با خواندن پاسخ‌ها از GitHub کار می‌کند؛ رله رایگان کلادفلر آن را سریع‌تر می‌کند."
+
+msgid "Used as the AI engine"
+msgstr "استفاده به‌عنوان موتور هوش مصنوعی"
+
+msgid "Another provider is active. Press “Use as AI engine” after the test."
+msgstr "ارائه‌دهنده دیگری فعال است. بعد از تست «استفاده به‌عنوان موتور هوش مصنوعی» را بزنید."
 
 msgid "Dashboard"
 msgstr "داشبورد"
@@ -184,6 +265,15 @@ msgstr "اتوماسیون"
 
 msgid "Knowledge Base"
 msgstr "پایگاه دانش"
+
+msgid "Subscription AI"
+msgstr "هوش مصنوعی اشتراکی"
+
+msgid "GitHub & data"
+msgstr "GitHub و داده"
+
+msgid "Cloudflare relay"
+msgstr "رله کلادفلر"
 
 msgid "Connection guide"
 msgstr "راهنمای اتصال"
@@ -507,6 +597,12 @@ msgstr "کلید محرمانه ناشناخته."
 
 msgid "auth.json must be valid JSON (copy the whole file from ~/.codex/auth.json)."
 msgstr "auth.json باید JSON معتبر باشد (کل فایل ~/.codex/auth.json را کپی کنید)."
+
+msgid "This is not the whole auth.json file. Copy everything from { to }."
+msgstr "این کل فایل auth.json نیست. همه چیز را از { تا } کپی کنید."
+
+msgid "This does not look like a Claude token. It starts with sk-ant-oat01- (output of: claude setup-token)."
+msgstr "این توکن Claude به نظر نمی‌رسد. با sk-ant-oat01- شروع می‌شود (خروجی claude setup-token)."
 
 msgid "Dates must be YYYY-MM-DD."
 msgstr "تاریخ‌ها باید به‌صورت YYYY-MM-DD باشند."
@@ -1355,6 +1451,34 @@ msgstr "برخی بخش‌ها هنوز داده ندارند و به‌جای �
 msgid "No images selected."
 msgstr "تصویری انتخاب نشده است."
 
+msgid "Save your Cloudflare API token first."
+msgstr "ابتدا توکن API کلادفلر را ذخیره کنید."
+
+msgid "Paste the Cloudflare API token first."
+msgstr "ابتدا توکن API کلادفلر را بچسبانید."
+
+msgid "Cloudflare did not accept this token. Create it again with the permissions listed in the guide."
+msgstr "کلادفلر این توکن را نپذیرفت. آن را با دسترسی‌های گفته‌شده در راهنما دوباره بسازید."
+
+msgid "Your workers.dev subdomain is not set up yet. Open Workers & Pages once in the Cloudflare dashboard, then deploy again."
+msgstr "زیردامنه workers.dev شما هنوز ساخته نشده است. یک‌بار بخش Workers & Pages را در داشبورد کلادفلر باز کنید و دوباره مستقر کنید."
+
+msgid "Save the Cloudflare API token and Account ID first."
+msgstr "ابتدا توکن API و Account ID کلادفلر را ذخیره کنید."
+
+msgid "Cloudflare is not connected."
+msgstr "کلادفلر متصل نیست."
+
+msgid "Deploy the Cloudflare worker first."
+msgstr "ابتدا ورکر کلادفلر را مستقر کنید."
+
+msgid "The Cloudflare worker is not reachable from this server."
+msgstr "ورکر کلادفلر از این سرور در دسترس نیست."
+
+#, php-format
+msgid "Cloudflare worker answered HTTP %d. Deploy it again."
+msgstr "ورکر کلادفلر پاسخ HTTP %d داد. دوباره مستقر کنید."
+
 msgid "No Rank Math redirections table was found."
 msgstr "جدول ریدایرکت‌های رنک مث پیدا نشد."
 
@@ -1805,6 +1929,35 @@ msgstr "برای ذخیره Secretهای گیت‌هاب، افزونه sodium �
 msgid "Repository must look like owner/name."
 msgstr "مخزن باید به شکل owner/name باشد."
 
+#, php-format
+msgid "The token is missing the “%s” scope."
+msgstr "توکن دسترسی «%s» را ندارد."
+
+#, php-format
+msgid "The token expires on %s. Create a new one before then."
+msgstr "توکن در تاریخ %s منقضی می‌شود. قبل از آن توکن جدید بسازید."
+
+msgid "Paste the GitHub token first."
+msgstr "ابتدا توکن GitHub را بچسبانید."
+
+msgid "GitHub did not accept this token. Copy it again (it starts with ghp_ or github_pat_) or create a new one."
+msgstr "GitHub این توکن را نپذیرفت. دوباره کپی کنید (با ghp_ یا github_pat_ شروع می‌شود) یا توکن جدید بسازید."
+
+msgid "Connect your GitHub account first (step 1)."
+msgstr "ابتدا حساب GitHub را وصل کنید (مرحله ۱)."
+
+msgid "Create your own knowledge repository first."
+msgstr "ابتدا مخزن دانش اختصاصی خود را بسازید."
+
+msgid "Save an Anthropic API key in AI engine settings first."
+msgstr "ابتدا یک کلید API از Anthropic در تنظیمات هوش مصنوعی ذخیره کنید."
+
+msgid "The shared knowledge base is updated by SEOlity. Create your own knowledge repository to run the builder yourself."
+msgstr "دانش مشترک را SEOlity به‌روز می‌کند. برای اجرای سازنده توسط خودتان، مخزن دانش اختصاصی بسازید."
+
+msgid "The data repository must be private. Change its visibility on GitHub or choose another name."
+msgstr "مخزن داده باید خصوصی باشد. حالت آن را در GitHub تغییر دهید یا نام دیگری انتخاب کنید."
+
 msgid "robots.txt is empty or missing. That allows all crawling, but you lose the chance to block crawl waste and reference your sitemap."
 msgstr "robots.txt خالی یا ناموجود است. همه خزش‌ها مجازند، اما فرصت جلوگیری از هدررفت خزش و معرفی نقشه سایت را از دست می‌دهید."
 
@@ -2004,6 +2157,9 @@ msgstr "تحلیل"
 msgid "Technical SEO"
 msgstr "سئوی فنی"
 
+msgid "Connections"
+msgstr "اتصال‌ها"
+
 msgid "System"
 msgstr "سیستم"
 
@@ -2027,6 +2183,12 @@ msgstr "سرچ کنسول متصل است"
 
 msgid "Search Console not connected"
 msgstr "سرچ کنسول متصل نیست"
+
+msgid "GitHub connected"
+msgstr "GitHub متصل است"
+
+msgid "GitHub not connected"
+msgstr "GitHub متصل نیست"
 
 msgid "Manual approval"
 msgstr "تأیید دستی"
@@ -2822,71 +2984,160 @@ msgstr "این کلید را چطور بگیرم"
 msgid "Guide"
 msgstr "راهنما"
 
-msgid "Use the AI subscription you already pay for"
-msgstr "از اشتراک هوش مصنوعی‌ای که همین حالا دارید استفاده کنید"
+msgid "e.g. DeepSeek"
+msgstr "مثلاً DeepSeek"
 
-msgid "Instead of a pay-per-token API key, SEOlity can run every AI feature with your Claude Pro/Max or ChatGPT Plus/Pro plan. The official Claude Code / Codex command-line tools run on GitHub Actions in your own private repository; requests and answers are encrypted. Answers take about 1–3 minutes, so SEOlity waits for them automatically."
-msgstr "به‌جای کلید API با پرداخت به‌ازای توکن، سئولیتی می‌تواند همه قابلیت‌های هوش مصنوعی را با اشتراک Claude Pro/Max یا ChatGPT Plus/Pro شما اجرا کند. ابزارهای رسمی خط فرمان Claude Code / Codex روی GitHub Actions در مخزن خصوصی خودتان اجرا می‌شوند و درخواست‌ها و پاسخ‌ها رمزنگاری می‌شوند. هر پاسخ حدود ۱ تا ۳ دقیقه طول می‌کشد و سئولیتی خودکار منتظر آن می‌ماند."
+msgid "OpenAI-compatible (Chat Completions)"
+msgstr "سازگار با OpenAI (Chat Completions)"
 
-msgid "GitHub → Settings → Developer settings → create a token with access to the runner repository: Contents, Actions, Secrets and Workflows (read & write) — or a classic token with the \"repo\" and \"workflow\" scopes. Save it in the GitHub tab."
-msgstr "در گیت‌هاب ← Settings ← Developer settings یک توکن با دسترسی به مخزن اجراکننده بسازید: Contents، Actions، Secrets و Workflows (خواندن و نوشتن) — یا یک توکن کلاسیک با دسترسی‌های «repo» و «workflow». آن را در تب گیت‌هاب ذخیره کنید."
+msgid "Anthropic-compatible (Messages)"
+msgstr "سازگار با Anthropic (Messages)"
 
-msgid "Enter a repository name below, e.g. your-user/seolity-runner (it is created as a private repository if it does not exist) and save settings."
-msgstr "نام یک مخزن را پایین وارد کنید، مثلاً your-user/seolity-runner (اگر وجود نداشته باشد خصوصی ساخته می‌شود) و تنظیمات را ذخیره کنید."
+msgid "Other header (name below)"
+msgstr "هدر دیگر (نام در پایین)"
 
-msgid "Claude: on your computer run “claude setup-token” (Claude Code CLI) and paste the token below. ChatGPT: run “codex login”, then paste the contents of ~/.codex/auth.json below."
-msgstr "Claude: روی کامپیوتر خود دستور «claude setup-token» (ابزار Claude Code) را اجرا کنید و توکن را پایین وارد کنید. ChatGPT: دستور «codex login» را اجرا کنید و محتوای فایل ~/.codex/auth.json را پایین وارد کنید."
+msgid "Query parameter (name below)"
+msgstr "پارامتر URL (نام در پایین)"
 
-msgid "Click “Set up GitHub runner”, then choose the subscription provider in the AI tab and press Test."
-msgstr "دکمه «راه‌اندازی اجراکننده گیت‌هاب» را بزنید، سپس در تب هوش مصنوعی ارائه‌دهنده اشتراکی را انتخاب کنید و «تست» را بزنید."
+msgid "No key (local server)"
+msgstr "بدون کلید (سرور محلی)"
 
-msgid "Runner repository set up"
-msgstr "مخزن اجراکننده راه‌اندازی شده"
+msgid "Automatic (try and remember)"
+msgstr "خودکار (امتحان و به خاطر سپردن)"
 
-msgid "Claude subscription token"
-msgstr "توکن اشتراک Claude"
+msgid "strict schema"
+msgstr "اسکیمای دقیق"
 
-msgid "ChatGPT login (auth.json)"
-msgstr "ورود ChatGPT ‏(auth.json)"
+msgid "JSON mode"
+msgstr "حالت JSON"
 
-msgid "runner files will be updated on the next request"
-msgstr "فایل‌های اجراکننده در درخواست بعدی به‌روز می‌شوند"
+msgid "Instructions in the prompt only"
+msgstr "فقط دستور در متن درخواست"
 
-msgid "Last 24 hours"
-msgstr "۲۴ ساعت گذشته"
+msgid "Automatic"
+msgstr "خودکار"
 
-msgid "done"
-msgstr "انجام‌شده"
+msgid "Do not send"
+msgstr "ارسال نشود"
 
-msgid "waiting"
-msgstr "در انتظار"
+msgid "empty = server default"
+msgstr "خالی = پیش‌فرض سرور"
 
-msgid "failed"
-msgstr "ناموفق"
+msgid "Header / parameter name"
+msgstr "نام هدر / پارامتر"
 
-msgid "Workflow run"
-msgstr "اجرای گردش‌کار"
+msgid "Choose a service…"
+msgstr "یک سرویس انتخاب کنید…"
 
-msgid "Started"
-msgstr "شروع"
+msgid "Get an API key"
+msgstr "گرفتن کلید API"
 
-msgid "Set up GitHub runner"
-msgstr "راه‌اندازی اجراکننده گیت‌هاب"
+msgid "API documentation"
+msgstr "مستندات API"
 
-msgid "GitHub runner is ready."
-msgstr "اجراکننده گیت‌هاب آماده است."
+msgid "Replace the {PLACEHOLDERS} in the base URL"
+msgstr "{PLACEHOLDERS} را در Base URL جایگزین کنید"
 
-msgid "Start runner now"
-msgstr "اجرای فوری"
+msgid "Request URL"
+msgstr "آدرس درخواست"
 
-msgid "Workflow started on GitHub."
-msgstr "گردش‌کار در گیت‌هاب شروع شد."
+msgid "Authentication"
+msgstr "احراز هویت"
 
-msgid "Refresh status"
-msgstr "به‌روزرسانی وضعیت"
+msgid "in the URL"
+msgstr "در آدرس"
 
-msgid "GitHub runner"
-msgstr "اجراکننده گیت‌هاب"
+msgid "Fetch models"
+msgstr "دریافت فهرست مدل‌ها"
+
+#, php-format
+msgid "%s models found. Pick one in the model field."
+msgstr "%s مدل پیدا شد. یکی را در فیلد مدل انتخاب کنید."
+
+msgid "Use any AI service with exactly the settings its documentation gives: choose a ready-made service or fill in the base URL, API format, how the key is sent, extra headers and the model. SEOlity shows the exact request it will send."
+msgstr "هر سرویس هوش مصنوعی را دقیقاً با تنظیماتی که مستنداتش می‌گوید وصل کنید: یک سرویس آماده انتخاب کنید یا Base URL، قالب API، روش ارسال کلید، هدرهای اضافه و مدل را وارد کنید. SEOlity درخواست دقیقی را که می‌فرستد نشان می‌دهد."
+
+msgid "Service"
+msgstr "سرویس"
+
+msgid "Display name"
+msgstr "نام نمایشی"
+
+msgid "Base URL"
+msgstr "Base URL"
+
+msgid "From the service documentation, e.g. https://api.example.com/v1. A full …/chat/completions URL also works."
+msgstr "از مستندات سرویس، مثلاً https://api.example.com/v1. آدرس کامل …/chat/completions هم قبول است."
+
+msgid "API format"
+msgstr "قالب API"
+
+msgid "Most services are OpenAI-compatible. Choose Anthropic only for Claude-style /v1/messages gateways."
+msgstr "بیشتر سرویس‌ها سازگار با OpenAI هستند. Anthropic را فقط برای درگاه‌های ‎/v1/messages به سبک Claude انتخاب کنید."
+
+msgid "How the key is sent"
+msgstr "روش ارسال کلید"
+
+msgid "Model"
+msgstr "مدل"
+
+msgid "Exact model id from the service (use “Fetch models” to list them)."
+msgstr "شناسه دقیق مدل در سرویس (با «دریافت فهرست مدل‌ها» آن‌ها را ببینید)."
+
+msgid "Structured output"
+msgstr "خروجی ساختاریافته"
+
+msgid "Automatic tries strict JSON schema, then JSON mode, then prompt instructions, and remembers what works."
+msgstr "خودکار به‌ترتیب اسکیمای دقیق JSON، حالت JSON و دستور در متن را امتحان می‌کند و حالت موفق را به خاطر می‌سپارد."
+
+msgid "Advanced: extra headers, query parameters, token limit, temperature"
+msgstr "پیشرفته: هدرهای اضافه، پارامترهای URL، محدودیت توکن، دما"
+
+msgid "Extra headers (one per line)"
+msgstr "هدرهای اضافه (هر خط یکی)"
+
+msgid "Name: value. Use {key} to insert the API key, e.g. Authorization: Token {key}"
+msgstr "نام: مقدار. برای درج کلید از {key} استفاده کنید، مثلاً Authorization: Token {key}"
+
+msgid "Query parameters"
+msgstr "پارامترهای URL"
+
+msgid "e.g. api-version=2024-10-21 (Azure OpenAI)"
+msgstr "مثلاً api-version=2024-10-21 (Azure OpenAI)"
+
+msgid "Token limit parameter"
+msgstr "پارامتر محدودیت توکن"
+
+msgid "Temperature"
+msgstr "دما (Temperature)"
+
+msgid "Leave empty for reasoning models that reject it."
+msgstr "برای مدل‌های استدلالی که آن را نمی‌پذیرند خالی بگذارید."
+
+msgid "Save Custom API"
+msgstr "ذخیره API سفارشی"
+
+msgid "Test connection"
+msgstr "تست اتصال"
+
+#, php-format
+msgid "Connection OK — model %s"
+msgstr "اتصال برقرار است — مدل %s"
+
+msgid "Use as AI engine"
+msgstr "استفاده به‌عنوان موتور هوش مصنوعی"
+
+msgid "AI engine switched."
+msgstr "موتور هوش مصنوعی تغییر کرد."
+
+msgid "Custom (fill in by hand)"
+msgstr "سفارشی (دستی پر کنید)"
+
+msgid "Custom API (any provider)"
+msgstr "API سفارشی (هر ارائه‌دهنده)"
+
+msgid "DeepSeek, Groq, Mistral, Together, xAI, Perplexity, Azure OpenAI, Cloudflare Workers AI, LM Studio, vLLM, LiteLLM or any compatible gateway."
+msgstr "DeepSeek، Groq، Mistral، Together، xAI، Perplexity، Azure OpenAI، Cloudflare Workers AI، LM Studio، vLLM، LiteLLM یا هر درگاه سازگار."
 
 msgid "Active"
 msgstr "فعال"
@@ -2900,9 +3151,11 @@ msgstr "تنظیم‌نشده"
 msgid "Test"
 msgstr "آزمایش"
 
-#, php-format
-msgid "Connection OK — model %s"
-msgstr "اتصال برقرار است — مدل %s"
+msgid "Use your Claude or ChatGPT subscription instead of an API key"
+msgstr "به‌جای کلید API از اشتراک Claude یا ChatGPT خود استفاده کنید"
+
+msgid "Step-by-step setup with GitHub (free) and an optional Cloudflare relay."
+msgstr "راه‌اندازی قدم‌به‌قدم با GitHub (رایگان) و رله اختیاری کلادفلر."
 
 msgid "Encryption"
 msgstr "رمزنگاری"
@@ -2943,62 +3196,17 @@ msgstr "توکن ورودی/خروجی"
 msgid "Cost"
 msgstr "هزینه"
 
-msgid "GitHub data storage"
-msgstr "ذخیره‌سازی داده در گیت‌هاب"
-
-msgid "Cold data (old Search Console rows, audit logs, reports, change history backups, crawl snapshots, config) is committed to your private GitHub repository and pruned locally, keeping your hosting database small. SEOlity reads it back when needed."
-msgstr "داده‌های قدیمی (ردیف‌های قدیمی سرچ کنسول، گزارش رویدادها، گزارش‌ها، پشتیبان تاریخچه تغییرات، تصاویر لحظه‌ای خزش، پیکربندی) در مخزن خصوصی گیت‌هاب شما ثبت و از دیتابیس محلی حذف می‌شوند تا دیتابیس هاست سبک بماند. سئولیتی در صورت نیاز آن‌ها را بازمی‌خواند."
-
-msgid "SEOlity tables size"
-msgstr "حجم جدول‌های سئولیتی"
-
-msgid "GSC rows (local)"
-msgstr "ردیف‌های سرچ کنسول (محلی)"
-
-msgid "Last archive"
-msgstr "آخرین بایگانی"
-
-#, php-format
-msgid "%s files"
-msgstr "%s فایل"
-
-msgid "Test repository access"
-msgstr "آزمایش دسترسی مخزن"
-
-msgid "private"
-msgstr "خصوصی"
-
-msgid "PUBLIC — use a private repo!"
-msgstr "عمومی — از مخزن خصوصی استفاده کنید!"
-
-msgid "write access"
-msgstr "دسترسی نوشتن"
-
-msgid "read only"
-msgstr "فقط خواندنی"
-
-msgid "Archive now"
-msgstr "همین حالا بایگانی کن"
-
-#, php-format
-msgid "Archived %s files to GitHub."
-msgstr "%s فایل در گیت‌هاب بایگانی شد."
-
-msgid "Restore archived Search Console data:"
-msgstr "بازیابی داده‌های بایگانی‌شده سرچ کنسول:"
-
-msgid "Restore"
-msgstr "بازیابی"
-
-#, php-format
-msgid "Restored %1$s rows from %2$s days."
-msgstr "%1$s ردیف از %2$s روز بازیابی شد."
-
 msgid "SEO engine detected"
 msgstr "موتور سئوی شناسایی‌شده"
 
 msgid "when another SEO plugin is active, SEOlity writes titles/descriptions into it and does not duplicate head tags."
 msgstr "وقتی افزونه سئوی دیگری فعال است، سئولیتی عنوان/توضیحات را در آن می‌نویسد و تگ‌های head را تکرار نمی‌کند."
+
+msgid "Connected"
+msgstr "متصل"
+
+msgid "Not set"
+msgstr "تنظیم نشده"
 
 msgid "Focus keywords chosen from the queries Google already shows each page for — written straight into Rank Math (or your SEO plugin), cannibalization-safe, with approval and undo."
 msgstr "کلمات کلیدی کانونی از کوئری‌هایی انتخاب می‌شوند که گوگل همین حالا هر صفحه را برایشان نشان می‌دهد — مستقیم در رنک مث (یا افزونه سئوی شما) نوشته می‌شوند، بدون کنیبالیزیشن، با تأیید و امکان بازگشت."
@@ -3167,12 +3375,6 @@ msgstr "رفع مشکل"
 msgid "Official documentation"
 msgstr "مستندات رسمی"
 
-msgid "Connected"
-msgstr "متصل"
-
-msgid "Not set"
-msgstr "تنظیم نشده"
-
 msgid "Step-by-step instructions with direct links for every key and account SEOlity can use. Open a service, follow the numbered steps, paste the key where shown and press Test."
 msgstr "راهنمای قدم‌به‌قدم با لینک مستقیم برای هر کلید و حسابی که SEOlity استفاده می‌کند. یک سرویس را باز کنید، مراحل شماره‌دار را انجام دهید، کلید را در جای گفته‌شده بچسبانید و تست بزنید."
 
@@ -3306,6 +3508,9 @@ msgstr "قبل ← بعد"
 #, php-format
 msgid "Window: %s days"
 msgstr "بازه: %s روز"
+
+msgid "Started"
+msgstr "شروع"
 
 msgid "Revert"
 msgstr "بازگردانی"
@@ -4599,6 +4804,9 @@ msgstr "این نسخه به‌عنوان مقدار فعلی بازیابی ش�
 msgid "Version restored."
 msgstr "نسخه بازیابی شد."
 
+msgid "Restore"
+msgstr "بازیابی"
+
 msgid "What did SEOlity find?"
 msgstr "سئولیتی چه چیزی پیدا کرد؟"
 
@@ -4676,9 +4884,6 @@ msgstr "اصلی"
 
 msgid "Edit HTML"
 msgstr "ویرایش HTML"
-
-msgid "Model"
-msgstr "مدل"
 
 msgid "Knowledge"
 msgstr "دانش"
@@ -4830,6 +5035,12 @@ msgstr "ذخیره شد و با افزونه سئوی این ویرایشگر ه
 
 msgid "Focus keywords saved."
 msgstr "کلمات کلیدی کانونی ذخیره شد."
+
+msgid "Show"
+msgstr "نمایش"
+
+msgid "Fix"
+msgstr "رفع"
 
 msgid "Checking experience, expertise, authority and trust signals…"
 msgstr "در حال بررسی سیگنال‌های تجربه، تخصص، اعتبار و اعتماد…"
@@ -5150,9 +5361,6 @@ msgstr "حداکثر انتظار برای هر درخواست (دقیقه)"
 msgid "General"
 msgstr "عمومی"
 
-msgid "Subscription AI"
-msgstr "هوش مصنوعی اشتراکی"
-
 msgid "Crawler & audits"
 msgstr "خزنده و ممیزی‌ها"
 
@@ -5161,9 +5369,6 @@ msgstr "هشدارها و گزارش‌ها"
 
 msgid "Schema & entity"
 msgstr "اسکیما و موجودیت"
-
-msgid "GitHub (knowledge & storage)"
-msgstr "گیت‌هاب (دانش و ذخیره‌سازی)"
 
 msgid "Privacy & data"
 msgstr "حریم خصوصی و داده"
@@ -5180,23 +5385,11 @@ msgstr "کلید API گوگل جمینای"
 msgid "OpenRouter API key"
 msgstr "کلید API اوپن‌روتر"
 
-msgid "Custom API key"
-msgstr "کلید API سفارشی"
-
-msgid "Claude subscription token (output of: claude setup-token)"
-msgstr "توکن اشتراک Claude (خروجی دستور claude setup-token)"
-
-msgid "ChatGPT login (contents of ~/.codex/auth.json after: codex login)"
-msgstr "ورود ChatGPT (محتوای ~/.codex/auth.json پس از codex login)"
-
 msgid "PageSpeed Insights API key (optional)"
 msgstr "کلید API پیج‌اسپید (اختیاری)"
 
 msgid "SERP data API key (optional)"
 msgstr "کلید API داده‌های SERP (اختیاری)"
-
-msgid "GitHub fine-grained token (Contents: read & write on the chosen repos only)"
-msgstr "توکن دقیق گیت‌هاب (فقط دسترسی Contents: خواندن و نوشتن روی مخازن انتخاب‌شده)"
 
 msgid "manual"
 msgstr "دستی"
@@ -5296,6 +5489,12 @@ msgstr "ارزیابی‌شده"
 
 msgid "cancelled"
 msgstr "لغوشده"
+
+msgid "done"
+msgstr "انجام‌شده"
+
+msgid "failed"
+msgstr "ناموفق"
 
 msgid "open"
 msgstr "باز"

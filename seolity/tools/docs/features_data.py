@@ -576,6 +576,27 @@ Rule presets | Ready-made rules (ALT on upload, meta on publish, CTR rewrite…)
 Per-run safety cap | Max actions per run | No runaway automation | Cap | Limited actions | risk=None
 ''')
 
+cat('Connections: Subscription Wizard, GitHub, Cloudflare & Custom API', intro='Everything outside WordPress, set up from WordPress with checks and guides at every step.',
+    deps='—', ui='Subscription AI, GitHub & data, Cloudflare relay pages; Settings → AI', auto='Manual', risk='None', db='wp_options', api='/subscription/*, /github/*, /cloudflare/*', features='''
+Subscription prerequisites check | Checks PHP extensions, GitHub token scopes, private runner repo, saved account, relay and active provider with Fix buttons | Know exactly what is left | Current setup | Checklist | api=GET /subscription/check
+Subscription wizard | Claude Pro/Max or ChatGPT Plus/Pro, numbered steps with done states | Setup without reading docs | Choices | Working subscription AI
+OS-aware commands | Copyable Windows PowerShell / macOS-Linux commands for claude setup-token and codex login (file credential store) | No command-line guesswork | OS | Commands
+Token format validation | Rejects text that is not a Claude token or not the whole auth.json | Fewer failed runs | Pasted value | Clear error | api=POST /subscription/account
+One-click test & activate | Real test request through the runner, then make it the AI engine | Confidence before use | Engine | Test result | api=POST /subscription/test
+GitHub token verification | Owner, token type, scopes and expiry with warnings | Catch bad tokens early | Token | Account card | api=POST /github/connect
+One-click runner repository | Private repo + workflow + runner + queue branch + secrets | No manual GitHub work | Name | Ready runner | api=POST /github/runner
+One-click own knowledge repository | Private repo seeded with bundled knowledge, builder and weekly workflow; optional Anthropic key secret | Your own learning SEO brain | Name | Synced knowledge | api=POST /github/knowledge
+One-click data archive repository | Private repo, write test, archiving enabled | Smaller hosting database | Name | Active archive | api=POST /github/storage
+Cloudflare one-click deploy | Token check, account discovery, KV, module upload, secret, workers.dev, cron | Free relay in minutes | Token | Deployed worker | api=POST /cloudflare/deploy
+Relay mailbox | Encrypted, signed results via Cloudflare KV; push to public sites, pull for local ones | Faster answers, local sites supported | Runner results | Stored answers | api=POST /cloudflare/pull
+Reliable cron heartbeat | Signed Cloudflare cron call runs the SEOlity queue every N minutes | Tasks on time on low-traffic sites | Schedule | Queue run | api=POST /remote/heartbeat; auto=Scheduled
+Relay diagnostics | Checks from Cloudflare that the site REST API is reachable and the heartbeat works | Fix connectivity fast | — | Report | api=POST /cloudflare/diagnose
+Custom API presets | 15 ready-made services incl. Azure OpenAI, Workers AI, LM Studio, vLLM | Correct settings in one click | Service | Filled settings
+Custom API formats & auth | OpenAI or Anthropic format; Bearer, x-api-key, api-key, any header, query, none; extra headers and query params | Works with any provider | Docs values | Requests
+Custom API structured-output fallback | json_schema → JSON mode → prompt, remembered per endpoint and model | Reliable JSON from any model | Responses | Valid output
+Custom API model list & preview | Fetches /models and shows the exact request URL and auth | No guessing | Endpoint | Model ids, preview | api=POST /settings/custom-models
+''')
+
 cat('Knowledge Base & GitHub Integration', intro='An SEO brain that learns from top documentation, stored in GitHub; cold data archived to GitHub to keep the host DB small.',
     deps='—', ui='Knowledge Base page, Settings → Knowledge base / Storage', auto='Scheduled', risk='None', db='knowledge', api='/knowledge, /storage', features='''
 Bundled SEO knowledge | 49 curated documents (fa + en) covering all AI task topics | Expert guidance out of the box | Markdown files | Knowledge chunks
