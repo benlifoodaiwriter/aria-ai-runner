@@ -15,6 +15,15 @@ final class Jobs {
 
 	public static function register( Queue $q, Plugin $p ) {
 		// Crawler / audit.
+		$q->handler( 'route_probe', static function () use ( $p ) {
+			// A plugin update ships a newer worker (e.g. the /proxy route): redeploy it once.
+			$cf = $p->cloudflare;
+			if ( $cf->is_deployed() && SEOLITY_VERSION !== (string) ( isset( $cf->state()['version'] ) ? $cf->state()['version'] : '' ) ) {
+				$cf->deploy();
+			}
+			$p->gateway->probe();
+			return true;
+		} );
 		$q->handler( 'subscription_collect', static function () use ( $p ) {
 			return $p->subscription->collect_job();
 		} );
@@ -180,6 +189,7 @@ final class Jobs {
 			$q->push( 'knowledge_sync', array(), array( 'unique' => true, 'priority' => 45 ) );
 		}
 		$q->push( 'cleanup', array(), array( 'unique' => true, 'priority' => 60, 'delay' => 2 * HOUR_IN_SECONDS ) );
+		$q->push( 'route_probe', array(), array( 'unique' => true, 'priority' => 6 ) );
 	}
 
 	public static function weekly_pipeline( Plugin $p ) {

@@ -391,6 +391,31 @@ final class GitHubClient {
 		return $out;
 	}
 
+	/**
+	 * Runs of a workflow that are queued or working right now (newest first).
+	 *
+	 * @return array|\WP_Error [{ id, status, title, started, url }]
+	 */
+	public function active_runs( $repo, $workflow ) {
+		$res = $this->request( 'GET', '/repos/' . $repo . '/actions/workflows/' . rawurlencode( $workflow ) . '/runs?per_page=5' );
+		if ( is_wp_error( $res ) ) {
+			return $res;
+		}
+		$out = array();
+		foreach ( isset( $res['workflow_runs'] ) ? (array) $res['workflow_runs'] : array() as $run ) {
+			if ( in_array( (string) $run['status'], array( 'queued', 'in_progress', 'waiting', 'requested', 'pending' ), true ) ) {
+				$out[] = array(
+					'id'      => (int) $run['id'],
+					'status'  => (string) $run['status'],
+					'title'   => isset( $run['display_title'] ) ? (string) $run['display_title'] : '',
+					'started' => isset( $run['run_started_at'] ) ? (string) $run['run_started_at'] : (string) $run['created_at'],
+					'url'     => esc_url_raw( $run['html_url'] ),
+				);
+			}
+		}
+		return $out;
+	}
+
 	/** Connection test for the Settings screen. */
 	public function test( $repo ) {
 		if ( ! self::valid_repo( $repo ) ) {

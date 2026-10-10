@@ -43,7 +43,11 @@ abstract class AbstractProvider implements ProviderInterface {
 	 * @return array|\WP_Error Decoded body.
 	 */
 	protected function post( $url, array $body, array $headers ) {
-		$res = Http::json( 'POST', $url, $body, $headers, $this->timeout() );
+		// Direct, or through the owner's Cloudflare worker / GitHub runner (Connections → Server & speed).
+		$res = $this->plugin->gateway->request( 'POST', $url, $body, $headers, $this->timeout() );
+		if ( is_wp_error( $res ) && 'seolity_route_failed' === $res->get_error_code() ) {
+			return $res;
+		}
 		if ( is_wp_error( $res ) ) {
 			return new \WP_Error( 'seolity_ai_http', sprintf( /* translators: 1 provider 2 error */ __( '%1$s request failed: %2$s', 'seolity' ), $this->label(), $res->get_error_message() ) );
 		}

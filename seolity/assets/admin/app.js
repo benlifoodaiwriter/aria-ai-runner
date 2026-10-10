@@ -291,7 +291,7 @@
 	var root;
 	var view;
 	var nav;
-	var ICONS = { dashboard: 'dashboard', actions: 'wand', ai: 'prompt', audit: 'pulse', gsc: 'chart', keywords: 'key', content: 'content', products: 'bag', images: 'image', links: 'link', competitors: 'swords', experiments: 'flask', changes: 'undo', redirects: 'corner', 404: 'unlink', schema: 'braces', sitemap: 'map', robots: 'bot', reports: 'review', alerts: 'bell', automation: 'zap', knowledge: 'book', settings: 'settings', rankmath: 'target', guide: 'lifebuoy', subscription: 'sparkles', github: 'github', cloudflare: 'cloud' };
+	var ICONS = { dashboard: 'dashboard', actions: 'wand', ai: 'prompt', audit: 'pulse', gsc: 'chart', keywords: 'key', content: 'content', products: 'bag', images: 'image', links: 'link', competitors: 'swords', experiments: 'flask', changes: 'undo', redirects: 'corner', 404: 'unlink', schema: 'braces', sitemap: 'map', robots: 'bot', reports: 'review', alerts: 'bell', automation: 'zap', knowledge: 'book', settings: 'settings', rankmath: 'target', guide: 'lifebuoy', subscription: 'sparkles', github: 'github', cloudflare: 'cloud', network: 'server' };
 	/** Sidebar groups (ARIAGH-style navigation sections). */
 	/**
 	 * Simple navigation: a few sections; related pages are tabs inside a section.
@@ -305,7 +305,7 @@
 		[ 'gschub', 'Search Console', 'chart', [ 'gsc' ] ],
 		[ 'analysis', 'Analysis', 'pulse', [ 'audit', 'competitors', 'experiments' ] ],
 		[ 'technical', 'Technical SEO', 'wrench', [ 'redirects', '404', 'schema', 'sitemap', 'robots' ] ],
-		[ 'connections', 'Connections', 'link', [ 'subscription', 'github', 'cloudflare', 'guide' ] ],
+		[ 'connections', 'Connections', 'link', [ 'network', 'subscription', 'github', 'cloudflare', 'guide' ] ],
 		[ 'system', 'Settings', 'settings', [ 'settings', 'automation', 'knowledge' ] ],
 	];
 	var HUB_LABELS = { Dashboard: t( 'Dashboard' ), 'AI Center': t( 'AI Center' ), Content: t( 'Content' ), 'Keywords & links': t( 'Keywords & links' ), 'Search Console': t( 'Search Console' ), Analysis: t( 'Analysis' ), 'Technical SEO': t( 'Technical SEO' ), Connections: t( 'Connections' ), Settings: t( 'Settings' ) };
@@ -433,6 +433,8 @@
 		var modes = { manual: t( 'Manual approval' ), semi: t( 'Semi-automatic' ), autonomous: t( 'Autonomous' ) };
 		box.appendChild( chip( 'shield', modes[ b.mode ] || b.mode, b.mode === 'autonomous' ? 'warn' : 'info', '#/automation' ) );
 		box.appendChild( chip( 'cpu', b.ai_ready ? t( 'AI connected' ) : t( 'AI not configured' ), b.ai_ready ? 'ok' : 'warn', '#/settings?tab=ai' ) );
+		var routeNames = { direct: t( 'Direct' ), cloudflare: 'Cloudflare', github: 'GitHub' };
+		box.appendChild( chip( 'server', t( 'Route: %s', routeNames[ b.route ] || b.route ), b.region_set ? 'info' : 'warn', '#/network' ) );
 		box.appendChild( chip( 'chart', b.gsc ? t( 'Search Console connected' ) : t( 'Search Console not connected' ), b.gsc ? 'ok' : 'warn', '#/gsc' ) );
 		var setCount = function ( slug, n ) {
 			var el = root.querySelector( '[data-count="' + slug + '"]' );
@@ -520,7 +522,7 @@
 		v.appendChild( body );
 		App.load( body, SL.api( 'dashboard' ), function ( dsh ) {
 			var b = App.state.boot || {};
-			if ( ! b.ai_ready || ! b.gsc || ! dsh.audit ) {
+			if ( ! b.region_set || ! b.ai_ready || ! b.gsc || ! dsh.audit ) {
 				body.appendChild( App.onboarding( b, dsh ) );
 			}
 			var g = dsh.gsc;
@@ -590,6 +592,7 @@
 
 	App.onboarding = function ( b, dsh ) {
 		var steps = [
+			[ b.region_set, t( 'Choose where your server is' ), t( 'Iran or abroad: SEOlity then sends AI and Google requests over the fastest route that works.' ), 'network' ],
 			[ b.ai_ready, t( 'Connect an AI provider' ), t( 'Add an API key (Anthropic, OpenAI, Gemini, OpenRouter) or a local LLM.' ), 'settings?tab=ai' ],
 			[ b.gsc, t( 'Connect Google Search Console' ), t( 'Real clicks, impressions and queries power every recommendation.' ), 'gsc' ],
 			[ !! dsh.audit, t( 'Run your first site audit' ), t( 'SEOlity crawls your site in the background without slowing it down.' ), 'audit' ],
@@ -659,6 +662,16 @@
 		load();
 	};
 
+	/** Ask the server to start a warm GitHub runner (no-op for direct / Cloudflare routes); at most once a minute. */
+	var lastWarm = 0;
+	App.warmAi = function () {
+		if ( Date.now() - lastWarm < 60000 ) {
+			return;
+		}
+		lastWarm = Date.now();
+		SL.api( 'ai/warm', { method: 'POST', noWait: true } ).catch( function () {} );
+	};
+
 	/* ================================================================ AI SEO Chat */
 	App.pages.ai = function ( v ) {
 		var cid = App.state.chatId || '';
@@ -669,6 +682,9 @@
 		var log = h( 'div', { class: 'sl-chat__log', 'aria-live': 'polite' } );
 		var input = h( 'textarea', { class: 'sl-input sl-chat__input', rows: 2, placeholder: t( 'e.g. Why did my organic sales drop this month?' ), dir: 'auto' } );
 		var send = App.btn( t( 'Send' ), ask, 'primary' );
+		// GitHub route (subscription AI or relay): start a runner now so the first answer is fast.
+		App.warmAi();
+		input.addEventListener( 'focus', App.warmAi );
 		var samples = [ t( 'Why has my organic traffic dropped?' ), t( 'Why does this product not rank?' ), t( 'Which pages should I optimize today?' ), t( 'What did my competitor do recently?' ), t( 'Why does this page have a low CTR?' ), t( 'Should I redirect this URL?' ) ];
 		var chips = h( 'div', { class: 'sl-chips' }, samples.map( function ( s ) {
 			return h( 'button', { type: 'button', class: 'sl-chip sl-chip--btn', onClick: function () {

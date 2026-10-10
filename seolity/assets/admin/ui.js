@@ -181,7 +181,7 @@
 		var sec = Math.round( ( Date.now() - oldest ) / 1000 );
 		SL.clear( waitBox );
 		waitBox.appendChild( h( 'span', { class: 'sl-spinner sl-spinner--sm', 'aria-hidden': 'true' } ) );
-		waitBox.appendChild( h( 'span', { text: t( 'Your AI subscription is working on GitHub (%s)…', ids.length ) + ' ' + Math.floor( sec / 60 ) + ':' + ( '0' + ( sec % 60 ) ).slice( -2 ) } ) );
+		waitBox.appendChild( h( 'span', { text: t( 'AI is answering through GitHub (%s)…', ids.length ) + ' ' + Math.floor( sec / 60 ) + ':' + ( '0' + ( sec % 60 ) ).slice( -2 ) } ) );
 	}
 	SL.waitRemote = function ( job ) {
 		waits[ job ] = waits[ job ] || Date.now();
@@ -203,13 +203,14 @@
 					} else if ( Date.now() - started > 65 * 60000 ) {
 						done( reject, new Error( t( 'The subscription runner did not answer in time. Check the "SEOlity AI" workflow runs on GitHub.' ) ) );
 					} else {
-						setTimeout( poll, 6000 );
+						// Answers from a warm runner arrive in seconds: poll quickly at first, then relax.
+						setTimeout( poll, Date.now() - started < 120000 ? 2500 : 6000 );
 					}
 				} ).catch( function () {
 					setTimeout( poll, 15000 ); // Transient network/server error: keep waiting.
 				} );
 			}
-			setTimeout( poll, 5000 );
+			setTimeout( poll, 2000 );
 		} );
 	};
 

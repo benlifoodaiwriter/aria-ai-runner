@@ -66,6 +66,11 @@ final class Settings {
 			'sub_branch'           => array( 'string', 'seolity-jobs' ),
 			'sub_callback'         => array( 'bool', true ),
 			'sub_wait_minutes'     => array( 'int', 45, array( 10, 180 ) ),
+			'sub_warm_minutes'     => array( 'int', 10, array( 1, 30 ) ),
+			// Network: where the host is and how AI / Google requests travel.
+			'host_region'          => array( 'enum', '', array( '', 'iran', 'abroad' ) ),
+			'ai_route'             => array( 'enum', 'auto', array( 'auto', 'direct', 'cloudflare', 'github' ) ),
+			'route_google'         => array( 'bool', true ),
 			'ai_effort'            => array( 'enum', 'medium', array( 'low', 'medium', 'high', 'xhigh', 'max' ) ),
 			'ollama_base_url'      => array( 'url', 'http://localhost:11434' ),
 			'custom_base_url'      => array( 'string', '' ), // Not 'url': esc_url_raw() would strip {PLACEHOLDERS}.
@@ -141,11 +146,12 @@ final class Settings {
 			'kb_auto_sync'         => array( 'bool', true ),
 			'kb_contribute'        => array( 'bool', false ),
 			// GitHub data storage.
-			'storage_enabled'      => array( 'bool', false ),
+			'storage_enabled'      => array( 'bool', true ),
 			'storage_repo'         => array( 'string', '' ),
 			'storage_branch'       => array( 'string', 'main' ),
 			'storage_path'         => array( 'string', 'seolity-data' ),
 			'storage_archive_days' => array( 'int', 30, array( 1, 3650 ) ),
+			'storage_gsc_days'     => array( 'int', 120, array( 30, 3650 ) ),
 			'storage_prune_local'  => array( 'bool', true ),
 			// Privacy.
 			'anonymize_ip'         => array( 'bool', true ),

@@ -4,7 +4,7 @@ Tags: seo, ai, search console, woocommerce, schema
 Requires at least: 6.2
 Tested up to: 6.6
 Requires PHP: 7.4
-Stable tag: 1.5.0
+Stable tag: 1.6.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -72,6 +72,14 @@ Yes. The interface is fully translated and RTL-native, text analysis understands
 Enable "Delete all data on uninstall" in Settings → Privacy, then delete the plugin.
 
 == Changelog ==
+
+= 1.6.0 =
+* New "Server & speed" page (Connections): choose whether your host is in Iran or abroad, pick the route for AI requests (Auto, Direct, Cloudflare, GitHub) and run a live speed test of every route.
+* Iran: AI requests (Claude, ChatGPT/OpenAI, Gemini, OpenRouter, custom APIs) and Google services (Search Console, PageSpeed, Google sign-in, SerpApi) travel through your own Cloudflare worker (synchronous, encrypted) or your private GitHub runner, whichever is fastest and working; never direct. The page explains why (sanctions and filtering).
+* Abroad: direct by default; a relay is used automatically only when the direct connection fails. Every route can be chosen manually in both cases, and a failing route automatically falls through to the next one.
+* Cloudflare worker: new encrypted /proxy (AES-256-GCM + HMAC, https only, no private networks, nothing stored). Outdated workers are redeployed automatically after a plugin update.
+* GitHub runner: new "http" engine for API requests, queue checks every 2 seconds instead of 10, stays warm for a configurable time (default 10 minutes), a run that is already warm is reused instead of starting a new one, and the chat / optimize button start the runner ahead of time. The admin waits 2.5 s between checks instead of 6 s.
+* Storage on GitHub is on by default for every host: AI logs, chats, 404 logs, learnings, experiments, knowledge notes and weekly competitor snapshots are archived too (plus Search Console data, reports, change history and settings as before), and the host keeps only recent data. Uses the runner repository's seolity-data branch when no separate data repository is set. Table sizes are shown on the page.
 
 = 1.5.0 =
 * ARIAGH.SEOLITY branding: new icon, logo, banners and menu icon in the ARIAGH style.

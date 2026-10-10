@@ -121,6 +121,7 @@
 	/** Open the optimizer for an editor field. */
 	SL.openOptimizer = function ( field, adapter ) {
 		adapter = adapter || contentAdapter( field );
+		SL.api( 'ai/warm', { method: 'POST', noWait: true } ).catch( function () {} ); // Warm GitHub runner (if that route is used).
 		SL.optimizer( {
 			object_type: ctx.object_type || 'post',
 			object_id: ctx.object_id || 0,

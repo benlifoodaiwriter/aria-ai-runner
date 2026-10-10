@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: SEOlity 1.0.0\n"
-"POT-Creation-Date: 2026-10-08 08:24+0000\n"
+"POT-Creation-Date: 2026-10-10 08:56+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -26,6 +26,48 @@ msgid "Monthly AI budget reached. Increase it in Settings or wait until next mon
 msgstr ""
 
 msgid "The AI response did not match the expected structure. Please try again."
+msgstr ""
+
+msgid "the AI provider refuses requests from this location"
+msgstr ""
+
+msgid "Servers in Iran need a relay: deploy the free Cloudflare worker or set up the GitHub runner (Connections → Server & speed)."
+msgstr ""
+
+msgid "No network route could reach the AI provider."
+msgstr ""
+
+msgid "Deploy the Cloudflare worker again (no shared key yet)."
+msgstr ""
+
+msgid "The Cloudflare worker is outdated: deploy it again."
+msgstr ""
+
+msgid "Could not read the answer from the Cloudflare worker (shared key mismatch). Deploy it again."
+msgstr ""
+
+#, php-format
+msgid "Blocked for this server’s country (HTTP %d)"
+msgstr ""
+
+#, php-format
+msgid "The API refuses Cloudflare’s location (HTTP %d)"
+msgstr ""
+
+msgid "Not deployed yet"
+msgstr ""
+
+msgid "Runner is warm"
+msgstr ""
+
+#, php-format
+msgid "Cold start ≈ %d s"
+msgstr ""
+
+msgid "Runner not set up yet"
+msgstr ""
+
+msgid "Direct"
 msgstr ""
 
 #, php-format
@@ -105,6 +147,13 @@ msgstr ""
 
 #, php-format
 msgid "Subscription AI is not ready. Missing: %s."
+msgstr ""
+
+msgid "GitHub did not deliver the AI answer in time. Check the \"SEOlity AI\" workflow runs on GitHub."
+msgstr ""
+
+#, php-format
+msgid "The GitHub route is not ready. Missing: %s."
 msgstr ""
 
 msgid "Empty answer from the subscription runner."
@@ -337,6 +386,9 @@ msgid "Automation"
 msgstr ""
 
 msgid "Knowledge Base"
+msgstr ""
+
+msgid "Server & speed"
 msgstr ""
 
 msgid "Subscription AI"
@@ -2309,6 +2361,10 @@ msgstr ""
 msgid "Autonomous"
 msgstr ""
 
+#, php-format
+msgid "Route: %s"
+msgstr ""
+
 msgid "Google Search Console connected. Now choose a property."
 msgstr ""
 
@@ -2449,6 +2505,12 @@ msgid "Add competitors to monitor their content and find gaps."
 msgstr ""
 
 msgid "Add competitor"
+msgstr ""
+
+msgid "Choose where your server is"
+msgstr ""
+
+msgid "Iran or abroad: SEOlity then sends AI and Google requests over the fastest route that works."
 msgstr ""
 
 msgid "Connect an AI provider"
@@ -4025,6 +4087,88 @@ msgstr ""
 msgid "SEOlity checks for important changes every hour."
 msgstr ""
 
+msgid "Saved"
+msgstr ""
+
+msgid "Not tested"
+msgstr ""
+
+msgid "Works"
+msgstr ""
+
+msgid "Not set up"
+msgstr ""
+
+msgid "Not reachable"
+msgstr ""
+
+msgid "Fastest"
+msgstr ""
+
+msgid "Set up"
+msgstr ""
+
+msgid "Route"
+msgstr ""
+
+msgid "Ping"
+msgstr ""
+
+msgid "Extra time per answer"
+msgstr ""
+
+msgid "Run speed test"
+msgstr ""
+
+#, php-format
+msgid "Tested against %1$s · %2$s"
+msgstr ""
+
+msgid "Runner is starting"
+msgstr ""
+
+msgid "Runner is off"
+msgstr ""
+
+msgid "View on GitHub"
+msgstr ""
+
+msgid "Warm up now"
+msgstr ""
+
+msgid "The runner is starting on GitHub."
+msgstr ""
+
+msgid "Not needed: AI requests do not use GitHub right now."
+msgstr ""
+
+msgid "Set up the GitHub runner first."
+msgstr ""
+
+#, php-format
+msgid "Last archive: %s"
+msgstr ""
+
+#, php-format
+msgid "Last archive failed: %s"
+msgstr ""
+
+msgid "Not archived yet"
+msgstr ""
+
+#, php-format
+msgid "Kept on the host: %1$s days of logs, %2$s days of Search Console data · SEOlity tables now: %3$s MB"
+msgstr ""
+
+msgid "Archive now"
+msgstr ""
+
+msgid "Archived to GitHub"
+msgstr ""
+
+msgid "Set up GitHub"
+msgstr ""
+
 msgid "Site Audit & SEO Doctor"
 msgstr ""
 
@@ -4867,7 +5011,7 @@ msgid "Most linked pages"
 msgstr ""
 
 #, php-format
-msgid "Your AI subscription is working on GitHub (%s)…"
+msgid "AI is answering through GitHub (%s)…"
 msgstr ""
 
 msgid "Yes"

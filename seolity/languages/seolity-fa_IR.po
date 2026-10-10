@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: SEOlity 1.0.0\n"
-"POT-Creation-Date: 2026-10-08 08:24+0000\n"
+"POT-Creation-Date: 2026-10-10 08:56+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -28,6 +28,48 @@ msgstr "بودجه ماهانه هوش مصنوعی تمام شده است. آن
 
 msgid "The AI response did not match the expected structure. Please try again."
 msgstr "پاسخ هوش مصنوعی با ساختار مورد انتظار مطابقت نداشت. لطفاً دوباره تلاش کنید."
+
+msgid "the AI provider refuses requests from this location"
+msgstr "سرویس هوش مصنوعی درخواست از این موقعیت را رد می‌کند"
+
+msgid "Servers in Iran need a relay: deploy the free Cloudflare worker or set up the GitHub runner (Connections → Server & speed)."
+msgstr "سرورهای ایران به واسط نیاز دارند: ورکر رایگان کلادفلر را مستقر کنید یا رانر گیت‌هاب را راه‌اندازی کنید (اتصال‌ها ← سرور و سرعت)."
+
+msgid "No network route could reach the AI provider."
+msgstr "هیچ مسیری به سرویس هوش مصنوعی نرسید."
+
+msgid "Deploy the Cloudflare worker again (no shared key yet)."
+msgstr "ورکر کلادفلر را دوباره مستقر کنید (هنوز کلید مشترک ساخته نشده)."
+
+msgid "The Cloudflare worker is outdated: deploy it again."
+msgstr "ورکر کلادفلر قدیمی است: دوباره مستقرش کنید."
+
+msgid "Could not read the answer from the Cloudflare worker (shared key mismatch). Deploy it again."
+msgstr "پاسخ ورکر کلادفلر خوانده نشد (کلید مشترک یکسان نیست). دوباره مستقرش کنید."
+
+#, php-format
+msgid "Blocked for this server’s country (HTTP %d)"
+msgstr "برای کشور این سرور مسدود است (HTTP %d)"
+
+#, php-format
+msgid "The API refuses Cloudflare’s location (HTTP %d)"
+msgstr "API موقعیت کلادفلر را رد می‌کند (HTTP %d)"
+
+msgid "Not deployed yet"
+msgstr "هنوز مستقر نشده"
+
+msgid "Runner is warm"
+msgstr "رانر گرم است"
+
+#, php-format
+msgid "Cold start ≈ %d s"
+msgstr "روشن شدن از صفر ≈ %d ثانیه"
+
+msgid "Runner not set up yet"
+msgstr "رانر هنوز راه‌اندازی نشده"
+
+msgid "Direct"
+msgstr "مستقیم"
 
 #, php-format
 msgid "Possible keyword stuffing: focus keyword density %s%%."
@@ -107,6 +149,13 @@ msgstr "اجراکننده اشتراکی به‌موقع پاسخ نداد. ا�
 #, php-format
 msgid "Subscription AI is not ready. Missing: %s."
 msgstr "هوش مصنوعی اشتراکی آماده نیست. موارد ناقص: %s."
+
+msgid "GitHub did not deliver the AI answer in time. Check the \"SEOlity AI\" workflow runs on GitHub."
+msgstr "گیت‌هاب پاسخ هوش مصنوعی را به‌موقع نرساند. اجراهای ورک‌فلو «SEOlity AI» را در گیت‌هاب بررسی کنید."
+
+#, php-format
+msgid "The GitHub route is not ready. Missing: %s."
+msgstr "مسیر گیت‌هاب آماده نیست. موارد ناقص: %s."
 
 msgid "Empty answer from the subscription runner."
 msgstr "پاسخ خالی از اجراکننده اشتراکی دریافت شد."
@@ -339,6 +388,9 @@ msgstr "اتوماسیون"
 
 msgid "Knowledge Base"
 msgstr "پایگاه دانش"
+
+msgid "Server & speed"
+msgstr "سرور و سرعت"
 
 msgid "Subscription AI"
 msgstr "هوش مصنوعی اشتراکی"
@@ -2310,6 +2362,10 @@ msgstr "نیمه‌خودکار"
 msgid "Autonomous"
 msgstr "خودمختار"
 
+#, php-format
+msgid "Route: %s"
+msgstr "مسیر: %s"
+
 msgid "Google Search Console connected. Now choose a property."
 msgstr "گوگل سرچ کنسول متصل شد. حالا یک پراپرتی انتخاب کنید."
 
@@ -2451,6 +2507,12 @@ msgstr "رقبا را اضافه کنید تا محتوایشان پایش و ش
 
 msgid "Add competitor"
 msgstr "افزودن رقیب"
+
+msgid "Choose where your server is"
+msgstr "مشخص کنید سرورتان کجاست"
+
+msgid "Iran or abroad: SEOlity then sends AI and Google requests over the fastest route that works."
+msgstr "ایران یا خارج: SEOlity درخواست‌های هوش مصنوعی و گوگل را از سریع‌ترین مسیری که کار می‌کند می‌فرستد."
 
 msgid "Connect an AI provider"
 msgstr "اتصال ارائه‌دهنده هوش مصنوعی"
@@ -4026,6 +4088,88 @@ msgstr "هشداری نیست"
 msgid "SEOlity checks for important changes every hour."
 msgstr "سئولیتی هر ساعت تغییرات مهم را بررسی می‌کند."
 
+msgid "Saved"
+msgstr "ذخیره شد"
+
+msgid "Not tested"
+msgstr "آزمون نشده"
+
+msgid "Works"
+msgstr "کار می‌کند"
+
+msgid "Not set up"
+msgstr "راه‌اندازی نشده"
+
+msgid "Not reachable"
+msgstr "در دسترس نیست"
+
+msgid "Fastest"
+msgstr "سریع‌ترین"
+
+msgid "Set up"
+msgstr "راه‌اندازی"
+
+msgid "Route"
+msgstr "مسیر"
+
+msgid "Ping"
+msgstr "پینگ"
+
+msgid "Extra time per answer"
+msgstr "زمان اضافه هر پاسخ"
+
+msgid "Run speed test"
+msgstr "اجرای آزمون سرعت"
+
+#, php-format
+msgid "Tested against %1$s · %2$s"
+msgstr "آزمون با %1$s · %2$s"
+
+msgid "Runner is starting"
+msgstr "رانر در حال روشن شدن است"
+
+msgid "Runner is off"
+msgstr "رانر خاموش است"
+
+msgid "View on GitHub"
+msgstr "مشاهده در گیت‌هاب"
+
+msgid "Warm up now"
+msgstr "گرم کردن الان"
+
+msgid "The runner is starting on GitHub."
+msgstr "رانر در گیت‌هاب روشن می‌شود."
+
+msgid "Not needed: AI requests do not use GitHub right now."
+msgstr "لازم نیست: درخواست‌های هوش مصنوعی الان از گیت‌هاب نمی‌روند."
+
+msgid "Set up the GitHub runner first."
+msgstr "اول رانر گیت‌هاب را راه‌اندازی کنید."
+
+#, php-format
+msgid "Last archive: %s"
+msgstr "آخرین بایگانی: %s"
+
+#, php-format
+msgid "Last archive failed: %s"
+msgstr "آخرین بایگانی ناموفق بود: %s"
+
+msgid "Not archived yet"
+msgstr "هنوز بایگانی نشده"
+
+#, php-format
+msgid "Kept on the host: %1$s days of logs, %2$s days of Search Console data · SEOlity tables now: %3$s MB"
+msgstr "روی هاست می‌ماند: %1$s روز لاگ‌ها، %2$s روز داده سرچ کنسول · حجم فعلی جدول‌های SEOlity: %3$s مگابایت"
+
+msgid "Archive now"
+msgstr "همین حالا بایگانی کن"
+
+msgid "Archived to GitHub"
+msgstr "در گیت‌هاب بایگانی شد"
+
+msgid "Set up GitHub"
+msgstr "راه‌اندازی گیت‌هاب"
+
 msgid "Site Audit & SEO Doctor"
 msgstr "ممیزی سایت و دکتر سئو"
 
@@ -4868,8 +5012,8 @@ msgid "Most linked pages"
 msgstr "پرلینک‌ترین صفحات"
 
 #, php-format
-msgid "Your AI subscription is working on GitHub (%s)…"
-msgstr "اشتراک هوش مصنوعی شما روی گیت‌هاب در حال کار است (%s)…"
+msgid "AI is answering through GitHub (%s)…"
+msgstr "هوش مصنوعی از طریق گیت‌هاب پاسخ می‌دهد (%s)…"
 
 msgid "Yes"
 msgstr "بله"

@@ -208,6 +208,30 @@ Providers implement `ProviderInterface` (`id`, `label`, `is_configured`, `model`
 | Claude subscription (Pro/Max) | Claude Code CLI on GitHub Actions (asynchronous, see below) | schema in prompt + validation/repair |
 | ChatGPT subscription (Plus/Pro) | OpenAI Codex CLI on GitHub Actions (asynchronous, see below) | schema in prompt + validation/repair |
 
+### Network gateway (Iran / abroad)
+
+`AI\Gateway` decides how every AI request leaves the server (`AbstractProvider::post()` calls
+`Gateway::request()`), and a `pre_http_request` filter applies the same decision to Google APIs,
+OAuth and SerpApi:
+
+| Route | How | Latency | When |
+|---|---|---|---|
+| direct | `Http::json()` from the host | API only | abroad (default) |
+| cloudflare | signed POST to the owner's worker `/proxy`; request and answer AES-256-GCM sealed | +0.3–1 s | Iran (default when deployed) |
+| github | `remote_jobs` row with engine `http` (sealed), runner sends it from GitHub, answer via relay/callback | seconds warm, ~40 s cold | Iran fallback, or chosen |
+
+Settings `host_region` (iran/abroad, guessed from timezone/locale until chosen) and `ai_route`
+(auto/direct/cloudflare/github). "auto" = Iran: relays ordered by the last speed test (never direct);
+abroad: direct first, then relays. A transport failure or a sanctions-style 403 falls through to the
+next route and schedules a new probe. `Gateway::probe()` measures each route against the active
+provider's API (daily, and from the "Server & speed" page). Local endpoints (Ollama, private IPs) are
+never relayed.
+
+Runner speed: the workflow run stays warm `sub_warm_minutes` (default 10) polling the queue branch head
+with `git ls-remote` every 2 s; `SubscriptionRunner::dispatch()` reuses an in-progress run whose
+`run-name` lists the needed engines (GitHub API `actions/runs`), and `POST /ai/warm` starts a run when
+the chat or optimizer opens.
+
 ### Subscription AI (Claude Pro/Max, ChatGPT Plus/Pro)
 
 Inspired by the ARIAGH AI Writer runner: instead of a pay-per-token key, the official CLIs run with

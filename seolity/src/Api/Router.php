@@ -143,6 +143,9 @@ final class Router {
 				'gsc'       => $p->gsc_oauth->is_connected(),
 				'github'    => array( 'token' => $p->github->has_token(), 'login' => is_array( get_transient( 'seolity_gh_whoami' ) ) && ! empty( get_transient( 'seolity_gh_whoami' )['login'] ) ? get_transient( 'seolity_gh_whoami' )['login'] : '' ),
 				'cloudflare' => $p->cloudflare->is_deployed(),
+				'region'    => $p->gateway->region(),
+				'region_set' => $p->gateway->region_is_set(),
+				'route'     => $p->gateway->current(),
 				'subscription' => in_array( $p->settings->get( 'ai_provider' ), array( 'sub_claude', 'sub_codex' ), true ),
 				'woo'       => class_exists( 'WooCommerce' ),
 				'serp'      => $p->serp->available(),
@@ -855,6 +858,42 @@ final class Router {
 					'activate'     => null === $r->get_param( 'activate' ) ? true : (bool) $r->get_param( 'activate' ),
 				)
 			);
+		} );
+		/* ---------------- Network: server location, routes, speed ---------------- */
+		$this->route( 'GET', '/network', 'view', function () use ( $p ) {
+			return $p->gateway->status();
+		} );
+		$this->route( 'POST', '/network', 'manage', function ( Req $r ) use ( $p ) {
+			$values = array();
+			foreach ( array( 'host_region', 'ai_route', 'route_google', 'sub_warm_minutes' ) as $k ) {
+				if ( null !== $r->get_param( $k ) ) {
+					$values[ $k ] = $r->get_param( $k );
+				}
+			}
+			$res = $p->settings->update( $values );
+			if ( is_wp_error( $res ) ) {
+				return $res;
+			}
+			$p->audit_log->log( 'network.saved', 'site', null, $values );
+			return $p->gateway->status();
+		} );
+		$this->route( 'POST', '/network/probe', 'manage', function () use ( $p ) {
+			$probe  = $p->gateway->probe();
+			$status = $p->gateway->status();
+			$status['probe'] = $probe;
+			return $status;
+		} );
+		// Start the GitHub runner ahead of time (AI chat opened, a bulk job is about to start).
+		$this->route( 'POST', '/ai/warm', 'ai', function () use ( $p ) {
+			$gw       = $p->gateway;
+			$provider = (string) $p->settings->get( 'ai_provider' );
+			if ( 0 === strpos( $provider, 'sub_' ) ) {
+				return $p->subscription->warm( 'sub_codex' === $provider ? 'codex' : 'claude' );
+			}
+			if ( 'github' === $gw->current() ) {
+				return $p->subscription->warm( 'http' );
+			}
+			return array( 'warm' => false, 'reason' => 'not_needed', 'route' => $gw->current() );
 		} );
 		$this->route( 'GET', '/subscription/verify', 'manage', function () use ( $p ) {
 			return $p->subscription->verify();

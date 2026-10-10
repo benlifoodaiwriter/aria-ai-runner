@@ -24,6 +24,7 @@ defined( 'ABSPATH' ) || exit;
  * @property-read Content\MetaStore          $meta
  * @property-read Content\ChangeManager      $changes
  * @property-read Content\Optimizer          $optimizer
+ * @property-read AI\Gateway                 $gateway
  * @property-read GSC\OAuth                  $gsc_oauth
  * @property-read GSC\Client                 $gsc_client
  * @property-read GSC\Sync                   $gsc_sync
@@ -158,6 +159,7 @@ final class Plugin {
 			'pagespeed'       => Technical\PageSpeed::class,
 			'serp'            => Serp\SerpService::class,
 			'subscription'    => AI\Remote\SubscriptionRunner::class,
+			'gateway'         => AI\Gateway::class,
 		);
 		foreach ( $map as $id => $class ) {
 			$this->set(
@@ -185,6 +187,16 @@ final class Plugin {
 		Frontend\Frontend::register_hooks( $this );
 
 		add_action( 'rest_api_init', array( new Api\Router( $this ), 'register_routes' ) );
+
+		// Google / SERP / AI calls from servers that cannot reach them directly go through the relay.
+		add_filter(
+			'pre_http_request',
+			function ( $pre, $args, $url ) {
+				return false === $pre && is_string( $url ) && preg_match( '#^https://[^/]*(googleapis\.com|google\.com|serpapi\.com|anthropic\.com|openai\.com|openrouter\.ai)[:/]#i', $url ) ? $this->gateway->filter_http( $pre, $args, $url ) : $pre;
+			},
+			20,
+			3
+		);
 
 		// Google OAuth callback lands on wp-admin/admin-post.php (no "action" → `admin_post`).
 		add_action(

@@ -413,3 +413,30 @@ button.sl-segcard { cursor: pointer; }
 .sl-subtab:hover { color: var(--sl-text); background: var(--sl-brand-50); }
 .sl-subtab.is-active { background: var(--sl-brand); color: #fff; }
 .sl-subtab:focus-visible { outline: 2px solid var(--sl-brand); outline-offset: 2px; }
+
+/* Server & speed: choice cards, route order, explanations, speed table. */
+.sl-choices { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; }
+.sl-choice { position: relative; display: flex; align-items: flex-start; gap: 12px; padding: 14px 16px; border: 1.5px solid var(--sl-border); border-radius: 14px; background: var(--sl-surface); color: var(--sl-text); text-align: start; cursor: pointer; font: inherit; transition: border-color .15s, box-shadow .15s, background .15s; }
+.sl-choice:hover { border-color: var(--sl-brand); }
+.sl-choice:focus-visible { outline: 2px solid var(--sl-brand); outline-offset: 2px; }
+.sl-choice.is-on { border-color: var(--sl-brand); background: var(--sl-brand-50); box-shadow: 0 0 0 3px var(--sl-brand-100); }
+.sl-choice.is-off { opacity: .72; border-style: dashed; }
+.sl-choice__ic { flex: 0 0 auto; display: inline-grid; place-items: center; width: 38px; height: 38px; border-radius: 10px; background: var(--sl-brand-50); color: var(--sl-brand); }
+.sl-choice.is-on .sl-choice__ic { background: var(--sl-brand); color: #fff; }
+.sl-choice__text { display: grid; gap: 3px; min-width: 0; }
+.sl-choice__text b { font-size: 14px; }
+.sl-choice__text small { color: var(--sl-text-2); line-height: 1.7; font-size: 12.5px; }
+.sl-choice__warn { color: var(--sl-warn) !important; font-weight: 600; }
+.sl-choice__check { flex: 0 0 auto; margin-inline-start: auto; display: inline-grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; background: var(--sl-brand); color: #fff; }
+.sl-route-order { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-size: 13px; }
+.sl-route-step { display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px; border-radius: 99px; background: var(--sl-surface-2); border: 1px solid var(--sl-border); }
+.sl-route-step.is-first { background: var(--sl-brand); border-color: var(--sl-brand); color: #fff; }
+.sl-route-step + .sl-route-step::before { content: "›"; margin-inline-end: 6px; color: var(--sl-muted); }
+.sl-explain { border: 1px solid var(--sl-border); border-radius: 12px; background: var(--sl-surface-2); }
+.sl-explain > summary { cursor: pointer; padding: 10px 14px; font-weight: 700; }
+.sl-explain__body { padding: 0 14px 12px; line-height: 1.9; }
+.sl-explain__body p { margin: 0 0 8px; }
+.sl-speed tr.is-best td { background: var(--sl-brand-50); }
+.sl-speed td .sl-btn { margin-inline-start: 8px; }
+#seolity-app .sl-card .sl-bars__fill { background: var(--sl-brand); }
+.sl-row .sl-input--sm[type="number"] { width: 90px; flex: 0 0 auto; }

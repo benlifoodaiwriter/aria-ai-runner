@@ -10,6 +10,11 @@
  *    answers) runs on time even when the site has few visitors (WP-Cron only
  *    runs on page views).
  *  - Diagnose: checks from Cloudflare's side that the site's REST API is reachable.
+ *  - Proxy: for sites whose host cannot reach AI / Google APIs directly (for example
+ *    servers in Iran, where most AI services are sanctioned or filtered), WordPress
+ *    sends the AI request here AES-256-GCM encrypted and HMAC-signed; the worker
+ *    calls the API from Cloudflare's network and returns the answer encrypted.
+ *    Only https targets, never private networks; nothing is stored or logged.
  *
  * Bindings (set by the plugin): SEOLITY_KV (KV), SITE_URL, WP_API, MODE (push|pull),
  * VERSION, and the secret SEOLITY_SHARED_SECRET (same key as the runner).
@@ -52,6 +57,57 @@ async function verify( env, req, payload ) {
 		return null;
 	}
 	return safeEqual( await hmac( env, `${ ts }.${ payload }` ), sig ) ? { ts, sig } : null;
+}
+
+/* AES-256-GCM, same envelope as PHP and the runner: { v:1, iv, tag, data } (base64). */
+const b64 = ( buf ) => btoa( String.fromCharCode( ...new Uint8Array( buf ) ) );
+const unb64 = ( s ) => Uint8Array.from( atob( s ), ( c ) => c.charCodeAt( 0 ) );
+
+async function encKey( env ) {
+	const raw = await crypto.subtle.digest( 'SHA-256', enc.encode( 'enc|' + ( env.SEOLITY_SHARED_SECRET || '' ) ) );
+	return crypto.subtle.importKey( 'raw', raw, 'AES-GCM', false, [ 'encrypt', 'decrypt' ] );
+}
+
+async function seal( env, obj ) {
+	const iv = crypto.getRandomValues( new Uint8Array( 12 ) );
+	const out = new Uint8Array( await crypto.subtle.encrypt( { name: 'AES-GCM', iv }, await encKey( env ), enc.encode( JSON.stringify( obj ) ) ) );
+	return { v: 1, iv: b64( iv ), tag: b64( out.slice( out.length - 16 ) ), data: chunkedB64( out.slice( 0, out.length - 16 ) ) };
+}
+
+function chunkedB64( bytes ) {
+	let s = '';
+	for ( let i = 0; i < bytes.length; i += 32768 ) {
+		s += String.fromCharCode( ...bytes.subarray( i, i + 32768 ) );
+	}
+	return btoa( s );
+}
+
+async function open( env, envelope ) {
+	if ( ! envelope || envelope.v !== 1 ) {
+		throw new Error( 'bad envelope' );
+	}
+	const data = unb64( envelope.data );
+	const tag = unb64( envelope.tag );
+	const joined = new Uint8Array( data.length + tag.length );
+	joined.set( data );
+	joined.set( tag, data.length );
+	const plain = await crypto.subtle.decrypt( { name: 'AES-GCM', iv: unb64( envelope.iv ) }, await encKey( env ), joined );
+	return JSON.parse( new TextDecoder().decode( plain ) );
+}
+
+/** Only public https endpoints may be proxied (no IPs, no private names, not this worker). */
+function proxyAllowed( target, self ) {
+	let u;
+	try {
+		u = new URL( target );
+	} catch ( e ) {
+		return false;
+	}
+	const host = u.hostname.toLowerCase();
+	if ( u.protocol !== 'https:' || host === self || /^[\d.]+$/.test( host ) || host.includes( ':' ) || ! host.includes( '.' ) ) {
+		return false;
+	}
+	return ! /(^|\.)(localhost|local|internal|lan|home|test|invalid)$/.test( host );
 }
 
 function json( data, status = 200 ) {
@@ -104,7 +160,7 @@ export default {
 		const path = url.pathname.replace( /\/+$/, '' ) || '/';
 
 		if ( req.method === 'GET' && ( path === '/' || path === '/health' ) ) {
-			return json( { ok: true, service: 'seolity-relay', version: env.VERSION || '', mode: env.MODE || 'pull', kv: !! env.SEOLITY_KV, secret: !! env.SEOLITY_SHARED_SECRET, time: new Date().toISOString() } );
+			return json( { ok: true, service: 'seolity-relay', version: env.VERSION || '', mode: env.MODE || 'pull', proxy: true, kv: !! env.SEOLITY_KV, secret: !! env.SEOLITY_SHARED_SECRET, time: new Date().toISOString() } );
 		}
 
 		// Runner → mailbox.
@@ -152,6 +208,38 @@ export default {
 			} catch ( e ) {}
 			await Promise.all( keys.map( ( k ) => env.SEOLITY_KV.delete( k ) ) );
 			return json( { deleted: keys.length } );
+		}
+
+		// WordPress → AI / Google API, from Cloudflare's network (encrypted both ways).
+		if ( req.method === 'POST' && path === '/proxy' ) {
+			const body = await req.text();
+			if ( ! ( await verify( env, req, body ) ) ) {
+				return json( { error: 'invalid signature' }, 401 );
+			}
+			let r;
+			try {
+				r = await open( env, JSON.parse( body ).env );
+			} catch ( e ) {
+				return json( { error: 'cannot decrypt request' }, 400 );
+			}
+			if ( ! proxyAllowed( r.url, url.hostname ) ) {
+				return json( { error: 'target not allowed' }, 403 );
+			}
+			const started = Date.now();
+			const method = ( r.method || 'POST' ).toUpperCase();
+			let out;
+			try {
+				const res = await fetch( r.url, {
+					method,
+					headers: r.headers || {},
+					body: method === 'GET' || method === 'HEAD' ? undefined : r.body || '',
+					signal: AbortSignal.timeout( Math.min( Math.max( Number( r.timeout ) || 120, 5 ), 290 ) * 1000 ),
+				} );
+				out = { status: res.status, raw: await res.text(), ms: Date.now() - started, colo: ( req.cf && req.cf.colo ) || '' };
+			} catch ( e ) {
+				out = { status: 0, error: String( e.message || e ), ms: Date.now() - started };
+			}
+			return json( { env: await seal( env, out ) } );
 		}
 
 		// WordPress → "can Cloudflare reach my site?"

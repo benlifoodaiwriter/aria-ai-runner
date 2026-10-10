@@ -52,6 +52,22 @@ final class Installer {
 			self::ensure_default_project();
 			update_option( self::DB_OPTION, SEOLITY_DB_VERSION, false );
 		}
+		$prev = (string) get_option( 'seolity_plugin_version', '' );
+		if ( SEOLITY_VERSION !== $prev ) {
+			if ( '' !== $prev && version_compare( $prev, '1.6.0', '<' ) ) {
+				// 1.6: GitHub storage is on for every host (the archive needs a repository to run).
+				$s = get_option( Settings::OPTION, array() );
+				if ( is_array( $s ) ) {
+					$s['storage_enabled'] = true;
+					update_option( Settings::OPTION, $s, false );
+				}
+			}
+			update_option( 'seolity_plugin_version', SEOLITY_VERSION, false );
+			// New worker / runner code ships with updates: redeploy the worker and re-measure routes.
+			if ( function_exists( 'seolity' ) ) {
+				seolity()->queue->push( 'route_probe', array(), array( 'unique' => true, 'priority' => 6, 'delay' => 60 ) );
+			}
+		}
 	}
 
 	/** One-off settings migrations between versions. */

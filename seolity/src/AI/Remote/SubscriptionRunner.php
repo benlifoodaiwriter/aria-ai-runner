@@ -238,6 +238,64 @@ final class SubscriptionRunner {
 		throw new Deferred( $id, self::WAIT_MESSAGE );
 	}
 
+	/**
+	 * Send one API request (Anthropic, OpenAI, Gemini, …) from GitHub's network — for hosts that
+	 * cannot reach AI APIs (e.g. servers in Iran). Same queue, same encryption as subscription jobs;
+	 * the request (with its API key) is stored encrypted and never leaves the site in clear text.
+	 *
+	 * @param array $req method, url, headers, body (string), timeout.
+	 * @return array|\WP_Error Http::json() shape: status, body, raw, headers.
+	 * @throws Deferred While the runner works on it.
+	 */
+	public function relay_http( array $req ) {
+		$hash = sha1( 'http|' . $req['method'] . '|' . $req['url'] . '|' . $req['body'] );
+		$db   = $this->plugin->db;
+		$row  = $db->row( 'SELECT * FROM {remote_jobs} WHERE request_hash = %s ORDER BY created_at DESC', array( $hash ) );
+		if ( $row ) {
+			if ( 'done' === $row['status'] ) {
+				$out = json_decode( (string) $row['response'], true );
+				$db->delete( 'remote_jobs', array( 'id' => $row['id'] ) ); // One answer per request: a retry must call the API again.
+				$raw = is_array( $out ) && isset( $out['raw'] ) ? (string) $out['raw'] : '';
+				return array( 'status' => is_array( $out ) && isset( $out['status'] ) ? (int) $out['status'] : 0, 'body' => json_decode( $raw, true ), 'raw' => $raw, 'headers' => array() );
+			}
+			if ( 'failed' === $row['status'] || $this->expired( $row ) ) {
+				$db->delete( 'remote_jobs', array( 'id' => $row['id'] ) );
+				return new \WP_Error( 'seolity_route_github', $row['error'] ? (string) $row['error'] : __( 'GitHub did not deliver the AI answer in time. Check the "SEOlity AI" workflow runs on GitHub.', 'seolity' ) );
+			}
+			if ( 'submitted' === $row['status'] ) {
+				$this->collect();
+				$fresh = $db->row( 'SELECT status FROM {remote_jobs} WHERE id = %s', array( $row['id'] ) );
+				if ( $fresh && 'submitted' !== $fresh['status'] ) {
+					return $this->relay_http( $req );
+				}
+			} else {
+				$this->schedule_flush();
+			}
+			throw new Deferred( $row['id'], self::WAIT_MESSAGE, 5 );
+		}
+		$missing = $this->missing( 'http' );
+		if ( $missing ) {
+			/* translators: %s: list of missing settings */
+			return new \WP_Error( 'seolity_route_github', sprintf( __( 'The GitHub route is not ready. Missing: %s.', 'seolity' ), implode( ', ', $missing ) ), array( 'status' => 400 ) );
+		}
+		$id = bin2hex( random_bytes( 16 ) );
+		$db->insert(
+			'remote_jobs',
+			array(
+				'id'           => $id,
+				'request_hash' => $hash,
+				'engine'       => 'http',
+				'model'        => '',
+				'task'         => substr( (string) wp_parse_url( $req['url'], PHP_URL_HOST ), 0, 60 ),
+				'status'       => 'queued',
+				'payload'      => wp_json_encode( array( 'sealed' => $this->encrypt( $req ) ) ), // API keys never sit in the database in clear text.
+				'created_at'   => Database::now(),
+			)
+		);
+		$this->schedule_flush();
+		throw new Deferred( $id, self::WAIT_MESSAGE, 5 );
+	}
+
 	/** Messages + schema → one system prompt and one user prompt for a CLI. */
 	public static function flatten( array $request ) {
 		$system = (string) ( isset( $request['system'] ) ? $request['system'] : '' );
@@ -285,20 +343,20 @@ final class SubscriptionRunner {
 		}
 		$files = array();
 		foreach ( $rows as $r ) {
-			$p                               = json_decode( $r['payload'], true );
-			$files[ 'jobs/' . $r['id'] . '.json' ] = wp_json_encode(
-				$this->encrypt(
-					array(
-						'id'      => $r['id'],
-						'engine'  => $r['engine'],
-						'model'   => $r['model'],
-						'task'    => $r['task'],
-						'system'  => isset( $p['system'] ) ? $p['system'] : '',
-						'prompt'  => isset( $p['prompt'] ) ? $p['prompt'] : '',
-						'created' => gmdate( 'c', strtotime( $r['created_at'] . ' UTC' ) ),
-					)
-				)
+			$p   = json_decode( $r['payload'], true );
+			$job = array(
+				'id'      => $r['id'],
+				'engine'  => $r['engine'],
+				'model'   => $r['model'],
+				'task'    => $r['task'],
+				'system'  => isset( $p['system'] ) ? $p['system'] : '',
+				'prompt'  => isset( $p['prompt'] ) ? $p['prompt'] : '',
+				'created' => gmdate( 'c', strtotime( $r['created_at'] . ' UTC' ) ),
 			);
+			if ( 'http' === $r['engine'] ) {
+				$job['http'] = isset( $p['sealed'] ) ? $this->decrypt( $p['sealed'] ) : null;
+			}
+			$files[ 'jobs/' . $r['id'] . '.json' ] = wp_json_encode( $this->encrypt( $job ) );
 		}
 		$res = $this->plugin->github->commit_files( $this->repo(), $this->branch(), $files, sprintf( 'SEOlity: %d AI request(s)', count( $files ) ) );
 		if ( is_wp_error( $res ) ) {
@@ -349,27 +407,86 @@ final class SubscriptionRunner {
 		return true;
 	}
 
-	/** Start the workflow for the engines that have pending work (throttled). */
-	public function dispatch( $force = false ) {
+	/**
+	 * Start the workflow for the engines that have pending work — unless a warm run that
+	 * already has those engines is polling the queue (it picks new jobs up within ~2 s).
+	 *
+	 * @param bool  $force   Skip the 2-minute throttle.
+	 * @param array $engines Engines to start (default: those with pending jobs).
+	 * @param int   $idle    Seconds the run stays warm after its last job (default: warm setting).
+	 */
+	public function dispatch( $force = false, array $engines = array(), $idle = 0 ) {
 		$state = $this->state();
 		if ( ! $force && ! empty( $state['last_dispatch'] ) && time() - (int) $state['last_dispatch'] < 120 ) {
 			return false;
 		}
-		$engines = $this->plugin->db->column( "SELECT DISTINCT engine FROM {remote_jobs} WHERE status IN ('queued','submitted')" );
-		$engines = array_values( array_intersect( self::ENGINES, $engines ) );
 		if ( ! $engines ) {
-			$engines = array( 'claude' === $this->engine_from_provider() ? 'claude' : 'codex' );
+			$engines = $this->plugin->db->column( "SELECT DISTINCT engine FROM {remote_jobs} WHERE status IN ('queued','submitted')" );
 		}
-		$ref = ! empty( $state['default_branch'] ) ? $state['default_branch'] : 'main';
-		$res = $this->plugin->github->dispatch( $this->repo(), self::WORKFLOW, $ref, array( 'engines' => implode( ',', $engines ), 'branch' => $this->branch(), 'idle' => '120' ) );
+		$engines = array_values( array_intersect( array_merge( self::ENGINES, array( 'http' ) ), $engines ) );
+		if ( ! $engines ) {
+			$engines = array( $this->engine_from_provider() );
+		}
+		$warm = $this->warm_run();
+		if ( $warm && ! array_diff( $engines, $warm['engines'] ) ) {
+			$this->set_state( array( 'last_warm_hit' => time() ) );
+			return 'warm';
+		}
+		$idle = $idle > 0 ? (int) $idle : 60 * (int) $this->plugin->settings->get( 'sub_warm_minutes' );
+		$ref  = ! empty( $state['default_branch'] ) ? $state['default_branch'] : 'main';
+		$res  = $this->plugin->github->dispatch( $this->repo(), self::WORKFLOW, $ref, array( 'engines' => implode( ',', $engines ), 'branch' => $this->branch(), 'idle' => (string) max( 60, min( 1800, $idle ) ), 'poll' => '2' ) );
 		if ( ! is_wp_error( $res ) ) {
-			$this->set_state( array( 'last_dispatch' => time() ) );
+			$this->set_state( array( 'last_dispatch' => time(), 'last_engines' => $engines ) );
+			delete_transient( 'seolity_sub_warm' );
 		}
 		return $res;
 	}
 
+	/**
+	 * A run of the workflow that is queued or in progress (cached 15 s).
+	 *
+	 * @return array|null { status, engines[], started }
+	 */
+	public function warm_run() {
+		$cached = get_transient( 'seolity_sub_warm' );
+		if ( is_array( $cached ) ) {
+			return $cached['run'];
+		}
+		$run = null;
+		if ( GitHubClient::valid_repo( $this->repo() ) && $this->plugin->github->has_token() ) {
+			$runs = $this->plugin->github->active_runs( $this->repo(), self::WORKFLOW );
+			if ( ! is_wp_error( $runs ) && $runs ) {
+				$r = $runs[0];
+				$engines = array( 'http' );
+				if ( preg_match( '/\(([a-z,]+)\)/', (string) $r['title'], $m ) ) {
+					$engines = array_values( array_unique( array_merge( $engines, explode( ',', $m[1] ) ) ) );
+				} else {
+					$last    = $this->state_value( 'last_engines' );
+					$engines = array_values( array_unique( array_merge( $engines, is_array( $last ) ? $last : array() ) ) );
+				}
+				$run = array( 'status' => $r['status'], 'engines' => $engines, 'started' => $r['started'], 'url' => $r['url'] );
+			}
+		}
+		set_transient( 'seolity_sub_warm', array( 'run' => $run ), 15 );
+		return $run;
+	}
+
+	/**
+	 * Start a runner ahead of time (e.g. when the AI chat opens) so the first answer does not
+	 * wait for GitHub to boot a machine and install the CLI.
+	 */
+	public function warm( $engine = '' ) {
+		$engine = $engine ? $engine : $this->engine_from_provider();
+		if ( $this->missing( 'http' ) ) {
+			return array( 'warm' => false, 'reason' => 'not_ready' );
+		}
+		$res = $this->dispatch( true, array( $engine ) );
+		return array( 'warm' => ! is_wp_error( $res ), 'state' => is_wp_error( $res ) ? $res->get_error_message() : ( 'warm' === $res ? 'running' : 'starting' ), 'run' => $this->warm_run() );
+	}
+
 	private function engine_from_provider() {
-		return 'sub_codex' === $this->plugin->settings->get( 'ai_provider' ) ? 'codex' : 'claude';
+		$p = (string) $this->plugin->settings->get( 'ai_provider' );
+		return 'sub_codex' === $p ? 'codex' : ( 'sub_claude' === $p ? 'claude' : 'http' );
 	}
 
 	/* ------------------------------------------------------------------ receiving */
@@ -384,7 +501,7 @@ final class SubscriptionRunner {
 		if ( ! $force && get_transient( 'seolity_sub_collect' ) ) {
 			return 0;
 		}
-		set_transient( 'seolity_sub_collect', 1, 8 );
+		set_transient( 'seolity_sub_collect', 1, 4 );
 		if ( $this->plugin->cloudflare->is_deployed() ) {
 			$this->plugin->cloudflare->pull(); // Mailbox first: one cheap request instead of reading git.
 		}
@@ -415,11 +532,12 @@ final class SubscriptionRunner {
 			}
 			if ( $this->expired( $p ) ) {
 				$db->update( 'remote_jobs', array( 'status' => 'failed', 'error' => __( 'The subscription runner did not answer in time. Check the "SEOlity AI" workflow runs on GitHub.', 'seolity' ), 'finished_at' => Database::now() ), array( 'id' => $p['id'] ) );
-			} elseif ( time() - strtotime( $p['submitted_at'] . ' UTC' ) > 150 ) {
-				$stalled = true;
+			} elseif ( time() - strtotime( $p['submitted_at'] . ' UTC' ) > 75 ) {
+				$stalled = true; // A warm run may have exited just before the job arrived.
 			}
 		}
 		if ( $stalled ) {
+			delete_transient( 'seolity_sub_warm' );
 			$this->dispatch(); // Throttled: a run that already exited before the job arrived gets restarted.
 		}
 		return $stored;
