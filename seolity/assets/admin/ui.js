@@ -850,36 +850,36 @@
 		var start = h( 'button', { class: 'sl-btn sl-btn--primary sl-btn--lg', onClick: run }, SL.il( 'sparkles', t( 'Analyze & optimize' ), 18 ) );
 		m.body.appendChild( h( 'div', { class: 'sl-stack' }, h( 'p', { class: 'sl-muted', text: t( 'SEOlity analyzes your text, the real queries you rank for and SEO best practices, then proposes an improved version. Nothing changes until you apply it.' ) } ), kw, goal, start ) );
 
+		var task = null;
 		function run() {
 			var content = opts.getContent ? opts.getContent() : null;
-			SL.clear( m.body );
-			var steps = h( 'ol', { class: 'sl-steps' }, [ t( 'Analyzing current content…' ), t( 'Reading Search Console queries…' ), t( 'Consulting the SEO knowledge base…' ), t( 'Writing the optimized version…' ), t( 'Scoring before vs. after…' ) ].map( function ( s ) {
-				return h( 'li', { text: s } );
-			} ) );
-			m.body.appendChild( h( 'div', { class: 'sl-progress' }, SL.spinner( t( 'Working… this can take up to a minute.' ) ), steps ) );
-			var i = 0;
-			var timer = setInterval( function () {
-				if ( steps.children[ i ] ) {
-					steps.children[ i ].classList.add( 'is-done' );
-				}
-				i++;
-			}, 2500 );
-			SL.api( 'optimize', { body: { object_type: opts.object_type, object_id: opts.object_id || 0, field: opts.field, content: content, title: opts.title ? opts.title() : '', focus_keyword: kw.value, goal: goal.value } } ).then( function ( res ) {
-				clearInterval( timer );
-				show( res );
+			var docTitle = opts.title ? opts.title() : '';
+			m.close(); // The work continues in a small card; the page stays usable.
+			task = SL.task( {
+				title: t( 'Optimizing with SEOlity AI' ),
+				subject: ( opts.label || ( opts.field === 'custom' ? t( 'Selected text' ) : SL.fieldLabel( opts.field ) ) ) + ( docTitle ? ' — ' + docTitle : '' ),
+				steps: [ t( 'Analyzing current content…' ), t( 'Reading Search Console queries…' ), t( 'Consulting the SEO knowledge base…' ), t( 'Writing the optimized version…' ), t( 'Scoring before vs. after…' ) ],
+			} );
+			SL.api( 'optimize', { body: { object_type: opts.object_type, object_id: opts.object_id || 0, field: opts.field, content: content, title: docTitle, focus_keyword: kw.value, goal: goal.value } } ).then( function ( res ) {
+				task.done( {
+					summary: t( 'SEO score %1$s → %2$s', res.before.score, res.after.score ),
+					lines: ( res.ai.changes || [] ).slice( 0, 6 ).map( function ( c ) {
+						return c.area + ': ' + c.description;
+					} ),
+					action: { label: t( 'Review & apply' ), fn: function () {
+						show( res );
+					} },
+				} );
 			} ).catch( function ( e ) {
-				clearInterval( timer );
-				SL.clear( m.body );
-				m.body.appendChild( h( 'div', { class: 'sl-alert sl-alert--error', text: e.message } ) );
-				if ( e.data && e.data.code === 'seolity_ai_not_configured' ) {
-					m.body.appendChild( h( 'a', { class: 'sl-btn sl-btn--primary', href: ( C.adminUrl || '' ) + 'admin.php?page=seolity-settings' }, t( 'Open settings' ) ) );
-				}
+				var settings = e.data && e.data.code === 'seolity_ai_not_configured' ? { label: t( 'Open settings' ), fn: function () {
+					location.href = ( C.adminUrl || '' ) + 'admin.php?page=seolity-settings';
+				} } : null;
+				task.fail( e.message, settings );
 			} );
 		}
 
 		function show( res ) {
-			SL.clear( m.body );
-			SL.clear( m.foot );
+			m = SL.modal( { title: t( 'Optimize with SEOlity AI' ), wide: true } );
 			var ai = res.ai;
 			var editor = h( 'textarea', { class: 'sl-input sl-textarea', rows: 16, dir: 'auto' } );
 			editor.value = res.optimized;
@@ -952,6 +952,9 @@
 				var p = cid ? SL.api( 'changes/' + cid + '/reject', { method: 'POST' } ) : Promise.resolve();
 				p.then( function () {
 					SL.toast( t( 'Suggestion rejected.' ) );
+					if ( task ) {
+						task.note( t( 'Suggestion rejected' ), false );
+					}
 					m.close();
 				} ).catch( SL.fail );
 			} }, t( 'Reject' ) ) );
@@ -967,6 +970,9 @@
 				var value = editor.value;
 				var done = function () {
 					SL.toast( t( 'Applied. Undo anytime from version history.' ), 'success' );
+					if ( task ) {
+						task.note( opts.setContent ? t( 'Applied to the editor — save the page to keep it' ) : t( 'Applied (undo anytime from version history)' ) );
+					}
 					m.close();
 					if ( opts.onApplied ) {
 						opts.onApplied( value );
@@ -990,12 +996,175 @@
 		}
 	};
 
+
+	/* ------------------------------------------------------------------ Task dock
+	 * Small, non-blocking cards for AI work (optimize a text, a product, titles…). While the
+	 * AI works you keep editing; the card shows what is being edited and the progress. When it
+	 * finishes, the card stays until you close it, with what was done and a button to open the
+	 * full report. Finished cards survive a page reload (e.g. after saving a post). */
+	var dockEl = null;
+	var DOCK_KEY = 'seolity_dock_v1';
+	function dockBox() {
+		if ( ! dockEl || ! d.body.contains( dockEl ) ) {
+			dockEl = h( 'div', { class: 'sl-dock sl-root' + ( C.rtl ? ' is-rtl' : '' ), dir: C.rtl ? 'rtl' : 'ltr', role: 'region', 'aria-label': t( 'SEOlity tasks' ), 'aria-live': 'polite' } );
+			applyTheme( dockEl );
+			d.body.appendChild( dockEl );
+		}
+		return dockEl;
+	}
+	function dockStore( fn ) {
+		try {
+			var list = JSON.parse( w.sessionStorage.getItem( DOCK_KEY ) || '[]' );
+			list = fn( Array.isArray( list ) ? list : [] ) || list;
+			w.sessionStorage.setItem( DOCK_KEY, JSON.stringify( list.slice( -6 ) ) );
+		} catch ( e ) {}
+	}
+	function clock( ms ) {
+		var s = Math.max( 0, Math.round( ms / 1000 ) );
+		return Math.floor( s / 60 ) + ':' + ( '0' + ( s % 60 ) ).slice( -2 );
+	}
+
+	/**
+	 * Start a task card.
+	 * opts: { title, subject (what is being edited), icon, steps: [texts shown while running] }
+	 * Returns { update( text ), done( { summary, lines: [], action: { label, fn } } ), fail( message, action ), note( text ) }.
+	 */
+	SL.task = function ( opts ) {
+		opts = opts || {};
+		var id = 't' + Date.now() + Math.floor( Math.random() * 1000 );
+		var started = Date.now();
+		var finished = false;
+		var stepIdx = 0;
+		var ic = h( 'span', { class: 'sl-dock__ic' }, h( 'span', { class: 'sl-spinner sl-spinner--sm', 'aria-hidden': 'true' } ) );
+		var detail = h( 'span', { class: 'sl-dock__detail', text: ( opts.steps && opts.steps[ 0 ] ) || t( 'Working…' ) } );
+		var time = h( 'span', { class: 'sl-dock__time', text: '0:00' } );
+		var body = h( 'div', { class: 'sl-dock__body' } );
+		var close = h( 'button', { type: 'button', class: 'sl-dock__close', 'aria-label': t( 'Close' ), title: t( 'Close' ), hidden: true, onClick: function () {
+			card.remove();
+			dockStore( function ( l ) {
+				return l.filter( function ( x ) {
+					return x.id !== id;
+				} );
+			} );
+		} }, SL.icon( 'x', 15 ) );
+		var card = h( 'div', { class: 'sl-dock__card is-running', 'data-task': id },
+			h( 'div', { class: 'sl-dock__head' }, ic, h( 'div', { class: 'sl-dock__titles' }, h( 'b', { text: opts.title || t( 'SEOlity AI' ) } ), opts.subject ? h( 'span', { class: 'sl-dock__subject', dir: 'auto', text: opts.subject } ) : null, detail ), time, close ),
+			body
+		);
+		dockBox().appendChild( card );
+		var timer = setInterval( function () {
+			if ( finished ) {
+				return;
+			}
+			time.textContent = clock( Date.now() - started );
+			if ( opts.steps && opts.steps.length > 1 && ( Date.now() - started ) / 4000 > stepIdx + 1 && stepIdx < opts.steps.length - 1 ) {
+				stepIdx++;
+				detail.textContent = opts.steps[ stepIdx ];
+			}
+		}, 1000 );
+		function finish( kind, icon ) {
+			finished = true;
+			clearInterval( timer );
+			card.classList.remove( 'is-running' );
+			card.classList.add( 'is-' + kind );
+			SL.clear( ic );
+			ic.appendChild( SL.icon( icon, 18 ) );
+			close.hidden = false;
+		}
+		function render( summary, lines, action ) {
+			SL.clear( body );
+			if ( summary ) {
+				body.appendChild( h( 'p', { class: 'sl-dock__summary', text: summary } ) );
+			}
+			if ( lines && lines.length ) {
+				body.appendChild( h( 'ul', { class: 'sl-dock__lines' }, lines.map( function ( l ) {
+					return h( 'li', null, SL.icon( 'check', 13 ), h( 'span', { dir: 'auto', text: l } ) );
+				} ) ) );
+			}
+			if ( action && action.fn ) {
+				body.appendChild( h( 'button', { type: 'button', class: 'sl-btn sl-btn--sm sl-btn--primary', onClick: action.fn }, action.label ) );
+			}
+		}
+		function persist( kind, summary, lines ) {
+			dockStore( function ( l ) {
+				return l.filter( function ( x ) {
+					return x.id !== id;
+				} ).concat( [ { id: id, kind: kind, title: opts.title, subject: opts.subject || '', detail: detail.textContent, summary: summary || '', lines: lines || [], time: time.textContent } ] );
+			} );
+		}
+		var api = {
+			update: function ( text ) {
+				detail.textContent = text;
+			},
+			done: function ( r ) {
+				r = r || {};
+				finish( 'done', 'check-circle' );
+				detail.textContent = t( 'Finished — review the result' );
+				render( r.summary, r.lines, r.action );
+				persist( 'done', r.summary, r.lines );
+				api.lines = r.lines || [];
+				api.summary = r.summary || '';
+			},
+			fail: function ( message, action ) {
+				finish( 'failed', 'x-circle' );
+				detail.textContent = t( 'Failed' );
+				render( message, [], action );
+				persist( 'failed', message, [] );
+			},
+			/** After the user acted on the result (applied, rejected…). */
+			note: function ( text, ok ) {
+				detail.textContent = text;
+				card.classList.toggle( 'is-applied', ok !== false );
+				SL.clear( body );
+				render( api.summary, api.lines );
+				persist( 'done', api.summary + ( api.summary ? ' · ' : '' ) + text, api.lines );
+			},
+		};
+		return api;
+	};
+	/** Finished cards from before a reload (summary only). */
+	function restoreDock() {
+		var list = [];
+		try {
+			list = JSON.parse( w.sessionStorage.getItem( DOCK_KEY ) || '[]' );
+		} catch ( e ) {}
+		( Array.isArray( list ) ? list : [] ).forEach( function ( x ) {
+			var close = h( 'button', { type: 'button', class: 'sl-dock__close', 'aria-label': t( 'Close' ), title: t( 'Close' ), onClick: function () {
+				card.remove();
+				dockStore( function ( l ) {
+					return l.filter( function ( y ) {
+						return y.id !== x.id;
+					} );
+				} );
+			} }, SL.icon( 'x', 15 ) );
+			var card = h( 'div', { class: 'sl-dock__card is-' + ( x.kind === 'failed' ? 'failed' : 'done' ) },
+				h( 'div', { class: 'sl-dock__head' }, h( 'span', { class: 'sl-dock__ic' }, SL.icon( x.kind === 'failed' ? 'x-circle' : 'check-circle', 18 ) ), h( 'div', { class: 'sl-dock__titles' }, h( 'b', { text: x.title || '' } ), x.subject ? h( 'span', { class: 'sl-dock__subject', dir: 'auto', text: x.subject } ) : null, h( 'span', { class: 'sl-dock__detail', text: x.detail || '' } ) ), h( 'span', { class: 'sl-dock__time', text: x.time || '' } ), close ),
+				h( 'div', { class: 'sl-dock__body' }, x.summary ? h( 'p', { class: 'sl-dock__summary', text: x.summary } ) : null, x.lines && x.lines.length ? h( 'ul', { class: 'sl-dock__lines' }, x.lines.map( function ( l ) {
+					return h( 'li', null, SL.icon( 'check', 13 ), h( 'span', { dir: 'auto', text: l } ) );
+				} ) ) : null )
+			);
+			dockBox().appendChild( card );
+		} );
+	}
+	if ( d.readyState === 'loading' ) {
+		d.addEventListener( 'DOMContentLoaded', restoreDock );
+	} else {
+		setTimeout( restoreDock, 0 );
+	}
+
 	/* ------------------------------------------------------------------ Meta suggestions modal */
-	SL.metaModal = function ( type, id, onDone ) {
-		var m = SL.modal( { title: t( 'AI title & description' ), wide: true } );
-		m.body.appendChild( SL.spinner( t( 'Analyzing real search queries…' ) ) );
+	SL.metaModal = function ( type, id, onDone, subject ) {
+		var task = SL.task( { title: t( 'AI title & description' ), subject: subject || '', steps: [ t( 'Analyzing real search queries…' ), t( 'Writing title and description options…' ) ] } );
 		SL.api( 'meta', { body: { object_type: type, object_id: id } } ).then( function ( r ) {
-			SL.clear( m.body );
+			var first = r.task === 'ctr_rewrite' ? r.ai.title : ( r.ai.title_options && r.ai.title_options[ 0 ] ? r.ai.title_options[ 0 ].title : '' );
+			task.done( { summary: t( 'New title and description options are ready.' ), lines: first ? [ first ] : [], action: { label: t( 'Choose & apply' ), fn: function () {
+				open( r );
+			} } } );
+		} ).catch( function ( e ) {
+			task.fail( e.message );
+		} );
+		function open( r ) {
+			var m = SL.modal( { title: t( 'AI title & description' ), wide: true } );
 			var d2 = r.ai;
 			var titles = r.task === 'ctr_rewrite' ? [ { title: d2.title, rationale: d2.diagnosis } ].concat( ( d2.alternatives || [] ).map( function ( x ) {
 				return { title: x.title, rationale: '' };
@@ -1041,6 +1210,7 @@
 				Object.keys( r.changes ).forEach( function ( k ) {
 					SL.api( 'changes/' + r.changes[ k ] + '/reject', { method: 'POST' } );
 				} );
+				task.note( t( 'Suggestion rejected' ), false );
 				m.close();
 			} }, t( 'Reject' ) ) );
 			m.foot.appendChild( h( 'button', { class: 'sl-btn sl-btn--primary', onClick: function () {
@@ -1054,16 +1224,14 @@
 				Promise.all( jobs ).then( function () {
 					SL.seoSync( { title: tIn.value, description: dIn.value } );
 					SL.toast( t( 'Title & description applied.' ), 'success' );
+					task.note( t( 'Applied: %s', tIn.value ) );
 					m.close();
 					if ( onDone ) {
 						onDone( tIn.value, dIn.value );
 					}
 				} ).catch( SL.fail );
 			} }, t( 'Apply' ) ) );
-		} ).catch( function ( e ) {
-			m.close();
-			SL.fail( e );
-		} );
+		}
 	};
 
 	/* ------------------------------------------------------------------ SEO plugin editor sync */

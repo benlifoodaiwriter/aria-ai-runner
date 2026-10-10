@@ -19,7 +19,7 @@ final class Admin {
 	public static function routes() {
 		return array(
 			'dashboard'   => array( __( 'Dashboard', 'seolity' ), Capabilities::VIEW ),
-			'actions'     => array( __( 'AI Action Center', 'seolity' ), Capabilities::VIEW ),
+			'actions'     => array( __( 'SEO roadmap', 'seolity' ), Capabilities::VIEW ),
 			'ai'          => array( __( 'AI SEO Chat', 'seolity' ), Capabilities::AI ),
 			'audit'       => array( __( 'Site Audit', 'seolity' ), Capabilities::VIEW ),
 			'gsc'         => array( __( 'Search Console', 'seolity' ), Capabilities::VIEW ),
@@ -146,7 +146,7 @@ final class Admin {
 		wp_enqueue_script( 'seolity-charts', SEOLITY_URL . 'assets/admin/charts.js', array(), SEOLITY_VERSION, true );
 		wp_enqueue_script( 'seolity-ui', SEOLITY_URL . 'assets/admin/ui.js', array( 'seolity-charts' ), SEOLITY_VERSION, true );
 		wp_enqueue_script( 'seolity-app', SEOLITY_URL . 'assets/admin/app.js', array( 'seolity-ui' ), SEOLITY_VERSION, true );
-		foreach ( array( 'pages-seo', 'pages-intel', 'pages-admin', 'pages-focus', 'pages-guide', 'pages-connect', 'pages-network' ) as $module ) {
+		foreach ( array( 'pages-seo', 'pages-intel', 'pages-admin', 'pages-focus', 'pages-guide', 'pages-connect', 'pages-network', 'pages-roadmap' ) as $module ) {
 			wp_enqueue_script( 'seolity-' . $module, SEOLITY_URL . 'assets/admin/' . $module . '.js', array( 'seolity-app' ), SEOLITY_VERSION, true );
 		}
 		wp_localize_script( 'seolity-ui', 'SEOLITY', $this->js_config( $route ) );

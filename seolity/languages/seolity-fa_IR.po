@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: SEOlity 1.0.0\n"
-"POT-Creation-Date: 2026-10-10 08:56+0000\n"
+"POT-Creation-Date: 2026-10-10 16:03+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -320,8 +320,8 @@ msgstr "ارائه‌دهنده دیگری فعال است. بعد از تست �
 msgid "Dashboard"
 msgstr "داشبورد"
 
-msgid "AI Action Center"
-msgstr "مرکز اقدام هوش مصنوعی"
+msgid "SEO roadmap"
+msgstr "نقشه راه سئو"
 
 msgid "AI SEO Chat"
 msgstr "چت سئوی هوش مصنوعی"
@@ -1998,6 +1998,577 @@ msgstr "خلاصه"
 msgid "Recommended next actions"
 msgstr "اقدامات پیشنهادی بعدی"
 
+msgid "set to noindex or canonicalized"
+msgstr "noindex یا کنونیکال به صفحه دیگر"
+
+msgid "no internal links point to it"
+msgstr "هیچ لینک داخلی به آن نیست"
+
+msgid "missing from the sitemap"
+msgstr "در نقشه سایت نیست"
+
+msgid "0 impressions"
+msgstr "۰ نمایش"
+
+msgid "These pages were published recently but have not received a single impression in Search Console yet — Google has probably not indexed them. New content only starts earning traffic after it is indexed."
+msgstr "این صفحه‌ها اخیراً منتشر شده‌اند اما هنوز حتی یک نمایش در سرچ کنسول نگرفته‌اند — احتمالاً گوگل هنوز ایندکسشان نکرده است. محتوای جدید فقط بعد از ایندکس شدن ترافیک می‌گیرد."
+
+msgid "These pages were published recently. Connect Search Console so SEOlity can tell which ones Google has not indexed yet; until then, request indexing for each new page."
+msgstr "این صفحه‌ها اخیراً منتشر شده‌اند. سرچ کنسول را وصل کنید تا SEOlity بگوید کدام‌ها هنوز ایندکس نشده‌اند؛ تا آن موقع برای هر صفحه جدید درخواست ایندکس بدهید."
+
+msgid "In the editor open the Rank Math panel (the score icon top-right, or the Rank Math box under the content) → General → “Edit Snippet”."
+msgstr "در ویرایشگر پنل رنک مث را باز کنید (آیکون امتیاز بالا سمت راست یا جعبه رنک مث زیر محتوا) ← عمومی ← «ویرایش اسنیپت»."
+
+msgid "Rank Math panel → Advanced → Robots Meta"
+msgstr "پنل رنک مث ← پیشرفته ← متای ربات‌ها"
+
+msgid "Scroll below the content to the Yoast SEO box → “SEO title” and “Meta description”."
+msgstr "زیر محتوا به جعبه Yoast SEO بروید ← «عنوان سئو» و «توضیحات متا»."
+
+msgid "Yoast SEO box → Advanced → “Allow search engines to show this content?” = Yes"
+msgstr "جعبه Yoast SEO ← پیشرفته ← «اجازه نمایش در موتورهای جستجو؟» = بله"
+
+#, php-format
+msgid "Scroll below the content to the %s box → title and meta description fields."
+msgstr "زیر محتوا به جعبه %s بروید ← فیلدهای عنوان و توضیحات متا."
+
+#, php-format
+msgid "%s box → Advanced → robots: index"
+msgstr "جعبه %s ← پیشرفته ← robots: index"
+
+msgid "Scroll below the content to the SEOlity box → “SEO title” and “Meta description”."
+msgstr "زیر محتوا به جعبه SEOlity بروید ← «عنوان سئو» و «توضیحات متا»."
+
+msgid "SEOlity box → “noindex” must be unchecked"
+msgstr "جعبه SEOlity ← تیک «noindex» باید برداشته باشد"
+
+#, php-format
+msgid "%d related improvements"
+msgstr "%d بهبود مرتبط"
+
+msgid "Google already shows these pages, but far fewer people click than usual for their position. Better titles and descriptions turn existing impressions into visits — the quickest traffic win."
+msgstr "گوگل همین حالا این صفحه‌ها را نشان می‌دهد اما خیلی کمتر از حد معمولِ جایگاهشان کلیک می‌گیرند. عنوان و توضیحات بهتر، نمایش‌های فعلی را به بازدید تبدیل می‌کند — سریع‌ترین راه افزایش ترافیک."
+
+msgid "These pages rank just below the first page for real queries. A focused improvement of the content and internal links usually moves them onto page 1, where almost all clicks happen."
+msgstr "این صفحه‌ها برای کوئری‌های واقعی درست زیر صفحه اول هستند. بهبود هدفمند محتوا و لینک‌های داخلی معمولاً آن‌ها را به صفحه اول می‌برد، جایی که تقریباً همه کلیک‌ها اتفاق می‌افتد."
+
+msgid "These pages earned clearly fewer clicks than in the previous period. Find out why (competitors, outdated content, technical problems) before the drop grows."
+msgstr "این صفحه‌ها نسبت به دوره قبل کلیک خیلی کمتری گرفته‌اند. قبل از اینکه افت بیشتر شود علتش را پیدا کنید (رقبا، محتوای قدیمی، مشکل فنی)."
+
+msgid "Several of your pages compete for the same queries, so Google splits rankings between them and none of them wins."
+msgstr "چند صفحه شما برای یک کوئری با هم رقابت می‌کنند؛ گوگل رتبه را بینشان تقسیم می‌کند و هیچ‌کدام برنده نمی‌شود."
+
+msgid "Searchers ask questions these pages do not answer yet. An FAQ section covers them and can win extra visibility."
+msgstr "جستجوگرها سؤال‌هایی می‌پرسند که این صفحه‌ها هنوز جواب نمی‌دهند. بخش پرسش‌های متداول آن‌ها را پوشش می‌دهد و دیده‌شدن بیشتری می‌آورد."
+
+msgid "These pages are excluded from Google by noindex although people find them — they will drop out of search."
+msgstr "این صفحه‌ها با noindex از گوگل حذف شده‌اند در حالی که کاربران پیدایشان می‌کنند — از نتایج جستجو خارج خواهند شد."
+
+msgid "These URLs return 404 but still receive links or visits. A 301 redirect keeps visitors and link value."
+msgstr "این آدرس‌ها خطای ۴۰۴ می‌دهند اما هنوز لینک یا بازدید می‌گیرند. ریدایرکت ۳۰۱ بازدیدکننده و ارزش لینک را حفظ می‌کند."
+
+msgid "No internal link points to these pages, so Google finds them late and treats them as unimportant."
+msgstr "هیچ لینک داخلی به این صفحه‌ها نیست؛ گوگل دیر پیدایشان می‌کند و کم‌اهمیت حسابشان می‌کند."
+
+msgid "Relevant internal links pass authority and context to important pages."
+msgstr "لینک‌های داخلی مرتبط اعتبار و مفهوم را به صفحه‌های مهم منتقل می‌کنند."
+
+msgid "These product pages miss important SEO elements (title, descriptions, keywords, image ALT)."
+msgstr "این صفحه‌های محصول عناصر مهم سئو را ندارند (عنوان، توضیحات، کلمات کلیدی، ALT تصویر)."
+
+msgid "Your competitors rank with content on these topics and you have no page for them."
+msgstr "رقبای شما با محتوا در این موضوعات رتبه دارند و شما صفحه‌ای برایشان ندارید."
+
+msgid "These pages get impressions but have little content, so they cannot compete for their queries. Expanding them with genuinely useful information usually lifts rankings."
+msgstr "این صفحه‌ها نمایش می‌گیرند اما محتوای کمی دارند و نمی‌توانند برای کوئری‌هایشان رقابت کنند. گسترش آن‌ها با اطلاعات واقعاً مفید معمولاً رتبه را بالا می‌برد."
+
+msgid "These pages have little content and no traffic. They dilute the site’s quality: improve them, merge them into a stronger page (with a redirect) or set them to noindex."
+msgstr "این صفحه‌ها محتوای کم و بدون ترافیک‌اند و کیفیت کلی سایت را پایین می‌آورند: بهترشان کنید، در یک صفحه قوی‌تر ادغام کنید (با ریدایرکت) یا noindex کنید."
+
+msgid "Click “Edit” next to the page in the list above (or Posts / Pages / Products → All → the item → Edit)."
+msgstr "روی «ویرایش» کنار صفحه در فهرست بالا بزنید (یا نوشته‌ها / برگه‌ها / محصولات ← همه ← مورد ← ویرایش)."
+
+msgid "Make sure the page may be indexed"
+msgstr "مطمئن شوید صفحه اجازه ایندکس دارد"
+
+msgid "The status must be “Published” (not private, not password-protected)."
+msgstr "وضعیت باید «منتشر شده» باشد (نه خصوصی، نه رمزدار)."
+
+#, php-format
+msgid "Check: %s."
+msgstr "بررسی کنید: %s."
+
+msgid "Posts → All Posts → Edit → Publish box"
+msgstr "نوشته‌ها ← همه نوشته‌ها ← ویرایش ← جعبه انتشار"
+
+msgid "Link to it from 2–3 related pages"
+msgstr "از ۲ تا ۳ صفحه مرتبط به آن لینک بدهید"
+
+msgid "Google discovers new pages through links. Open SEOlity → Keywords & links → Internal Links, find the new page and apply the suggested links, or edit related, already-ranking posts and link to the new page with a descriptive anchor text."
+msgstr "گوگل صفحه‌های جدید را از طریق لینک‌ها پیدا می‌کند. SEOlity ← کلمات کلیدی و لینک‌ها ← لینک‌های داخلی را باز کنید، صفحه جدید را پیدا کنید و لینک‌های پیشنهادی را اعمال کنید؛ یا نوشته‌های مرتبطی را که رتبه دارند ویرایش کنید و با انکر توصیفی به صفحه جدید لینک بدهید."
+
+msgid "SEOLITY → Keywords & links → Internal Links"
+msgstr "سئولیتی ← کلمات کلیدی و لینک‌ها ← لینک‌های داخلی"
+
+msgid "Check it is in the sitemap"
+msgstr "مطمئن شوید در نقشه سایت هست"
+
+msgid "Open SEOlity → Technical SEO → Sitemap and confirm the page is listed (published posts are added automatically; noindex pages are not)."
+msgstr "SEOlity ← سئوی فنی ← نقشه سایت را باز کنید و ببینید صفحه در فهرست هست (نوشته‌های منتشرشده خودکار اضافه می‌شوند؛ صفحه‌های noindex نه)."
+
+msgid "SEOLITY → Technical SEO → Sitemap"
+msgstr "سئولیتی ← سئوی فنی ← نقشه سایت"
+
+msgid "Request indexing in Google Search Console"
+msgstr "در گوگل سرچ کنسول درخواست ایندکس بدهید"
+
+msgid "Click “Inspect in Search Console” next to the page above → wait for the check → “Request indexing”. Do this once per page; repeating it does not help."
+msgstr "روی «بررسی در سرچ کنسول» کنار صفحه در بالا بزنید ← صبر کنید بررسی تمام شود ← «Request indexing». برای هر صفحه یک بار کافی است؛ تکرارش فایده‌ای ندارد."
+
+msgid "Search Console → URL inspection → Request indexing"
+msgstr "سرچ کنسول ← URL inspection ← Request indexing"
+
+msgid "Verify in 3–7 days"
+msgstr "بعد از ۳ تا ۷ روز بررسی کنید"
+
+msgid "Run “Analyze” again in a week: the page leaves this list as soon as Search Console records impressions for it. If it is still missing after two weeks, improve its content and internal links."
+msgstr "یک هفته بعد دوباره «تحلیل» را بزنید: هر صفحه‌ای که در سرچ کنسول نمایش بگیرد از این فهرست خارج می‌شود. اگر بعد از دو هفته هنوز نبود، محتوا و لینک‌های داخلی‌اش را تقویت کنید."
+
+msgid "See the queries people use"
+msgstr "کوئری‌هایی را که کاربران جستجو می‌کنند ببینید"
+
+msgid "Open the page in SEOlity → Search Console → Pages (or the “GSC keywords” button in the editor) to see the real queries, impressions and CTR."
+msgstr "صفحه را در SEOlity ← سرچ کنسول ← صفحه‌ها باز کنید (یا دکمه «کلمات کلیدی GSC» در ویرایشگر) تا کوئری‌ها، نمایش‌ها و CTR واقعی را ببینید."
+
+msgid "SEOLITY → Search Console → Pages"
+msgstr "سئولیتی ← سرچ کنسول ← صفحه‌ها"
+
+msgid "Let SEOlity write the title and description"
+msgstr "بگذارید SEOlity عنوان و توضیحات را بنویسد"
+
+msgid "Click “AI title & description” next to each page above. SEOlity writes options from the real queries; pick one, edit if you like and apply (it goes into your SEO plugin and can be undone)."
+msgstr "روی «عنوان و توضیحات با هوش مصنوعی» کنار هر صفحه بزنید. SEOlity از روی کوئری‌های واقعی چند گزینه می‌نویسد؛ یکی را انتخاب کنید، در صورت نیاز ویرایش و اعمال کنید (در افزونه سئوی شما ذخیره می‌شود و قابل بازگشت است)."
+
+msgid "Roadmap → this task → page → AI title & description"
+msgstr "نقشه راه ← همین کار ← صفحه ← عنوان و توضیحات با هوش مصنوعی"
+
+#, php-format
+msgid "Or edit it yourself in %s"
+msgstr "یا خودتان در %s ویرایش کنید"
+
+msgid "Title: up to ~60 characters, main query near the start, a clear benefit. Description: 140–155 characters, answers the intent, ends with a reason to click. Then “Update”."
+msgstr "عنوان: حداکثر حدود ۶۰ کاراکتر، کوئری اصلی نزدیک ابتدا و یک مزیت روشن. توضیحات: ۱۴۰ تا ۱۵۵ کاراکتر، پاسخ به نیت جستجو و پایانی که دلیل کلیک بدهد. بعد «به‌روزرسانی»."
+
+msgid "Edit page → SEO box → title & description"
+msgstr "ویرایش صفحه ← جعبه سئو ← عنوان و توضیحات"
+
+msgid "Measure"
+msgstr "اندازه‌گیری"
+
+msgid "SEOlity records every change as an experiment and compares CTR after 14–28 days (AI Center → AI Changes / Experiments). Leave the new title in place at least two weeks."
+msgstr "SEOlity هر تغییر را به‌عنوان آزمایش ثبت می‌کند و CTR را بعد از ۱۴ تا ۲۸ روز مقایسه می‌کند (مرکز هوش مصنوعی ← تغییرات AI / آزمایش‌ها). عنوان جدید را دست‌کم دو هفته نگه دارید."
+
+msgid "SEOLITY → Analysis → Experiments"
+msgstr "سئولیتی ← تحلیل ← آزمایش‌ها"
+
+msgid "Find the cause of the drop"
+msgstr "علت افت را پیدا کنید"
+
+msgid "Open the page in SEOlity → Search Console and compare both periods: did impressions fall (Google shows it less: rankings or demand) or only CTR (snippet)? Check the page still returns 200 and is indexable (Site Audit), and whether a competitor published something better (Analysis → Competitors)."
+msgstr "صفحه را در SEOlity ← سرچ کنسول باز کنید و دو دوره را مقایسه کنید: نمایش کم شده (رتبه یا تقاضا) یا فقط CTR (اسنیپت)؟ بررسی کنید صفحه هنوز کد ۲۰۰ می‌دهد و قابل ایندکس است (ممیزی سایت) و آیا رقیبی محتوای بهتری منتشر کرده (تحلیل ← رقبا)."
+
+msgid "Look at the queries it almost ranks for"
+msgstr "کوئری‌هایی را که نزدیک صفحه اول است ببینید"
+
+msgid "Open the page queries (positions 8–20) in SEOlity → Search Console or the “GSC keywords” button in the editor. Note which queries are missing from the headings and text."
+msgstr "کوئری‌های صفحه (جایگاه ۸ تا ۲۰) را در SEOlity ← سرچ کنسول یا دکمه «کلمات کلیدی GSC» در ویرایشگر باز کنید. ببینید کدام کوئری‌ها در تیترها و متن نیستند."
+
+msgid "Improve the content with SEOlity AI"
+msgstr "محتوا را با هوش مصنوعی SEOlity بهتر کنید"
+
+msgid "In the editor click “Optimize with SEOlity AI” (above the classic editor, in the Gutenberg sidebar, or in the Elementor panel for a text widget). It uses the real queries, the SEO knowledge base and competitor pages; a small panel shows the progress and the report — review and apply."
+msgstr "در ویرایشگر روی «بهینه‌سازی با هوش مصنوعی SEOlity» بزنید (بالای ویرایشگر کلاسیک، سایدبار گوتنبرگ یا پنل المنتور برای ویجت متن). از کوئری‌های واقعی، پایگاه دانش سئو و صفحه‌های رقبا استفاده می‌کند؛ یک پنل کوچک پیشرفت و گزارش را نشان می‌دهد — بررسی و اعمال کنید."
+
+msgid "Edit page → Optimize with SEOlity AI"
+msgstr "ویرایش صفحه ← بهینه‌سازی با هوش مصنوعی SEOlity"
+
+msgid "Cover the missing intent"
+msgstr "نیت‌های جاافتاده را پوشش دهید"
+
+msgid "Add a section (H2) for each important missing query, answer questions directly in the first sentence under it, add examples, numbers and an updated date. Do not stuff keywords."
+msgstr "برای هر کوئری مهم جاافتاده یک بخش (H2) اضافه کنید، در اولین جمله زیر آن مستقیم جواب بدهید، مثال، عدد و تاریخ به‌روزرسانی بگذارید. کلمه کلیدی را انباشته نکنید."
+
+msgid "Add internal links to it"
+msgstr "به آن لینک داخلی بدهید"
+
+msgid "Link to the page from 2–3 strong, related pages with descriptive anchor text (SEOlity → Internal Links shows suggestions)."
+msgstr "از ۲ تا ۳ صفحه قوی و مرتبط با انکر توصیفی به این صفحه لینک بدهید (SEOlity ← لینک‌های داخلی پیشنهاد می‌دهد)."
+
+msgid "Update and request re-crawl"
+msgstr "به‌روزرسانی کنید و درخواست خزش مجدد بدهید"
+
+msgid "Click “Update”, then request indexing for the URL in Search Console (URL inspection). Re-check in 2–4 weeks."
+msgstr "«به‌روزرسانی» را بزنید و بعد در سرچ کنسول (URL inspection) برای آدرس درخواست ایندکس بدهید. ۲ تا ۴ هفته بعد دوباره بررسی کنید."
+
+msgid "Search Console → URL inspection"
+msgstr "سرچ کنسول ← URL inspection"
+
+msgid "See which pages compete"
+msgstr "ببینید کدام صفحه‌ها با هم رقابت می‌کنند"
+
+msgid "Open SEOlity → Keywords & links → Keywords → Cannibalization. For each query you see the competing URLs with clicks and positions; “AI advice” recommends merge, redirect, differentiate or re-target."
+msgstr "SEOlity ← کلمات کلیدی و لینک‌ها ← کلمات کلیدی ← هم‌نوع‌خواری را باز کنید. برای هر کوئری آدرس‌های رقیب با کلیک و جایگاه را می‌بینید؛ «مشاوره هوش مصنوعی» ادغام، ریدایرکت، متمایزسازی یا تغییر هدف را پیشنهاد می‌دهد."
+
+msgid "SEOLITY → Keywords → Cannibalization"
+msgstr "سئولیتی ← کلمات کلیدی ← هم‌نوع‌خواری"
+
+msgid "Pick one main page per query"
+msgstr "برای هر کوئری یک صفحه اصلی انتخاب کنید"
+
+msgid "Usually the page with the most clicks and best fit for the intent. The others must stop targeting that query."
+msgstr "معمولاً صفحه‌ای که بیشترین کلیک و بهترین تطابق با نیت جستجو را دارد. بقیه نباید دیگر آن کوئری را هدف بگیرند."
+
+msgid "Merge, redirect or differentiate"
+msgstr "ادغام، ریدایرکت یا متمایز کنید"
+
+msgid "If the weaker page adds nothing: move its useful parts into the main page and create a 301 redirect (SEOlity → Technical SEO → Redirects). If both are useful: change the weaker page’s focus keyword, title and headings to a different intent."
+msgstr "اگر صفحه ضعیف‌تر چیزی اضافه نمی‌کند: بخش‌های مفیدش را به صفحه اصلی ببرید و ریدایرکت ۳۰۱ بسازید (SEOlity ← سئوی فنی ← ریدایرکت‌ها). اگر هر دو مفیدند: کلمه کلیدی کانونی، عنوان و تیترهای صفحه ضعیف‌تر را برای نیت دیگری تغییر دهید."
+
+msgid "SEOLITY → Technical SEO → Redirects"
+msgstr "سئولیتی ← سئوی فنی ← ریدایرکت‌ها"
+
+msgid "Point internal links to the main page"
+msgstr "لینک‌های داخلی را به صفحه اصلی بدهید"
+
+msgid "Links with that query as anchor text should go to the main page only."
+msgstr "لینک‌هایی که انکرشان همان کوئری است فقط باید به صفحه اصلی بروند."
+
+msgid "Generate the FAQ"
+msgstr "پرسش‌های متداول را بسازید"
+
+msgid "Click “Do it with AI” next to each page: SEOlity writes questions from the real question queries and short factual answers; review them before applying."
+msgstr "روی «انجام با هوش مصنوعی» کنار هر صفحه بزنید: SEOlity از کوئری‌های سؤالی واقعی، سؤال و جواب‌های کوتاه و دقیق می‌نویسد؛ قبل از اعمال بررسی کنید."
+
+msgid "Place it on the page"
+msgstr "آن را در صفحه قرار دهید"
+
+msgid "Add an “FAQ” heading near the end and the questions as H3 with short answers (or the FAQ block of your SEO plugin). SEOlity adds FAQPage schema automatically when enabled."
+msgstr "نزدیک انتهای صفحه تیتر «سؤالات متداول» و سؤال‌ها را به‌صورت H3 با جواب کوتاه بگذارید (یا از بلوک FAQ افزونه سئو استفاده کنید). SEOlity در صورت فعال بودن، اسکیمای FAQPage را خودکار اضافه می‌کند."
+
+msgid "Edit page → add FAQ section"
+msgstr "ویرایش صفحه ← افزودن بخش پرسش‌های متداول"
+
+msgid "Update and verify"
+msgstr "به‌روزرسانی و بررسی"
+
+msgid "Update the page and check the result with Google’s Rich Results Test."
+msgstr "صفحه را به‌روزرسانی کنید و نتیجه را با ابزار Rich Results Test گوگل بررسی کنید."
+
+msgid "Open the page"
+msgstr "صفحه را باز کنید"
+
+msgid "Allow indexing"
+msgstr "اجازه ایندکس بدهید"
+
+#, php-format
+msgid "Go to %s, set it to index, then “Update”. Or click “Do it with AI” above to let SEOlity change it (with undo)."
+msgstr "به %s بروید، روی index بگذارید و «به‌روزرسانی» را بزنید. یا «انجام با هوش مصنوعی» را بزنید تا SEOlity تغییرش دهد (قابل بازگشت)."
+
+msgid "Check global settings"
+msgstr "تنظیمات کلی را بررسی کنید"
+
+msgid "Make sure Settings → Reading → “Discourage search engines” is NOT checked, and that the post type / category is not set to noindex in your SEO plugin."
+msgstr "مطمئن شوید تنظیمات ← خواندن ← «موتورهای جستجو را از ایندکس کردن منع کن» تیک نخورده و نوع نوشته / دسته در افزونه سئو روی noindex نیست."
+
+msgid "Settings → Reading"
+msgstr "تنظیمات ← خواندن"
+
+msgid "Request indexing"
+msgstr "درخواست ایندکس"
+
+msgid "Search Console → URL inspection → Request indexing."
+msgstr "سرچ کنسول ← URL inspection ← Request indexing."
+
+msgid "Review the broken URLs"
+msgstr "آدرس‌های خراب را بررسی کنید"
+
+msgid "Open SEOlity → Technical SEO → 404 Monitor: each URL shows hits, referrers and the best matching live page."
+msgstr "SEOlity ← سئوی فنی ← پایشگر ۴۰۴ را باز کنید: برای هر آدرس تعداد بازدید، ارجاع‌دهنده‌ها و بهترین صفحه زنده مشابه نشان داده می‌شود."
+
+msgid "SEOLITY → Technical SEO → 404 Monitor"
+msgstr "سئولیتی ← سئوی فنی ← پایشگر ۴۰۴"
+
+msgid "Create 301 redirects"
+msgstr "ریدایرکت ۳۰۱ بسازید"
+
+msgid "Click “Do it with AI” next to each URL above (SEOlity proposes the best target), or add them in SEOlity → Technical SEO → Redirects: From = broken path, To = closest live page, type 301."
+msgstr "روی «انجام با هوش مصنوعی» کنار هر آدرس بزنید (SEOlity بهترین مقصد را پیشنهاد می‌دهد)، یا در SEOlity ← سئوی فنی ← ریدایرکت‌ها اضافه کنید: از = مسیر خراب، به = نزدیک‌ترین صفحه زنده، نوع ۳۰۱."
+
+msgid "SEOLITY → Technical SEO → Redirects → Add"
+msgstr "سئولیتی ← سئوی فنی ← ریدایرکت‌ها ← افزودن"
+
+msgid "Fix the links at the source"
+msgstr "لینک‌ها را در مبدأ اصلاح کنید"
+
+msgid "Edit the pages that still link to the broken URL (Site Audit → Broken internal links lists them) and point the link to the live page."
+msgstr "صفحه‌هایی را که هنوز به آدرس خراب لینک می‌دهند ویرایش کنید (ممیزی سایت ← لینک‌های داخلی خراب فهرستشان را دارد) و لینک را به صفحه زنده بدهید."
+
+msgid "SEOLITY → Analysis → Site Audit"
+msgstr "سئولیتی ← تحلیل ← ممیزی سایت"
+
+msgid "Open the redirects"
+msgstr "ریدایرکت‌ها را باز کنید"
+
+msgid "SEOlity → Technical SEO → Redirects shows chains (A→B→C) and loops."
+msgstr "SEOlity ← سئوی فنی ← ریدایرکت‌ها زنجیره‌ها (A→B→C) و حلقه‌ها را نشان می‌دهد."
+
+msgid "Fix them in one click"
+msgstr "با یک کلیک اصلاحشان کنید"
+
+msgid "Click “Do it with AI” here or “Fix chains” on the Redirects page: every redirect then points straight to the final URL; loops are shown for a manual decision."
+msgstr "اینجا «انجام با هوش مصنوعی» یا در صفحه ریدایرکت‌ها «اصلاح زنجیره‌ها» را بزنید: هر ریدایرکت مستقیم به آدرس نهایی می‌رود؛ حلقه‌ها برای تصمیم دستی نشان داده می‌شوند."
+
+msgid "Open internal link suggestions"
+msgstr "پیشنهادهای لینک داخلی را باز کنید"
+
+msgid "SEOlity → Keywords & links → Internal Links lists links whose anchor text already exists in your content."
+msgstr "SEOlity ← کلمات کلیدی و لینک‌ها ← لینک‌های داخلی لینک‌هایی را فهرست می‌کند که انکرشان همین حالا در محتوای شما هست."
+
+msgid "Apply the links"
+msgstr "لینک‌ها را اعمال کنید"
+
+msgid "Click “Do it with AI” next to each page above to see suggestions and preview them, then apply. Prefer links from related pages that already get traffic."
+msgstr "روی «انجام با هوش مصنوعی» کنار هر صفحه بزنید تا پیشنهادها و پیش‌نمایش را ببینید و اعمال کنید. لینک از صفحه‌های مرتبطی که ترافیک دارند بهتر است."
+
+msgid "Or add them by hand"
+msgstr "یا دستی اضافه کنید"
+
+msgid "Edit a related post, select a phrase that describes the target page, press Ctrl+K (or the link button) and choose the page. Update."
+msgstr "یک نوشته مرتبط را ویرایش کنید، عبارتی را که صفحه مقصد را توصیف می‌کند انتخاب کنید، Ctrl+K (یا دکمه لینک) را بزنید و صفحه را انتخاب کنید. به‌روزرسانی کنید."
+
+msgid "Posts → Edit → select text → Link"
+msgstr "نوشته‌ها ← ویرایش ← انتخاب متن ← لینک"
+
+msgid "Open the product"
+msgstr "محصول را باز کنید"
+
+msgid "Products → All Products → the product → Edit (or “Edit” in the list above)."
+msgstr "محصولات ← همه محصولات ← محصول ← ویرایش (یا «ویرایش» در فهرست بالا)."
+
+msgid "Products → All Products → Edit"
+msgstr "محصولات ← همه محصولات ← ویرایش"
+
+msgid "Run the AI Product Optimizer"
+msgstr "بهینه‌ساز هوشمند محصول را اجرا کنید"
+
+msgid "Click “AI Product Optimizer” in the SEOlity box (or “Do it with AI” here). It writes the SEO title, meta description, short description, focus keywords and image ALT from the real product data. A small panel shows the progress; open its report and apply field by field."
+msgstr "در جعبه SEOlity روی «بهینه‌ساز هوشمند محصول» بزنید (یا اینجا «انجام با هوش مصنوعی»). عنوان سئو، توضیحات متا، توضیح کوتاه، کلمات کلیدی و ALT تصاویر را از داده واقعی محصول می‌نویسد. یک پنل کوچک پیشرفت را نشان می‌دهد؛ گزارشش را باز کنید و فیلد به فیلد اعمال کنید."
+
+msgid "Edit product → SEOlity box → AI Product Optimizer"
+msgstr "ویرایش محصول ← جعبه SEOlity ← بهینه‌ساز هوشمند محصول"
+
+msgid "Check price, stock and images"
+msgstr "قیمت، موجودی و تصاویر را بررسی کنید"
+
+msgid "Product schema needs price, availability and an image; fill them in the Product data box. Then “Update”."
+msgstr "اسکیمای محصول به قیمت، موجودی و تصویر نیاز دارد؛ در جعبه اطلاعات محصول پرشان کنید. بعد «به‌روزرسانی»."
+
+msgid "Edit product → Product data"
+msgstr "ویرایش محصول ← اطلاعات محصول"
+
+msgid "Open the category"
+msgstr "دسته را باز کنید"
+
+msgid "Products → Categories → hover the category → Edit."
+msgstr "محصولات ← دسته‌ها ← نشانگر روی دسته ← ویرایش."
+
+msgid "Products → Categories → Edit"
+msgstr "محصولات ← دسته‌ها ← ویرایش"
+
+msgid "Write a helpful description"
+msgstr "یک توضیح مفید بنویسید"
+
+msgid "Click “Optimize with SEOlity AI” under the description: it writes an intro that answers buyer questions and links to key products. Review and Update."
+msgstr "زیر توضیحات روی «بهینه‌سازی با هوش مصنوعی SEOlity» بزنید: مقدمه‌ای می‌نویسد که به سؤال‌های خریدار جواب می‌دهد و به محصولات اصلی لینک می‌دهد. بررسی و به‌روزرسانی کنید."
+
+msgid "Review the gaps"
+msgstr "شکاف‌ها را بررسی کنید"
+
+msgid "SEOlity → Analysis → Competitors → the competitor → Gaps: topics they cover and you do not."
+msgstr "SEOlity ← تحلیل ← رقبا ← رقیب ← شکاف‌ها: موضوعاتی که آن‌ها پوشش می‌دهند و شما نه."
+
+msgid "SEOLITY → Analysis → Competitors"
+msgstr "سئولیتی ← تحلیل ← رقبا"
+
+msgid "Plan the article"
+msgstr "مقاله را برنامه‌ریزی کنید"
+
+msgid "Click “Do it with AI” to add the topic to the content planner with an AI brief (headings, questions, entities, length)."
+msgstr "روی «انجام با هوش مصنوعی» بزنید تا موضوع با یک بریف هوشمند (تیترها، سؤال‌ها، موجودیت‌ها، طول) به برنامه‌ریز محتوا اضافه شود."
+
+msgid "Write and publish"
+msgstr "بنویسید و منتشر کنید"
+
+msgid "Posts → Add New, follow the brief, add internal links to and from related pages, publish. It then appears under “Get new pages indexed” until Google shows it."
+msgstr "نوشته‌ها ← افزودن، طبق بریف بنویسید، از و به صفحه‌های مرتبط لینک داخلی بدهید و منتشر کنید. تا وقتی گوگل نشانش ندهد در کار «ایندکس صفحه‌های جدید» می‌آید."
+
+msgid "Posts → Add New"
+msgstr "نوشته‌ها ← افزودن نوشته"
+
+msgid "Bulk-write ALT text"
+msgstr "ALT را گروهی بنویسید"
+
+msgid "SEOlity → Content → Images → filter “Missing ALT” → select all → “Generate ALT with AI”. Or in Media → Library (list view) select images → Bulk actions → “Write ALT text with SEOlity AI”."
+msgstr "SEOlity ← محتوا ← تصاویر ← فیلتر «بدون ALT» ← انتخاب همه ← «تولید ALT با هوش مصنوعی». یا در رسانه ← کتابخانه (نمای فهرستی) تصاویر را انتخاب کنید ← کارهای دسته‌جمعی ← «نوشتن ALT با هوش مصنوعی SEOlity»."
+
+msgid "SEOLITY → Content → Images"
+msgstr "سئولیتی ← محتوا ← تصاویر"
+
+msgid "Single image"
+msgstr "تک تصویر"
+
+msgid "Media → Library → click the image → “Write ALT, title, caption & description with AI” in the details panel."
+msgstr "رسانه ← کتابخانه ← روی تصویر بزنید ← «نوشتن ALT، عنوان، کپشن و توضیحات با هوش مصنوعی» در پنل جزئیات."
+
+msgid "Media → Library → image details"
+msgstr "رسانه ← کتابخانه ← جزئیات تصویر"
+
+msgid "Open Schema"
+msgstr "اسکیما را باز کنید"
+
+msgid "SEOlity → Technical SEO → Schema shows which pages lack structured data and suggests the right type (Article, Product, FAQ, Organization…)."
+msgstr "SEOlity ← سئوی فنی ← اسکیما نشان می‌دهد کدام صفحه‌ها داده ساختاریافته ندارند و نوع مناسب را پیشنهاد می‌دهد (Article، Product، FAQ، Organization…)."
+
+msgid "SEOLITY → Technical SEO → Schema"
+msgstr "سئولیتی ← سئوی فنی ← اسکیما"
+
+msgid "Validate"
+msgstr "اعتبارسنجی"
+
+msgid "Test a page with Google’s Rich Results Test after enabling it."
+msgstr "بعد از فعال کردن، یک صفحه را با Rich Results Test گوگل آزمایش کنید."
+
+msgid "See the slow pages"
+msgstr "صفحه‌های کند را ببینید"
+
+msgid "SEOlity → Analysis → Site Audit → Performance shows Core Web Vitals per page (PageSpeed)."
+msgstr "SEOlity ← تحلیل ← ممیزی سایت ← کارایی، Core Web Vitals هر صفحه را نشان می‌دهد (PageSpeed)."
+
+msgid "Fix the usual causes"
+msgstr "علت‌های رایج را رفع کنید"
+
+msgid "Compress and resize large images (WebP), enable a caching plugin, lazy-load images below the fold, remove unused plugins/scripts, and use a faster host or a CDN."
+msgstr "تصاویر بزرگ را فشرده و کوچک کنید (WebP)، افزونه کش فعال کنید، تصاویر پایین صفحه را lazy-load کنید، افزونه‌ها و اسکریپت‌های بی‌استفاده را حذف کنید و از هاست سریع‌تر یا CDN استفاده کنید."
+
+msgid "Open the sitemap check"
+msgstr "بررسی نقشه سایت را باز کنید"
+
+msgid "SEOlity → Technical SEO → Sitemap lists URLs in the sitemap that redirect, return errors or are noindex."
+msgstr "SEOlity ← سئوی فنی ← نقشه سایت آدرس‌هایی از نقشه سایت را فهرست می‌کند که ریدایرکت یا خطا دارند یا noindex هستند."
+
+msgid "Fix robots.txt"
+msgstr "robots.txt را اصلاح کنید"
+
+msgid "SEOlity → Technical SEO → Robots.txt: add the “Sitemap:” line and make sure nothing important is disallowed."
+msgstr "SEOlity ← سئوی فنی ← Robots.txt: خط «Sitemap:» را اضافه کنید و مطمئن شوید چیز مهمی disallow نشده است."
+
+msgid "SEOLITY → Technical SEO → Robots.txt"
+msgstr "سئولیتی ← سئوی فنی ← Robots.txt"
+
+msgid "Submit in Search Console"
+msgstr "در سرچ کنسول ثبت کنید"
+
+msgid "Search Console → Sitemaps → enter the sitemap URL → Submit."
+msgstr "سرچ کنسول ← Sitemaps ← آدرس نقشه سایت را وارد کنید ← Submit."
+
+msgid "Open the affected pages"
+msgstr "صفحه‌های درگیر را باز کنید"
+
+msgid "The list above shows the affected pages; SEOlity’s detail screen for this issue explains each one."
+msgstr "فهرست بالا صفحه‌های درگیر را نشان می‌دهد؛ صفحه جزئیات SEOlity برای این مشکل هرکدام را توضیح می‌دهد."
+
+msgid "Apply the fix"
+msgstr "اصلاح را اعمال کنید"
+
+msgid "Follow the fix described above for each page; where “Do it with AI” is shown, SEOlity prepares the change for you to review."
+msgstr "برای هر صفحه راه‌حل بالا را انجام دهید؛ هر جا «انجام با هوش مصنوعی» هست، SEOlity تغییر را برای بررسی شما آماده می‌کند."
+
+msgid "Verify"
+msgstr "بررسی نتیجه"
+
+msgid "Run a new site audit (Analysis → Site Audit → Start) and press “Analyze” here again: solved tasks disappear from the roadmap."
+msgstr "یک ممیزی جدید اجرا کنید (تحلیل ← ممیزی سایت ← شروع) و دوباره اینجا «تحلیل» را بزنید: کارهای حل‌شده از نقشه راه حذف می‌شوند."
+
+msgid "Search Console shows impressions for every listed page."
+msgstr "سرچ کنسول برای همه صفحه‌های فهرست نمایش ثبت کند."
+
+msgid "New titles/descriptions are live; CTR is measured after 14–28 days."
+msgstr "عنوان‌ها و توضیحات جدید منتشر شده باشند؛ CTR بعد از ۱۴ تا ۲۸ روز اندازه‌گیری می‌شود."
+
+msgid "The pages reach positions 1–10 for their main queries."
+msgstr "صفحه‌ها برای کوئری‌های اصلی‌شان به جایگاه ۱ تا ۱۰ برسند."
+
+msgid "The pages are indexable and indexed again."
+msgstr "صفحه‌ها قابل ایندکس و دوباره ایندکس شده باشند."
+
+msgid "Every broken URL redirects (301) to a relevant live page."
+msgstr "هر آدرس خراب با ۳۰۱ به یک صفحه زنده مرتبط ریدایرکت شود."
+
+msgid "The issue no longer appears after the next audit and analysis."
+msgstr "مشکل در ممیزی و تحلیل بعدی دیگر دیده نشود."
+
+msgid "The analysis took too long and was stopped. Press “Analyze” again."
+msgstr "تحلیل بیش از حد طول کشید و متوقف شد. دوباره «تحلیل» را بزنید."
+
+msgid "Unknown status."
+msgstr "وضعیت نامعتبر است."
+
+msgid "No AI provider is configured — the roadmap was built from your data and the built-in guides only."
+msgstr "هیچ هوش مصنوعی تنظیم نشده — نقشه راه فقط از داده‌های شما و راهنماهای داخلی ساخته شد."
+
+msgid "Posts → All Posts → Edit"
+msgstr "نوشته‌ها ← همه نوشته‌ها ← ویرایش"
+
+msgid "Pages → All Pages → Edit"
+msgstr "برگه‌ها ← همه برگه‌ها ← ویرایش"
+
+#, php-format
+msgid "Edit page → %s box"
+msgstr "ویرایش صفحه ← جعبه %s"
+
+msgid "SEOLITY → Keywords & links → Keywords"
+msgstr "سئولیتی ← کلمات کلیدی و لینک‌ها ← کلمات کلیدی"
+
+msgid "SEOLITY → Keywords & links → Focus keywords"
+msgstr "سئولیتی ← کلمات کلیدی و لینک‌ها ← کلمات کلیدی کانونی"
+
+msgid "SEOLITY → Search Console"
+msgstr "سئولیتی ← سرچ کنسول"
+
+msgid "SEOLITY → Content → Content"
+msgstr "سئولیتی ← محتوا ← محتوا"
+
+msgid "Media → Library"
+msgstr "رسانه ← کتابخانه"
+
+msgid "First roadmap."
+msgstr "اولین نقشه راه."
+
+#, php-format
+msgid "SEO health score: %d/100."
+msgstr "امتیاز سلامت سئو: %d از ۱۰۰."
+
+#, php-format
+msgid "Last 28 days: %1$s clicks (previous period %2$s) from %3$s impressions."
+msgstr "۲۸ روز اخیر: %1$s کلیک (دوره قبل %2$s) از %3$s نمایش."
+
+msgid "Search Console is not connected yet, so traffic-based tasks are missing — connect it for a complete roadmap."
+msgstr "سرچ کنسول هنوز وصل نیست، پس کارهای مبتنی بر ترافیک وجود ندارند — برای نقشه راه کامل وصلش کنید."
+
+#, php-format
+msgid "%1$d tasks found: %2$d critical and %3$d high priority. Start with the “This week” column."
+msgstr "%1$d کار پیدا شد: %2$d بحرانی و %3$d با اولویت بالا. از ستون «این هفته» شروع کنید."
+
 msgid "Product image without ALT → Generate ALT"
 msgstr "تصویر محصول بدون ALT ← تولید ALT"
 
@@ -2415,6 +2986,9 @@ msgstr "فرصت‌های بهینه‌سازی"
 msgid "Improvements"
 msgstr "بهبودها"
 
+msgid "AI Action Center"
+msgstr "مرکز اقدام هوش مصنوعی"
+
 msgid "No recommendations yet"
 msgstr "هنوز پیشنهادی وجود ندارد"
 
@@ -2558,34 +3132,6 @@ msgstr "امروز انجام دهید"
 
 msgid "Today's SEO Briefing"
 msgstr "گزارش سئوی امروز"
-
-msgid "What Should I Do Today?"
-msgstr "امروز چه کاری انجام دهم؟"
-
-msgid "AI-prioritized actions ranked by impact, effort and confidence. Every suggestion explains itself — click “Why?”."
-msgstr "اقداماتی که هوش مصنوعی بر اساس تأثیر، زحمت و اطمینان اولویت‌بندی کرده است. هر پیشنهاد دلیل خود را توضیح می‌دهد؛ روی «چرا؟» کلیک کنید."
-
-msgid "Refresh recommendations"
-msgstr "به‌روزرسانی پیشنهادها"
-
-msgid "Refreshing in the background — reload in a minute."
-msgstr "در حال به‌روزرسانی در پس‌زمینه؛ یک دقیقه دیگر صفحه را تازه کنید."
-
-msgid "All"
-msgstr "همه"
-
-#, php-format
-msgid "%s AI changes are waiting for your approval."
-msgstr "%s تغییر هوش مصنوعی منتظر تأیید شماست."
-
-msgid "Review now"
-msgstr "همین حالا بررسی کن"
-
-msgid "Nothing to do here"
-msgstr "اینجا کاری برای انجام نیست"
-
-msgid "Great job — or SEOlity needs more data (audit + Search Console)."
-msgstr "عالی است؛ یا سئولیتی به داده بیشتری (ممیزی + سرچ کنسول) نیاز دارد."
 
 msgid "Ask anything about your site. Answers are grounded in your real Search Console, audit, competitor and experiment data."
 msgstr "هر سؤالی درباره سایت خود بپرسید. پاسخ‌ها بر اساس داده‌های واقعی سرچ کنسول، ممیزی، رقبا و آزمایش‌های شماست."
@@ -2836,6 +3382,22 @@ msgstr "درج لینک"
 msgid "Analyzing product data, queries and competitors…"
 msgstr "در حال تحلیل داده‌های محصول، کوئری‌ها و رقبا…"
 
+msgid "Writing title, descriptions and keywords…"
+msgstr "در حال نوشتن عنوان، توضیحات و کلمات کلیدی…"
+
+msgid "Scoring before vs. after…"
+msgstr "در حال امتیازدهی قبل و بعد…"
+
+#, php-format
+msgid "SEO score %1$s → %2$s"
+msgstr "امتیاز سئو %1$s ← %2$s"
+
+msgid "Review & apply"
+msgstr "بررسی و اعمال"
+
+msgid "Report reviewed"
+msgstr "گزارش بررسی شد"
+
 msgid "Inserted into the editor. Save the product to keep it."
 msgstr "در ویرایشگر درج شد. برای ماندگاری، محصول را ذخیره کنید."
 
@@ -2869,6 +3431,9 @@ msgstr "دانش استفاده‌شده: %s"
 
 msgid "Something went wrong."
 msgstr "مشکلی پیش آمد."
+
+msgid "Elementor widget"
+msgstr "ویجت المنتور"
 
 msgid "Select a Text Editor or Heading widget first."
 msgstr "ابتدا یک ویجت ویرایشگر متن یا عنوان را انتخاب کنید."
@@ -3470,6 +4035,9 @@ msgstr "باز کردن راهنمای اتصال"
 #, php-format
 msgid "%1$s changes proposed, %2$s applied."
 msgstr "%1$s تغییر پیشنهاد شد، %2$s اعمال شد."
+
+msgid "Review now"
+msgstr "همین حالا بررسی کن"
 
 msgid "Before"
 msgstr "قبل"
@@ -4170,6 +4738,215 @@ msgstr "در گیت‌هاب بایگانی شد"
 msgid "Set up GitHub"
 msgstr "راه‌اندازی گیت‌هاب"
 
+msgid "This week"
+msgstr "این هفته"
+
+msgid "Next 2 weeks"
+msgstr "دو هفته آینده"
+
+msgid "This month"
+msgstr "این ماه"
+
+msgid "Later"
+msgstr "بعداً"
+
+msgid "Indexing"
+msgstr "ایندکس"
+
+msgid "Technical"
+msgstr "فنی"
+
+msgid "On-page"
+msgstr "درون‌صفحه‌ای"
+
+msgid "Links"
+msgstr "لینک‌ها"
+
+msgid "Strategy"
+msgstr "استراتژی"
+
+msgid "Waiting to start…"
+msgstr "در انتظار شروع…"
+
+msgid "Reading Search Console and audit data"
+msgstr "خواندن داده‌های سرچ کنسول و ممیزی"
+
+msgid "Diagnosing every issue on the site"
+msgstr "عیب‌یابی همه مشکلات سایت"
+
+msgid "Collecting new content, competitors and trends"
+msgstr "جمع‌آوری محتوای جدید، رقبا و روندها"
+
+msgid "Studying the SEO knowledge base and writing the roadmap"
+msgstr "مطالعه پایگاه دانش سئو و نوشتن نقشه راه"
+
+msgid "Other"
+msgstr "سایر"
+
+msgid "SEO roadmap — what should I do today?"
+msgstr "نقشه راه سئو — امروز چه کار کنم؟"
+
+msgid "A step-by-step plan for this site. SEOlity analyzes only when you press “Analyze”: it reads Search Console, the site audit, your content and competitors, studies the SEO knowledge base and keeps the plan stable between analyses."
+msgstr "برنامه قدم‌به‌قدم برای همین سایت. SEOlity فقط وقتی «تحلیل» را بزنید بررسی می‌کند: سرچ کنسول، ممیزی سایت، محتوا و رقبا را می‌خواند، پایگاه دانش سئو را مطالعه می‌کند و برنامه را بین تحلیل‌ها پایدار نگه می‌دارد."
+
+msgid "The last analysis failed:"
+msgstr "آخرین تحلیل ناموفق بود:"
+
+msgid "Try again"
+msgstr "دوباره امتحان کنید"
+
+msgid "AI provider connected"
+msgstr "هوش مصنوعی وصل است"
+
+msgid "Without AI the roadmap is still built from your data and the built-in guides."
+msgstr "بدون هوش مصنوعی هم نقشه راه از داده‌های شما و راهنماهای داخلی ساخته می‌شود."
+
+msgid "Needed for indexing, CTR, ranking and traffic tasks."
+msgstr "برای کارهای ایندکس، CTR، رتبه و ترافیک لازم است."
+
+msgid "Site audit done"
+msgstr "ممیزی سایت انجام شده"
+
+msgid "Needed for technical and on-page tasks."
+msgstr "برای کارهای فنی و درون‌صفحه‌ای لازم است."
+
+msgid "Build your SEO roadmap"
+msgstr "نقشه راه سئوی خود را بسازید"
+
+msgid "SEOlity will read all your data once, study the SEO knowledge base and write a prioritized plan — from new articles that still need indexing to technical fixes, content, links and products. Every task comes with the exact pages and a step-by-step guide in your dashboard."
+msgstr "SEOlity یک بار همه داده‌های شما را می‌خواند، پایگاه دانش سئو را مطالعه می‌کند و یک برنامه اولویت‌بندی‌شده می‌نویسد — از مقاله‌های جدیدی که هنوز باید ایندکس شوند تا اصلاحات فنی، محتوا، لینک‌ها و محصولات. هر کار با صفحه‌های دقیق و راهنمای قدم‌به‌قدم در پیشخوان همراه است."
+
+msgid "Analyze my site"
+msgstr "تحلیل سایت من"
+
+msgid "Analyzing your site…"
+msgstr "در حال تحلیل سایت شما…"
+
+msgid "The AI is answering through GitHub — this page updates by itself."
+msgstr "هوش مصنوعی از طریق گیت‌هاب پاسخ می‌دهد — این صفحه خودش به‌روز می‌شود."
+
+#, php-format
+msgid "Elapsed: %s s · usually 1–3 minutes. You can leave this page; the analysis continues."
+msgstr "زمان سپری‌شده: %s ثانیه · معمولاً ۱ تا ۳ دقیقه. می‌توانید از این صفحه بروید؛ تحلیل ادامه دارد."
+
+msgid "What changed since the previous analysis"
+msgstr "از تحلیل قبلی چه چیزی تغییر کرده"
+
+msgid "New tasks:"
+msgstr "کارهای جدید:"
+
+msgid "Solved / gone:"
+msgstr "حل‌شده / حذف‌شده:"
+
+msgid "No important changes since the previous analysis — the plan stays the same."
+msgstr "از تحلیل قبلی تغییر مهمی نیست — برنامه همان می‌ماند."
+
+msgid "Focus this week"
+msgstr "تمرکز این هفته"
+
+msgid "Strengths"
+msgstr "نقاط قوت"
+
+msgid "Risks"
+msgstr "ریسک‌ها"
+
+#, php-format
+msgid "%1$s of %2$s tasks done"
+msgstr "%1$s از %2$s کار انجام شده"
+
+#, php-format
+msgid "Version %s"
+msgstr "نسخه %s"
+
+#, php-format
+msgid "AI: %s"
+msgstr "هوش مصنوعی: %s"
+
+msgid "Built without AI"
+msgstr "بدون هوش مصنوعی ساخته شد"
+
+#, php-format
+msgid "Knowledge: %s"
+msgstr "دانش: %s"
+
+#, php-format
+msgid "%1$s tasks · %2$s critical · %3$s high"
+msgstr "%1$s کار · %2$s بحرانی · %3$s بالا"
+
+msgid "Re-analyze"
+msgstr "تحلیل مجدد"
+
+msgid "All"
+msgstr "همه"
+
+msgid "All categories"
+msgstr "همه دسته‌ها"
+
+msgid "Show done tasks"
+msgstr "نمایش کارهای انجام‌شده"
+
+msgid "Nothing here"
+msgstr "چیزی اینجا نیست"
+
+msgid "All tasks in this view are done. Press “Re-analyze” after your changes have been live for a while."
+msgstr "همه کارهای این بخش انجام شده‌اند. وقتی تغییرات مدتی منتشر بودند «تحلیل مجدد» را بزنید."
+
+#, php-format
+msgid "%s pages"
+msgstr "%s صفحه"
+
+msgid "AI strategy"
+msgstr "استراتژی هوش مصنوعی"
+
+msgid "Came back"
+msgstr "برگشته"
+
+msgid "In progress"
+msgstr "در حال انجام"
+
+msgid "Priority changed"
+msgstr "اولویت تغییر کرد"
+
+msgid "Inspect in Search Console"
+msgstr "بررسی در سرچ کنسول"
+
+msgid "Do it with AI"
+msgstr "انجام با هوش مصنوعی"
+
+msgid "Optimize with AI"
+msgstr "بهینه‌سازی با هوش مصنوعی"
+
+msgid "Changed"
+msgstr "تغییر کرده"
+
+msgid "Why this matters"
+msgstr "چرا مهم است"
+
+msgid "Expected result:"
+msgstr "نتیجه مورد انتظار:"
+
+msgid "Changed since the last analysis:"
+msgstr "تغییر نسبت به تحلیل قبلی:"
+
+#, php-format
+msgid "Affected pages (%s)"
+msgstr "صفحه‌های درگیر (%s)"
+
+msgid "Plan for your site (AI)"
+msgstr "برنامه مخصوص سایت شما (هوش مصنوعی)"
+
+msgid "Step by step in your dashboard"
+msgstr "قدم‌به‌قدم در پیشخوان"
+
+msgid "Done when:"
+msgstr "تمام است وقتی:"
+
+msgid "Not relevant"
+msgstr "مربوط نیست"
+
+msgid "Working on it"
+msgstr "در حال انجام"
+
 msgid "Site Audit & SEO Doctor"
 msgstr "ممیزی سایت و دکتر سئو"
 
@@ -4261,9 +5038,6 @@ msgstr "همه سطوح"
 
 msgid "Info"
 msgstr "اطلاعات"
-
-msgid "All categories"
-msgstr "همه دسته‌ها"
 
 msgid "Fixed"
 msgstr "رفع‌شده"
@@ -4786,9 +5560,6 @@ msgstr "موضوع"
 msgid "Planned"
 msgstr "برنامه‌ریزی‌شده"
 
-msgid "In progress"
-msgstr "در حال انجام"
-
 msgid "Published"
 msgstr "منتشرشده"
 
@@ -5114,6 +5885,12 @@ msgstr "تحلیل و بهینه‌سازی"
 msgid "SEOlity analyzes your text, the real queries you rank for and SEO best practices, then proposes an improved version. Nothing changes until you apply it."
 msgstr "سئولیتی متن شما، کوئری‌های واقعی که برایشان رتبه دارید و بهترین روش‌های سئو را تحلیل می‌کند و نسخه بهبودیافته‌ای پیشنهاد می‌دهد. تا زمانی که اعمال نکنید، چیزی تغییر نمی‌کند."
 
+msgid "Optimizing with SEOlity AI"
+msgstr "بهینه‌سازی با هوش مصنوعی SEOlity"
+
+msgid "Selected text"
+msgstr "متن انتخاب‌شده"
+
 msgid "Analyzing current content…"
 msgstr "در حال تحلیل محتوای فعلی…"
 
@@ -5125,12 +5902,6 @@ msgstr "در حال مراجعه به پایگاه دانش سئو…"
 
 msgid "Writing the optimized version…"
 msgstr "در حال نوشتن نسخه بهینه…"
-
-msgid "Scoring before vs. after…"
-msgstr "در حال امتیازدهی قبل و بعد…"
-
-msgid "Working… this can take up to a minute."
-msgstr "در حال کار… ممکن است تا یک دقیقه طول بکشد."
 
 msgid "Open settings"
 msgstr "باز کردن تنظیمات"
@@ -5171,8 +5942,17 @@ msgstr "دانش"
 msgid "Suggestion rejected."
 msgstr "پیشنهاد رد شد."
 
+msgid "Suggestion rejected"
+msgstr "پیشنهاد رد شد"
+
 msgid "Applied. Undo anytime from version history."
 msgstr "اعمال شد. هر زمان از تاریخچه نسخه‌ها قابل بازگشت است."
+
+msgid "Applied to the editor — save the page to keep it"
+msgstr "در ویرایشگر اعمال شد — برای ماندگاری صفحه را ذخیره کنید"
+
+msgid "Applied (undo anytime from version history)"
+msgstr "اعمال شد (از تاریخچه نسخه‌ها قابل بازگشت است)"
 
 msgid "Apply to editor"
 msgstr "اعمال در ویرایشگر"
@@ -5180,14 +5960,39 @@ msgstr "اعمال در ویرایشگر"
 msgid "Apply changes"
 msgstr "اعمال تغییرات"
 
+msgid "SEOlity tasks"
+msgstr "کارهای SEOlity"
+
+msgid "Working…"
+msgstr "در حال انجام…"
+
+msgid "SEOlity AI"
+msgstr "هوش مصنوعی SEOlity"
+
+msgid "Finished — review the result"
+msgstr "تمام شد — نتیجه را ببینید"
+
 msgid "Analyzing real search queries…"
 msgstr "در حال تحلیل کوئری‌های واقعی جستجو…"
+
+msgid "Writing title and description options…"
+msgstr "در حال نوشتن گزینه‌های عنوان و توضیحات…"
+
+msgid "New title and description options are ready."
+msgstr "گزینه‌های جدید عنوان و توضیحات آماده است."
+
+msgid "Choose & apply"
+msgstr "انتخاب و اعمال"
 
 msgid "Google preview"
 msgstr "پیش‌نمایش گوگل"
 
 msgid "Title & description applied."
 msgstr "عنوان و توضیحات اعمال شد."
+
+#, php-format
+msgid "Applied: %s"
+msgstr "اعمال شد: %s"
 
 msgid "GSC keyword intelligence"
 msgstr "هوش کلمات کلیدی GSC"
@@ -5244,9 +6049,6 @@ msgstr "همین صفحه"
 msgid "Add to focus keywords"
 msgstr "افزودن به کلمات کلیدی کانونی"
 
-msgid "Nothing here"
-msgstr "چیزی اینجا نیست"
-
 msgid "All queries"
 msgstr "همه کوئری‌ها"
 
@@ -5276,9 +6078,6 @@ msgstr "صفحه دیگری از سایت شما این کوئری‌ها را �
 
 msgid "No conflicts"
 msgstr "تداخلی نیست"
-
-msgid "AI strategy"
-msgstr "استراتژی هوش مصنوعی"
 
 msgid "Primary"
 msgstr "اصلی"
@@ -5932,9 +6731,6 @@ msgstr "خطای ۵۰۰"
 msgid "Indexation"
 msgstr "ایندکس‌پذیری"
 
-msgid "Links"
-msgstr "لینک‌ها"
-
 msgid "Performance"
 msgstr "عملکرد"
 
@@ -5946,9 +6742,6 @@ msgstr "موبایل"
 
 msgid "International"
 msgstr "بین‌المللی"
-
-msgid "Technical"
-msgstr "فنی"
 
 msgid "Gsc"
 msgstr "سرچ کنسول"
@@ -5966,6 +6759,86 @@ msgstr "پیش‌سفارش"
 msgid "%d search query you already get impressions for is not covered in the content."
 msgid_plural "%d search queries you already get impressions for are not covered in the content."
 msgstr[0] "%d کوئری که همین حالا برایش نمایش دارید در محتوا پوشش داده نشده است."
+
+#, php-format
+msgid "published %d day ago"
+msgid_plural "published %d days ago"
+msgstr[0] "%d روز پیش منتشر شده"
+
+#, php-format
+msgid "Get %d new page indexed by Google"
+msgid_plural "Get %d new pages indexed by Google"
+msgstr[0] "%d صفحه جدید را در گوگل ایندکس کنید"
+
+#, php-format
+msgid "Raise the click-through rate of %d page"
+msgid_plural "Raise the click-through rate of %d pages"
+msgstr[0] "افزایش نرخ کلیک %d صفحه"
+
+#, php-format
+msgid "Push %d page from page 2 to page 1 of Google"
+msgid_plural "Push %d pages from page 2 to page 1 of Google"
+msgstr[0] "رساندن %d صفحه از صفحه دوم به صفحه اول گوگل"
+
+#, php-format
+msgid "Recover %d page that is losing traffic"
+msgid_plural "Recover %d pages that are losing traffic"
+msgstr[0] "بازگرداندن ترافیک %d صفحه در حال افت"
+
+#, php-format
+msgid "Resolve keyword cannibalization for %d query"
+msgid_plural "Resolve keyword cannibalization for %d queries"
+msgstr[0] "رفع هم‌نوع‌خواری کلمه کلیدی برای %d کوئری"
+
+#, php-format
+msgid "Add an FAQ section to %d page"
+msgid_plural "Add FAQ sections to %d pages"
+msgstr[0] "افزودن پرسش‌های متداول به %d صفحه"
+
+#, php-format
+msgid "Remove noindex from %d page that gets traffic"
+msgid_plural "Remove noindex from %d pages that get traffic"
+msgstr[0] "برداشتن noindex از %d صفحه دارای ترافیک"
+
+#, php-format
+msgid "Redirect %d broken URL"
+msgid_plural "Redirect %d broken URLs"
+msgstr[0] "ریدایرکت %d آدرس خراب"
+
+#, php-format
+msgid "Link to %d orphan page"
+msgid_plural "Link to %d orphan pages"
+msgstr[0] "لینک دادن به %d صفحه یتیم"
+
+#, php-format
+msgid "Add %d internal link"
+msgid_plural "Add %d internal links"
+msgstr[0] "افزودن %d لینک داخلی"
+
+#, php-format
+msgid "Optimize %d product page"
+msgid_plural "Optimize %d product pages"
+msgstr[0] "بهینه‌سازی %d صفحه محصول"
+
+#, php-format
+msgid "Strengthen %d product category"
+msgid_plural "Strengthen %d product categories"
+msgstr[0] "تقویت %d دسته محصول"
+
+#, php-format
+msgid "Expand %d thin page that has traffic"
+msgid_plural "Expand %d thin pages that have traffic"
+msgstr[0] "گسترش %d صفحه کم‌محتوای دارای ترافیک"
+
+#, php-format
+msgid "Merge, improve or noindex %d thin page without traffic"
+msgid_plural "Merge, improve or noindex %d thin pages without traffic"
+msgstr[0] "ادغام، بهبود یا noindex کردن %d صفحه کم‌محتوای بدون ترافیک"
+
+#, php-format
+msgid "Cover %d topic your competitors rank for"
+msgid_plural "Cover %d topics your competitors rank for"
+msgstr[0] "پوشش %d موضوعی که رقبا در آن رتبه دارند"
 
 #, php-format
 msgid "%d published page is blocked by robots.txt."

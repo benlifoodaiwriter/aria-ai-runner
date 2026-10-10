@@ -22,7 +22,7 @@ final class Database {
 		'keywords', 'competitors', 'competitor_pages', 'changes', 'experiments', 'learnings',
 		'redirects', 'not_found', 'recommendations', 'content_analysis', 'images', 'internal_links',
 		'alerts', 'reports', 'jobs', 'audit_log', 'ai_requests', 'ai_cache', 'rules', 'chat',
-		'knowledge', 'content_plan', 'clusters', 'remote_jobs',
+		'knowledge', 'content_plan', 'clusters', 'remote_jobs', 'roadmaps',
 	);
 
 	/** @var \wpdb */
@@ -743,6 +743,24 @@ final class Database {
 				updated_at datetime NOT NULL,
 				PRIMARY KEY  (id),
 				KEY project (project_id)
+			) $c;",
+			"CREATE TABLE {$t('roadmaps')} (
+				id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+				project_id bigint(20) unsigned NOT NULL DEFAULT 1,
+				version int(10) unsigned NOT NULL DEFAULT 1,
+				status varchar(20) NOT NULL DEFAULT 'running',
+				stage varchar(40) NOT NULL DEFAULT '',
+				summary longtext NULL,
+				items longtext NULL,
+				changes longtext NULL,
+				facts longtext NULL,
+				meta longtext NULL,
+				error text NULL,
+				user_id bigint(20) unsigned NULL,
+				started_at datetime NOT NULL,
+				finished_at datetime NULL,
+				PRIMARY KEY  (id),
+				KEY project (project_id,status,id)
 			) $c;",
 			"CREATE TABLE {$t('remote_jobs')} (
 				id char(32) NOT NULL,

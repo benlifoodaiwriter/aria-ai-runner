@@ -119,7 +119,7 @@
 	SL.contentAdapter = contentAdapter;
 
 	/** Open the optimizer for an editor field. */
-	SL.openOptimizer = function ( field, adapter ) {
+	SL.openOptimizer = function ( field, adapter, label ) {
 		adapter = adapter || contentAdapter( field );
 		SL.api( 'ai/warm', { method: 'POST', noWait: true } ).catch( function () {} ); // Warm GitHub runner (if that route is used).
 		SL.optimizer( {
@@ -130,6 +130,7 @@
 			title: postTitle,
 			getContent: adapter.get,
 			setContent: adapter.set,
+			label: label || adapter.label || '',
 		} );
 	};
 
@@ -276,10 +277,24 @@
 	};
 
 	SL.productFor = function ( id ) {
-		var m = SL.modal( { title: t( 'AI Product Optimizer' ), wide: true } );
-		m.body.appendChild( SL.spinner( t( 'Analyzing product data, queries and competitors…' ) ) );
+		var task = SL.task( { title: t( 'AI Product Optimizer' ), subject: postTitle(), steps: [ t( 'Analyzing product data, queries and competitors…' ), t( 'Writing title, descriptions and keywords…' ), t( 'Scoring before vs. after…' ) ] } );
 		SL.api( 'products/' + id + '/optimize', { method: 'POST' } ).then( function ( r ) {
-			SL.clear( m.body );
+			task.done( {
+				summary: t( 'SEO score %1$s → %2$s', r.before.score, r.after.score ),
+				lines: Object.keys( r.changes ).map( function ( k ) {
+					return k.indexOf( 'alt_' ) === 0 ? t( 'Image ALT' ) + ' #' + k.slice( 4 ) : SL.fieldLabel( k );
+				} ),
+				action: { label: t( 'Review & apply' ), fn: function () {
+					open( r );
+				} },
+			} );
+		} ).catch( function ( e ) {
+			task.fail( e.message );
+		} );
+		function open( r ) {
+			var m = SL.modal( { title: t( 'AI Product Optimizer' ), wide: true, onClose: function () {
+				task.note( t( 'Report reviewed' ) );
+			} } );
 			var ai = r.ai;
 			m.body.appendChild( h( 'div', { class: 'sl-opt__scores' }, h( 'div', null, h( 'div', { class: 'sl-small sl-muted', text: t( 'SEO Score Before' ) } ), SL.scoreRing( r.before.score, 60 ) ), h( 'div', { class: 'sl-opt__arrow' }, C.rtl ? '←' : '→' ), h( 'div', null, h( 'div', { class: 'sl-small sl-muted', text: t( 'SEO Score After' ) } ), SL.scoreRing( r.after.score, 60 ) ) ) );
 			if ( r.warnings.length ) {
@@ -333,10 +348,7 @@
 					return h( 'li', { text: x } );
 				} ) ) )
 			) );
-		} ).catch( function ( e ) {
-			m.close();
-			SL.fail( e );
-		} );
+		}
 	};
 
 	/* ------------------------------------------------------------------ Meta box: live score + SERP */

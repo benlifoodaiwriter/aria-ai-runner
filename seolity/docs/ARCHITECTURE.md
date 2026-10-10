@@ -270,6 +270,32 @@ topic_clusters, redirect_target, experiment_verdict, briefing, chat, eeat_analys
 serp_analysis. Each task has a `prompt_version` stored with every change so results can be compared
 across prompt versions.
 
+### SEO roadmap
+
+`Roadmap\Roadmap` (route `actions`, REST `/roadmap`, `/roadmap/analyze`, `/roadmap/task`, `/roadmap/history`)
+runs only on demand. `POST /roadmap/analyze` inserts a `roadmaps` row and queues `roadmap_build`
+(`GET /roadmap` also drives the queue while it waits, for sites without traffic):
+
+1. `Roadmap\Collector` refreshes recommendations, runs the site doctor and gathers facts (health,
+   crawl, issue groups, GSC 28-day totals / top queries / pages / movers / ranking distribution,
+   competitors, learnings) plus candidate items with real targets: new posts without impressions
+   (index check: noindex, inlinks, sitemap, GSC inspect link), recommendation groups and doctor issues
+   not covered by a recommendation. The snapshot is stored on the row, so a deferred AI retry reuses it.
+2. `Roadmap\Guides` adds exact dashboard steps per task type (SEO-plugin aware) and done criteria.
+3. AI task `seo_roadmap` (knowledge-grounded, 10 knowledge documents, previous roadmap and
+   owner statuses in the input) returns diagnosis, strengths, risks, focus and per-item priority, phase,
+   plan steps and up to 6 strategic `ai:` items.
+4. Merge + stability: previous priority/phase are kept unless the AI flags a material change, the
+   affected count moved by 30 % or the priority jumps two levels; a diff (added / resolved / priority)
+   is stored. Owner statuses (`seolity_roadmap_status`) survive versions; a done task re-opens when
+   more pages are affected than when it was closed. Without AI the data roadmap is still produced.
+
+### Task dock
+
+`SL.task()` (ui.js) renders small, non-blocking progress cards (z-index below modals). The optimizer,
+product optimizer and title/description generator run inside a card; the full report opens from it.
+Finished cards persist in sessionStorage until closed.
+
 ## 7. Change management
 
 ```

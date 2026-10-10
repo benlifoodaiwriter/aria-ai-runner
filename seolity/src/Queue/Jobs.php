@@ -15,6 +15,9 @@ final class Jobs {
 
 	public static function register( Queue $q, Plugin $p ) {
 		// Crawler / audit.
+		$q->handler( 'roadmap_build', static function ( $a ) use ( $p ) {
+			return $p->roadmap->build( (int) $a['id'] );
+		} );
 		$q->handler( 'route_probe', static function () use ( $p ) {
 			// A plugin update ships a newer worker (e.g. the /proxy route): redeploy it once.
 			$cf = $p->cloudflare;

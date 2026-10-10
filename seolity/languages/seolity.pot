@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: SEOlity 1.0.0\n"
-"POT-Creation-Date: 2026-10-10 08:56+0000\n"
+"POT-Creation-Date: 2026-10-10 16:03+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -319,7 +319,7 @@ msgstr ""
 msgid "Dashboard"
 msgstr ""
 
-msgid "AI Action Center"
+msgid "SEO roadmap"
 msgstr ""
 
 msgid "AI SEO Chat"
@@ -1997,6 +1997,577 @@ msgstr ""
 msgid "Recommended next actions"
 msgstr ""
 
+msgid "set to noindex or canonicalized"
+msgstr ""
+
+msgid "no internal links point to it"
+msgstr ""
+
+msgid "missing from the sitemap"
+msgstr ""
+
+msgid "0 impressions"
+msgstr ""
+
+msgid "These pages were published recently but have not received a single impression in Search Console yet — Google has probably not indexed them. New content only starts earning traffic after it is indexed."
+msgstr ""
+
+msgid "These pages were published recently. Connect Search Console so SEOlity can tell which ones Google has not indexed yet; until then, request indexing for each new page."
+msgstr ""
+
+msgid "In the editor open the Rank Math panel (the score icon top-right, or the Rank Math box under the content) → General → “Edit Snippet”."
+msgstr ""
+
+msgid "Rank Math panel → Advanced → Robots Meta"
+msgstr ""
+
+msgid "Scroll below the content to the Yoast SEO box → “SEO title” and “Meta description”."
+msgstr ""
+
+msgid "Yoast SEO box → Advanced → “Allow search engines to show this content?” = Yes"
+msgstr ""
+
+#, php-format
+msgid "Scroll below the content to the %s box → title and meta description fields."
+msgstr ""
+
+#, php-format
+msgid "%s box → Advanced → robots: index"
+msgstr ""
+
+msgid "Scroll below the content to the SEOlity box → “SEO title” and “Meta description”."
+msgstr ""
+
+msgid "SEOlity box → “noindex” must be unchecked"
+msgstr ""
+
+#, php-format
+msgid "%d related improvements"
+msgstr ""
+
+msgid "Google already shows these pages, but far fewer people click than usual for their position. Better titles and descriptions turn existing impressions into visits — the quickest traffic win."
+msgstr ""
+
+msgid "These pages rank just below the first page for real queries. A focused improvement of the content and internal links usually moves them onto page 1, where almost all clicks happen."
+msgstr ""
+
+msgid "These pages earned clearly fewer clicks than in the previous period. Find out why (competitors, outdated content, technical problems) before the drop grows."
+msgstr ""
+
+msgid "Several of your pages compete for the same queries, so Google splits rankings between them and none of them wins."
+msgstr ""
+
+msgid "Searchers ask questions these pages do not answer yet. An FAQ section covers them and can win extra visibility."
+msgstr ""
+
+msgid "These pages are excluded from Google by noindex although people find them — they will drop out of search."
+msgstr ""
+
+msgid "These URLs return 404 but still receive links or visits. A 301 redirect keeps visitors and link value."
+msgstr ""
+
+msgid "No internal link points to these pages, so Google finds them late and treats them as unimportant."
+msgstr ""
+
+msgid "Relevant internal links pass authority and context to important pages."
+msgstr ""
+
+msgid "These product pages miss important SEO elements (title, descriptions, keywords, image ALT)."
+msgstr ""
+
+msgid "Your competitors rank with content on these topics and you have no page for them."
+msgstr ""
+
+msgid "These pages get impressions but have little content, so they cannot compete for their queries. Expanding them with genuinely useful information usually lifts rankings."
+msgstr ""
+
+msgid "These pages have little content and no traffic. They dilute the site’s quality: improve them, merge them into a stronger page (with a redirect) or set them to noindex."
+msgstr ""
+
+msgid "Click “Edit” next to the page in the list above (or Posts / Pages / Products → All → the item → Edit)."
+msgstr ""
+
+msgid "Make sure the page may be indexed"
+msgstr ""
+
+msgid "The status must be “Published” (not private, not password-protected)."
+msgstr ""
+
+#, php-format
+msgid "Check: %s."
+msgstr ""
+
+msgid "Posts → All Posts → Edit → Publish box"
+msgstr ""
+
+msgid "Link to it from 2–3 related pages"
+msgstr ""
+
+msgid "Google discovers new pages through links. Open SEOlity → Keywords & links → Internal Links, find the new page and apply the suggested links, or edit related, already-ranking posts and link to the new page with a descriptive anchor text."
+msgstr ""
+
+msgid "SEOLITY → Keywords & links → Internal Links"
+msgstr ""
+
+msgid "Check it is in the sitemap"
+msgstr ""
+
+msgid "Open SEOlity → Technical SEO → Sitemap and confirm the page is listed (published posts are added automatically; noindex pages are not)."
+msgstr ""
+
+msgid "SEOLITY → Technical SEO → Sitemap"
+msgstr ""
+
+msgid "Request indexing in Google Search Console"
+msgstr ""
+
+msgid "Click “Inspect in Search Console” next to the page above → wait for the check → “Request indexing”. Do this once per page; repeating it does not help."
+msgstr ""
+
+msgid "Search Console → URL inspection → Request indexing"
+msgstr ""
+
+msgid "Verify in 3–7 days"
+msgstr ""
+
+msgid "Run “Analyze” again in a week: the page leaves this list as soon as Search Console records impressions for it. If it is still missing after two weeks, improve its content and internal links."
+msgstr ""
+
+msgid "See the queries people use"
+msgstr ""
+
+msgid "Open the page in SEOlity → Search Console → Pages (or the “GSC keywords” button in the editor) to see the real queries, impressions and CTR."
+msgstr ""
+
+msgid "SEOLITY → Search Console → Pages"
+msgstr ""
+
+msgid "Let SEOlity write the title and description"
+msgstr ""
+
+msgid "Click “AI title & description” next to each page above. SEOlity writes options from the real queries; pick one, edit if you like and apply (it goes into your SEO plugin and can be undone)."
+msgstr ""
+
+msgid "Roadmap → this task → page → AI title & description"
+msgstr ""
+
+#, php-format
+msgid "Or edit it yourself in %s"
+msgstr ""
+
+msgid "Title: up to ~60 characters, main query near the start, a clear benefit. Description: 140–155 characters, answers the intent, ends with a reason to click. Then “Update”."
+msgstr ""
+
+msgid "Edit page → SEO box → title & description"
+msgstr ""
+
+msgid "Measure"
+msgstr ""
+
+msgid "SEOlity records every change as an experiment and compares CTR after 14–28 days (AI Center → AI Changes / Experiments). Leave the new title in place at least two weeks."
+msgstr ""
+
+msgid "SEOLITY → Analysis → Experiments"
+msgstr ""
+
+msgid "Find the cause of the drop"
+msgstr ""
+
+msgid "Open the page in SEOlity → Search Console and compare both periods: did impressions fall (Google shows it less: rankings or demand) or only CTR (snippet)? Check the page still returns 200 and is indexable (Site Audit), and whether a competitor published something better (Analysis → Competitors)."
+msgstr ""
+
+msgid "Look at the queries it almost ranks for"
+msgstr ""
+
+msgid "Open the page queries (positions 8–20) in SEOlity → Search Console or the “GSC keywords” button in the editor. Note which queries are missing from the headings and text."
+msgstr ""
+
+msgid "Improve the content with SEOlity AI"
+msgstr ""
+
+msgid "In the editor click “Optimize with SEOlity AI” (above the classic editor, in the Gutenberg sidebar, or in the Elementor panel for a text widget). It uses the real queries, the SEO knowledge base and competitor pages; a small panel shows the progress and the report — review and apply."
+msgstr ""
+
+msgid "Edit page → Optimize with SEOlity AI"
+msgstr ""
+
+msgid "Cover the missing intent"
+msgstr ""
+
+msgid "Add a section (H2) for each important missing query, answer questions directly in the first sentence under it, add examples, numbers and an updated date. Do not stuff keywords."
+msgstr ""
+
+msgid "Add internal links to it"
+msgstr ""
+
+msgid "Link to the page from 2–3 strong, related pages with descriptive anchor text (SEOlity → Internal Links shows suggestions)."
+msgstr ""
+
+msgid "Update and request re-crawl"
+msgstr ""
+
+msgid "Click “Update”, then request indexing for the URL in Search Console (URL inspection). Re-check in 2–4 weeks."
+msgstr ""
+
+msgid "Search Console → URL inspection"
+msgstr ""
+
+msgid "See which pages compete"
+msgstr ""
+
+msgid "Open SEOlity → Keywords & links → Keywords → Cannibalization. For each query you see the competing URLs with clicks and positions; “AI advice” recommends merge, redirect, differentiate or re-target."
+msgstr ""
+
+msgid "SEOLITY → Keywords → Cannibalization"
+msgstr ""
+
+msgid "Pick one main page per query"
+msgstr ""
+
+msgid "Usually the page with the most clicks and best fit for the intent. The others must stop targeting that query."
+msgstr ""
+
+msgid "Merge, redirect or differentiate"
+msgstr ""
+
+msgid "If the weaker page adds nothing: move its useful parts into the main page and create a 301 redirect (SEOlity → Technical SEO → Redirects). If both are useful: change the weaker page’s focus keyword, title and headings to a different intent."
+msgstr ""
+
+msgid "SEOLITY → Technical SEO → Redirects"
+msgstr ""
+
+msgid "Point internal links to the main page"
+msgstr ""
+
+msgid "Links with that query as anchor text should go to the main page only."
+msgstr ""
+
+msgid "Generate the FAQ"
+msgstr ""
+
+msgid "Click “Do it with AI” next to each page: SEOlity writes questions from the real question queries and short factual answers; review them before applying."
+msgstr ""
+
+msgid "Place it on the page"
+msgstr ""
+
+msgid "Add an “FAQ” heading near the end and the questions as H3 with short answers (or the FAQ block of your SEO plugin). SEOlity adds FAQPage schema automatically when enabled."
+msgstr ""
+
+msgid "Edit page → add FAQ section"
+msgstr ""
+
+msgid "Update and verify"
+msgstr ""
+
+msgid "Update the page and check the result with Google’s Rich Results Test."
+msgstr ""
+
+msgid "Open the page"
+msgstr ""
+
+msgid "Allow indexing"
+msgstr ""
+
+#, php-format
+msgid "Go to %s, set it to index, then “Update”. Or click “Do it with AI” above to let SEOlity change it (with undo)."
+msgstr ""
+
+msgid "Check global settings"
+msgstr ""
+
+msgid "Make sure Settings → Reading → “Discourage search engines” is NOT checked, and that the post type / category is not set to noindex in your SEO plugin."
+msgstr ""
+
+msgid "Settings → Reading"
+msgstr ""
+
+msgid "Request indexing"
+msgstr ""
+
+msgid "Search Console → URL inspection → Request indexing."
+msgstr ""
+
+msgid "Review the broken URLs"
+msgstr ""
+
+msgid "Open SEOlity → Technical SEO → 404 Monitor: each URL shows hits, referrers and the best matching live page."
+msgstr ""
+
+msgid "SEOLITY → Technical SEO → 404 Monitor"
+msgstr ""
+
+msgid "Create 301 redirects"
+msgstr ""
+
+msgid "Click “Do it with AI” next to each URL above (SEOlity proposes the best target), or add them in SEOlity → Technical SEO → Redirects: From = broken path, To = closest live page, type 301."
+msgstr ""
+
+msgid "SEOLITY → Technical SEO → Redirects → Add"
+msgstr ""
+
+msgid "Fix the links at the source"
+msgstr ""
+
+msgid "Edit the pages that still link to the broken URL (Site Audit → Broken internal links lists them) and point the link to the live page."
+msgstr ""
+
+msgid "SEOLITY → Analysis → Site Audit"
+msgstr ""
+
+msgid "Open the redirects"
+msgstr ""
+
+msgid "SEOlity → Technical SEO → Redirects shows chains (A→B→C) and loops."
+msgstr ""
+
+msgid "Fix them in one click"
+msgstr ""
+
+msgid "Click “Do it with AI” here or “Fix chains” on the Redirects page: every redirect then points straight to the final URL; loops are shown for a manual decision."
+msgstr ""
+
+msgid "Open internal link suggestions"
+msgstr ""
+
+msgid "SEOlity → Keywords & links → Internal Links lists links whose anchor text already exists in your content."
+msgstr ""
+
+msgid "Apply the links"
+msgstr ""
+
+msgid "Click “Do it with AI” next to each page above to see suggestions and preview them, then apply. Prefer links from related pages that already get traffic."
+msgstr ""
+
+msgid "Or add them by hand"
+msgstr ""
+
+msgid "Edit a related post, select a phrase that describes the target page, press Ctrl+K (or the link button) and choose the page. Update."
+msgstr ""
+
+msgid "Posts → Edit → select text → Link"
+msgstr ""
+
+msgid "Open the product"
+msgstr ""
+
+msgid "Products → All Products → the product → Edit (or “Edit” in the list above)."
+msgstr ""
+
+msgid "Products → All Products → Edit"
+msgstr ""
+
+msgid "Run the AI Product Optimizer"
+msgstr ""
+
+msgid "Click “AI Product Optimizer” in the SEOlity box (or “Do it with AI” here). It writes the SEO title, meta description, short description, focus keywords and image ALT from the real product data. A small panel shows the progress; open its report and apply field by field."
+msgstr ""
+
+msgid "Edit product → SEOlity box → AI Product Optimizer"
+msgstr ""
+
+msgid "Check price, stock and images"
+msgstr ""
+
+msgid "Product schema needs price, availability and an image; fill them in the Product data box. Then “Update”."
+msgstr ""
+
+msgid "Edit product → Product data"
+msgstr ""
+
+msgid "Open the category"
+msgstr ""
+
+msgid "Products → Categories → hover the category → Edit."
+msgstr ""
+
+msgid "Products → Categories → Edit"
+msgstr ""
+
+msgid "Write a helpful description"
+msgstr ""
+
+msgid "Click “Optimize with SEOlity AI” under the description: it writes an intro that answers buyer questions and links to key products. Review and Update."
+msgstr ""
+
+msgid "Review the gaps"
+msgstr ""
+
+msgid "SEOlity → Analysis → Competitors → the competitor → Gaps: topics they cover and you do not."
+msgstr ""
+
+msgid "SEOLITY → Analysis → Competitors"
+msgstr ""
+
+msgid "Plan the article"
+msgstr ""
+
+msgid "Click “Do it with AI” to add the topic to the content planner with an AI brief (headings, questions, entities, length)."
+msgstr ""
+
+msgid "Write and publish"
+msgstr ""
+
+msgid "Posts → Add New, follow the brief, add internal links to and from related pages, publish. It then appears under “Get new pages indexed” until Google shows it."
+msgstr ""
+
+msgid "Posts → Add New"
+msgstr ""
+
+msgid "Bulk-write ALT text"
+msgstr ""
+
+msgid "SEOlity → Content → Images → filter “Missing ALT” → select all → “Generate ALT with AI”. Or in Media → Library (list view) select images → Bulk actions → “Write ALT text with SEOlity AI”."
+msgstr ""
+
+msgid "SEOLITY → Content → Images"
+msgstr ""
+
+msgid "Single image"
+msgstr ""
+
+msgid "Media → Library → click the image → “Write ALT, title, caption & description with AI” in the details panel."
+msgstr ""
+
+msgid "Media → Library → image details"
+msgstr ""
+
+msgid "Open Schema"
+msgstr ""
+
+msgid "SEOlity → Technical SEO → Schema shows which pages lack structured data and suggests the right type (Article, Product, FAQ, Organization…)."
+msgstr ""
+
+msgid "SEOLITY → Technical SEO → Schema"
+msgstr ""
+
+msgid "Validate"
+msgstr ""
+
+msgid "Test a page with Google’s Rich Results Test after enabling it."
+msgstr ""
+
+msgid "See the slow pages"
+msgstr ""
+
+msgid "SEOlity → Analysis → Site Audit → Performance shows Core Web Vitals per page (PageSpeed)."
+msgstr ""
+
+msgid "Fix the usual causes"
+msgstr ""
+
+msgid "Compress and resize large images (WebP), enable a caching plugin, lazy-load images below the fold, remove unused plugins/scripts, and use a faster host or a CDN."
+msgstr ""
+
+msgid "Open the sitemap check"
+msgstr ""
+
+msgid "SEOlity → Technical SEO → Sitemap lists URLs in the sitemap that redirect, return errors or are noindex."
+msgstr ""
+
+msgid "Fix robots.txt"
+msgstr ""
+
+msgid "SEOlity → Technical SEO → Robots.txt: add the “Sitemap:” line and make sure nothing important is disallowed."
+msgstr ""
+
+msgid "SEOLITY → Technical SEO → Robots.txt"
+msgstr ""
+
+msgid "Submit in Search Console"
+msgstr ""
+
+msgid "Search Console → Sitemaps → enter the sitemap URL → Submit."
+msgstr ""
+
+msgid "Open the affected pages"
+msgstr ""
+
+msgid "The list above shows the affected pages; SEOlity’s detail screen for this issue explains each one."
+msgstr ""
+
+msgid "Apply the fix"
+msgstr ""
+
+msgid "Follow the fix described above for each page; where “Do it with AI” is shown, SEOlity prepares the change for you to review."
+msgstr ""
+
+msgid "Verify"
+msgstr ""
+
+msgid "Run a new site audit (Analysis → Site Audit → Start) and press “Analyze” here again: solved tasks disappear from the roadmap."
+msgstr ""
+
+msgid "Search Console shows impressions for every listed page."
+msgstr ""
+
+msgid "New titles/descriptions are live; CTR is measured after 14–28 days."
+msgstr ""
+
+msgid "The pages reach positions 1–10 for their main queries."
+msgstr ""
+
+msgid "The pages are indexable and indexed again."
+msgstr ""
+
+msgid "Every broken URL redirects (301) to a relevant live page."
+msgstr ""
+
+msgid "The issue no longer appears after the next audit and analysis."
+msgstr ""
+
+msgid "The analysis took too long and was stopped. Press “Analyze” again."
+msgstr ""
+
+msgid "Unknown status."
+msgstr ""
+
+msgid "No AI provider is configured — the roadmap was built from your data and the built-in guides only."
+msgstr ""
+
+msgid "Posts → All Posts → Edit"
+msgstr ""
+
+msgid "Pages → All Pages → Edit"
+msgstr ""
+
+#, php-format
+msgid "Edit page → %s box"
+msgstr ""
+
+msgid "SEOLITY → Keywords & links → Keywords"
+msgstr ""
+
+msgid "SEOLITY → Keywords & links → Focus keywords"
+msgstr ""
+
+msgid "SEOLITY → Search Console"
+msgstr ""
+
+msgid "SEOLITY → Content → Content"
+msgstr ""
+
+msgid "Media → Library"
+msgstr ""
+
+msgid "First roadmap."
+msgstr ""
+
+#, php-format
+msgid "SEO health score: %d/100."
+msgstr ""
+
+#, php-format
+msgid "Last 28 days: %1$s clicks (previous period %2$s) from %3$s impressions."
+msgstr ""
+
+msgid "Search Console is not connected yet, so traffic-based tasks are missing — connect it for a complete roadmap."
+msgstr ""
+
+#, php-format
+msgid "%1$d tasks found: %2$d critical and %3$d high priority. Start with the “This week” column."
+msgstr ""
+
 msgid "Product image without ALT → Generate ALT"
 msgstr ""
 
@@ -2414,6 +2985,9 @@ msgstr ""
 msgid "Improvements"
 msgstr ""
 
+msgid "AI Action Center"
+msgstr ""
+
 msgid "No recommendations yet"
 msgstr ""
 
@@ -2556,34 +3130,6 @@ msgid "Do today"
 msgstr ""
 
 msgid "Today's SEO Briefing"
-msgstr ""
-
-msgid "What Should I Do Today?"
-msgstr ""
-
-msgid "AI-prioritized actions ranked by impact, effort and confidence. Every suggestion explains itself — click “Why?”."
-msgstr ""
-
-msgid "Refresh recommendations"
-msgstr ""
-
-msgid "Refreshing in the background — reload in a minute."
-msgstr ""
-
-msgid "All"
-msgstr ""
-
-#, php-format
-msgid "%s AI changes are waiting for your approval."
-msgstr ""
-
-msgid "Review now"
-msgstr ""
-
-msgid "Nothing to do here"
-msgstr ""
-
-msgid "Great job — or SEOlity needs more data (audit + Search Console)."
 msgstr ""
 
 msgid "Ask anything about your site. Answers are grounded in your real Search Console, audit, competitor and experiment data."
@@ -2835,6 +3381,22 @@ msgstr ""
 msgid "Analyzing product data, queries and competitors…"
 msgstr ""
 
+msgid "Writing title, descriptions and keywords…"
+msgstr ""
+
+msgid "Scoring before vs. after…"
+msgstr ""
+
+#, php-format
+msgid "SEO score %1$s → %2$s"
+msgstr ""
+
+msgid "Review & apply"
+msgstr ""
+
+msgid "Report reviewed"
+msgstr ""
+
 msgid "Inserted into the editor. Save the product to keep it."
 msgstr ""
 
@@ -2867,6 +3429,9 @@ msgid "Knowledge used: %s"
 msgstr ""
 
 msgid "Something went wrong."
+msgstr ""
+
+msgid "Elementor widget"
 msgstr ""
 
 msgid "Select a Text Editor or Heading widget first."
@@ -3468,6 +4033,9 @@ msgstr ""
 
 #, php-format
 msgid "%1$s changes proposed, %2$s applied."
+msgstr ""
+
+msgid "Review now"
 msgstr ""
 
 msgid "Before"
@@ -4169,6 +4737,215 @@ msgstr ""
 msgid "Set up GitHub"
 msgstr ""
 
+msgid "This week"
+msgstr ""
+
+msgid "Next 2 weeks"
+msgstr ""
+
+msgid "This month"
+msgstr ""
+
+msgid "Later"
+msgstr ""
+
+msgid "Indexing"
+msgstr ""
+
+msgid "Technical"
+msgstr ""
+
+msgid "On-page"
+msgstr ""
+
+msgid "Links"
+msgstr ""
+
+msgid "Strategy"
+msgstr ""
+
+msgid "Waiting to start…"
+msgstr ""
+
+msgid "Reading Search Console and audit data"
+msgstr ""
+
+msgid "Diagnosing every issue on the site"
+msgstr ""
+
+msgid "Collecting new content, competitors and trends"
+msgstr ""
+
+msgid "Studying the SEO knowledge base and writing the roadmap"
+msgstr ""
+
+msgid "Other"
+msgstr ""
+
+msgid "SEO roadmap — what should I do today?"
+msgstr ""
+
+msgid "A step-by-step plan for this site. SEOlity analyzes only when you press “Analyze”: it reads Search Console, the site audit, your content and competitors, studies the SEO knowledge base and keeps the plan stable between analyses."
+msgstr ""
+
+msgid "The last analysis failed:"
+msgstr ""
+
+msgid "Try again"
+msgstr ""
+
+msgid "AI provider connected"
+msgstr ""
+
+msgid "Without AI the roadmap is still built from your data and the built-in guides."
+msgstr ""
+
+msgid "Needed for indexing, CTR, ranking and traffic tasks."
+msgstr ""
+
+msgid "Site audit done"
+msgstr ""
+
+msgid "Needed for technical and on-page tasks."
+msgstr ""
+
+msgid "Build your SEO roadmap"
+msgstr ""
+
+msgid "SEOlity will read all your data once, study the SEO knowledge base and write a prioritized plan — from new articles that still need indexing to technical fixes, content, links and products. Every task comes with the exact pages and a step-by-step guide in your dashboard."
+msgstr ""
+
+msgid "Analyze my site"
+msgstr ""
+
+msgid "Analyzing your site…"
+msgstr ""
+
+msgid "The AI is answering through GitHub — this page updates by itself."
+msgstr ""
+
+#, php-format
+msgid "Elapsed: %s s · usually 1–3 minutes. You can leave this page; the analysis continues."
+msgstr ""
+
+msgid "What changed since the previous analysis"
+msgstr ""
+
+msgid "New tasks:"
+msgstr ""
+
+msgid "Solved / gone:"
+msgstr ""
+
+msgid "No important changes since the previous analysis — the plan stays the same."
+msgstr ""
+
+msgid "Focus this week"
+msgstr ""
+
+msgid "Strengths"
+msgstr ""
+
+msgid "Risks"
+msgstr ""
+
+#, php-format
+msgid "%1$s of %2$s tasks done"
+msgstr ""
+
+#, php-format
+msgid "Version %s"
+msgstr ""
+
+#, php-format
+msgid "AI: %s"
+msgstr ""
+
+msgid "Built without AI"
+msgstr ""
+
+#, php-format
+msgid "Knowledge: %s"
+msgstr ""
+
+#, php-format
+msgid "%1$s tasks · %2$s critical · %3$s high"
+msgstr ""
+
+msgid "Re-analyze"
+msgstr ""
+
+msgid "All"
+msgstr ""
+
+msgid "All categories"
+msgstr ""
+
+msgid "Show done tasks"
+msgstr ""
+
+msgid "Nothing here"
+msgstr ""
+
+msgid "All tasks in this view are done. Press “Re-analyze” after your changes have been live for a while."
+msgstr ""
+
+#, php-format
+msgid "%s pages"
+msgstr ""
+
+msgid "AI strategy"
+msgstr ""
+
+msgid "Came back"
+msgstr ""
+
+msgid "In progress"
+msgstr ""
+
+msgid "Priority changed"
+msgstr ""
+
+msgid "Inspect in Search Console"
+msgstr ""
+
+msgid "Do it with AI"
+msgstr ""
+
+msgid "Optimize with AI"
+msgstr ""
+
+msgid "Changed"
+msgstr ""
+
+msgid "Why this matters"
+msgstr ""
+
+msgid "Expected result:"
+msgstr ""
+
+msgid "Changed since the last analysis:"
+msgstr ""
+
+#, php-format
+msgid "Affected pages (%s)"
+msgstr ""
+
+msgid "Plan for your site (AI)"
+msgstr ""
+
+msgid "Step by step in your dashboard"
+msgstr ""
+
+msgid "Done when:"
+msgstr ""
+
+msgid "Not relevant"
+msgstr ""
+
+msgid "Working on it"
+msgstr ""
+
 msgid "Site Audit & SEO Doctor"
 msgstr ""
 
@@ -4259,9 +5036,6 @@ msgid "All severities"
 msgstr ""
 
 msgid "Info"
-msgstr ""
-
-msgid "All categories"
 msgstr ""
 
 msgid "Fixed"
@@ -4785,9 +5559,6 @@ msgstr ""
 msgid "Planned"
 msgstr ""
 
-msgid "In progress"
-msgstr ""
-
 msgid "Published"
 msgstr ""
 
@@ -5113,6 +5884,12 @@ msgstr ""
 msgid "SEOlity analyzes your text, the real queries you rank for and SEO best practices, then proposes an improved version. Nothing changes until you apply it."
 msgstr ""
 
+msgid "Optimizing with SEOlity AI"
+msgstr ""
+
+msgid "Selected text"
+msgstr ""
+
 msgid "Analyzing current content…"
 msgstr ""
 
@@ -5123,12 +5900,6 @@ msgid "Consulting the SEO knowledge base…"
 msgstr ""
 
 msgid "Writing the optimized version…"
-msgstr ""
-
-msgid "Scoring before vs. after…"
-msgstr ""
-
-msgid "Working… this can take up to a minute."
 msgstr ""
 
 msgid "Open settings"
@@ -5170,7 +5941,16 @@ msgstr ""
 msgid "Suggestion rejected."
 msgstr ""
 
+msgid "Suggestion rejected"
+msgstr ""
+
 msgid "Applied. Undo anytime from version history."
+msgstr ""
+
+msgid "Applied to the editor — save the page to keep it"
+msgstr ""
+
+msgid "Applied (undo anytime from version history)"
 msgstr ""
 
 msgid "Apply to editor"
@@ -5179,13 +5959,38 @@ msgstr ""
 msgid "Apply changes"
 msgstr ""
 
+msgid "SEOlity tasks"
+msgstr ""
+
+msgid "Working…"
+msgstr ""
+
+msgid "SEOlity AI"
+msgstr ""
+
+msgid "Finished — review the result"
+msgstr ""
+
 msgid "Analyzing real search queries…"
+msgstr ""
+
+msgid "Writing title and description options…"
+msgstr ""
+
+msgid "New title and description options are ready."
+msgstr ""
+
+msgid "Choose & apply"
 msgstr ""
 
 msgid "Google preview"
 msgstr ""
 
 msgid "Title & description applied."
+msgstr ""
+
+#, php-format
+msgid "Applied: %s"
 msgstr ""
 
 msgid "GSC keyword intelligence"
@@ -5243,9 +6048,6 @@ msgstr ""
 msgid "Add to focus keywords"
 msgstr ""
 
-msgid "Nothing here"
-msgstr ""
-
 msgid "All queries"
 msgstr ""
 
@@ -5274,9 +6076,6 @@ msgid "Another page of your site wins these queries. Do not target them here; li
 msgstr ""
 
 msgid "No conflicts"
-msgstr ""
-
-msgid "AI strategy"
 msgstr ""
 
 msgid "Primary"
@@ -5931,9 +6730,6 @@ msgstr ""
 msgid "Indexation"
 msgstr ""
 
-msgid "Links"
-msgstr ""
-
 msgid "Performance"
 msgstr ""
 
@@ -5944,9 +6740,6 @@ msgid "Mobile"
 msgstr ""
 
 msgid "International"
-msgstr ""
-
-msgid "Technical"
 msgstr ""
 
 msgid "Gsc"
@@ -5964,6 +6757,102 @@ msgstr ""
 #, php-format
 msgid "%d search query you already get impressions for is not covered in the content."
 msgid_plural "%d search queries you already get impressions for are not covered in the content."
+msgstr[0] ""
+msgstr[1] ""
+
+#, php-format
+msgid "published %d day ago"
+msgid_plural "published %d days ago"
+msgstr[0] ""
+msgstr[1] ""
+
+#, php-format
+msgid "Get %d new page indexed by Google"
+msgid_plural "Get %d new pages indexed by Google"
+msgstr[0] ""
+msgstr[1] ""
+
+#, php-format
+msgid "Raise the click-through rate of %d page"
+msgid_plural "Raise the click-through rate of %d pages"
+msgstr[0] ""
+msgstr[1] ""
+
+#, php-format
+msgid "Push %d page from page 2 to page 1 of Google"
+msgid_plural "Push %d pages from page 2 to page 1 of Google"
+msgstr[0] ""
+msgstr[1] ""
+
+#, php-format
+msgid "Recover %d page that is losing traffic"
+msgid_plural "Recover %d pages that are losing traffic"
+msgstr[0] ""
+msgstr[1] ""
+
+#, php-format
+msgid "Resolve keyword cannibalization for %d query"
+msgid_plural "Resolve keyword cannibalization for %d queries"
+msgstr[0] ""
+msgstr[1] ""
+
+#, php-format
+msgid "Add an FAQ section to %d page"
+msgid_plural "Add FAQ sections to %d pages"
+msgstr[0] ""
+msgstr[1] ""
+
+#, php-format
+msgid "Remove noindex from %d page that gets traffic"
+msgid_plural "Remove noindex from %d pages that get traffic"
+msgstr[0] ""
+msgstr[1] ""
+
+#, php-format
+msgid "Redirect %d broken URL"
+msgid_plural "Redirect %d broken URLs"
+msgstr[0] ""
+msgstr[1] ""
+
+#, php-format
+msgid "Link to %d orphan page"
+msgid_plural "Link to %d orphan pages"
+msgstr[0] ""
+msgstr[1] ""
+
+#, php-format
+msgid "Add %d internal link"
+msgid_plural "Add %d internal links"
+msgstr[0] ""
+msgstr[1] ""
+
+#, php-format
+msgid "Optimize %d product page"
+msgid_plural "Optimize %d product pages"
+msgstr[0] ""
+msgstr[1] ""
+
+#, php-format
+msgid "Strengthen %d product category"
+msgid_plural "Strengthen %d product categories"
+msgstr[0] ""
+msgstr[1] ""
+
+#, php-format
+msgid "Expand %d thin page that has traffic"
+msgid_plural "Expand %d thin pages that have traffic"
+msgstr[0] ""
+msgstr[1] ""
+
+#, php-format
+msgid "Merge, improve or noindex %d thin page without traffic"
+msgid_plural "Merge, improve or noindex %d thin pages without traffic"
+msgstr[0] ""
+msgstr[1] ""
+
+#, php-format
+msgid "Cover %d topic your competitors rank for"
+msgid_plural "Cover %d topics your competitors rank for"
 msgstr[0] ""
 msgstr[1] ""
 

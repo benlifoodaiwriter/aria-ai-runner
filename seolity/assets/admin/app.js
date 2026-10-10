@@ -632,35 +632,7 @@
 	};
 
 	/* ================================================================ AI Action Center */
-	App.pages.actions = function ( v, q ) {
-		var filter = q.priority || '';
-		v.appendChild( App.header( t( 'What Should I Do Today?' ), t( 'AI-prioritized actions ranked by impact, effort and confidence. Every suggestion explains itself — click “Why?”.' ), [ App.cap( 'ai' ) ? App.abtn( t( 'Refresh recommendations' ), function () {
-			return SL.api( 'recommendations/refresh', { method: 'POST' } ).then( function () {
-				SL.toast( t( 'Refreshing in the background — reload in a minute.' ) );
-			} );
-		} ) : null ] ) );
-		var body = h( 'div' );
-		v.appendChild( body );
-		function load() {
-			App.load( body, Promise.all( [ SL.api( 'action-center' ), SL.api( 'recommendations', { query: { priority: filter, limit: 100 } } ) ] ), function ( r ) {
-				var counts = r[ 0 ].counts;
-				body.appendChild( h( 'div', { class: 'sl-actioncounts' }, [ [ '', t( 'All' ) ], [ 'critical', t( 'Critical issues' ) ], [ 'high', t( 'High priority opportunities' ) ], [ 'medium', t( 'Optimization opportunities' ) ], [ 'low', t( 'Improvements' ) ] ].map( function ( x ) {
-					var n = x[ 0 ] ? counts[ x[ 0 ] ] : counts.critical + counts.high + counts.medium + counts.low;
-					return h( 'button', { type: 'button', class: 'sl-actioncount sl-actioncount--' + ( x[ 0 ] || 'all' ) + ( filter === x[ 0 ] ? ' is-active' : '' ), onClick: function () {
-						filter = x[ 0 ];
-						load();
-					} }, h( 'span', { class: 'sl-actioncount__n' }, x[ 0 ] ? SL.dot( x[ 0 ] ) : SL.icon( 'layers', 18 ), h( 'span', { text: SL.num( n, 0 ) } ) ), h( 'span', { text: x[ 1 ] } ) );
-				} ) ) );
-				if ( r[ 0 ].pending_changes ) {
-					body.appendChild( h( 'div', { class: 'sl-alert sl-alert--info' }, t( '%s AI changes are waiting for your approval.', r[ 0 ].pending_changes ), ' ', App.link( t( 'Review now' ), 'changes' ) ) );
-				}
-				body.appendChild( r[ 1 ].length ? h( 'div', { class: 'sl-recs' }, r[ 1 ].map( function ( rec ) {
-					return App.recommendationRow( rec, load );
-				} ) ) : SL.empty( t( 'Nothing to do here' ), t( 'Great job — or SEOlity needs more data (audit + Search Console).' ) ) );
-			} );
-		}
-		load();
-	};
+	// App.pages.actions (the SEO roadmap) lives in pages-roadmap.js.
 
 	/** Ask the server to start a warm GitHub runner (no-op for direct / Cloudflare routes); at most once a minute. */
 	var lastWarm = 0;

@@ -1,0 +1,282 @@
+SEO roadmap	نقشه راه سئو
+set to noindex or canonicalized	noindex یا کنونیکال به صفحه دیگر
+no internal links point to it	هیچ لینک داخلی به آن نیست
+missing from the sitemap	در نقشه سایت نیست
+0 impressions	۰ نمایش
+These pages were published recently but have not received a single impression in Search Console yet — Google has probably not indexed them. New content only starts earning traffic after it is indexed.	این صفحه‌ها اخیراً منتشر شده‌اند اما هنوز حتی یک نمایش در سرچ کنسول نگرفته‌اند — احتمالاً گوگل هنوز ایندکسشان نکرده است. محتوای جدید فقط بعد از ایندکس شدن ترافیک می‌گیرد.
+These pages were published recently. Connect Search Console so SEOlity can tell which ones Google has not indexed yet; until then, request indexing for each new page.	این صفحه‌ها اخیراً منتشر شده‌اند. سرچ کنسول را وصل کنید تا SEOlity بگوید کدام‌ها هنوز ایندکس نشده‌اند؛ تا آن موقع برای هر صفحه جدید درخواست ایندکس بدهید.
+In the editor open the Rank Math panel (the score icon top-right, or the Rank Math box under the content) → General → “Edit Snippet”.	در ویرایشگر پنل رنک مث را باز کنید (آیکون امتیاز بالا سمت راست یا جعبه رنک مث زیر محتوا) ← عمومی ← «ویرایش اسنیپت».
+Rank Math panel → Advanced → Robots Meta	پنل رنک مث ← پیشرفته ← متای ربات‌ها
+Scroll below the content to the Yoast SEO box → “SEO title” and “Meta description”.	زیر محتوا به جعبه Yoast SEO بروید ← «عنوان سئو» و «توضیحات متا».
+Yoast SEO box → Advanced → “Allow search engines to show this content?” = Yes	جعبه Yoast SEO ← پیشرفته ← «اجازه نمایش در موتورهای جستجو؟» = بله
+Scroll below the content to the %s box → title and meta description fields.	زیر محتوا به جعبه %s بروید ← فیلدهای عنوان و توضیحات متا.
+%s box → Advanced → robots: index	جعبه %s ← پیشرفته ← robots: index
+Scroll below the content to the SEOlity box → “SEO title” and “Meta description”.	زیر محتوا به جعبه SEOlity بروید ← «عنوان سئو» و «توضیحات متا».
+SEOlity box → “noindex” must be unchecked	جعبه SEOlity ← تیک «noindex» باید برداشته باشد
+%d related improvements	%d بهبود مرتبط
+Google already shows these pages, but far fewer people click than usual for their position. Better titles and descriptions turn existing impressions into visits — the quickest traffic win.	گوگل همین حالا این صفحه‌ها را نشان می‌دهد اما خیلی کمتر از حد معمولِ جایگاهشان کلیک می‌گیرند. عنوان و توضیحات بهتر، نمایش‌های فعلی را به بازدید تبدیل می‌کند — سریع‌ترین راه افزایش ترافیک.
+These pages rank just below the first page for real queries. A focused improvement of the content and internal links usually moves them onto page 1, where almost all clicks happen.	این صفحه‌ها برای کوئری‌های واقعی درست زیر صفحه اول هستند. بهبود هدفمند محتوا و لینک‌های داخلی معمولاً آن‌ها را به صفحه اول می‌برد، جایی که تقریباً همه کلیک‌ها اتفاق می‌افتد.
+These pages earned clearly fewer clicks than in the previous period. Find out why (competitors, outdated content, technical problems) before the drop grows.	این صفحه‌ها نسبت به دوره قبل کلیک خیلی کمتری گرفته‌اند. قبل از اینکه افت بیشتر شود علتش را پیدا کنید (رقبا، محتوای قدیمی، مشکل فنی).
+Several of your pages compete for the same queries, so Google splits rankings between them and none of them wins.	چند صفحه شما برای یک کوئری با هم رقابت می‌کنند؛ گوگل رتبه را بینشان تقسیم می‌کند و هیچ‌کدام برنده نمی‌شود.
+Searchers ask questions these pages do not answer yet. An FAQ section covers them and can win extra visibility.	جستجوگرها سؤال‌هایی می‌پرسند که این صفحه‌ها هنوز جواب نمی‌دهند. بخش پرسش‌های متداول آن‌ها را پوشش می‌دهد و دیده‌شدن بیشتری می‌آورد.
+These pages are excluded from Google by noindex although people find them — they will drop out of search.	این صفحه‌ها با noindex از گوگل حذف شده‌اند در حالی که کاربران پیدایشان می‌کنند — از نتایج جستجو خارج خواهند شد.
+These URLs return 404 but still receive links or visits. A 301 redirect keeps visitors and link value.	این آدرس‌ها خطای ۴۰۴ می‌دهند اما هنوز لینک یا بازدید می‌گیرند. ریدایرکت ۳۰۱ بازدیدکننده و ارزش لینک را حفظ می‌کند.
+No internal link points to these pages, so Google finds them late and treats them as unimportant.	هیچ لینک داخلی به این صفحه‌ها نیست؛ گوگل دیر پیدایشان می‌کند و کم‌اهمیت حسابشان می‌کند.
+Relevant internal links pass authority and context to important pages.	لینک‌های داخلی مرتبط اعتبار و مفهوم را به صفحه‌های مهم منتقل می‌کنند.
+These product pages miss important SEO elements (title, descriptions, keywords, image ALT).	این صفحه‌های محصول عناصر مهم سئو را ندارند (عنوان، توضیحات، کلمات کلیدی، ALT تصویر).
+Your competitors rank with content on these topics and you have no page for them.	رقبای شما با محتوا در این موضوعات رتبه دارند و شما صفحه‌ای برایشان ندارید.
+These pages get impressions but have little content, so they cannot compete for their queries. Expanding them with genuinely useful information usually lifts rankings.	این صفحه‌ها نمایش می‌گیرند اما محتوای کمی دارند و نمی‌توانند برای کوئری‌هایشان رقابت کنند. گسترش آن‌ها با اطلاعات واقعاً مفید معمولاً رتبه را بالا می‌برد.
+These pages have little content and no traffic. They dilute the site’s quality: improve them, merge them into a stronger page (with a redirect) or set them to noindex.	این صفحه‌ها محتوای کم و بدون ترافیک‌اند و کیفیت کلی سایت را پایین می‌آورند: بهترشان کنید، در یک صفحه قوی‌تر ادغام کنید (با ریدایرکت) یا noindex کنید.
+Click “Edit” next to the page in the list above (or Posts / Pages / Products → All → the item → Edit).	روی «ویرایش» کنار صفحه در فهرست بالا بزنید (یا نوشته‌ها / برگه‌ها / محصولات ← همه ← مورد ← ویرایش).
+Make sure the page may be indexed	مطمئن شوید صفحه اجازه ایندکس دارد
+The status must be “Published” (not private, not password-protected).	وضعیت باید «منتشر شده» باشد (نه خصوصی، نه رمزدار).
+Check: %s.	بررسی کنید: %s.
+Posts → All Posts → Edit → Publish box	نوشته‌ها ← همه نوشته‌ها ← ویرایش ← جعبه انتشار
+Link to it from 2–3 related pages	از ۲ تا ۳ صفحه مرتبط به آن لینک بدهید
+Google discovers new pages through links. Open SEOlity → Keywords & links → Internal Links, find the new page and apply the suggested links, or edit related, already-ranking posts and link to the new page with a descriptive anchor text.	گوگل صفحه‌های جدید را از طریق لینک‌ها پیدا می‌کند. SEOlity ← کلمات کلیدی و لینک‌ها ← لینک‌های داخلی را باز کنید، صفحه جدید را پیدا کنید و لینک‌های پیشنهادی را اعمال کنید؛ یا نوشته‌های مرتبطی را که رتبه دارند ویرایش کنید و با انکر توصیفی به صفحه جدید لینک بدهید.
+SEOLITY → Keywords & links → Internal Links	سئولیتی ← کلمات کلیدی و لینک‌ها ← لینک‌های داخلی
+Check it is in the sitemap	مطمئن شوید در نقشه سایت هست
+Open SEOlity → Technical SEO → Sitemap and confirm the page is listed (published posts are added automatically; noindex pages are not).	SEOlity ← سئوی فنی ← نقشه سایت را باز کنید و ببینید صفحه در فهرست هست (نوشته‌های منتشرشده خودکار اضافه می‌شوند؛ صفحه‌های noindex نه).
+SEOLITY → Technical SEO → Sitemap	سئولیتی ← سئوی فنی ← نقشه سایت
+Request indexing in Google Search Console	در گوگل سرچ کنسول درخواست ایندکس بدهید
+Click “Inspect in Search Console” next to the page above → wait for the check → “Request indexing”. Do this once per page; repeating it does not help.	روی «بررسی در سرچ کنسول» کنار صفحه در بالا بزنید ← صبر کنید بررسی تمام شود ← «Request indexing». برای هر صفحه یک بار کافی است؛ تکرارش فایده‌ای ندارد.
+Search Console → URL inspection → Request indexing	سرچ کنسول ← URL inspection ← Request indexing
+Verify in 3–7 days	بعد از ۳ تا ۷ روز بررسی کنید
+Run “Analyze” again in a week: the page leaves this list as soon as Search Console records impressions for it. If it is still missing after two weeks, improve its content and internal links.	یک هفته بعد دوباره «تحلیل» را بزنید: هر صفحه‌ای که در سرچ کنسول نمایش بگیرد از این فهرست خارج می‌شود. اگر بعد از دو هفته هنوز نبود، محتوا و لینک‌های داخلی‌اش را تقویت کنید.
+See the queries people use	کوئری‌هایی را که کاربران جستجو می‌کنند ببینید
+Open the page in SEOlity → Search Console → Pages (or the “GSC keywords” button in the editor) to see the real queries, impressions and CTR.	صفحه را در SEOlity ← سرچ کنسول ← صفحه‌ها باز کنید (یا دکمه «کلمات کلیدی GSC» در ویرایشگر) تا کوئری‌ها، نمایش‌ها و CTR واقعی را ببینید.
+SEOLITY → Search Console → Pages	سئولیتی ← سرچ کنسول ← صفحه‌ها
+Let SEOlity write the title and description	بگذارید SEOlity عنوان و توضیحات را بنویسد
+Click “AI title & description” next to each page above. SEOlity writes options from the real queries; pick one, edit if you like and apply (it goes into your SEO plugin and can be undone).	روی «عنوان و توضیحات با هوش مصنوعی» کنار هر صفحه بزنید. SEOlity از روی کوئری‌های واقعی چند گزینه می‌نویسد؛ یکی را انتخاب کنید، در صورت نیاز ویرایش و اعمال کنید (در افزونه سئوی شما ذخیره می‌شود و قابل بازگشت است).
+Roadmap → this task → page → AI title & description	نقشه راه ← همین کار ← صفحه ← عنوان و توضیحات با هوش مصنوعی
+Or edit it yourself in %s	یا خودتان در %s ویرایش کنید
+Title: up to ~60 characters, main query near the start, a clear benefit. Description: 140–155 characters, answers the intent, ends with a reason to click. Then “Update”.	عنوان: حداکثر حدود ۶۰ کاراکتر، کوئری اصلی نزدیک ابتدا و یک مزیت روشن. توضیحات: ۱۴۰ تا ۱۵۵ کاراکتر، پاسخ به نیت جستجو و پایانی که دلیل کلیک بدهد. بعد «به‌روزرسانی».
+Edit page → SEO box → title & description	ویرایش صفحه ← جعبه سئو ← عنوان و توضیحات
+Measure	اندازه‌گیری
+SEOlity records every change as an experiment and compares CTR after 14–28 days (AI Center → AI Changes / Experiments). Leave the new title in place at least two weeks.	SEOlity هر تغییر را به‌عنوان آزمایش ثبت می‌کند و CTR را بعد از ۱۴ تا ۲۸ روز مقایسه می‌کند (مرکز هوش مصنوعی ← تغییرات AI / آزمایش‌ها). عنوان جدید را دست‌کم دو هفته نگه دارید.
+SEOLITY → Analysis → Experiments	سئولیتی ← تحلیل ← آزمایش‌ها
+Find the cause of the drop	علت افت را پیدا کنید
+Open the page in SEOlity → Search Console and compare both periods: did impressions fall (Google shows it less: rankings or demand) or only CTR (snippet)? Check the page still returns 200 and is indexable (Site Audit), and whether a competitor published something better (Analysis → Competitors).	صفحه را در SEOlity ← سرچ کنسول باز کنید و دو دوره را مقایسه کنید: نمایش کم شده (رتبه یا تقاضا) یا فقط CTR (اسنیپت)؟ بررسی کنید صفحه هنوز کد ۲۰۰ می‌دهد و قابل ایندکس است (ممیزی سایت) و آیا رقیبی محتوای بهتری منتشر کرده (تحلیل ← رقبا).
+Look at the queries it almost ranks for	کوئری‌هایی را که نزدیک صفحه اول است ببینید
+Open the page queries (positions 8–20) in SEOlity → Search Console or the “GSC keywords” button in the editor. Note which queries are missing from the headings and text.	کوئری‌های صفحه (جایگاه ۸ تا ۲۰) را در SEOlity ← سرچ کنسول یا دکمه «کلمات کلیدی GSC» در ویرایشگر باز کنید. ببینید کدام کوئری‌ها در تیترها و متن نیستند.
+Improve the content with SEOlity AI	محتوا را با هوش مصنوعی SEOlity بهتر کنید
+In the editor click “Optimize with SEOlity AI” (above the classic editor, in the Gutenberg sidebar, or in the Elementor panel for a text widget). It uses the real queries, the SEO knowledge base and competitor pages; a small panel shows the progress and the report — review and apply.	در ویرایشگر روی «بهینه‌سازی با هوش مصنوعی SEOlity» بزنید (بالای ویرایشگر کلاسیک، سایدبار گوتنبرگ یا پنل المنتور برای ویجت متن). از کوئری‌های واقعی، پایگاه دانش سئو و صفحه‌های رقبا استفاده می‌کند؛ یک پنل کوچک پیشرفت و گزارش را نشان می‌دهد — بررسی و اعمال کنید.
+Edit page → Optimize with SEOlity AI	ویرایش صفحه ← بهینه‌سازی با هوش مصنوعی SEOlity
+Cover the missing intent	نیت‌های جاافتاده را پوشش دهید
+Add a section (H2) for each important missing query, answer questions directly in the first sentence under it, add examples, numbers and an updated date. Do not stuff keywords.	برای هر کوئری مهم جاافتاده یک بخش (H2) اضافه کنید، در اولین جمله زیر آن مستقیم جواب بدهید، مثال، عدد و تاریخ به‌روزرسانی بگذارید. کلمه کلیدی را انباشته نکنید.
+Add internal links to it	به آن لینک داخلی بدهید
+Link to the page from 2–3 strong, related pages with descriptive anchor text (SEOlity → Internal Links shows suggestions).	از ۲ تا ۳ صفحه قوی و مرتبط با انکر توصیفی به این صفحه لینک بدهید (SEOlity ← لینک‌های داخلی پیشنهاد می‌دهد).
+Update and request re-crawl	به‌روزرسانی کنید و درخواست خزش مجدد بدهید
+Click “Update”, then request indexing for the URL in Search Console (URL inspection). Re-check in 2–4 weeks.	«به‌روزرسانی» را بزنید و بعد در سرچ کنسول (URL inspection) برای آدرس درخواست ایندکس بدهید. ۲ تا ۴ هفته بعد دوباره بررسی کنید.
+Search Console → URL inspection	سرچ کنسول ← URL inspection
+See which pages compete	ببینید کدام صفحه‌ها با هم رقابت می‌کنند
+Open SEOlity → Keywords & links → Keywords → Cannibalization. For each query you see the competing URLs with clicks and positions; “AI advice” recommends merge, redirect, differentiate or re-target.	SEOlity ← کلمات کلیدی و لینک‌ها ← کلمات کلیدی ← هم‌نوع‌خواری را باز کنید. برای هر کوئری آدرس‌های رقیب با کلیک و جایگاه را می‌بینید؛ «مشاوره هوش مصنوعی» ادغام، ریدایرکت، متمایزسازی یا تغییر هدف را پیشنهاد می‌دهد.
+SEOLITY → Keywords → Cannibalization	سئولیتی ← کلمات کلیدی ← هم‌نوع‌خواری
+Pick one main page per query	برای هر کوئری یک صفحه اصلی انتخاب کنید
+Usually the page with the most clicks and best fit for the intent. The others must stop targeting that query.	معمولاً صفحه‌ای که بیشترین کلیک و بهترین تطابق با نیت جستجو را دارد. بقیه نباید دیگر آن کوئری را هدف بگیرند.
+Merge, redirect or differentiate	ادغام، ریدایرکت یا متمایز کنید
+If the weaker page adds nothing: move its useful parts into the main page and create a 301 redirect (SEOlity → Technical SEO → Redirects). If both are useful: change the weaker page’s focus keyword, title and headings to a different intent.	اگر صفحه ضعیف‌تر چیزی اضافه نمی‌کند: بخش‌های مفیدش را به صفحه اصلی ببرید و ریدایرکت ۳۰۱ بسازید (SEOlity ← سئوی فنی ← ریدایرکت‌ها). اگر هر دو مفیدند: کلمه کلیدی کانونی، عنوان و تیترهای صفحه ضعیف‌تر را برای نیت دیگری تغییر دهید.
+SEOLITY → Technical SEO → Redirects	سئولیتی ← سئوی فنی ← ریدایرکت‌ها
+Point internal links to the main page	لینک‌های داخلی را به صفحه اصلی بدهید
+Links with that query as anchor text should go to the main page only.	لینک‌هایی که انکرشان همان کوئری است فقط باید به صفحه اصلی بروند.
+Generate the FAQ	پرسش‌های متداول را بسازید
+Click “Do it with AI” next to each page: SEOlity writes questions from the real question queries and short factual answers; review them before applying.	روی «انجام با هوش مصنوعی» کنار هر صفحه بزنید: SEOlity از کوئری‌های سؤالی واقعی، سؤال و جواب‌های کوتاه و دقیق می‌نویسد؛ قبل از اعمال بررسی کنید.
+Place it on the page	آن را در صفحه قرار دهید
+Add an “FAQ” heading near the end and the questions as H3 with short answers (or the FAQ block of your SEO plugin). SEOlity adds FAQPage schema automatically when enabled.	نزدیک انتهای صفحه تیتر «سؤالات متداول» و سؤال‌ها را به‌صورت H3 با جواب کوتاه بگذارید (یا از بلوک FAQ افزونه سئو استفاده کنید). SEOlity در صورت فعال بودن، اسکیمای FAQPage را خودکار اضافه می‌کند.
+Edit page → add FAQ section	ویرایش صفحه ← افزودن بخش پرسش‌های متداول
+Update and verify	به‌روزرسانی و بررسی
+Update the page and check the result with Google’s Rich Results Test.	صفحه را به‌روزرسانی کنید و نتیجه را با ابزار Rich Results Test گوگل بررسی کنید.
+Open the page	صفحه را باز کنید
+Allow indexing	اجازه ایندکس بدهید
+Go to %s, set it to index, then “Update”. Or click “Do it with AI” above to let SEOlity change it (with undo).	به %s بروید، روی index بگذارید و «به‌روزرسانی» را بزنید. یا «انجام با هوش مصنوعی» را بزنید تا SEOlity تغییرش دهد (قابل بازگشت).
+Check global settings	تنظیمات کلی را بررسی کنید
+Make sure Settings → Reading → “Discourage search engines” is NOT checked, and that the post type / category is not set to noindex in your SEO plugin.	مطمئن شوید تنظیمات ← خواندن ← «موتورهای جستجو را از ایندکس کردن منع کن» تیک نخورده و نوع نوشته / دسته در افزونه سئو روی noindex نیست.
+Settings → Reading	تنظیمات ← خواندن
+Request indexing	درخواست ایندکس
+Search Console → URL inspection → Request indexing.	سرچ کنسول ← URL inspection ← Request indexing.
+Review the broken URLs	آدرس‌های خراب را بررسی کنید
+Open SEOlity → Technical SEO → 404 Monitor: each URL shows hits, referrers and the best matching live page.	SEOlity ← سئوی فنی ← پایشگر ۴۰۴ را باز کنید: برای هر آدرس تعداد بازدید، ارجاع‌دهنده‌ها و بهترین صفحه زنده مشابه نشان داده می‌شود.
+SEOLITY → Technical SEO → 404 Monitor	سئولیتی ← سئوی فنی ← پایشگر ۴۰۴
+Create 301 redirects	ریدایرکت ۳۰۱ بسازید
+Click “Do it with AI” next to each URL above (SEOlity proposes the best target), or add them in SEOlity → Technical SEO → Redirects: From = broken path, To = closest live page, type 301.	روی «انجام با هوش مصنوعی» کنار هر آدرس بزنید (SEOlity بهترین مقصد را پیشنهاد می‌دهد)، یا در SEOlity ← سئوی فنی ← ریدایرکت‌ها اضافه کنید: از = مسیر خراب، به = نزدیک‌ترین صفحه زنده، نوع ۳۰۱.
+SEOLITY → Technical SEO → Redirects → Add	سئولیتی ← سئوی فنی ← ریدایرکت‌ها ← افزودن
+Fix the links at the source	لینک‌ها را در مبدأ اصلاح کنید
+Edit the pages that still link to the broken URL (Site Audit → Broken internal links lists them) and point the link to the live page.	صفحه‌هایی را که هنوز به آدرس خراب لینک می‌دهند ویرایش کنید (ممیزی سایت ← لینک‌های داخلی خراب فهرستشان را دارد) و لینک را به صفحه زنده بدهید.
+SEOLITY → Analysis → Site Audit	سئولیتی ← تحلیل ← ممیزی سایت
+Open the redirects	ریدایرکت‌ها را باز کنید
+SEOlity → Technical SEO → Redirects shows chains (A→B→C) and loops.	SEOlity ← سئوی فنی ← ریدایرکت‌ها زنجیره‌ها (A→B→C) و حلقه‌ها را نشان می‌دهد.
+Fix them in one click	با یک کلیک اصلاحشان کنید
+Click “Do it with AI” here or “Fix chains” on the Redirects page: every redirect then points straight to the final URL; loops are shown for a manual decision.	اینجا «انجام با هوش مصنوعی» یا در صفحه ریدایرکت‌ها «اصلاح زنجیره‌ها» را بزنید: هر ریدایرکت مستقیم به آدرس نهایی می‌رود؛ حلقه‌ها برای تصمیم دستی نشان داده می‌شوند.
+Open internal link suggestions	پیشنهادهای لینک داخلی را باز کنید
+SEOlity → Keywords & links → Internal Links lists links whose anchor text already exists in your content.	SEOlity ← کلمات کلیدی و لینک‌ها ← لینک‌های داخلی لینک‌هایی را فهرست می‌کند که انکرشان همین حالا در محتوای شما هست.
+Apply the links	لینک‌ها را اعمال کنید
+Click “Do it with AI” next to each page above to see suggestions and preview them, then apply. Prefer links from related pages that already get traffic.	روی «انجام با هوش مصنوعی» کنار هر صفحه بزنید تا پیشنهادها و پیش‌نمایش را ببینید و اعمال کنید. لینک از صفحه‌های مرتبطی که ترافیک دارند بهتر است.
+Or add them by hand	یا دستی اضافه کنید
+Edit a related post, select a phrase that describes the target page, press Ctrl+K (or the link button) and choose the page. Update.	یک نوشته مرتبط را ویرایش کنید، عبارتی را که صفحه مقصد را توصیف می‌کند انتخاب کنید، Ctrl+K (یا دکمه لینک) را بزنید و صفحه را انتخاب کنید. به‌روزرسانی کنید.
+Posts → Edit → select text → Link	نوشته‌ها ← ویرایش ← انتخاب متن ← لینک
+Open the product	محصول را باز کنید
+Products → All Products → the product → Edit (or “Edit” in the list above).	محصولات ← همه محصولات ← محصول ← ویرایش (یا «ویرایش» در فهرست بالا).
+Products → All Products → Edit	محصولات ← همه محصولات ← ویرایش
+Run the AI Product Optimizer	بهینه‌ساز هوشمند محصول را اجرا کنید
+Click “AI Product Optimizer” in the SEOlity box (or “Do it with AI” here). It writes the SEO title, meta description, short description, focus keywords and image ALT from the real product data. A small panel shows the progress; open its report and apply field by field.	در جعبه SEOlity روی «بهینه‌ساز هوشمند محصول» بزنید (یا اینجا «انجام با هوش مصنوعی»). عنوان سئو، توضیحات متا، توضیح کوتاه، کلمات کلیدی و ALT تصاویر را از داده واقعی محصول می‌نویسد. یک پنل کوچک پیشرفت را نشان می‌دهد؛ گزارشش را باز کنید و فیلد به فیلد اعمال کنید.
+Edit product → SEOlity box → AI Product Optimizer	ویرایش محصول ← جعبه SEOlity ← بهینه‌ساز هوشمند محصول
+Check price, stock and images	قیمت، موجودی و تصاویر را بررسی کنید
+Product schema needs price, availability and an image; fill them in the Product data box. Then “Update”.	اسکیمای محصول به قیمت، موجودی و تصویر نیاز دارد؛ در جعبه اطلاعات محصول پرشان کنید. بعد «به‌روزرسانی».
+Edit product → Product data	ویرایش محصول ← اطلاعات محصول
+Open the category	دسته را باز کنید
+Products → Categories → hover the category → Edit.	محصولات ← دسته‌ها ← نشانگر روی دسته ← ویرایش.
+Products → Categories → Edit	محصولات ← دسته‌ها ← ویرایش
+Write a helpful description	یک توضیح مفید بنویسید
+Click “Optimize with SEOlity AI” under the description: it writes an intro that answers buyer questions and links to key products. Review and Update.	زیر توضیحات روی «بهینه‌سازی با هوش مصنوعی SEOlity» بزنید: مقدمه‌ای می‌نویسد که به سؤال‌های خریدار جواب می‌دهد و به محصولات اصلی لینک می‌دهد. بررسی و به‌روزرسانی کنید.
+Review the gaps	شکاف‌ها را بررسی کنید
+SEOlity → Analysis → Competitors → the competitor → Gaps: topics they cover and you do not.	SEOlity ← تحلیل ← رقبا ← رقیب ← شکاف‌ها: موضوعاتی که آن‌ها پوشش می‌دهند و شما نه.
+SEOLITY → Analysis → Competitors	سئولیتی ← تحلیل ← رقبا
+Plan the article	مقاله را برنامه‌ریزی کنید
+Click “Do it with AI” to add the topic to the content planner with an AI brief (headings, questions, entities, length).	روی «انجام با هوش مصنوعی» بزنید تا موضوع با یک بریف هوشمند (تیترها، سؤال‌ها، موجودیت‌ها، طول) به برنامه‌ریز محتوا اضافه شود.
+Write and publish	بنویسید و منتشر کنید
+Posts → Add New, follow the brief, add internal links to and from related pages, publish. It then appears under “Get new pages indexed” until Google shows it.	نوشته‌ها ← افزودن، طبق بریف بنویسید، از و به صفحه‌های مرتبط لینک داخلی بدهید و منتشر کنید. تا وقتی گوگل نشانش ندهد در کار «ایندکس صفحه‌های جدید» می‌آید.
+Posts → Add New	نوشته‌ها ← افزودن نوشته
+Bulk-write ALT text	ALT را گروهی بنویسید
+SEOlity → Content → Images → filter “Missing ALT” → select all → “Generate ALT with AI”. Or in Media → Library (list view) select images → Bulk actions → “Write ALT text with SEOlity AI”.	SEOlity ← محتوا ← تصاویر ← فیلتر «بدون ALT» ← انتخاب همه ← «تولید ALT با هوش مصنوعی». یا در رسانه ← کتابخانه (نمای فهرستی) تصاویر را انتخاب کنید ← کارهای دسته‌جمعی ← «نوشتن ALT با هوش مصنوعی SEOlity».
+SEOLITY → Content → Images	سئولیتی ← محتوا ← تصاویر
+Single image	تک تصویر
+Media → Library → click the image → “Write ALT, title, caption & description with AI” in the details panel.	رسانه ← کتابخانه ← روی تصویر بزنید ← «نوشتن ALT، عنوان، کپشن و توضیحات با هوش مصنوعی» در پنل جزئیات.
+Media → Library → image details	رسانه ← کتابخانه ← جزئیات تصویر
+Open Schema	اسکیما را باز کنید
+SEOlity → Technical SEO → Schema shows which pages lack structured data and suggests the right type (Article, Product, FAQ, Organization…).	SEOlity ← سئوی فنی ← اسکیما نشان می‌دهد کدام صفحه‌ها داده ساختاریافته ندارند و نوع مناسب را پیشنهاد می‌دهد (Article، Product، FAQ، Organization…).
+SEOLITY → Technical SEO → Schema	سئولیتی ← سئوی فنی ← اسکیما
+Validate	اعتبارسنجی
+Test a page with Google’s Rich Results Test after enabling it.	بعد از فعال کردن، یک صفحه را با Rich Results Test گوگل آزمایش کنید.
+See the slow pages	صفحه‌های کند را ببینید
+SEOlity → Analysis → Site Audit → Performance shows Core Web Vitals per page (PageSpeed).	SEOlity ← تحلیل ← ممیزی سایت ← کارایی، Core Web Vitals هر صفحه را نشان می‌دهد (PageSpeed).
+Fix the usual causes	علت‌های رایج را رفع کنید
+Compress and resize large images (WebP), enable a caching plugin, lazy-load images below the fold, remove unused plugins/scripts, and use a faster host or a CDN.	تصاویر بزرگ را فشرده و کوچک کنید (WebP)، افزونه کش فعال کنید، تصاویر پایین صفحه را lazy-load کنید، افزونه‌ها و اسکریپت‌های بی‌استفاده را حذف کنید و از هاست سریع‌تر یا CDN استفاده کنید.
+Open the sitemap check	بررسی نقشه سایت را باز کنید
+SEOlity → Technical SEO → Sitemap lists URLs in the sitemap that redirect, return errors or are noindex.	SEOlity ← سئوی فنی ← نقشه سایت آدرس‌هایی از نقشه سایت را فهرست می‌کند که ریدایرکت یا خطا دارند یا noindex هستند.
+Fix robots.txt	robots.txt را اصلاح کنید
+SEOlity → Technical SEO → Robots.txt: add the “Sitemap:” line and make sure nothing important is disallowed.	SEOlity ← سئوی فنی ← Robots.txt: خط «Sitemap:» را اضافه کنید و مطمئن شوید چیز مهمی disallow نشده است.
+SEOLITY → Technical SEO → Robots.txt	سئولیتی ← سئوی فنی ← Robots.txt
+Submit in Search Console	در سرچ کنسول ثبت کنید
+Search Console → Sitemaps → enter the sitemap URL → Submit.	سرچ کنسول ← Sitemaps ← آدرس نقشه سایت را وارد کنید ← Submit.
+Open the affected pages	صفحه‌های درگیر را باز کنید
+The list above shows the affected pages; SEOlity’s detail screen for this issue explains each one.	فهرست بالا صفحه‌های درگیر را نشان می‌دهد؛ صفحه جزئیات SEOlity برای این مشکل هرکدام را توضیح می‌دهد.
+Apply the fix	اصلاح را اعمال کنید
+Follow the fix described above for each page; where “Do it with AI” is shown, SEOlity prepares the change for you to review.	برای هر صفحه راه‌حل بالا را انجام دهید؛ هر جا «انجام با هوش مصنوعی» هست، SEOlity تغییر را برای بررسی شما آماده می‌کند.
+Verify	بررسی نتیجه
+Run a new site audit (Analysis → Site Audit → Start) and press “Analyze” here again: solved tasks disappear from the roadmap.	یک ممیزی جدید اجرا کنید (تحلیل ← ممیزی سایت ← شروع) و دوباره اینجا «تحلیل» را بزنید: کارهای حل‌شده از نقشه راه حذف می‌شوند.
+Search Console shows impressions for every listed page.	سرچ کنسول برای همه صفحه‌های فهرست نمایش ثبت کند.
+New titles/descriptions are live; CTR is measured after 14–28 days.	عنوان‌ها و توضیحات جدید منتشر شده باشند؛ CTR بعد از ۱۴ تا ۲۸ روز اندازه‌گیری می‌شود.
+The pages reach positions 1–10 for their main queries.	صفحه‌ها برای کوئری‌های اصلی‌شان به جایگاه ۱ تا ۱۰ برسند.
+The pages are indexable and indexed again.	صفحه‌ها قابل ایندکس و دوباره ایندکس شده باشند.
+Every broken URL redirects (301) to a relevant live page.	هر آدرس خراب با ۳۰۱ به یک صفحه زنده مرتبط ریدایرکت شود.
+The issue no longer appears after the next audit and analysis.	مشکل در ممیزی و تحلیل بعدی دیگر دیده نشود.
+The analysis took too long and was stopped. Press “Analyze” again.	تحلیل بیش از حد طول کشید و متوقف شد. دوباره «تحلیل» را بزنید.
+Unknown status.	وضعیت نامعتبر است.
+No AI provider is configured — the roadmap was built from your data and the built-in guides only.	هیچ هوش مصنوعی تنظیم نشده — نقشه راه فقط از داده‌های شما و راهنماهای داخلی ساخته شد.
+Posts → All Posts → Edit	نوشته‌ها ← همه نوشته‌ها ← ویرایش
+Pages → All Pages → Edit	برگه‌ها ← همه برگه‌ها ← ویرایش
+Edit page → %s box	ویرایش صفحه ← جعبه %s
+SEOLITY → Keywords & links → Keywords	سئولیتی ← کلمات کلیدی و لینک‌ها ← کلمات کلیدی
+SEOLITY → Keywords & links → Focus keywords	سئولیتی ← کلمات کلیدی و لینک‌ها ← کلمات کلیدی کانونی
+SEOLITY → Search Console	سئولیتی ← سرچ کنسول
+SEOLITY → Content → Content	سئولیتی ← محتوا ← محتوا
+Media → Library	رسانه ← کتابخانه
+First roadmap.	اولین نقشه راه.
+SEO health score: %d/100.	امتیاز سلامت سئو: %d از ۱۰۰.
+Last 28 days: %1$s clicks (previous period %2$s) from %3$s impressions.	۲۸ روز اخیر: %1$s کلیک (دوره قبل %2$s) از %3$s نمایش.
+Search Console is not connected yet, so traffic-based tasks are missing — connect it for a complete roadmap.	سرچ کنسول هنوز وصل نیست، پس کارهای مبتنی بر ترافیک وجود ندارند — برای نقشه راه کامل وصلش کنید.
+%1$d tasks found: %2$d critical and %3$d high priority. Start with the “This week” column.	%1$d کار پیدا شد: %2$d بحرانی و %3$d با اولویت بالا. از ستون «این هفته» شروع کنید.
+Writing title, descriptions and keywords…	در حال نوشتن عنوان، توضیحات و کلمات کلیدی…
+SEO score %1$s → %2$s	امتیاز سئو %1$s ← %2$s
+Review & apply	بررسی و اعمال
+Report reviewed	گزارش بررسی شد
+Elementor widget	ویجت المنتور
+This week	این هفته
+Next 2 weeks	دو هفته آینده
+This month	این ماه
+Later	بعداً
+Indexing	ایندکس
+On-page	درون‌صفحه‌ای
+Strategy	استراتژی
+Waiting to start…	در انتظار شروع…
+Reading Search Console and audit data	خواندن داده‌های سرچ کنسول و ممیزی
+Diagnosing every issue on the site	عیب‌یابی همه مشکلات سایت
+Collecting new content, competitors and trends	جمع‌آوری محتوای جدید، رقبا و روندها
+Studying the SEO knowledge base and writing the roadmap	مطالعه پایگاه دانش سئو و نوشتن نقشه راه
+Other	سایر
+SEO roadmap — what should I do today?	نقشه راه سئو — امروز چه کار کنم؟
+A step-by-step plan for this site. SEOlity analyzes only when you press “Analyze”: it reads Search Console, the site audit, your content and competitors, studies the SEO knowledge base and keeps the plan stable between analyses.	برنامه قدم‌به‌قدم برای همین سایت. SEOlity فقط وقتی «تحلیل» را بزنید بررسی می‌کند: سرچ کنسول، ممیزی سایت، محتوا و رقبا را می‌خواند، پایگاه دانش سئو را مطالعه می‌کند و برنامه را بین تحلیل‌ها پایدار نگه می‌دارد.
+The last analysis failed:	آخرین تحلیل ناموفق بود:
+Try again	دوباره امتحان کنید
+AI provider connected	هوش مصنوعی وصل است
+Without AI the roadmap is still built from your data and the built-in guides.	بدون هوش مصنوعی هم نقشه راه از داده‌های شما و راهنماهای داخلی ساخته می‌شود.
+Needed for indexing, CTR, ranking and traffic tasks.	برای کارهای ایندکس، CTR، رتبه و ترافیک لازم است.
+Site audit done	ممیزی سایت انجام شده
+Needed for technical and on-page tasks.	برای کارهای فنی و درون‌صفحه‌ای لازم است.
+Build your SEO roadmap	نقشه راه سئوی خود را بسازید
+SEOlity will read all your data once, study the SEO knowledge base and write a prioritized plan — from new articles that still need indexing to technical fixes, content, links and products. Every task comes with the exact pages and a step-by-step guide in your dashboard.	SEOlity یک بار همه داده‌های شما را می‌خواند، پایگاه دانش سئو را مطالعه می‌کند و یک برنامه اولویت‌بندی‌شده می‌نویسد — از مقاله‌های جدیدی که هنوز باید ایندکس شوند تا اصلاحات فنی، محتوا، لینک‌ها و محصولات. هر کار با صفحه‌های دقیق و راهنمای قدم‌به‌قدم در پیشخوان همراه است.
+Analyze my site	تحلیل سایت من
+Analyzing your site…	در حال تحلیل سایت شما…
+The AI is answering through GitHub — this page updates by itself.	هوش مصنوعی از طریق گیت‌هاب پاسخ می‌دهد — این صفحه خودش به‌روز می‌شود.
+Elapsed: %s s · usually 1–3 minutes. You can leave this page; the analysis continues.	زمان سپری‌شده: %s ثانیه · معمولاً ۱ تا ۳ دقیقه. می‌توانید از این صفحه بروید؛ تحلیل ادامه دارد.
+What changed since the previous analysis	از تحلیل قبلی چه چیزی تغییر کرده
+New tasks:	کارهای جدید:
+Solved / gone:	حل‌شده / حذف‌شده:
+No important changes since the previous analysis — the plan stays the same.	از تحلیل قبلی تغییر مهمی نیست — برنامه همان می‌ماند.
+Focus this week	تمرکز این هفته
+Strengths	نقاط قوت
+Risks	ریسک‌ها
+%1$s of %2$s tasks done	%1$s از %2$s کار انجام شده
+Version %s	نسخه %s
+AI: %s	هوش مصنوعی: %s
+Built without AI	بدون هوش مصنوعی ساخته شد
+Knowledge: %s	دانش: %s
+%1$s tasks · %2$s critical · %3$s high	%1$s کار · %2$s بحرانی · %3$s بالا
+Re-analyze	تحلیل مجدد
+Show done tasks	نمایش کارهای انجام‌شده
+All tasks in this view are done. Press “Re-analyze” after your changes have been live for a while.	همه کارهای این بخش انجام شده‌اند. وقتی تغییرات مدتی منتشر بودند «تحلیل مجدد» را بزنید.
+%s pages	%s صفحه
+Came back	برگشته
+Priority changed	اولویت تغییر کرد
+Inspect in Search Console	بررسی در سرچ کنسول
+Do it with AI	انجام با هوش مصنوعی
+Optimize with AI	بهینه‌سازی با هوش مصنوعی
+Changed	تغییر کرده
+Why this matters	چرا مهم است
+Expected result:	نتیجه مورد انتظار:
+Changed since the last analysis:	تغییر نسبت به تحلیل قبلی:
+Affected pages (%s)	صفحه‌های درگیر (%s)
+Plan for your site (AI)	برنامه مخصوص سایت شما (هوش مصنوعی)
+Step by step in your dashboard	قدم‌به‌قدم در پیشخوان
+Done when:	تمام است وقتی:
+Not relevant	مربوط نیست
+Working on it	در حال انجام
+Optimizing with SEOlity AI	بهینه‌سازی با هوش مصنوعی SEOlity
+Selected text	متن انتخاب‌شده
+Suggestion rejected	پیشنهاد رد شد
+Applied to the editor — save the page to keep it	در ویرایشگر اعمال شد — برای ماندگاری صفحه را ذخیره کنید
+Applied (undo anytime from version history)	اعمال شد (از تاریخچه نسخه‌ها قابل بازگشت است)
+SEOlity tasks	کارهای SEOlity
+Working…	در حال انجام…
+SEOlity AI	هوش مصنوعی SEOlity
+Finished — review the result	تمام شد — نتیجه را ببینید
+Writing title and description options…	در حال نوشتن گزینه‌های عنوان و توضیحات…
+New title and description options are ready.	گزینه‌های جدید عنوان و توضیحات آماده است.
+Choose & apply	انتخاب و اعمال
+Applied: %s	اعمال شد: %s
+Get %d new pages indexed by Google	%d صفحه جدید را در گوگل ایندکس کنید
+published %d days ago	%d روز پیش منتشر شده
+Raise the click-through rate of %d pages	افزایش نرخ کلیک %d صفحه
+Push %d pages from page 2 to page 1 of Google	رساندن %d صفحه از صفحه دوم به صفحه اول گوگل
+Recover %d pages that are losing traffic	بازگرداندن ترافیک %d صفحه در حال افت
+Resolve keyword cannibalization for %d queries	رفع هم‌نوع‌خواری کلمه کلیدی برای %d کوئری
+Add FAQ sections to %d pages	افزودن پرسش‌های متداول به %d صفحه
+Remove noindex from %d pages that get traffic	برداشتن noindex از %d صفحه دارای ترافیک
+Redirect %d broken URLs	ریدایرکت %d آدرس خراب
+Link to %d orphan pages	لینک دادن به %d صفحه یتیم
+Add %d internal links	افزودن %d لینک داخلی
+Optimize %d product pages	بهینه‌سازی %d صفحه محصول
+Strengthen %d product categories	تقویت %d دسته محصول
+Expand %d thin pages that have traffic	گسترش %d صفحه کم‌محتوای دارای ترافیک
+Merge, improve or noindex %d thin pages without traffic	ادغام، بهبود یا noindex کردن %d صفحه کم‌محتوای بدون ترافیک
+Cover %d topics your competitors rank for	پوشش %d موضوعی که رقبا در آن رتبه دارند

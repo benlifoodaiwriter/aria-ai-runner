@@ -21,7 +21,8 @@
 			var container = view.getContainer();
 			var settings = container.settings;
 			var key = settings.get( 'editor' ) !== undefined ? 'editor' : settings.get( 'title' ) !== undefined ? 'title' : settings.get( 'description_text' ) !== undefined ? 'description_text' : null;
-			return key ? { container: container, key: key } : null;
+			var type = container.model && container.model.get ? container.model.get( 'widgetType' ) : '';
+			return key ? { container: container, key: key, type: type } : null;
 		} catch ( e ) {
 			return null;
 		}
@@ -29,6 +30,7 @@
 
 	function adapter( sel ) {
 		return {
+			label: t( 'Elementor widget' ) + ( sel.type ? ' (' + sel.type + ')' : '' ),
 			get: function () {
 				return sel.container.settings.get( sel.key ) || '';
 			},

@@ -4,7 +4,7 @@ Tags: seo, ai, search console, woocommerce, schema
 Requires at least: 6.2
 Tested up to: 6.6
 Requires PHP: 7.4
-Stable tag: 1.6.0
+Stable tag: 1.7.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -72,6 +72,13 @@ Yes. The interface is fully translated and RTL-native, text analysis understands
 Enable "Delete all data on uninstall" in Settings → Privacy, then delete the plugin.
 
 == Changelog ==
+
+= 1.7.0 =
+* New SEO roadmap replaces "What should I do today?": nothing is analyzed until you press "Analyze". SEOlity then reads Search Console, the site audit, your content, new posts and competitors, studies the SEO knowledge base (up to 10 documents plus your site playbook) and writes an expert diagnosis, strengths, risks, the focus for this week and a prioritized plan in four phases (this week, next 2 weeks, this month, later).
+* Down to the smallest detail: e.g. new articles Google has not indexed yet (with "Inspect in Search Console" per page, sitemap / internal-link / noindex problems), CTR fixes, page-2 pages, declining pages, cannibalization, broken URLs, thin content, products, images, schema and the AI's own strategic tasks.
+* Every task opens a guide: why it matters (with the numbers), the affected pages with Edit / View / one-click AI actions, the AI's plan for your site and an exact step-by-step guide in the dashboard (menu paths for your SEO plugin, with buttons), and when the task counts as done. Mark tasks done, in progress or not relevant.
+* The roadmap remembers: every version is stored in the database, the next analysis receives the previous plan and keeps priorities stable unless the data really changed, and shows what changed (new, solved, priority changes with the reason). Done tasks come back only when the problem grows again.
+* Non-intrusive AI editing: optimizing a text (also Elementor widgets), a product or a title/description no longer keeps a big popup open. A small card in the corner shows what is being edited and the progress; when it finishes it stays until you close it, with the score change, what was changed (ticked list) and a button to open the full report and apply. Cards survive a page reload.
 
 = 1.6.0 =
 * New "Server & speed" page (Connections): choose whether your host is in Iran or abroad, pick the route for AI requests (Auto, Direct, Cloudflare, GitHub) and run a live speed test of every route.

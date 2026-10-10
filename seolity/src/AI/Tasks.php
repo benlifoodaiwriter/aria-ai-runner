@@ -185,6 +185,45 @@ final class Tasks {
 					)
 				),
 			),
+			'seo_roadmap'        => array(
+				'version'      => 'seo_roadmap@1.0',
+				'max_tokens'   => 16000,
+				'topics'       => array( 'content', 'on-page', 'site-architecture', 'internal-linking', 'ctr', 'eeat', 'technical', 'indexing', 'content-strategy', 'topic-clusters', 'competitors', 'ecommerce' ),
+				'cache'        => false,
+				'instructions' => 'You are the lead SEO strategist for THIS site. Study the facts (Search Console, audit, content inventory, competitors, measured learnings), the SEO knowledge base and the candidate tasks, then write the site’s SEO roadmap.' . "\n" .
+					'1) diagnosis: an expert, specific analysis of the site’s current SEO situation (6–10 sentences): what drives or limits traffic, the biggest risks and the biggest opportunities — cite real numbers from the facts. strengths / risks: short bullet lists. focus: the 3 things to do first this week, in plain words.' . "\n" .
+					'2) items: return EVERY candidate (same key) plus at most 6 strategic tasks of your own (key "ai:" + short-slug, only when the data clearly supports them, e.g. a topic cluster, E-E-A-T pages, a content refresh plan). For each item: a clear title, priority (critical = blocks indexing/traffic now; high = big measurable gain; medium; low), phase (now = this week, week = next 2 weeks, month = this month, later), why (specific to this site, with numbers), expected_result, 3–6 concrete steps for THIS site (each with where = the exact WordPress / SEOlity menu path, e.g. "SEOLITY → Keywords & links → Internal Links" or "Posts → All Posts → Edit → Rank Math box"), done_when, impact and effort 1–100.' . "\n" .
+					'3) Stability: "previous_roadmap" is what the owner already follows. Keep each existing item’s priority and phase unless the facts changed materially (then set changed=true and explain in change_reason). Do not reword titles without reason. Items the owner marked done stay done unless the data shows the problem again. changes_note: one short paragraph on what changed since the previous roadmap (or "first roadmap").' . "\n" .
+					'Rules: white-hat only; never invent data, URLs or numbers that are not in the input; prefer fixing indexing and technical blockers before content; write in the site’s language.',
+				'schema'       => S::obj(
+					array(
+						'diagnosis'     => S::str(),
+						'strengths'     => S::arr( S::str() ),
+						'risks'         => S::arr( S::str() ),
+						'focus'         => S::arr( S::str() ),
+						'items'         => S::arr(
+							S::obj(
+								array(
+									'key'             => S::str(),
+									'title'           => S::str(),
+									'priority'        => S::enum( array( 'critical', 'high', 'medium', 'low' ) ),
+									'phase'           => S::enum( array( 'now', 'week', 'month', 'later' ) ),
+									'category'        => S::str(),
+									'why'             => S::str(),
+									'expected_result' => S::str(),
+									'steps'           => S::arr( S::obj( array( 'title' => S::str(), 'detail' => S::str(), 'where' => S::str() ) ) ),
+									'done_when'       => S::str(),
+									'impact'          => S::int(),
+									'effort'          => S::int(),
+									'changed'         => S::bool(),
+									'change_reason'   => S::str(),
+								)
+							)
+						),
+						'changes_note'  => S::str(),
+					)
+				),
+			),
 			'keyword_research'   => array(
 				'version'      => 'keyword_research@1.2',
 				'max_tokens'   => 8000,

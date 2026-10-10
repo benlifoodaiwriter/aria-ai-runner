@@ -187,6 +187,25 @@ final class Router {
 			}
 			return $out;
 		} );
+		/* ---------------- SEO roadmap ("What should I do today?") ---------------- */
+		$this->route( 'GET', '/roadmap', 'view', function () use ( $p ) {
+			$cur = $p->roadmap->current();
+			// Sites with little traffic (or blocked loopback requests) would never start the job: run it here.
+			if ( $cur['running'] && 'running' === $cur['running']['status'] && in_array( $cur['running']['stage'], array( 'queued', 'waiting_ai' ), true ) && time() - strtotime( $cur['running']['started_at'] . ' UTC' ) > 6 ) {
+				$p->queue->work( 20 );
+				$cur = $p->roadmap->current();
+			}
+			return $cur;
+		} );
+		$this->route( 'POST', '/roadmap/analyze', 'ai', function () use ( $p ) {
+			return $p->roadmap->start();
+		} );
+		$this->route( 'POST', '/roadmap/task', 'apply', function ( Req $r ) use ( $p ) {
+			return $p->roadmap->set_status( sanitize_text_field( (string) $r->get_param( 'key' ) ), sanitize_key( (string) $r->get_param( 'status' ) ) );
+		} );
+		$this->route( 'GET', '/roadmap/history', 'view', function () use ( $p ) {
+			return $p->roadmap->history();
+		} );
 		$this->route( 'GET', '/action-center', 'view', function () use ( $p ) {
 			return $p->recommendations->action_center();
 		} );

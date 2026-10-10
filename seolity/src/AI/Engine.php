@@ -82,7 +82,7 @@ final class Engine {
 		$knowledge = array();
 		if ( $this->plugin->settings->get( 'ai_use_knowledge' ) && ! empty( $def['topics'] ) ) {
 			$query     = isset( $opts['knowledge_query'] ) ? $opts['knowledge_query'] : $this->knowledge_query( $input );
-			$knowledge = $this->plugin->knowledge->retrieve( $query, $def['topics'], 4 );
+			$knowledge = $this->plugin->knowledge->retrieve( $query, $def['topics'], isset( $opts['knowledge_limit'] ) ? max( 1, min( 16, (int) $opts['knowledge_limit'] ) ) : 4 );
 		}
 
 		$system = $this->build_system( $def, $task, $knowledge, $input );
@@ -295,7 +295,7 @@ final class Engine {
 			$parts[] = 'SEO KNOWLEDGE BASE (curated best practices; apply when relevant, do not quote verbatim):';
 			foreach ( $knowledge as $k ) {
 				$parts[] = '### ' . $k['title'];
-				$parts[] = mb_substr( $k['content'], 0, 1800 );
+				$parts[] = mb_substr( $k['content'], 0, count( $knowledge ) > 6 ? 1400 : 1800 );
 			}
 		}
 		$parts[] = '';
