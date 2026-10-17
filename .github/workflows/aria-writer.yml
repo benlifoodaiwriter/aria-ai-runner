@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
     inputs:
       trigger:
-        description: "cron | manual | test | analyze | image | revise | crawl | seo_learn"
+        description: "cron | manual | test | analyze | image | revise | crawl | seo_learn | codex_login"
         default: "manual"
       topic_id:
         description: "Specific topic id (0 = next in queue)"
