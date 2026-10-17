@@ -737,10 +737,71 @@ async function processJob(job, runtime) {
   return reportDraft(job.topic.id, article, meta);
 }
 
+
+/* ------------------------------ ChatGPT sign-in with a one-time code (no install on the user's PC) ------------------------------
+ * Runs the official `codex login --device-auth` here on GitHub. The URL + one-time code are shown in
+ * WordPress; the user opens the link, signs in with the ChatGPT account and types the code. The
+ * resulting ChatGPT credentials are stored in the user's own Cloudflare KV (never in WordPress).
+ */
+const stripAnsi = (s) => String(s || '').replace(/\x1b\[[0-9;?]*[A-Za-z]/g, '').replace(/\x1b\][^\x07]*\x07/g, '');
+export function parseDeviceCode(text) {
+  const t = stripAnsi(text);
+  const url = (t.match(/https:\/\/[^\s"'<>]*(?:device|activate|codex)[^\s"'<>]*/i) || t.match(/https:\/\/auth\.openai\.com[^\s"'<>]*/i) || [])[0] || '';
+  const code = (t.match(/\b([A-Z0-9]{4,5}-[A-Z0-9]{4,5})\b/) || [])[1] || '';
+  return url && code ? { url: url.replace(/[).,]+$/, ''), code } : null;
+}
+async function loginStatus(data) {
+  try { await worker('login_status', { id: PULL_ID, action: 'put', data }, 30000); } catch (e) { log('login status update failed:', e.message); }
+}
+async function deviceLogin() {
+  if (!PULL_ID) throw new Error('login requires a job id');
+  workDir = await mkdtemp(join(tmpdir(), 'aria-'));
+  codexHome = join(workDir, 'codex');
+  await mkdir(codexHome, { recursive: true });
+  await writeFile(join(codexHome, 'config.toml'), 'cli_auth_credentials_store = "file"\n');
+  await loginStatus({ state: 'starting', at: Date.now() });
+  const env = { ...E, CODEX_HOME: codexHome, NO_COLOR: '1', TERM: 'dumb' };
+  delete env.OPENAI_API_KEY; delete env.CODEX_API_KEY;
+  const child = spawn(CODEX_BIN, ['login', '--device-auth'], { env, stdio: ['pipe', 'pipe', 'pipe'] });
+  let out = ''; let sent = false;
+  const onData = async (d) => {
+    out += d;
+    if (!sent) {
+      const dc = parseDeviceCode(out);
+      if (dc) { sent = true; log('device code ready'); await loginStatus({ state: 'code', url: dc.url, code: dc.code, at: Date.now() }); }
+    }
+  };
+  child.stdout.on('data', onData); child.stderr.on('data', onData);
+  const limit = Math.min(Math.max(Number(E.AAW_LOGIN_TIMEOUT || 900), 30), 1800) * 1000;
+  const code = await new Promise((resolve) => {
+    const timer = setTimeout(() => { child.kill('SIGKILL'); resolve(-2); }, limit);
+    child.on('error', (e) => { clearTimeout(timer); out += '\n' + e.message; resolve(-1); });
+    child.on('close', (c) => { clearTimeout(timer); resolve(c); });
+  });
+  const authFile = join(codexHome, 'auth.json');
+  if (code === 0 && existsSync(authFile)) {
+    const auth = await readFile(authFile, 'utf8');
+    let j = null; try { j = JSON.parse(auth); } catch (_) { /* invalid */ }
+    if (!j || !j.tokens) throw new Error('ورود انجام شد ولی اعتبارنامه ChatGPT ذخیره نشد.');
+    await worker('codex_auth', { action: 'put', data: auth }, 30000);
+    await loginStatus({ state: 'done', at: Date.now(), plan: (j.tokens && j.tokens.id_token) ? 'chatgpt' : '' });
+    summary('### اکانت ChatGPT با کد تأیید وصل شد');
+    return;
+  }
+  const tail = stripAnsi(out).trim().split('\n').slice(-6).join(' | ').slice(0, 600);
+  let reason = 'ورود ChatGPT کامل نشد.';
+  if (code === -2) reason = 'مهلت واردکردن کد تمام شد (کد را در زمان نمایش وارد نکردید).';
+  else if (/device code|not enabled|admin|disabled|enable/i.test(tail)) reason = 'ورود با کد در حساب ChatGPT شما فعال نیست. در ChatGPT → Settings → Security گزینه «Allow device code login» را روشن کنید (در حساب‌های تیمی، مدیر Workspace باید آن را فعال کند) و دوباره «ورود با اکانت ChatGPT» را بزنید.';
+  else if (/denied|cancel/i.test(tail)) reason = 'ورود در صفحه ChatGPT لغو یا رد شد.';
+  await loginStatus({ state: 'error', error: reason, detail: tail, at: Date.now() });
+  throw new Error(reason + (tail ? ' — ' + tail : ''));
+}
+
 /* ------------------------------ main ------------------------------ */
 async function main() {
   if (!SECRET || (!WP_API && !PULL_ID)) throw new Error('AAW_WP_API / AAW_SHARED_SECRET secrets are missing. Reconnect GitHub from the plugin.');
   if (PULL_ID && !WORKER) throw new Error('AAW_WORKER_URL secret is missing (required for local-site mode).');
+  if (TRIGGER === 'codex_login') { await deviceLogin(); return; }
   await prepare();
   log(`engine=${ENGINE} trigger=${TRIGGER} topic=${TOPIC_ID || '-'}`);
 
