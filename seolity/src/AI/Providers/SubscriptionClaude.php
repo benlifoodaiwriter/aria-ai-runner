@@ -16,7 +16,7 @@ final class SubscriptionClaude extends Subscription {
 	}
 
 	public function label() {
-		return __( 'Claude subscription (Pro/Max via GitHub)', 'seolity' );
+		return __( 'Claude subscription (Pro/Max)', 'seolity' );
 	}
 
 	protected function engine() {

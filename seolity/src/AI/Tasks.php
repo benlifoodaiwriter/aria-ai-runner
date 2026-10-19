@@ -224,6 +224,22 @@ final class Tasks {
 					)
 				),
 			),
+			'link_sentence'      => array(
+				'version'      => 'link_sentence@1.0',
+				'max_tokens'   => 1500,
+				'topics'       => array( 'internal-linking' ),
+				'cache'        => false,
+				'instructions' => 'Add ONE internal link from the source page to the target page. Pick the paragraph of the source where the target topic fits best and write one natural, helpful sentence (in the source page\'s language and tone) that continues that paragraph and links to the target with a short descriptive anchor (2–6 words, not "click here"). after_text: an exact, unique snippet (5–12 words copied verbatim) from the END of that paragraph in the source text. sentence_html: the sentence with exactly one <a href="TARGET_URL">anchor</a>. If the topics are unrelated, set fits=false.',
+				'schema'       => S::obj(
+					array(
+						'fits'          => S::bool(),
+						'after_text'    => S::str(),
+						'sentence_html' => S::str(),
+						'anchor'        => S::str(),
+						'reason'        => S::str(),
+					)
+				),
+			),
 			'keyword_research'   => array(
 				'version'      => 'keyword_research@1.2',
 				'max_tokens'   => 8000,

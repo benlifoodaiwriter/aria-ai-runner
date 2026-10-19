@@ -27,7 +27,7 @@
 		direct: { icon: 'zap', title: function () {
 			return t( 'Direct' );
 		}, text: function () {
-			return T( 'سرور شما خودش به API وصل می‌شود. سریع‌ترین راه، وقتی سرور اجازه دارد (معمولاً سرورهای خارج از ایران).', 'Your server calls the API itself. The fastest way when the server is allowed to (usually servers outside Iran).' );
+			return T( 'سرور شما خودش به هوش مصنوعی وصل می‌شود و هیچ پیامی به گیت‌هاب نمی‌رود. کلید API مستقیم صدا زده می‌شود؛ اشتراک Claude/ChatGPT با ابزار رسمی (CLI) روی همین سرور اجرا می‌شود. سریع‌ترین راه، وقتی سرور اجازه دارد (معمولاً سرورهای خارج از ایران).', 'Your server talks to the AI itself and nothing goes to GitHub. An API key is called directly; a Claude/ChatGPT subscription runs with the official CLI on this server. The fastest way when the server is allowed to (usually servers outside Iran).' );
 		} },
 		cloudflare: { icon: 'cloud', title: function () {
 			return 'Cloudflare';
@@ -52,19 +52,42 @@
 				render( r[ 0 ], r[ 1 ] );
 			} );
 		}
+		var cur = null;
+		// Quiet saves (route, toggles) update the cards in place; only a region change re-tests and reloads.
 		function save( values, probe ) {
-			return SL.api( 'network', { body: values } ).then( function () {
-				return probe ? SL.api( 'network/probe', { method: 'POST' } ) : null;
-			} ).then( function () {
+			return SL.api( 'network', { body: values } ).then( function ( st ) {
+				if ( probe ) {
+					return SL.api( 'network/probe', { method: 'POST' } ).then( load );
+				}
 				SL.toast( t( 'Saved' ), 'success' );
-				load();
+				refresh( st );
 			} ).catch( function ( e ) {
 				SL.toast( e.message, 'error' );
+				if ( cur ) {
+					refresh( cur ); // Undo the optimistic selection.
+				}
 			} );
 		}
+		function swap( node, next ) {
+			if ( node && node.parentNode ) {
+				node.parentNode.replaceChild( next, node );
+			}
+			return next;
+		}
+		var routeNode = null;
+		var localNode = null;
+		function refresh( st ) {
+			cur = st;
+			routeNode = swap( routeNode, routeCard( st, save ) );
+			localNode = swap( localNode, localCard( st, save ) );
+		}
 		function render( st, storage ) {
+			cur = st;
+			routeNode = routeCard( st, save );
+			localNode = localCard( st, save );
 			box.appendChild( regionCard( st, save ) );
-			box.appendChild( routeCard( st, save ) );
+			box.appendChild( routeNode );
+			box.appendChild( localNode );
 			box.appendChild( speedCard( st, load ) );
 			box.appendChild( runnerCard( st, save, load ) );
 			if ( storage ) {
@@ -114,11 +137,29 @@
 		var list = h( 'div', { class: 'sl-choices sl-choices--routes' }, opts.map( function ( o ) {
 			var avail = o[ 0 ] === 'auto' || st.available[ o[ 0 ] ];
 			var on = st.mode === o[ 0 ];
-			return h( 'button', { type: 'button', class: 'sl-choice' + ( on ? ' is-on' : '' ) + ( avail ? '' : ' is-off' ), 'aria-pressed': on ? 'true' : 'false', onClick: function () {
-				if ( ! avail ) {
-					App.go( ROUTES[ o[ 0 ] ].setup );
+			return h( 'button', { type: 'button', class: 'sl-choice' + ( on ? ' is-on' : '' ) + ( avail ? '' : ' is-off' ), 'aria-pressed': on ? 'true' : 'false', onClick: function ( e ) {
+				e.preventDefault();
+				if ( on ) {
 					return;
 				}
+				if ( ! avail ) {
+					// Not set up yet: say so here instead of jumping to another page.
+					var m = SL.modal( { title: ROUTES[ o[ 0 ] ].title() } );
+					m.body.appendChild( h( 'p', { text: T( 'این مسیر هنوز راه‌اندازی نشده و برای همین نمی‌شود انتخابش کرد. اول آن را راه‌اندازی کنید (چند دقیقه، رایگان)، بعد همین‌جا انتخابش کنید.', 'This route is not set up yet, so it cannot be selected. Set it up first (a few minutes, free), then select it here.' ) } ) );
+					m.foot.appendChild( h( 'button', { class: 'sl-btn', onClick: m.close }, t( 'Cancel' ) ) );
+					m.foot.appendChild( h( 'button', { class: 'sl-btn sl-btn--primary', onClick: function () {
+						m.close();
+						App.go( ROUTES[ o[ 0 ] ].setup );
+					} }, T( 'راه‌اندازی', 'Set it up' ) ) );
+					return;
+				}
+				// Optimistic: show the choice at once, save in the background.
+				list.querySelectorAll( '.sl-choice' ).forEach( function ( b ) {
+					b.classList.remove( 'is-on' );
+					b.setAttribute( 'aria-pressed', 'false' );
+				} );
+				this.classList.add( 'is-on', 'is-busy' );
+				this.setAttribute( 'aria-pressed', 'true' );
 				save( { ai_route: o[ 0 ] }, false );
 			} },
 				h( 'span', { class: 'sl-choice__ic' }, SL.icon( o[ 1 ], 20 ) ),
@@ -130,7 +171,9 @@
 			return h( 'span', { class: 'sl-route-step' + ( i === 0 ? ' is-first' : '' ) }, SL.icon( ROUTES[ r ].icon, 14 ), h( 'span', { text: ROUTES[ r ].title() } ) );
 		} );
 		var sub = st.provider.indexOf( 'sub_' ) === 0
-			? T( 'موتور فعلی اشتراک Claude/ChatGPT است که همیشه روی رانر گیت‌هاب اجرا می‌شود؛ کلادفلر جواب‌ها را فوری به سایت می‌رساند.', 'The current engine is a Claude/ChatGPT subscription, which always runs on the GitHub runner; Cloudflare delivers its answers to the site instantly.' )
+			? ( st.mode === 'direct'
+				? T( 'موتور فعلی اشتراک Claude/ChatGPT است. در حالت «مستقیم» هیچ پیامی به گیت‌هاب نمی‌رود و پیام‌ها با ابزار رسمی (CLI) روی همین سرور اجرا می‌شوند — کارت پایین را ببینید.', 'The current engine is a Claude/ChatGPT subscription. In Direct mode nothing goes to GitHub: messages run with the official CLI on this server — see the card below.' )
+				: T( 'موتور فعلی اشتراک Claude/ChatGPT است. اگر ابزار رسمی (CLI) روی همین سرور نصب باشد مستقیم از سرور اجرا می‌شود؛ وگرنه از رانر گیت‌هاب.', 'The current engine is a Claude/ChatGPT subscription. If the official CLI is installed on this server it runs here directly; otherwise on the GitHub runner.' ) )
 			: st.provider === 'ollama' ? T( 'مدل محلی (Ollama) همیشه مستقیم است.', 'A local model (Ollama) is always direct.' ) : '';
 		var body = h( 'div', { class: 'sl-stack' },
 			list,
@@ -141,6 +184,49 @@
 			}, T( 'سرچ کنسول، PageSpeed، ورود با گوگل و SerpApi — وقتی مسیر اول کلادفلر است.', 'Search Console, PageSpeed, Google sign-in and SerpApi — when Cloudflare is the first route.' ) )
 		);
 		return App.card( T( 'مسیر درخواست‌ها', 'Request route' ), body, { icon: 'link', sub: T( 'برای هر دو حالت ایران و خارج قابل تغییر است', 'Can be changed for both Iran and abroad' ) } );
+	}
+
+	/* ------------------------------------------------------------------ 2b. Subscription CLI on this server */
+	function localCard( st, save ) {
+		var l = st.local || {};
+		var isSub = st.provider.indexOf( 'sub_' ) === 0;
+		var engine = st.provider === 'sub_codex' ? 'codex' : 'claude';
+		var row = function ( id, name, install ) {
+			var path = l[ id ];
+			var input = h( 'input', { type: 'text', class: 'sl-input', dir: 'ltr', value: l[ 'path_' + id ] || '', placeholder: path || '/usr/local/bin/' + id } );
+			return h( 'div', { class: 'sl-local' },
+				h( 'div', { class: 'sl-local__head' },
+					h( 'b', { text: name } ),
+					path ? SL.badge( T( 'پیدا شد', 'Found' ), 'good' ) : SL.badge( T( 'نصب نیست', 'Not installed' ) ),
+					path ? h( 'code', { dir: 'ltr', text: path } ) : null
+				),
+				! path ? h( 'p', { class: 'sl-muted' }, T( 'نصب روی سرور (SSH): ', 'Install on the server (SSH): ' ), h( 'code', { dir: 'ltr', text: install } ) ) : null,
+				h( 'label', { class: 'sl-row' }, h( 'span', { text: T( 'مسیر کامل (اختیاری):', 'Full path (optional):' ) } ), input,
+					App.btn( t( 'Save' ), function () {
+						var v = {};
+						v[ 'sub_cli_' + id ] = input.value.trim();
+						save( v, false );
+					} ),
+					App.abtn( T( 'آزمایش', 'Test' ), function () {
+						return SL.api( 'network/local-test', { method: 'POST', body: { engine: id } } ).then( function ( r ) {
+							SL.toast( T( 'کار می‌کند', 'It works' ) + ' · ' + secs( r.ms ) + ' · ' + r.text, 'success' );
+						} ).catch( function ( e ) {
+							SL.toast( e.message, 'error' );
+						} );
+					} )
+				)
+			);
+		};
+		var body = h( 'div', { class: 'sl-stack' },
+			h( 'p', { text: T( 'برای اینکه اشتراک Claude Pro/Max یا ChatGPT Plus/Pro بدون گیت‌هاب و مستقیم از سایت شما کار کند، ابزار رسمی همان سرویس باید روی همین سرور نصب باشد (معمولاً روی سرور مجازی/VPS؛ هاست اشتراکی اجازه اجرای برنامه نمی‌دهد). SEOlity آن را خودکار پیدا می‌کند و پیام‌ها را مستقیم و هم‌زمان جواب می‌دهد.', 'For a Claude Pro/Max or ChatGPT Plus/Pro subscription to work directly from your site without GitHub, that service’s official CLI must be installed on this server (usually a VPS; shared hosting does not allow running programs). SEOlity finds it automatically and answers messages directly and at once.' ) } ),
+			l.can_exec
+				? h( 'div', { class: 'sl-alert sl-alert--success' }, SL.icon( 'check', 16 ), h( 'span', { text: T( 'این هاست اجازه اجرای برنامه را می‌دهد.', 'This host allows starting programs.' ) } ) )
+				: h( 'div', { class: 'sl-alert sl-alert--warn' }, SL.icon( 'info', 16 ), h( 'span', { text: T( 'این هاست اجرای برنامه را بسته است (proc_open غیرفعال است). اینجا اشتراک فقط از طریق گیت‌هاب کار می‌کند؛ برای حالت مستقیم از کلید API استفاده کنید.', 'This host blocks starting programs (proc_open is disabled). Here a subscription can only run through GitHub; use an API key for Direct mode.' ) } ) ),
+			isSub && st.mode === 'direct' && ! l[ engine ] ? h( 'div', { class: 'sl-alert sl-alert--error' }, SL.icon( 'info', 16 ), h( 'span', { text: T( 'حالت «مستقیم» انتخاب شده ولی ابزار رسمی روی سرور نیست؛ پیام‌های هوش مصنوعی خطا می‌دهند (به گیت‌هاب فرستاده نمی‌شوند). ابزار را نصب کنید، کلید API بگذارید یا مسیر «خودکار» را انتخاب کنید.', 'Direct is selected but the official CLI is not on this server, so AI messages will fail (they are not sent to GitHub). Install the CLI, use an API key or pick the Auto route.' ) } ) ) : null,
+			l.can_exec ? row( 'claude', 'Claude Code', 'npm install -g @anthropic-ai/claude-code' ) : null,
+			l.can_exec ? row( 'codex', 'OpenAI Codex', 'npm install -g @openai/codex' ) : null
+		);
+		return App.card( T( 'اشتراک روی همین سرور', 'Subscription on this server' ), body, { icon: 'server', sub: T( 'فقط برای اشتراک Claude/ChatGPT لازم است', 'Only needed for a Claude/ChatGPT subscription' ) } );
 	}
 
 	/* ------------------------------------------------------------------ 3. Speed test */

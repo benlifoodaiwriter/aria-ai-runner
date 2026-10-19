@@ -42,6 +42,12 @@ final class AuditLog {
 				'created_at'  => Database::now(),
 			)
 		);
+		// Mirror into the activity timeline ("Done"), with a readable title.
+		if ( 0 !== strpos( $action, 'roadmap.task_' ) ) {
+			list( $kind, $title ) = \SEOlity\Activity\Activity::event_label( $action, $object_type, $object_id, $details );
+			$detail = isset( $details['reason'] ) ? (string) $details['reason'] : '';
+			$this->plugin->activity->event( $kind, $title, $detail, 'done', array( 'action' => $action, 'object_type' => $object_type, 'object_id' => $object_id ) );
+		}
 	}
 
 	public function recent( $limit = 50, $offset = 0, $action = '' ) {

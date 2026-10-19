@@ -260,6 +260,106 @@
 		}
 	};
 
+	/** Numbered steps with the dashboard location and an "Open" button (guides & plans). */
+	App.guideSteps = function ( list ) {
+		return h( 'ol', { class: 'sl-rm-steps' }, ( list || [] ).map( function ( s, i ) {
+			if ( typeof s === 'string' ) {
+				s = { title: s };
+			}
+			return h( 'li', null,
+				h( 'span', { class: 'sl-rm-steps__n', text: String( i + 1 ) } ),
+				h( 'div', null,
+					h( 'b', { text: s.title } ),
+					s.detail ? h( 'p', { text: s.detail } ) : null,
+					s.where || s.link ? h( 'div', { class: 'sl-row' }, s.where ? h( 'span', { class: 'sl-rm-where' }, SL.icon( 'map', 13 ), h( 'span', { text: s.where } ) ) : null, s.link ? h( 'a', { class: 'sl-btn sl-btn--sm', href: s.link, target: s.link.indexOf( 'http' ) === 0 && s.link.indexOf( location.host ) === -1 ? '_blank' : null, rel: 'noopener' }, t( 'Open' ), ' ', SL.icon( 'arrow-' + ( C.rtl ? 'left' : 'right' ), 13 ) ) : null ) : null
+				)
+			);
+		} ) );
+	};
+
+	/**
+	 * "Do it": exactly where to do it by hand, and "Let the AI do it" — the plan first, then
+	 * after approval a live view of every step the agent takes.
+	 */
+	App.agentPopup = function ( recId, refresh ) {
+		var m = SL.modal( { title: t( 'Do it' ), wide: true } );
+		m.body.appendChild( SL.spinner() );
+		SL.api( 'recommendations/' + recId + '/guide' ).then( function ( g ) {
+			SL.clear( m.body );
+			m.box.querySelector( '.sl-modal__head h2' ).textContent = g.title;
+			var right = h( 'section', { class: 'sl-agent__ai' } );
+			m.body.appendChild( h( 'div', { class: 'sl-row' }, SL.priorityBadge( g.priority ), g.url ? App.ext( g.url ) : null, g.edit ? h( 'a', { class: 'sl-btn sl-btn--sm', href: g.edit, target: '_blank', rel: 'noopener' }, SL.icon( 'edit', 14 ), ' ', t( 'Edit' ) ) : null ) );
+			m.body.appendChild( h( 'p', { class: 'sl-agent__why', text: g.reason } ) );
+			m.body.appendChild( h( 'div', { class: 'sl-agent' },
+				h( 'section', { class: 'sl-agent__manual' }, h( 'h3', null, SL.icon( 'map', 17 ), h( 'span', { text: t( 'Do it yourself — exactly where' ) } ) ), App.guideSteps( g.guide ), g.done_when ? h( 'p', { class: 'sl-muted sl-small', text: t( 'Done when:' ) + ' ' + g.done_when } ) : null ),
+				right
+			) );
+			function planView() {
+				SL.clear( right );
+				right.appendChild( h( 'h3', null, SL.icon( 'sparkles', 17 ), h( 'span', { text: t( 'Let the AI do it' ) } ) ) );
+				right.appendChild( h( 'p', { class: 'sl-muted', text: t( 'This is exactly what SEOlity will do on your site. Nothing changes until you approve. Every change is versioned — undo anytime in AI Center → AI Changes.' ) } ) );
+				right.appendChild( App.guideSteps( g.plan ) );
+				var why = ! g.ai_ready ? t( 'Connect an AI provider first (Settings → AI).' ) : ! g.can_run ? t( 'This task needs your decision; follow the steps on the left.' ) : '';
+				if ( why ) {
+					right.appendChild( h( 'div', { class: 'sl-alert sl-alert--warn', text: why } ) );
+				} else if ( App.cap( 'ai' ) && App.cap( 'apply' ) ) {
+					right.appendChild( App.abtn( h( 'span', { class: 'sl-row' }, SL.icon( 'check', 16 ), h( 'span', { text: t( 'Approve & let the AI do it' ) } ) ), function () {
+						return SL.api( 'agent/run', { body: { rec_id: recId } } ).then( function ( item ) {
+							SL.dock.track( item, { onFinish: refresh } );
+							App.agentLive( right, item );
+						} );
+					}, 'primary' ) );
+				}
+			}
+			planView();
+		} ).catch( function ( e ) {
+			SL.clear( m.body );
+			m.body.appendChild( h( 'div', { class: 'sl-alert sl-alert--error', text: e.message } ) );
+		} );
+	};
+
+	/** Live view of an agent run: every step as it happens. */
+	App.agentLive = function ( box, item ) {
+		var timer;
+		function draw( a ) {
+			if ( ! d.body.contains( box ) ) {
+				clearTimeout( timer );
+				return;
+			}
+			SL.clear( box );
+			var running = a.status === 'running' || a.status === 'waiting';
+			var steps = ( a.meta && a.meta.steps ) || [];
+			box.appendChild( h( 'h3', null, running ? h( 'span', { class: 'sl-spinner sl-spinner--sm' } ) : SL.icon( a.status === 'failed' ? 'x-circle' : 'check-circle', 18 ), h( 'span', { text: running ? t( 'The AI is working…' ) : a.status === 'failed' ? t( 'Stopped' ) : t( 'Done' ) } ) ) );
+			box.appendChild( h( 'div', { class: 'sl-dock__bar sl-agent__bar' }, h( 'span', { style: 'width:' + ( running ? Math.max( 5, a.progress || 5 ) : 100 ) + '%' } ) ) );
+			box.appendChild( h( 'ol', { class: 'sl-agent__log' }, steps.map( function ( s, i ) {
+				var last = i === steps.length - 1 && running;
+				return h( 'li', { class: last ? 'is-active' : 'is-done' }, h( 'span', { class: 'sl-agent__t', text: new Date( s.t ).toLocaleTimeString() } ), h( 'span', { dir: 'auto', text: s.text } ) );
+			} ) ) );
+			if ( a.route ) {
+				box.appendChild( h( 'p', { class: 'sl-muted sl-small', text: t( 'AI route: %s', a.route ) } ) );
+			}
+			if ( a.status === 'failed' ) {
+				box.appendChild( h( 'div', { class: 'sl-alert sl-alert--error', dir: 'auto', text: a.detail } ) );
+			}
+			if ( a.status === 'done' && a.meta && a.meta.lines ) {
+				box.appendChild( h( 'div', { class: 'sl-alert sl-alert--success' }, h( 'b', { text: a.meta.summary || '' } ), h( 'ul', null, a.meta.lines.map( function ( l ) {
+					return h( 'li', { dir: 'auto', text: l } );
+				} ) ) ) );
+				box.appendChild( App.link( t( 'Review the changes' ), 'changes' ) );
+			}
+			if ( running ) {
+				timer = setTimeout( function () {
+					SL.api( 'activity/' + a.id, { noWait: true } ).then( draw ).catch( function () {
+						timer = setTimeout( function () {
+							draw( a );
+						}, 6000 );
+					} );
+				}, 2000 );
+			}
+		}
+		draw( item );
+	};
+
 	App.recommendationRow = function ( r, refresh ) {
 		return h( 'div', { class: 'sl-rec sl-rec--' + r.priority },
 			h( 'div', { class: 'sl-rec__icon', 'aria-hidden': 'true' }, SL.dot( r.priority ) ),
@@ -269,11 +369,9 @@
 				h( 'div', { class: 'sl-rec__meta' }, SL.priorityBadge( r.priority ), SL.badge( t( 'Impact' ) + ' ' + r.impact ), SL.badge( t( 'Effort' ) + ' ' + r.effort ), SL.badge( t( 'Confidence' ) + ' ' + r.confidence + '%' ), r.url ? App.ext( r.url ) : null )
 			),
 			h( 'div', { class: 'sl-rec__actions' },
-				App.cap( 'ai' ) ? App.abtn( t( 'Do it' ), function () {
-					return SL.api( 'recommendations/' + r.id + '/execute', { method: 'POST' } ).then( function ( res ) {
-						App.handleResult( res, refresh );
-					} );
-				}, 'primary' ) : null,
+				App.btn( t( 'Do it' ), function () {
+					App.agentPopup( r.id, refresh );
+				}, 'primary' ),
 				App.btn( t( 'Why?' ), function () {
 					SL.why( r.title, SL.api( 'recommendations/' + r.id + '/why' ) );
 				} ),
@@ -291,7 +389,7 @@
 	var root;
 	var view;
 	var nav;
-	var ICONS = { dashboard: 'dashboard', actions: 'wand', ai: 'prompt', audit: 'pulse', gsc: 'chart', keywords: 'key', content: 'content', products: 'bag', images: 'image', links: 'link', competitors: 'swords', experiments: 'flask', changes: 'undo', redirects: 'corner', 404: 'unlink', schema: 'braces', sitemap: 'map', robots: 'bot', reports: 'review', alerts: 'bell', automation: 'zap', knowledge: 'book', settings: 'settings', rankmath: 'target', guide: 'lifebuoy', subscription: 'sparkles', github: 'github', cloudflare: 'cloud', network: 'server' };
+	var ICONS = { dashboard: 'dashboard', actions: 'wand', ai: 'prompt', audit: 'pulse', gsc: 'chart', keywords: 'key', content: 'content', products: 'bag', images: 'image', links: 'link', competitors: 'swords', experiments: 'flask', changes: 'undo', redirects: 'corner', 404: 'unlink', schema: 'braces', sitemap: 'map', robots: 'bot', reports: 'review', alerts: 'bell', automation: 'zap', knowledge: 'book', settings: 'settings', rankmath: 'target', guide: 'lifebuoy', subscription: 'sparkles', github: 'github', cloudflare: 'cloud', network: 'server', activity: 'activity' };
 	/** Sidebar groups (ARIAGH-style navigation sections). */
 	/**
 	 * Simple navigation: a few sections; related pages are tabs inside a section.
@@ -299,7 +397,7 @@
 	 */
 	var HUBS = [
 		[ 'home', 'Dashboard', 'dashboard', [ 'dashboard', 'alerts', 'reports' ] ],
-		[ 'aicenter', 'AI Center', 'wand', [ 'actions', 'ai', 'changes' ] ],
+		[ 'aicenter', 'AI Center', 'wand', [ 'actions', 'ai', 'activity', 'changes' ] ],
 		[ 'contenthub', 'Content', 'content', [ 'content', 'products', 'images' ] ],
 		[ 'kwhub', 'Keywords & links', 'key', [ 'keywords', 'rankmath', 'links' ] ],
 		[ 'gschub', 'Search Console', 'chart', [ 'gsc' ] ],
@@ -644,89 +742,8 @@
 		SL.api( 'ai/warm', { method: 'POST', noWait: true } ).catch( function () {} );
 	};
 
-	/* ================================================================ AI SEO Chat */
-	App.pages.ai = function ( v ) {
-		var cid = App.state.chatId || '';
-		v.appendChild( App.header( t( 'AI SEO Chat' ), t( 'Ask anything about your site. Answers are grounded in your real Search Console, audit, competitor and experiment data.' ), [ App.btn( t( 'New conversation' ), function () {
-			App.state.chatId = '';
-			App.pages.ai( SL.clear( v ) );
-		} ) ] ) );
-		var log = h( 'div', { class: 'sl-chat__log', 'aria-live': 'polite' } );
-		var input = h( 'textarea', { class: 'sl-input sl-chat__input', rows: 2, placeholder: t( 'e.g. Why did my organic sales drop this month?' ), dir: 'auto' } );
-		var send = App.btn( t( 'Send' ), ask, 'primary' );
-		// GitHub route (subscription AI or relay): start a runner now so the first answer is fast.
-		App.warmAi();
-		input.addEventListener( 'focus', App.warmAi );
-		var samples = [ t( 'Why has my organic traffic dropped?' ), t( 'Why does this product not rank?' ), t( 'Which pages should I optimize today?' ), t( 'What did my competitor do recently?' ), t( 'Why does this page have a low CTR?' ), t( 'Should I redirect this URL?' ) ];
-		var chips = h( 'div', { class: 'sl-chips' }, samples.map( function ( s ) {
-			return h( 'button', { type: 'button', class: 'sl-chip sl-chip--btn', onClick: function () {
-				input.value = s;
-				input.focus();
-			} }, s );
-		} ) );
-		function bubble( role, content, extra ) {
-			var b = h( 'div', { class: 'sl-msg sl-msg--' + role }, role === 'assistant' ? SL.markdown( content ) : h( 'div', { dir: 'auto', text: content } ) );
-			if ( extra && extra.actions && extra.actions.length ) {
-				b.appendChild( h( 'div', { class: 'sl-msg__actions' }, extra.actions.map( function ( a ) {
-					return h( 'a', { href: a.route, class: 'sl-btn sl-btn--sm' }, a.title );
-				} ) ) );
-			}
-			if ( extra && extra.data_used && extra.data_used.length ) {
-				b.appendChild( h( 'details', { class: 'sl-msg__data' }, h( 'summary', { text: t( 'Data used' ) } ), h( 'ul', null, extra.data_used.map( function ( x ) {
-					return h( 'li', { text: x } );
-				} ) ) ) );
-			}
-			log.appendChild( b );
-			log.scrollTop = log.scrollHeight;
-		}
-		function ask() {
-			var msg = input.value.trim();
-			if ( ! msg ) {
-				return;
-			}
-			input.value = '';
-			bubble( 'user', msg );
-			var thinking = h( 'div', { class: 'sl-msg sl-msg--assistant is-thinking' }, SL.spinner( t( 'Analyzing your data…' ) ) );
-			log.appendChild( thinking );
-			send.disabled = true;
-			SL.api( 'chat', { body: { message: msg, conversation_id: cid } } ).then( function ( r ) {
-				thinking.remove();
-				cid = App.state.chatId = r.conversation_id;
-				bubble( 'assistant', r.answer, r );
-			} ).catch( function ( e ) {
-				thinking.remove();
-				bubble( 'assistant', e.message );
-			} ).then( function () {
-				send.disabled = false;
-			} );
-		}
-		input.addEventListener( 'keydown', function ( e ) {
-			if ( e.key === 'Enter' && ! e.shiftKey ) {
-				e.preventDefault();
-				ask();
-			}
-		} );
-		var history = h( 'div', { class: 'sl-chat__history' } );
-		v.appendChild( h( 'div', { class: 'sl-chat' }, h( 'div', { class: 'sl-chat__main' }, log, chips, h( 'div', { class: 'sl-chat__compose' }, input, send ) ), history ) );
-		if ( cid ) {
-			SL.api( 'chat/' + cid ).then( function ( rows ) {
-				rows.forEach( function ( r ) {
-					bubble( r.role, r.content, r.meta || {} );
-				} );
-			} );
-		} else {
-			bubble( 'assistant', t( 'Hi! I am your AI SEO strategist. Ask me about traffic, rankings, products, competitors or what to do next.' ) );
-		}
-		SL.api( 'chat/conversations' ).then( function ( list ) {
-			history.appendChild( h( 'h4', { text: t( 'Recent conversations' ) } ) );
-			list.forEach( function ( c ) {
-				history.appendChild( h( 'button', { type: 'button', class: 'sl-option', onClick: function () {
-					App.state.chatId = c.conversation_id;
-					App.pages.ai( SL.clear( v ) );
-				} }, ( c.first_question || '…' ).slice( 0, 60 ) ) );
-			} );
-		} ).catch( function () {} );
-	};
+	// App.pages.ai (AI SEO Chat) lives in pages-chat.js.
+
 
 	/* ================================================================ AI Changes (approval queue + log) */
 	App.pages.changes = function ( v, q ) {

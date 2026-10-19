@@ -187,6 +187,48 @@ final class Router {
 			}
 			return $out;
 		} );
+		/* ---------------- Live activity & timeline ---------------- */
+		$this->route( 'GET', '/activity/live', 'view', function () use ( $p ) {
+			return $p->activity->live();
+		} );
+		$this->route( 'GET', '/activity', 'view', function ( Req $r ) use ( $p ) {
+			return $p->activity->history( self::filters( $r, array( 'kind', 'status', 'q', 'page', 'per_page' ) ) );
+		} );
+		$this->route( 'GET', '/activity/dock', 'view', function () use ( $p ) {
+			return $p->activity->dock_items();
+		} );
+		$this->route( 'GET', '/activity/(?P<id>\d+)', 'view', function ( Req $r ) use ( $p ) {
+			$a = $p->activity->get( (int) $r->get_param( 'id' ) );
+			if ( ! $a ) {
+				return new \WP_Error( 'seolity_activity', __( 'Not found.', 'seolity' ), array( 'status' => 404 ) );
+			}
+			// Low-traffic sites: move queued work forward while somebody is watching it.
+			if ( in_array( $a['status'], array( 'running', 'waiting' ), true ) && time() - strtotime( $a['updated_at'] . ' UTC' ) > 3 ) {
+				$p->queue->work( 15 );
+				$a = $p->activity->get( (int) $r->get_param( 'id' ) );
+			}
+			return $a;
+		} );
+		$this->route( 'GET', '/recommendations/(?P<id>\d+)/guide', 'view', function ( Req $r ) use ( $p ) {
+			return $p->agent->guide( (int) $r->get_param( 'id' ) );
+		} );
+		$this->route( 'POST', '/agent/run', 'apply', function ( Req $r ) use ( $p ) {
+			if ( ! current_user_can( \SEOlity\Core\Capabilities::AI ) ) {
+				return new \WP_Error( 'seolity_forbidden', __( 'Sorry, you are not allowed to do that.', 'seolity' ), array( 'status' => 403 ) );
+			}
+			return $p->agent->start( (int) $r->get_param( 'rec_id' ) );
+		} );
+		$this->route( 'POST', '/ai-jobs', 'ai', function ( Req $r ) use ( $p ) {
+			$params = $r->get_param( 'params' );
+			return $p->aijobs->start( sanitize_key( (string) $r->get_param( 'type' ) ), is_array( $params ) ? $params : array() );
+		} );
+		$this->route( 'POST', '/activity/(?P<id>\d+)/note', 'view', function ( Req $r ) use ( $p ) {
+			return $p->aijobs->note( (int) $r->get_param( 'id' ), (string) $r->get_param( 'text' ) );
+		} );
+		$this->route( 'POST', '/activity/(?P<id>\d+)/dismiss', 'view', function ( Req $r ) use ( $p ) {
+			return array( 'dismissed' => $p->activity->dismiss( (int) $r->get_param( 'id' ) ) );
+		} );
+
 		/* ---------------- SEO roadmap ("What should I do today?") ---------------- */
 		$this->route( 'GET', '/roadmap', 'view', function () use ( $p ) {
 			$cur = $p->roadmap->current();
@@ -721,13 +763,25 @@ final class Router {
 			return $p->briefing->latest();
 		} );
 		$this->route( 'POST', '/chat', 'ai', function ( Req $r ) use ( $p ) {
-			return $p->chat->ask( wp_unslash( (string) $r->get_param( 'message' ) ), self::key( $r, 'conversation_id' ) );
+			return $p->chat->ask( wp_unslash( (string) $r->get_param( 'message' ) ), self::key( $r, 'conversation_id' ), array( 'page' => $r->get_param( 'page' ) ) );
 		} );
 		$this->route( 'GET', '/chat/conversations', 'ai', function () use ( $p ) {
 			return $p->chat->conversations();
 		} );
 		$this->route( 'GET', '/chat/(?P<cid>[a-f0-9]{32})', 'ai', function ( Req $r ) use ( $p ) {
-			return $p->chat->history( self::key( $r, 'cid' ) );
+			$cid = self::key( $r, 'cid' );
+			if ( $p->chat->pending( $cid ) ) {
+				// Answers that wait for GitHub (or a job nobody ran yet): move them forward.
+				$p->subscription->collect();
+				$p->queue->work( 12 );
+			}
+			return array( 'messages' => $p->chat->history( $cid ), 'pending' => $p->chat->pending( $cid ) );
+		} );
+		$this->route( 'POST', '/chat/(?P<cid>[a-f0-9]{32})/delete', 'ai', function ( Req $r ) use ( $p ) {
+			return array( 'deleted' => $p->chat->delete( self::key( $r, 'cid' ) ) );
+		} );
+		$this->route( 'POST', '/chat/message/(?P<id>\d+)/retry', 'ai', function ( Req $r ) use ( $p ) {
+			return $p->chat->retry( (int) $r->get_param( 'id' ) );
 		} );
 
 		/* ---------------- Automation ---------------- */
@@ -884,7 +938,7 @@ final class Router {
 		} );
 		$this->route( 'POST', '/network', 'manage', function ( Req $r ) use ( $p ) {
 			$values = array();
-			foreach ( array( 'host_region', 'ai_route', 'route_google', 'sub_warm_minutes' ) as $k ) {
+			foreach ( array( 'host_region', 'ai_route', 'route_google', 'sub_warm_minutes', 'sub_cli_claude', 'sub_cli_codex' ) as $k ) {
 				if ( null !== $r->get_param( $k ) ) {
 					$values[ $k ] = $r->get_param( $k );
 				}
@@ -895,6 +949,28 @@ final class Router {
 			}
 			$p->audit_log->log( 'network.saved', 'site', null, $values );
 			return $p->gateway->status();
+		} );
+		// Try the official subscription CLI on this server (the "Direct" way for Claude/ChatGPT subscriptions).
+		$this->route( 'POST', '/network/local-test', 'manage', function ( Req $r ) use ( $p ) {
+			$engine = 'codex' === $r->get_param( 'engine' ) ? 'codex' : 'claude';
+			delete_transient( 'seolity_cli_' . $engine );
+			$cli = $p->localcli;
+			if ( ! $cli::can_exec() ) {
+				return new \WP_Error( 'seolity_local_cli', __( 'This host does not allow PHP to start programs (proc_open is disabled). Subscriptions can only run through GitHub here.', 'seolity' ), array( 'status' => 400 ) );
+			}
+			if ( ! $cli->available( $engine ) ) {
+				return new \WP_Error( 'seolity_local_cli', 'claude' === $engine ? __( 'Claude Code CLI was not found on this server. Install it (npm install -g @anthropic-ai/claude-code) or enter its full path.', 'seolity' ) : __( 'Codex CLI was not found on this server. Install it (npm install -g @openai/codex) or enter its full path.', 'seolity' ), array( 'status' => 400 ) );
+			}
+			$sub = $p->subscription;
+			if ( ! $p->settings->has_secret( $sub::ENGINE_SECRETS[ $engine ][1] ) ) {
+				return new \WP_Error( 'seolity_local_cli', __( 'Save your subscription login first (Settings → AI).', 'seolity' ), array( 'status' => 400 ) );
+			}
+			$start = microtime( true );
+			$res   = $sub->local_test( $engine );
+			if ( is_wp_error( $res ) ) {
+				return $res;
+			}
+			return array( 'ok' => true, 'ms' => (int) round( ( microtime( true ) - $start ) * 1000 ), 'text' => mb_substr( (string) $res['text'], 0, 200 ), 'path' => $cli->binary( $engine ) );
 		} );
 		$this->route( 'POST', '/network/probe', 'manage', function () use ( $p ) {
 			$probe  = $p->gateway->probe();

@@ -13,6 +13,7 @@
 
 namespace SEOlity\AI;
 
+use SEOlity\Activity\Activity;
 use SEOlity\Analysis\Text;
 use SEOlity\Core\Database;
 use SEOlity\Plugin;
@@ -66,12 +67,74 @@ final class Engine {
 	 * @return array{data:array, meta:array}|\WP_Error
 	 */
 	public function run( $task, array $input, array $opts = array() ) {
+		// Every AI request appears in Live activity / Done with its route and result (or error).
+		$act      = $this->plugin->activity;
+		$ref      = 'ai:' . sha1( $task . '|' . wp_json_encode( $input ) . '|' . wp_json_encode( isset( $opts['history'] ) ? $opts['history'] : array() ) );
+		$label    = Activity::task_label( $task );
+		$provider = isset( $opts['provider'] ) && $opts['provider'] ? (string) $opts['provider'] : (string) $this->plugin->settings->get( 'ai_provider' );
+		$prov_obj = $this->provider( $provider );
+		$pname    = $prov_obj ? $prov_obj->label() . ( $prov_obj->model() ? ' · ' . $prov_obj->model() : '' ) : $provider;
+		$id       = ! empty( $opts['activity_id'] ) ? (int) $opts['activity_id'] : $act->find_open( $ref );
+		if ( ! empty( $opts['activity_id'] ) ) {
+			$act->step( $id, __( 'Sending the request to the AI…', 'seolity' ), null, array( 'status' => 'running' ) );
+		} elseif ( $id ) {
+			$act->step( $id, __( 'Checking whether the answer has arrived…', 'seolity' ), null, array( 'status' => 'running' ) );
+		} else {
+			$id = $act->start( 'ai', $label, array( 'ref' => $ref, 'detail' => $pname, 'step' => __( 'Sending the request to the AI…', 'seolity' ) ) );
+		}
+		$parent = Activity::current();
+		if ( $parent && $parent !== $id ) {
+			/* translators: %s: AI task */
+			$act->step( $parent, sprintf( __( 'Asking the AI: %s…', 'seolity' ), $label ) );
+		}
+		$this->plugin->gateway->reset_last();
+		$this->plugin->subscription->reset_route();
+		try {
+			$res = $this->run_task( $task, $input, $opts );
+		} catch ( Deferred $d ) {
+			$act->step( $id, __( 'Waiting for the answer from the GitHub runner…', 'seolity' ), null, array( 'status' => 'waiting', 'route' => 'github' ) );
+			throw $d;
+		} catch ( \Throwable $e ) {
+			$act->finish( $id, 'failed', $pname . ' — ' . $e->getMessage() );
+			throw $e;
+		}
+		$route = $this->route_used( $provider );
+		if ( is_wp_error( $res ) ) {
+			$act->finish( $id, 'failed', $pname . ' — ' . $res->get_error_message(), array( 'error' => $res->get_error_code() ), array( 'route' => $route, 'step' => __( 'Failed', 'seolity' ) ) );
+		} else {
+			$m = $res['meta'];
+			$act->finish(
+				$id,
+				'done',
+				$m['provider'] . ' · ' . $m['model'] . ( ! empty( $m['cached'] ) ? ' · ' . __( 'from cache', 'seolity' ) : ' · ' . (int) $m['tokens']['input'] . '→' . (int) $m['tokens']['output'] . ' ' . __( 'tokens', 'seolity' ) ),
+				array( 'model' => $m['model'], 'tokens' => $m['tokens'], 'knowledge' => $m['knowledge_refs'] ),
+				array( 'route' => $route, 'step' => __( 'Answer received', 'seolity' ) )
+			);
+		}
+		return $res;
+	}
+
+	/** Route the last request actually took (direct, cloudflare, github or local CLI). */
+	private function route_used( $provider ) {
+		if ( 0 === strpos( (string) $provider, 'sub_' ) ) {
+			return $this->plugin->subscription->last_route(); // '' when it never got that far.
+		}
+		$last = $this->plugin->gateway->last();
+		return isset( $last['route'] ) ? $last['route'] : 'direct';
+	}
+
+	private function run_task( $task, array $input, array $opts = array() ) {
 		$def = Tasks::get( $task );
 		if ( ! $def ) {
 			return new \WP_Error( 'seolity_ai_task', sprintf( 'Unknown AI task: %s', $task ) );
 		}
 		$provider = $this->provider( isset( $opts['provider'] ) ? $opts['provider'] : null );
 		if ( ! $provider || ! $provider->is_configured() ) {
+			if ( $provider && 0 === strpos( $provider->id(), 'sub_' ) ) {
+				$missing = $this->plugin->subscription->missing( 'sub_codex' === $provider->id() ? 'codex' : 'claude' );
+				/* translators: %s: list of missing settings */
+				return new \WP_Error( 'seolity_ai_not_configured', sprintf( __( 'Subscription AI is not ready. Missing: %s.', 'seolity' ), implode( ', ', $missing ) ), array( 'status' => 400 ) );
+			}
 			return new \WP_Error( 'seolity_ai_not_configured', __( 'No AI provider is configured. Add an API key in SEOlity → Settings → AI.', 'seolity' ), array( 'status' => 400 ) );
 		}
 		$budget = (float) $this->plugin->settings->get( 'ai_monthly_budget' );

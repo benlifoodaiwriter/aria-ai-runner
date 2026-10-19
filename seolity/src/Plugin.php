@@ -25,7 +25,11 @@ defined( 'ABSPATH' ) || exit;
  * @property-read Content\ChangeManager      $changes
  * @property-read Content\Optimizer          $optimizer
  * @property-read AI\Gateway                 $gateway
+ * @property-read AI\Remote\LocalCli         $localcli
  * @property-read Roadmap\Roadmap            $roadmap
+ * @property-read Activity\Activity          $activity
+ * @property-read Activity\AiJobs            $aijobs
+ * @property-read Agent\Agent                $agent
  * @property-read GSC\OAuth                  $gsc_oauth
  * @property-read GSC\Client                 $gsc_client
  * @property-read GSC\Sync                   $gsc_sync
@@ -161,7 +165,11 @@ final class Plugin {
 			'serp'            => Serp\SerpService::class,
 			'subscription'    => AI\Remote\SubscriptionRunner::class,
 			'gateway'         => AI\Gateway::class,
+			'localcli'        => AI\Remote\LocalCli::class,
 			'roadmap'         => Roadmap\Roadmap::class,
+			'activity'        => Activity\Activity::class,
+			'aijobs'          => Activity\AiJobs::class,
+			'agent'           => Agent\Agent::class,
 		);
 		foreach ( $map as $id => $class ) {
 			$this->set(

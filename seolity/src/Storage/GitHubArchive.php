@@ -142,6 +142,7 @@ final class GitHubArchive {
 		$logs = array(
 			'ai-log'    => array( 'ai_requests', 'created_at', 'provider, model, task, prompt_version, tokens_in, tokens_out, cost_usd, duration_ms, status, error, created_at', '' ),
 			'chat'      => array( 'chat', 'created_at', 'user_id, conversation_id, role, content, meta, created_at', 'project_id = %d AND ' ),
+			'activity'  => array( 'activity', 'started_at', 'kind, title, detail, status, route, step, started_at, finished_at', 'project_id = %d AND ' ),
 			'not-found' => array( 'not_found', 'last_seen', 'url, referrer, user_agent, is_bot, hits, suggested_target, status, first_seen, last_seen', 'project_id = %d AND ' ),
 		);
 		foreach ( $logs as $folder => $l ) {

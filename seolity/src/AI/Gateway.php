@@ -142,6 +142,10 @@ final class Gateway {
 		return $this->last;
 	}
 
+	public function reset_last() {
+		$this->last = array();
+	}
+
 	/* ------------------------------------------------------------------ sending */
 
 	/** Local / private endpoints (Ollama, LM Studio on the same server) are never relayed. */
@@ -432,6 +436,10 @@ final class Gateway {
 			'provider'     => (string) $this->plugin->settings->get( 'ai_provider' ),
 			'probe'        => is_array( $probe ) ? $probe : null,
 			'warm_minutes' => (int) $this->plugin->settings->get( 'sub_warm_minutes' ),
+			'local'        => $this->plugin->localcli->status() + array(
+				'path_claude' => (string) $this->plugin->settings->get( 'sub_cli_claude' ),
+				'path_codex'  => (string) $this->plugin->settings->get( 'sub_cli_codex' ),
+			),
 			'runner'       => $this->plugin->subscription->missing( 'http' ) ? null : $this->plugin->subscription->warm_run(),
 			'cloudflare'   => array(
 				'deployed' => $this->plugin->cloudflare->is_deployed(),

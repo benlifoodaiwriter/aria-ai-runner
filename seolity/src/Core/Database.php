@@ -22,7 +22,7 @@ final class Database {
 		'keywords', 'competitors', 'competitor_pages', 'changes', 'experiments', 'learnings',
 		'redirects', 'not_found', 'recommendations', 'content_analysis', 'images', 'internal_links',
 		'alerts', 'reports', 'jobs', 'audit_log', 'ai_requests', 'ai_cache', 'rules', 'chat',
-		'knowledge', 'content_plan', 'clusters', 'remote_jobs', 'roadmaps',
+		'knowledge', 'content_plan', 'clusters', 'remote_jobs', 'roadmaps', 'activity',
 	);
 
 	/** @var \wpdb */
@@ -743,6 +743,29 @@ final class Database {
 				updated_at datetime NOT NULL,
 				PRIMARY KEY  (id),
 				KEY project (project_id)
+			) $c;",
+			"CREATE TABLE {$t('activity')} (
+				id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+				project_id bigint(20) unsigned NOT NULL DEFAULT 1,
+				user_id bigint(20) unsigned NOT NULL DEFAULT 0,
+				kind varchar(20) NOT NULL DEFAULT 'event',
+				title varchar(255) NOT NULL DEFAULT '',
+				detail text NULL,
+				status varchar(20) NOT NULL DEFAULT 'running',
+				step varchar(255) NOT NULL DEFAULT '',
+				progress tinyint(3) unsigned NOT NULL DEFAULT 0,
+				route varchar(20) NOT NULL DEFAULT '',
+				ref varchar(80) NOT NULL DEFAULT '',
+				meta longtext NULL,
+				dock tinyint(1) NOT NULL DEFAULT 0,
+				dismissed tinyint(1) NOT NULL DEFAULT 0,
+				started_at datetime NOT NULL,
+				updated_at datetime NOT NULL,
+				finished_at datetime NULL,
+				PRIMARY KEY  (id),
+				KEY project (project_id,status,id),
+				KEY ref (ref),
+				KEY dock (user_id,dock,dismissed)
 			) $c;",
 			"CREATE TABLE {$t('roadmaps')} (
 				id bigint(20) unsigned NOT NULL AUTO_INCREMENT,

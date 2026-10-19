@@ -131,6 +131,7 @@
 			getContent: adapter.get,
 			setContent: adapter.set,
 			label: label || adapter.label || '',
+			elementId: adapter.elementId || '',
 		} );
 	};
 
@@ -277,78 +278,21 @@
 	};
 
 	SL.productFor = function ( id ) {
-		var task = SL.task( { title: t( 'AI Product Optimizer' ), subject: postTitle(), steps: [ t( 'Analyzing product data, queries and competitors…' ), t( 'Writing title, descriptions and keywords…' ), t( 'Scoring before vs. after…' ) ] } );
-		SL.api( 'products/' + id + '/optimize', { method: 'POST' } ).then( function ( r ) {
-			task.done( {
-				summary: t( 'SEO score %1$s → %2$s', r.before.score, r.after.score ),
-				lines: Object.keys( r.changes ).map( function ( k ) {
-					return k.indexOf( 'alt_' ) === 0 ? t( 'Image ALT' ) + ' #' + k.slice( 4 ) : SL.fieldLabel( k );
-				} ),
-				action: { label: t( 'Review & apply' ), fn: function () {
-					open( r );
-				} },
-			} );
-		} ).catch( function ( e ) {
-			task.fail( e.message );
-		} );
-		function open( r ) {
-			var m = SL.modal( { title: t( 'AI Product Optimizer' ), wide: true, onClose: function () {
-				task.note( t( 'Report reviewed' ) );
-			} } );
-			var ai = r.ai;
-			m.body.appendChild( h( 'div', { class: 'sl-opt__scores' }, h( 'div', null, h( 'div', { class: 'sl-small sl-muted', text: t( 'SEO Score Before' ) } ), SL.scoreRing( r.before.score, 60 ) ), h( 'div', { class: 'sl-opt__arrow' }, C.rtl ? '←' : '→' ), h( 'div', null, h( 'div', { class: 'sl-small sl-muted', text: t( 'SEO Score After' ) } ), SL.scoreRing( r.after.score, 60 ) ) ) );
-			if ( r.warnings.length ) {
-				m.body.appendChild( h( 'div', { class: 'sl-alert sl-alert--warn' }, h( 'ul', null, r.warnings.map( function ( x ) {
-					return h( 'li', { text: x } );
-				} ) ) ) );
-			}
-			var editorFields = { post_content: 1, post_excerpt: 1, post_title: 1 };
-			Object.keys( r.changes ).forEach( function ( k ) {
-				var cid = r.changes[ k ];
-				var label = k.indexOf( 'alt_' ) === 0 ? t( 'Image ALT' ) + ' #' + k.slice( 4 ) : SL.fieldLabel( k );
-				var row = h( 'div', { class: 'sl-row sl-row--between sl-propitem' }, h( 'strong', { text: label } ) );
-				var actions = h( 'div', { class: 'sl-row' } );
-				actions.appendChild( h( 'button', { type: 'button', class: 'sl-btn sl-btn--sm', onClick: function () {
-					SL.preview( cid );
-				} }, t( 'Preview' ) ) );
-				if ( editorFields[ k ] ) {
-					actions.appendChild( h( 'button', { type: 'button', class: 'sl-btn sl-btn--primary sl-btn--sm', onClick: function ( ev ) {
-						SL.api( 'changes/' + cid ).then( function ( c ) {
-							var ad = contentAdapter( k );
-							if ( ad ) {
-								ad.set( c.after_value );
-							}
-							return SL.api( 'changes/' + cid + '/editor-applied', { method: 'POST' } );
-						} ).then( function () {
-							ev.target.disabled = true;
-							ev.target.textContent = t( 'Inserted' );
-							SL.toast( t( 'Inserted into the editor. Save the product to keep it.' ), 'success' );
-						} ).catch( SL.fail );
-					} }, t( 'Insert into editor' ) ) );
-				} else {
-					actions.appendChild( h( 'button', { type: 'button', class: 'sl-btn sl-btn--primary sl-btn--sm', onClick: function ( ev ) {
-						SL.api( 'changes/' + cid + '/apply', { method: 'POST' } ).then( function () {
-							ev.target.disabled = true;
-							ev.target.textContent = t( 'Applied' );
-							if ( k === 'meta_title' || k === 'meta_description' || k === 'focus_keyword' ) {
-								var el = d.getElementById( 'seolity_' + k );
-								if ( el ) {
-									el.value = k === 'meta_title' ? ai.meta_title : k === 'meta_description' ? ai.meta_description : ai.focus_keyword;
-								}
-							}
-						} ).catch( SL.fail );
-					} }, t( 'Apply' ) ) );
-				}
-				row.appendChild( actions );
-				m.body.appendChild( row );
-			} );
-			m.body.appendChild( h( 'div', { class: 'sl-grid-2' },
-				h( 'div', null, h( 'h4', { text: t( 'Keywords' ) } ), h( 'p', null, h( 'strong', { text: t( 'Focus' ) + ': ' } ), ai.focus_keyword ), SL.chips( ai.secondary_keywords, 'kw' ), SL.chips( ai.long_tail_keywords ) ),
-				h( 'div', null, h( 'h4', { text: t( 'Missing attributes' ) } ), SL.chips( ai.missing_attributes, 'warn' ), h( 'h4', { text: t( 'Content weaknesses' ) } ), h( 'ul', null, ai.content_weaknesses.map( function ( x ) {
-					return h( 'li', { text: x } );
-				} ) ) )
-			) );
+		SL.api( 'ai-jobs', { body: { type: 'product', params: { id: id, label: postTitle() } } } ).then( SL.dock.track ).catch( SL.fail );
+	};
+
+	/**
+	 * Editor adapter for a finished AI job of THIS screen (same object; for Elementor the same
+	 * widget), so a card's report can insert straight into the open editor.
+	 */
+	SL.resolveEditor = function ( params ) {
+		if ( ! params || ! ctx.object_id || Number( params.object_id || params.id ) !== Number( ctx.object_id ) ) {
+			return null;
 		}
+		if ( params.field === 'custom' ) {
+			return SL.elementorAdapter ? SL.elementorAdapter( params.element_id ) : null;
+		}
+		return contentAdapter( params.field || 'post_content' );
 	};
 
 	/* ------------------------------------------------------------------ Meta box: live score + SERP */

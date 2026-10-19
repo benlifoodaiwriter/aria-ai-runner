@@ -16,7 +16,7 @@ final class SubscriptionCodex extends Subscription {
 	}
 
 	public function label() {
-		return __( 'ChatGPT subscription (Plus/Pro via GitHub)', 'seolity' );
+		return __( 'ChatGPT subscription (Plus/Pro)', 'seolity' );
 	}
 
 	protected function engine() {

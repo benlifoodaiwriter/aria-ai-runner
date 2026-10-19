@@ -26,48 +26,143 @@ final class ChatService {
 		$this->plugin = $plugin;
 	}
 
-	public function ask( $message, $conversation_id = '' ) {
+	/**
+	 * Ask a question. The question and an answer placeholder are stored first, so the answer
+	 * also appears after a reload; it is then answered right away (direct / Cloudflare) or, when
+	 * the AI answers through GitHub, by a queue job that fills the placeholder later.
+	 *
+	 * @param array $opts page (URL or post id to discuss), regenerate (message id).
+	 */
+	public function ask( $message, $conversation_id = '', array $opts = array() ) {
 		$message = trim( sanitize_textarea_field( $message ) );
 		if ( '' === $message ) {
 			return new \WP_Error( 'seolity_chat', __( 'Please type a question.', 'seolity' ), array( 'status' => 400 ) );
 		}
 		$conversation_id = preg_match( '/^[a-f0-9]{32}$/', (string) $conversation_id ) ? $conversation_id : md5( wp_generate_password( 20, false ) . microtime() );
-		$history         = array_reverse(
-			$this->plugin->db->rows(
-				'SELECT role, content FROM {chat} WHERE user_id = %d AND conversation_id = %s ORDER BY id DESC LIMIT 8',
-				array( get_current_user_id(), $conversation_id )
+		$page            = isset( $opts['page'] ) ? $this->page_url( $opts['page'] ) : '';
+		$this->store( $conversation_id, 'user', $message, $page ? array( 'page' => $page ) : array() );
+		$aid = $this->plugin->activity->start( 'chat', __( 'Chat answer', 'seolity' ) . ': ' . mb_substr( $message, 0, 70 ), array( 'ref' => 'chat:' . $conversation_id, 'step' => __( 'Reading your site data…', 'seolity' ) ) );
+		$id  = $this->store( $conversation_id, 'assistant', '', array( 'status' => 'pending', 'activity' => $aid, 'question' => $message, 'page' => $page, 'started' => gmdate( 'c' ) ) );
+		ignore_user_abort( true ); // A reload must not lose the answer.
+		if ( function_exists( 'set_time_limit' ) ) {
+			@set_time_limit( 300 ); // phpcs:ignore WordPress.PHP.NoSilencedErrors
+		}
+		try {
+			$this->answer( $id );
+		} catch ( \SEOlity\AI\Deferred $d ) {
+			$this->update_meta( $id, array( 'status' => 'waiting', 'job' => $d->job_id() ) );
+			$this->plugin->queue->push( 'chat_reply', array( 'id' => $id, 'user_id' => get_current_user_id() ), array( 'unique' => 'chat_reply_' . $id, 'priority' => 0, 'delay' => 5, 'max_attempts' => 3 ) );
+		}
+		return array( 'conversation_id' => $conversation_id, 'message' => $this->message( $id ) );
+	}
+
+	/** Answer a stored placeholder (also the queue job). May throw Deferred. */
+	public function answer( $id ) {
+		$db  = $this->plugin->db;
+		$row = $db->row( 'SELECT * FROM {chat} WHERE id = %d', array( (int) $id ) );
+		if ( ! $row || 'assistant' !== $row['role'] ) {
+			return false;
+		}
+		$meta = (array) json_decode( (string) $row['meta'], true );
+		if ( isset( $meta['status'] ) && 'done' === $meta['status'] ) {
+			return true;
+		}
+		if ( $row['user_id'] && ! get_current_user_id() ) {
+			wp_set_current_user( (int) $row['user_id'] );
+		}
+		$history = array_reverse(
+			$db->rows(
+				"SELECT role, content FROM {chat} WHERE user_id = %d AND conversation_id = %s AND id < %d AND content <> '' ORDER BY id DESC LIMIT 9",
+				array( (int) $row['user_id'], $row['conversation_id'], (int) $id )
 			)
 		);
-		$context = $this->context( $message );
-		$this->store( $conversation_id, 'user', $message );
-		$res = $this->plugin->ai->run(
+		array_pop( $history ); // The question itself goes into the task input.
+		$question = isset( $meta['question'] ) ? (string) $meta['question'] : '';
+		$context  = $this->context( $question, isset( $meta['page'] ) ? (string) $meta['page'] : '' );
+		$t0       = microtime( true );
+		$res      = $this->plugin->ai->run(
 			'chat',
-			array( 'question' => $message, 'site_data' => $context ),
+			array( 'question' => $question, 'site_data' => $context ),
 			array(
 				'history'         => array_map( static function ( $h ) {
 					return array( 'role' => $h['role'], 'content' => mb_substr( $h['content'], 0, 4000 ) );
 				}, $history ),
-				'knowledge_query' => $message,
+				'knowledge_query' => $question,
+				'activity_id'     => isset( $meta['activity'] ) ? (int) $meta['activity'] : 0,
 			)
 		);
 		if ( is_wp_error( $res ) ) {
+			$this->update_meta( $id, array( 'status' => 'failed', 'error' => $res->get_error_message(), 'code' => $res->get_error_code() ) );
 			return $res;
 		}
-		$this->store( $conversation_id, 'assistant', $res['data']['answer'], array( 'data_used' => $res['data']['data_used'], 'actions' => $res['data']['suggested_actions'], 'meta' => $res['meta'] ) );
-		return array(
-			'conversation_id' => $conversation_id,
-			'answer'          => $res['data']['answer'],
-			'data_used'       => $res['data']['data_used'],
-			'actions'         => array_values( array_filter( $res['data']['suggested_actions'], static function ( $a ) {
-				return 0 === strpos( (string) $a['route'], '#/' );
-			} ) ),
-			'context_keys'    => array_keys( $context ),
-			'meta'            => $res['meta'],
+		$route = isset( $meta['activity'] ) ? (string) $db->value( 'SELECT route FROM {activity} WHERE id = %d', array( (int) $meta['activity'] ) ) : '';
+		$db->update(
+			'chat',
+			array(
+				'content' => (string) $res['data']['answer'],
+				'meta'    => wp_json_encode(
+					array_merge(
+						$meta,
+						array(
+							'status'       => 'done',
+							'data_used'    => $res['data']['data_used'],
+							'actions'      => array_values( array_filter( (array) $res['data']['suggested_actions'], static function ( $a ) {
+								return 0 === strpos( (string) $a['route'], '#/' );
+							} ) ),
+							'context_keys' => array_keys( $context ),
+							'meta'         => $res['meta'],
+							'route'        => $route,
+							'ms'           => (int) round( ( microtime( true ) - $t0 ) * 1000 ),
+							'error'        => null,
+						)
+					),
+					JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
+				),
+			),
+			array( 'id' => (int) $id )
 		);
+		return true;
+	}
+
+	/** Try a failed or unwanted answer again. */
+	public function retry( $id ) {
+		$row = $this->plugin->db->row( 'SELECT id, user_id, role, meta FROM {chat} WHERE id = %d', array( (int) $id ) );
+		if ( ! $row || 'assistant' !== $row['role'] || (int) $row['user_id'] !== get_current_user_id() ) {
+			return new \WP_Error( 'seolity_chat', __( 'Message not found.', 'seolity' ), array( 'status' => 404 ) );
+		}
+		$meta = (array) json_decode( (string) $row['meta'], true );
+		$aid  = $this->plugin->activity->start( 'chat', __( 'Chat answer (again)', 'seolity' ) . ': ' . mb_substr( isset( $meta['question'] ) ? $meta['question'] : '', 0, 70 ), array( 'step' => __( 'Reading your site data…', 'seolity' ) ) );
+		$this->plugin->db->update( 'chat', array( 'content' => '', 'meta' => wp_json_encode( array_merge( $meta, array( 'status' => 'pending', 'error' => null, 'activity' => $aid, 'started' => gmdate( 'c' ) ) ), JSON_UNESCAPED_UNICODE ) ), array( 'id' => (int) $id ) );
+		ignore_user_abort( true );
+		try {
+			$this->answer( $id );
+		} catch ( \SEOlity\AI\Deferred $d ) {
+			$this->update_meta( $id, array( 'status' => 'waiting', 'job' => $d->job_id() ) );
+			$this->plugin->queue->push( 'chat_reply', array( 'id' => $id, 'user_id' => get_current_user_id() ), array( 'unique' => 'chat_reply_' . $id, 'priority' => 0, 'delay' => 5, 'max_attempts' => 3 ) );
+		}
+		return array( 'message' => $this->message( $id ) );
+	}
+
+	private function update_meta( $id, array $changes ) {
+		$row  = $this->plugin->db->row( 'SELECT meta FROM {chat} WHERE id = %d', array( (int) $id ) );
+		$meta = $row ? (array) json_decode( (string) $row['meta'], true ) : array();
+		$this->plugin->db->update( 'chat', array( 'meta' => wp_json_encode( array_merge( $meta, $changes ), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES ) ), array( 'id' => (int) $id ) );
+	}
+
+	public function message( $id ) {
+		$r = $this->plugin->db->row( 'SELECT id, role, content, meta, created_at FROM {chat} WHERE id = %d AND user_id = %d', array( (int) $id, get_current_user_id() ) );
+		return $r ? Database::decode( $r, array( 'meta' ) ) : null;
+	}
+
+	private function page_url( $page ) {
+		if ( is_numeric( $page ) && (int) $page > 0 ) {
+			return (string) get_permalink( (int) $page );
+		}
+		return 0 === strpos( (string) $page, home_url() ) ? esc_url_raw( (string) $page ) : '';
 	}
 
 	private function store( $cid, $role, $content, array $meta = array() ) {
-		$this->plugin->db->insert(
+		return $this->plugin->db->insert(
 			'chat',
 			array(
 				'project_id'      => $this->plugin->db->project_id(),
@@ -82,7 +177,7 @@ final class ChatService {
 	}
 
 	/** Retrieve data relevant to the question. */
-	private function context( $q ) {
+	private function context( $q, $page = '' ) {
 		$p   = $this->plugin;
 		$n   = Text::normalize( $q );
 		$ctx = array(
@@ -97,8 +192,10 @@ final class ChatService {
 		}
 
 		// A URL or a page/product name in the question?
-		$object = null;
-		if ( preg_match( '#https?://[^\s]+#', $q, $m ) ) {
+		$object = $page ? $page : null;
+		if ( $object ) {
+			// The page chosen in the chat ("about this page").
+		} elseif ( preg_match( '#https?://[^\s]+#', $q, $m ) ) {
 			$object = $m[0];
 		} else {
 			$found = get_posts( array( 'post_type' => array_values( array_diff( get_post_types( array( 'public' => true ) ), array( 'attachment' ) ) ), 'post_status' => 'publish', 's' => mb_substr( $q, 0, 80 ), 'posts_per_page' => 1, 'fields' => 'ids' ) );
@@ -155,18 +252,29 @@ final class ChatService {
 	}
 
 	public function history( $conversation_id ) {
+		$rows = $this->plugin->db->rows( 'SELECT id, role, content, meta, created_at FROM {chat} WHERE user_id = %d AND conversation_id = %s ORDER BY id ASC LIMIT 200', array( get_current_user_id(), (string) $conversation_id ) );
 		return array_map(
 			static function ( $r ) {
 				return Database::decode( $r, array( 'meta' ) );
 			},
-			$this->plugin->db->rows( 'SELECT role, content, meta, created_at FROM {chat} WHERE user_id = %d AND conversation_id = %s ORDER BY id ASC LIMIT 100', array( get_current_user_id(), (string) $conversation_id ) )
+			$rows
 		);
+	}
+
+	/** Answers still pending in a conversation (the page polls this after a reload). */
+	public function pending( $conversation_id ) {
+		return (int) $this->plugin->db->value( "SELECT COUNT(*) FROM {chat} WHERE user_id = %d AND conversation_id = %s AND role = 'assistant' AND content = '' AND meta LIKE %s", array( get_current_user_id(), (string) $conversation_id, '%"status":"waiting"%' ) )
+			+ (int) $this->plugin->db->value( "SELECT COUNT(*) FROM {chat} WHERE user_id = %d AND conversation_id = %s AND role = 'assistant' AND content = '' AND meta LIKE %s", array( get_current_user_id(), (string) $conversation_id, '%"status":"pending"%' ) );
 	}
 
 	public function conversations() {
 		return $this->plugin->db->rows(
-			"SELECT conversation_id, MIN(created_at) started, MAX(created_at) updated, SUBSTRING_INDEX(GROUP_CONCAT(IF(role = 'user', content, NULL) ORDER BY id SEPARATOR '\n'), '\n', 1) first_question FROM {chat} WHERE user_id = %d GROUP BY conversation_id ORDER BY updated DESC LIMIT 30",
+			"SELECT conversation_id, MIN(created_at) started, MAX(created_at) updated, COUNT(*) messages, SUBSTRING_INDEX(GROUP_CONCAT(IF(role = 'user', content, NULL) ORDER BY id SEPARATOR '\n'), '\n', 1) first_question FROM {chat} WHERE user_id = %d GROUP BY conversation_id ORDER BY updated DESC LIMIT 50",
 			array( get_current_user_id() )
 		);
+	}
+
+	public function delete( $conversation_id ) {
+		return (bool) $this->plugin->db->query( 'DELETE FROM {chat} WHERE user_id = %d AND conversation_id = %s', array( get_current_user_id(), (string) $conversation_id ) );
 	}
 }

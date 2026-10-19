@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: SEOlity 1.0.0\n"
-"POT-Creation-Date: 2026-10-10 16:03+0000\n"
+"POT-Creation-Date: 2026-10-19 11:27+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -19,6 +19,35 @@ msgstr "خطای API در %1$s (%2$d): %3$s"
 
 msgid "AI provider returned a non-JSON response."
 msgstr "ارائه‌دهنده هوش مصنوعی پاسخی غیر JSON برگرداند."
+
+msgid "Sending the request to the AI…"
+msgstr "در حال ارسال درخواست به هوش مصنوعی…"
+
+msgid "Checking whether the answer has arrived…"
+msgstr "بررسی رسیدن پاسخ…"
+
+#, php-format
+msgid "Asking the AI: %s…"
+msgstr "پرسش از هوش مصنوعی: %s…"
+
+msgid "Waiting for the answer from the GitHub runner…"
+msgstr "در انتظار پاسخ از رانر گیت‌هاب…"
+
+msgid "Failed"
+msgstr "ناموفق"
+
+msgid "from cache"
+msgstr "از حافظه"
+
+msgid "tokens"
+msgstr "توکن"
+
+msgid "Answer received"
+msgstr "پاسخ دریافت شد"
+
+#, php-format
+msgid "Subscription AI is not ready. Missing: %s."
+msgstr "هوش مصنوعی اشتراکی آماده نیست. موارد ناقص: %s."
 
 msgid "No AI provider is configured. Add an API key in SEOlity → Settings → AI."
 msgstr "هیچ ارائه‌دهنده هوش مصنوعی تنظیم نشده است. در سئولیتی ← تنظیمات ← هوش مصنوعی یک کلید API اضافه کنید."
@@ -122,17 +151,20 @@ msgstr "جمینای این پاسخ را به دلایل ایمنی مسدود 
 msgid "Local LLM (Ollama)"
 msgstr "مدل زبانی محلی (Ollama)"
 
-msgid "Claude subscription (Pro/Max via GitHub)"
-msgstr "اشتراک Claude (Pro/Max از طریق گیت‌هاب)"
+msgid "Claude subscription (Pro/Max)"
+msgstr "اشتراک Claude (Pro/Max)"
 
-msgid "ChatGPT subscription (Plus/Pro via GitHub)"
-msgstr "اشتراک ChatGPT (Plus/Pro از طریق گیت‌هاب)"
+msgid "ChatGPT subscription (Plus/Pro)"
+msgstr "اشتراک ChatGPT (Plus/Pro)"
 
-msgid "Runner repository (owner/name)"
-msgstr "مخزن اجراکننده (owner/name)"
+msgid "The official CLI is not installed on this server."
+msgstr "ابزار رسمی (CLI) روی این سرور نصب نیست."
 
-msgid "GitHub token"
-msgstr "توکن گیت‌هاب"
+msgid "This server does not allow starting the CLI."
+msgstr "این سرور اجازه اجرای ابزار CLI را نمی‌دهد."
+
+msgid "The CLI on this server did not answer in time."
+msgstr "ابزار CLI روی این سرور به‌موقع پاسخ نداد."
 
 msgid "Claude subscription token (claude setup-token)"
 msgstr "توکن اشتراک Claude ‏(claude setup-token)"
@@ -140,15 +172,29 @@ msgstr "توکن اشتراک Claude ‏(claude setup-token)"
 msgid "ChatGPT auth.json (codex login)"
 msgstr "فایل auth.json چت‌جی‌پی‌تی (codex login)"
 
+msgid "Claude Code CLI on this server (Direct mode)"
+msgstr "ابزار Claude Code روی همین سرور (حالت مستقیم)"
+
+msgid "Codex CLI on this server (Direct mode)"
+msgstr "ابزار Codex روی همین سرور (حالت مستقیم)"
+
+msgid "Runner repository (owner/name)"
+msgstr "مخزن اجراکننده (owner/name)"
+
+msgid "GitHub token"
+msgstr "توکن گیت‌هاب"
+
 msgid "Run \"Set up GitHub runner\""
 msgstr "دکمه «راه‌اندازی اجراکننده گیت‌هاب» را بزنید"
 
+msgid "Direct connection is selected, so SEOlity will not use GitHub. A Claude subscription can only be used directly when the official Claude Code CLI is installed on this server (a VPS). Install it, use an API key instead, or choose the GitHub route under Server & speed."
+msgstr "اتصال «مستقیم» انتخاب شده، پس SEOlity از گیت‌هاب استفاده نمی‌کند. اشتراک Claude فقط وقتی مستقیم کار می‌کند که ابزار رسمی Claude Code روی همین سرور (VPS) نصب باشد. آن را نصب کنید، به‌جایش کلید API بگذارید یا در «سرور و سرعت» مسیر گیت‌هاب را انتخاب کنید."
+
+msgid "Direct connection is selected, so SEOlity will not use GitHub. A ChatGPT subscription can only be used directly when the official Codex CLI is installed on this server (a VPS). Install it, use an API key instead, or choose the GitHub route under Server & speed."
+msgstr "اتصال «مستقیم» انتخاب شده، پس SEOlity از گیت‌هاب استفاده نمی‌کند. اشتراک ChatGPT فقط وقتی مستقیم کار می‌کند که ابزار رسمی Codex روی همین سرور (VPS) نصب باشد. آن را نصب کنید، به‌جایش کلید API بگذارید یا در «سرور و سرعت» مسیر گیت‌هاب را انتخاب کنید."
+
 msgid "The subscription runner did not answer in time. Check the \"SEOlity AI\" workflow runs on GitHub."
 msgstr "اجراکننده اشتراکی به‌موقع پاسخ نداد. اجراهای گردش‌کار «SEOlity AI» را در گیت‌هاب بررسی کنید."
-
-#, php-format
-msgid "Subscription AI is not ready. Missing: %s."
-msgstr "هوش مصنوعی اشتراکی آماده نیست. موارد ناقص: %s."
 
 msgid "GitHub did not deliver the AI answer in time. Check the \"SEOlity AI\" workflow runs on GitHub."
 msgstr "گیت‌هاب پاسخ هوش مصنوعی را به‌موقع نرساند. اجراهای ورک‌فلو «SEOlity AI» را در گیت‌هاب بررسی کنید."
@@ -317,6 +363,273 @@ msgstr "استفاده به‌عنوان موتور هوش مصنوعی"
 msgid "Another provider is active. Press “Use as AI engine” after the test."
 msgstr "ارائه‌دهنده دیگری فعال است. بعد از تست «استفاده به‌عنوان موتور هوش مصنوعی» را بزنید."
 
+msgid "Stopped without finishing (the server ended the request)."
+msgstr "بدون پایان متوقف شد (سرور درخواست را قطع کرد)."
+
+msgid "Content optimization"
+msgstr "بهینه‌سازی محتوا"
+
+msgid "SEO title & description"
+msgstr "عنوان و توضیحات سئو"
+
+msgid "CTR title & description rewrite"
+msgstr "بازنویسی عنوان و توضیحات برای CTR"
+
+msgid "Product SEO"
+msgstr "سئوی محصول"
+
+msgid "Image ALT text"
+msgstr "متن جایگزین (ALT) تصویر"
+
+msgid "Media SEO (ALT, title, caption)"
+msgstr "سئوی رسانه (ALT، عنوان، کپشن)"
+
+msgid "Keyword research"
+msgstr "تحقیق کلمات کلیدی"
+
+msgid "Search intent analysis"
+msgstr "تحلیل هدف جست‌وجو"
+
+msgid "Content gap analysis"
+msgstr "تحلیل شکاف محتوایی"
+
+msgid "Competitor analysis"
+msgstr "تحلیل رقبا"
+
+msgid "Cannibalization advice"
+msgstr "راهکار هم‌نوع‌خواری کلمات"
+
+msgid "Focus keyword plan"
+msgstr "برنامه کلمه کلیدی اصلی"
+
+msgid "Internal link suggestions"
+msgstr "پیشنهادهای لینک داخلی"
+
+msgid "FAQ generation"
+msgstr "ساخت پرسش‌های متداول"
+
+msgid "Content brief"
+msgstr "بریف محتوا"
+
+msgid "Content plan"
+msgstr "برنامه محتوا"
+
+msgid "Topic clusters"
+msgstr "خوشه‌های موضوعی"
+
+msgid "Redirect target"
+msgstr "مقصد ریدایرکت"
+
+msgid "Experiment verdict"
+msgstr "نتیجه آزمایش"
+
+msgid "Daily briefing"
+msgstr "گزارش روزانه"
+
+msgid "Chat answer"
+msgstr "پاسخ چت"
+
+msgid "E-E-A-T analysis"
+msgstr "تحلیل E-E-A-T"
+
+msgid "Schema suggestion"
+msgstr "پیشنهاد اسکیما"
+
+msgid "SERP analysis"
+msgstr "تحلیل نتایج جست‌وجو (SERP)"
+
+msgid "SEO roadmap analysis"
+msgstr "تحلیل نقشه راه سئو"
+
+msgid "AI edit"
+msgstr "ویرایش هوش مصنوعی"
+
+msgid "Daily SEO pipeline"
+msgstr "کارهای روزانه سئو"
+
+msgid "Weekly SEO pipeline"
+msgstr "کارهای هفتگی سئو"
+
+msgid "Search Console sync"
+msgstr "همگام‌سازی سرچ کنسول"
+
+msgid "Search Console history import"
+msgstr "دریافت تاریخچه سرچ کنسول"
+
+msgid "Site audit started"
+msgstr "ممیزی سایت شروع شد"
+
+msgid "Site audit finished"
+msgstr "ممیزی سایت تمام شد"
+
+msgid "Recommendations refresh"
+msgstr "به‌روزرسانی پیشنهادها"
+
+msgid "Keyword tracking sync"
+msgstr "همگام‌سازی رتبه کلمات"
+
+msgid "Experiment evaluation"
+msgstr "ارزیابی آزمایش"
+
+msgid "Alert check"
+msgstr "بررسی هشدارها"
+
+msgid "Competitor summary"
+msgstr "خلاصه رقبا"
+
+msgid "Image scan"
+msgstr "بررسی تصاویر"
+
+msgid "Bulk AI optimization item"
+msgstr "مورد بهینه‌سازی گروهی"
+
+msgid "Report"
+msgstr "گزارش"
+
+msgid "Knowledge sync from GitHub"
+msgstr "همگام‌سازی دانش از گیت‌هاب"
+
+msgid "Archive data to GitHub"
+msgstr "بایگانی داده‌ها در گیت‌هاب"
+
+msgid "PageSpeed check"
+msgstr "بررسی سرعت صفحه"
+
+msgid "Route speed test"
+msgstr "آزمون سرعت مسیرها"
+
+msgid "Clean-up"
+msgstr "پاک‌سازی"
+
+msgid "Content"
+msgstr "محتوا"
+
+msgid "Title"
+msgstr "عنوان"
+
+msgid "Short description"
+msgstr "توضیحات کوتاه"
+
+msgid "SEO title"
+msgstr "عنوان سئو"
+
+msgid "Meta description"
+msgstr "توضیحات متا"
+
+msgid "Focus keyword"
+msgstr "کلمه کلیدی کانونی"
+
+msgid "Image ALT"
+msgstr "متن جایگزین تصویر (ALT)"
+
+msgid "FAQ"
+msgstr "سؤالات متداول"
+
+msgid "Robots (noindex)"
+msgstr "روبات‌ها (noindex)"
+
+msgid "Category description"
+msgstr "توضیحات دسته‌بندی"
+
+#, php-format
+msgid "Applied: %1$s — %2$s"
+msgstr "اعمال شد: %1$s — %2$s"
+
+#, php-format
+msgid "Undone: %1$s — %2$s"
+msgstr "برگردانده شد: %1$s — %2$s"
+
+#, php-format
+msgid "Suggestion rejected: %1$s — %2$s"
+msgstr "پیشنهاد رد شد: %1$s — %2$s"
+
+#, php-format
+msgid "Suggestion prepared: %1$s — %2$s"
+msgstr "پیشنهاد آماده شد: %1$s — %2$s"
+
+#, php-format
+msgid "Redirect saved: %1$s → %2$s"
+msgstr "ریدایرکت ذخیره شد: %1$s ← %2$s"
+
+msgid "Redirect deleted"
+msgstr "ریدایرکت حذف شد"
+
+msgid "Settings saved"
+msgstr "تنظیمات ذخیره شد"
+
+msgid "Site audit completed"
+msgstr "ممیزی سایت کامل شد"
+
+msgid "SEO roadmap built"
+msgstr "نقشه راه سئو ساخته شد"
+
+msgid "Old data archived to GitHub"
+msgstr "داده‌های قدیمی در گیت‌هاب بایگانی شد"
+
+msgid "Recommendation executed"
+msgstr "پیشنهاد اجرا شد"
+
+msgid "Search Console connected"
+msgstr "سرچ کنسول متصل است"
+
+msgid "Cloudflare worker deployed"
+msgstr "ورکر کلادفلر نصب شد"
+
+msgid "Subscription AI runner set up on GitHub"
+msgstr "رانر هوش مصنوعی اشتراکی روی گیت‌هاب راه‌اندازی شد"
+
+msgid "Knowledge collection started on GitHub"
+msgstr "جمع‌آوری دانش روی گیت‌هاب شروع شد"
+
+msgid "Bulk AI optimization queued"
+msgstr "بهینه‌سازی گروهی در صف قرار گرفت"
+
+msgid "Automation rule ran"
+msgstr "قانون خودکار اجرا شد"
+
+msgid "Report generated"
+msgstr "گزارش ساخته شد"
+
+msgid "Network route saved"
+msgstr "مسیر شبکه ذخیره شد"
+
+msgid "Unknown AI job."
+msgstr "کار هوش مصنوعی ناشناخته است."
+
+msgid "You are not allowed to edit this item."
+msgstr "شما اجازه ویرایش این مورد را ندارید."
+
+msgid "Optimizing with SEOlity AI"
+msgstr "بهینه‌سازی با هوش مصنوعی SEOlity"
+
+msgid "AI title & description"
+msgstr "عنوان و توضیحات با هوش مصنوعی"
+
+msgid "AI Product Optimizer"
+msgstr "بهینه‌ساز هوشمند محصول"
+
+msgid "Queued — starting in a moment…"
+msgstr "در صف — تا لحظاتی دیگر شروع می‌شود…"
+
+msgid "Could not start the job (database not ready)."
+msgstr "کار شروع نشد (دیتابیس آماده نیست)."
+
+msgid "Reading the content, Search Console queries and the SEO knowledge base…"
+msgstr "خواندن محتوا، جست‌وجوهای سرچ کنسول و پایگاه دانش سئو…"
+
+msgid "Finished — review the result"
+msgstr "تمام شد — نتیجه را ببینید"
+
+#, php-format
+msgid "SEO score %1$s → %2$s"
+msgstr "امتیاز سئو %1$s ← %2$s"
+
+msgid "New title and description options are ready."
+msgstr "گزینه‌های جدید عنوان و توضیحات آماده است."
+
+msgid "Not found."
+msgstr "پیدا نشد."
+
 msgid "Dashboard"
 msgstr "داشبورد"
 
@@ -325,6 +638,9 @@ msgstr "نقشه راه سئو"
 
 msgid "AI SEO Chat"
 msgstr "چت سئوی هوش مصنوعی"
+
+msgid "Activity"
+msgstr "فعالیت‌ها"
 
 msgid "Site Audit"
 msgstr "ممیزی سایت"
@@ -340,9 +656,6 @@ msgstr "رنک مث و کلمات کلیدی کانونی"
 
 msgid "Focus keywords"
 msgstr "کلمات کلیدی کانونی"
-
-msgid "Content"
-msgstr "محتوا"
 
 msgid "Products"
 msgstr "محصولات"
@@ -479,12 +792,6 @@ msgstr "هیچ"
 msgid "Stored in %s. Use “GSC keywords” to choose them from real Search Console data."
 msgstr "در %s ذخیره می‌شود. با «کلمات کلیدی GSC» آن‌ها را از داده واقعی سرچ کنسول انتخاب کنید."
 
-msgid "SEO title"
-msgstr "عنوان سئو"
-
-msgid "Meta description"
-msgstr "توضیحات متا"
-
 msgid "Noindex this page"
 msgstr "نوایندکس کردن این صفحه"
 
@@ -498,20 +805,11 @@ msgstr "بهینه‌سازی محتوا"
 msgid "GSC keywords"
 msgstr "کلمات کلیدی GSC"
 
-msgid "AI title & description"
-msgstr "عنوان و توضیحات با هوش مصنوعی"
-
 msgid "Generate FAQ"
 msgstr "تولید سؤالات متداول"
 
 msgid "Internal links"
 msgstr "لینک‌های داخلی"
-
-msgid "E-E-A-T analysis"
-msgstr "تحلیل E-E-A-T"
-
-msgid "AI Product Optimizer"
-msgstr "بهینه‌ساز هوشمند محصول"
 
 msgid "Version history"
 msgstr "تاریخچه نسخه‌ها"
@@ -521,6 +819,234 @@ msgstr "نوایندکس کردن این آرشیو"
 
 msgid "Tip: an author bio with real credentials and experience strengthens E-E-A-T. Use “Optimize with SEOlity AI” next to the biography field."
 msgstr "نکته: زندگی‌نامه نویسنده با سوابق و تجربه واقعی، E-E-A-T را تقویت می‌کند. از دکمه «بهینه‌سازی با هوش مصنوعی سئولیتی» کنار فیلد زندگی‌نامه استفاده کنید."
+
+msgid "this page"
+msgstr "این صفحه"
+
+msgid "Recommendation not found."
+msgstr "پیشنهاد پیدا نشد."
+
+#, php-format
+msgid "Read the real Search Console queries and the content of “%s”."
+msgstr "جست‌وجوهای واقعی سرچ کنسول و محتوای «%s» را می‌خواند."
+
+msgid "Write a new SEO title and meta description with AI (SEO knowledge base + competitor results)."
+msgstr "با هوش مصنوعی عنوان سئو و توضیحات متای جدید می‌نویسد (پایگاه دانش سئو + نتایج رقبا)."
+
+#, php-format
+msgid "Save them in %1$s for “%2$s” (a new version; undo anytime)."
+msgstr "آن‌ها را در %1$s برای «%2$s» ذخیره می‌کند (نسخه جدید؛ هر وقت خواستید برگردانید)."
+
+msgid "Track the result as an experiment (CTR after 14–28 days)."
+msgstr "نتیجه را به‌صورت آزمایش دنبال می‌کند (CTR بعد از ۱۴ تا ۲۸ روز)."
+
+#, php-format
+msgid "Read “%s”, its Search Console queries, the knowledge base and competitor pages."
+msgstr "«%s»، جست‌وجوهای سرچ کنسول آن، پایگاه دانش و صفحات رقبا را می‌خواند."
+
+#, php-format
+msgid "Rewrite and expand the content with AI — goal: %s"
+msgstr "محتوا را با هوش مصنوعی بازنویسی و کامل می‌کند — هدف: %s"
+
+msgid "Check the result (no keyword stuffing, links and shortcodes kept, score before vs. after)."
+msgstr "نتیجه را بررسی می‌کند (بدون تکرار بیش از حد کلمه، حفظ لینک‌ها و شورت‌کدها، امتیاز قبل و بعد)."
+
+#, php-format
+msgid "Update “%s” (a new version; undo anytime)."
+msgstr "«%s» را به‌روز می‌کند (نسخه جدید؛ هر وقت خواستید برگردانید)."
+
+#, php-format
+msgid "Read the product data of “%s” (attributes, price, categories, images, queries)."
+msgstr "اطلاعات محصول «%s» را می‌خواند (ویژگی‌ها، قیمت، دسته‌ها، تصاویر، جست‌وجوها)."
+
+msgid "Write SEO title, meta description, short description, focus keywords and image ALT with AI."
+msgstr "عنوان سئو، توضیحات متا، توضیح کوتاه، کلمات کلیدی و ALT تصاویر را با هوش مصنوعی می‌نویسد."
+
+msgid "Save every field (each one versioned; undo anytime)."
+msgstr "همه فیلدها را ذخیره می‌کند (هرکدام نسخه‌دار؛ قابل برگشت)."
+
+#, php-format
+msgid "Collect the question queries people search for “%s”."
+msgstr "سؤال‌هایی را که مردم درباره «%s» جست‌وجو می‌کنند جمع می‌کند."
+
+msgid "Write short, factual answers with AI."
+msgstr "با هوش مصنوعی پاسخ‌های کوتاه و دقیق می‌نویسد."
+
+msgid "Add the FAQ (with FAQPage schema) to the page."
+msgstr "پرسش‌های متداول را (با اسکیمای FAQPage) به صفحه اضافه می‌کند."
+
+#, php-format
+msgid "Change “%1$s” of “%2$s” (a new version; undo anytime)."
+msgstr "«%1$s» در «%2$s» را تغییر می‌دهد (نسخه جدید؛ قابل برگشت)."
+
+msgid "the best matching live page"
+msgstr "مرتبط‌ترین صفحه فعال"
+
+#, php-format
+msgid "Create a 301 redirect from %1$s to %2$s."
+msgstr "ریدایرکت ۳۰۱ از %1$s به %2$s می‌سازد."
+
+#, php-format
+msgid "Search the whole site for pages related to “%s” that already mention its topic."
+msgstr "کل سایت را برای صفحاتی که با «%s» مرتبط‌اند و درباره موضوعش حرف می‌زنند می‌گردد."
+
+#, php-format
+msgid "Add a link with the text “%1$s” in “%2$s”."
+msgstr "لینکی با متن «%1$s» در «%2$s» اضافه می‌کند."
+
+#, php-format
+msgid "Write one natural sentence with a link into “%s” (AI, using the whole site’s content)."
+msgstr "یک جمله طبیعی همراه لینک در «%s» می‌نویسد (با هوش مصنوعی و بر اساس محتوای کل سایت)."
+
+msgid "Save each edited page (versioned; undo anytime)."
+msgstr "هر صفحه ویرایش‌شده را ذخیره می‌کند (نسخه‌دار؛ قابل برگشت)."
+
+msgid "Point every redirect of a chain straight to its final URL (loops are left for you to decide)."
+msgstr "هر ریدایرکت زنجیره را مستقیم به آدرس نهایی می‌برد (حلقه‌ها را برای تصمیم شما می‌گذارد)."
+
+#, php-format
+msgid "Run the AI on %d items in the background, one by one."
+msgstr "هوش مصنوعی را روی %d مورد، یکی‌یکی و در پس‌زمینه اجرا می‌کند."
+
+msgid "Add the topic to the content planner with an AI brief (headings, questions, length)."
+msgstr "موضوع را با بریف هوش مصنوعی (تیترها، سؤال‌ها، طول) به برنامه محتوا اضافه می‌کند."
+
+msgid "This task needs your decision; follow the steps on the left. SEOlity can open the right screen for you."
+msgstr "این کار به تصمیم شما نیاز دارد؛ مراحل سمت چپ را دنبال کنید. SEOlity می‌تواند صفحه درست را برایتان باز کند."
+
+msgid "This task needs your decision; SEOlity cannot do it alone."
+msgstr "این کار به تصمیم شما نیاز دارد؛ SEOlity به‌تنهایی نمی‌تواند انجامش دهد."
+
+msgid "AI is doing it"
+msgstr "هوش مصنوعی در حال انجام"
+
+msgid "Done — every change is versioned (undo in AI Center → AI Changes)."
+msgstr "انجام شد — همه تغییرات نسخه‌دارند (برگرداندن در مرکز هوش مصنوعی ← تغییرات هوش مصنوعی)."
+
+msgid "Finished"
+msgstr "تمام شد"
+
+msgid "No related page was found to link from. Publish a related article first, or add the link by hand."
+msgstr "صفحه مرتبطی برای لینک دادن پیدا نشد. اول یک مقاله مرتبط منتشر کنید یا لینک را دستی اضافه کنید."
+
+#, php-format
+msgid "Reading “%s” and writing a sentence that links to the page…"
+msgstr "خواندن «%s» و نوشتن جمله‌ای که به صفحه لینک می‌دهد…"
+
+#, php-format
+msgid "Skipped “%s”: the topics do not fit together."
+msgstr "«%s» رد شد: موضوع‌ها به هم نمی‌خورند."
+
+#, php-format
+msgid "Adding the link in “%s”…"
+msgstr "افزودن لینک در «%s»…"
+
+#, php-format
+msgid "Add internal link \"%1$s\" → %2$s"
+msgstr "افزودن لینک داخلی «%1$s» ← %2$s"
+
+#, php-format
+msgid "Link “%1$s” written into “%2$s”"
+msgstr "لینک «%1$s» در «%2$s» نوشته شد"
+
+msgid "The related pages are about different topics, so no natural link could be added."
+msgstr "صفحات مرتبط درباره موضوع‌های دیگری هستند، پس لینک طبیعی اضافه نشد."
+
+#, php-format
+msgid "Reading the search queries of “%s”…"
+msgstr "خواندن جست‌وجوهای «%s»…"
+
+msgid "Saving the new SEO title and meta description…"
+msgstr "ذخیره عنوان سئو و توضیحات متای جدید…"
+
+#, php-format
+msgid "%1$s updated on “%2$s”"
+msgstr "%1$s در «%2$s» به‌روز شد"
+
+#, php-format
+msgid "Analyzing “%s” and writing the improved version with AI…"
+msgstr "تحلیل «%s» و نوشتن نسخه بهتر با هوش مصنوعی…"
+
+msgid "The AI produced no usable change."
+msgstr "هوش مصنوعی تغییر قابل استفاده‌ای نداد."
+
+#, php-format
+msgid "SEO score %1$s → %2$s — updating the page…"
+msgstr "امتیاز سئو %1$s ← %2$s — در حال به‌روزرسانی صفحه…"
+
+#, php-format
+msgid "“%1$s” rewritten (SEO score %2$s → %3$s)"
+msgstr "«%1$s» بازنویسی شد (امتیاز سئو %2$s ← %3$s)"
+
+#, php-format
+msgid "Optimizing the product “%s” with AI…"
+msgstr "بهینه‌سازی محصول «%s» با هوش مصنوعی…"
+
+#, php-format
+msgid "Saving %s…"
+msgstr "ذخیره %s…"
+
+#, php-format
+msgid "%s saved"
+msgstr "%s ذخیره شد"
+
+#, php-format
+msgid "Writing the FAQ for “%s”…"
+msgstr "نوشتن پرسش‌های متداول برای «%s»…"
+
+#, php-format
+msgid "FAQ added to “%s”"
+msgstr "پرسش‌های متداول به «%s» اضافه شد"
+
+#, php-format
+msgid "%1$s changed on “%2$s”"
+msgstr "%1$s در «%2$s» تغییر کرد"
+
+msgid "No matching live page was found; choose the target yourself in Technical SEO → Redirects."
+msgstr "صفحه فعال مناسبی پیدا نشد؛ مقصد را خودتان در سئوی فنی ← ریدایرکت‌ها انتخاب کنید."
+
+#, php-format
+msgid "Creating the redirect %1$s → %2$s…"
+msgstr "ساخت ریدایرکت %1$s ← %2$s…"
+
+#, php-format
+msgid "301 redirect created: %1$s → %2$s"
+msgstr "ریدایرکت ۳۰۱ ساخته شد: %1$s ← %2$s"
+
+#, php-format
+msgid "Finding pages across the site that should link to “%s”…"
+msgstr "پیدا کردن صفحاتی از سایت که باید به «%s» لینک بدهند…"
+
+#, php-format
+msgid "Adding the link “%1$s” in “%2$s”…"
+msgstr "افزودن لینک «%1$s» در «%2$s»…"
+
+#, php-format
+msgid "Link “%1$s” added in “%2$s”"
+msgstr "لینک «%1$s» در «%2$s» اضافه شد"
+
+msgid "The suggested anchors are no longer in the source pages."
+msgstr "متن‌های لینک پیشنهادی دیگر در صفحات مبدأ نیستند."
+
+msgid "Adding the link…"
+msgstr "افزودن لینک…"
+
+msgid "Link added"
+msgstr "لینک اضافه شد"
+
+msgid "Pointing redirect chains straight to their final URL…"
+msgstr "اصلاح زنجیره‌های ریدایرکت به آدرس نهایی…"
+
+#, php-format
+msgid "%d redirects fixed"
+msgstr "%d ریدایرکت اصلاح شد"
+
+#, php-format
+msgid "%d items queued — follow them in Live activity"
+msgstr "%d مورد در صف — در «فعالیت زنده» دنبالشان کنید"
+
+msgid "Topic added to the content planner"
+msgstr "موضوع به برنامه محتوا اضافه شد"
 
 #, php-format
 msgid "Organic clicks dropped %1$s%% week over week"
@@ -734,8 +1260,8 @@ msgstr "اشتراک هوش مصنوعی شما در حال انجام این د
 msgid "Unexpected error."
 msgstr "خطای غیرمنتظره."
 
-msgid "You are not allowed to edit this item."
-msgstr "شما اجازه ویرایش این مورد را ندارید."
+msgid "Sorry, you are not allowed to do that."
+msgstr "متأسفیم، اجازهٔ انجام این کار را ندارید."
 
 msgid "Change not found."
 msgstr "تغییر پیدا نشد."
@@ -749,14 +1275,23 @@ msgstr "این پراپرتی برای حساب متصل در دسترس نیس�
 msgid "You are not allowed to edit this product."
 msgstr "شما اجازه ویرایش این محصول را ندارید."
 
-msgid "Sorry, you are not allowed to do that."
-msgstr "متأسفیم، اجازهٔ انجام این کار را ندارید."
-
 msgid "Unknown secret."
 msgstr "کلید محرمانه ناشناخته."
 
 msgid "auth.json must be valid JSON (copy the whole file from ~/.codex/auth.json)."
 msgstr "auth.json باید JSON معتبر باشد (کل فایل ~/.codex/auth.json را کپی کنید)."
+
+msgid "This host does not allow PHP to start programs (proc_open is disabled). Subscriptions can only run through GitHub here."
+msgstr "این هاست اجازه اجرای برنامه به PHP نمی‌دهد (proc_open غیرفعال است). اینجا اشتراک فقط از طریق گیت‌هاب کار می‌کند."
+
+msgid "Claude Code CLI was not found on this server. Install it (npm install -g @anthropic-ai/claude-code) or enter its full path."
+msgstr "ابزار Claude Code روی این سرور پیدا نشد. نصبش کنید (npm install -g @anthropic-ai/claude-code) یا مسیر کاملش را وارد کنید."
+
+msgid "Codex CLI was not found on this server. Install it (npm install -g @openai/codex) or enter its full path."
+msgstr "ابزار Codex روی این سرور پیدا نشد. نصبش کنید (npm install -g @openai/codex) یا مسیر کاملش را وارد کنید."
+
+msgid "Save your subscription login first (Settings → AI)."
+msgstr "اول ورود اشتراک را ذخیره کنید (تنظیمات ← هوش مصنوعی)."
 
 msgid "Dates must be YYYY-MM-DD."
 msgstr "تاریخ‌ها باید به‌صورت YYYY-MM-DD باشند."
@@ -798,6 +1333,15 @@ msgstr "امتیاز سلامت %1$s. %2$d اقدام اولویت‌دار در
 
 msgid "Please type a question."
 msgstr "لطفاً یک سؤال بنویسید."
+
+msgid "Reading your site data…"
+msgstr "خواندن اطلاعات سایت شما…"
+
+msgid "Message not found."
+msgstr "پیام پیدا نشد."
+
+msgid "Chat answer (again)"
+msgstr "پاسخ چت (دوباره)"
 
 msgid "Enter a valid domain, e.g. example.com"
 msgstr "یک دامنه معتبر وارد کنید، مثلاً example.com"
@@ -1710,10 +2254,6 @@ msgstr "پیشنهاد پیدا نشد."
 msgid "The anchor text is no longer present in the source content."
 msgstr "انکر تکست دیگر در محتوای مبدأ وجود ندارد."
 
-#, php-format
-msgid "Add internal link \"%1$s\" → %2$s"
-msgstr "افزودن لینک داخلی «%1$s» ← %2$s"
-
 msgid "Plan item not found."
 msgstr "مورد برنامه پیدا نشد."
 
@@ -1722,6 +2262,19 @@ msgstr "شما اجازه ایجاد نوشته ندارید."
 
 msgid "SEOlity brief — replace the notes below with your own expertise, examples and sources before publishing."
 msgstr "بریف سئولیتی — پیش از انتشار، یادداشت‌های زیر را با تخصص، مثال‌ها و منابع خودتان جایگزین کنید."
+
+msgid "Working…"
+msgstr "در حال انجام…"
+
+msgid "Continuing…"
+msgstr "ادامه…"
+
+msgid "Waiting for the AI answer from GitHub…"
+msgstr "در انتظار پاسخ هوش مصنوعی از گیت‌هاب…"
+
+#, php-format
+msgid "Error, will retry: %s"
+msgstr "خطا، دوباره تلاش می‌شود: %s"
 
 msgid "Every minute (SEOlity queue)"
 msgstr "هر دقیقه (صف سئولیتی)"
@@ -1862,9 +2415,6 @@ msgstr "صاف کردن %d زنجیره ریدایرکت"
 
 msgid "Each extra hop slows users and crawlers; point old URLs straight to their final destination."
 msgstr "هر پرش اضافه کاربران و خزنده‌ها را کند می‌کند؛ URLهای قدیمی را مستقیم به مقصد نهایی هدایت کنید."
-
-msgid "Recommendation not found."
-msgstr "پیشنهاد پیدا نشد."
 
 msgid "Higher CTR at the same rankings → more clicks within 2–4 weeks."
 msgstr "CTR بالاتر با همان رتبه‌ها ← کلیک بیشتر طی ۲ تا ۴ هفته."
@@ -2866,6 +3416,49 @@ msgstr "%s زنجیره ریدایرکت اصلاح شد."
 msgid "Added to the content planner."
 msgstr "به برنامه‌ریز محتوا اضافه شد."
 
+msgid "Open"
+msgstr "باز"
+
+msgid "Do it"
+msgstr "انجامش بده"
+
+msgid "Do it yourself — exactly where"
+msgstr "خودتان انجام دهید — دقیقاً کجا"
+
+msgid "Done when:"
+msgstr "تمام است وقتی:"
+
+msgid "Let the AI do it"
+msgstr "بگذارید هوش مصنوعی انجام دهد"
+
+msgid "This is exactly what SEOlity will do on your site. Nothing changes until you approve. Every change is versioned — undo anytime in AI Center → AI Changes."
+msgstr "SEOlity دقیقاً همین کارها را روی سایت شما انجام می‌دهد. تا تأیید نکنید چیزی تغییر نمی‌کند. همه تغییرات نسخه‌دارند — هر وقت خواستید در مرکز هوش مصنوعی ← تغییرات هوش مصنوعی برگردانید."
+
+msgid "Connect an AI provider first (Settings → AI)."
+msgstr "اول یک سرویس هوش مصنوعی وصل کنید (تنظیمات ← هوش مصنوعی)."
+
+msgid "This task needs your decision; follow the steps on the left."
+msgstr "این کار به تصمیم شما نیاز دارد؛ مراحل سمت چپ را دنبال کنید."
+
+msgid "Approve & let the AI do it"
+msgstr "تأیید و انجام توسط هوش مصنوعی"
+
+msgid "The AI is working…"
+msgstr "هوش مصنوعی در حال کار است…"
+
+msgid "Stopped"
+msgstr "متوقف شد"
+
+msgid "Done"
+msgstr "انجام شد"
+
+#, php-format
+msgid "AI route: %s"
+msgstr "مسیر هوش مصنوعی: %s"
+
+msgid "Review the changes"
+msgstr "بررسی تغییرات"
+
 msgid "Impact"
 msgstr "تأثیر"
 
@@ -2874,9 +3467,6 @@ msgstr "زحمت"
 
 msgid "Confidence"
 msgstr "اطمینان"
-
-msgid "Do it"
-msgstr "انجامش بده"
 
 msgid "Why?"
 msgstr "چرا؟"
@@ -2911,9 +3501,6 @@ msgstr "هوش مصنوعی متصل است"
 
 msgid "AI not configured"
 msgstr "هوش مصنوعی تنظیم نشده"
-
-msgid "Search Console connected"
-msgstr "سرچ کنسول متصل است"
 
 msgid "Search Console not connected"
 msgstr "سرچ کنسول متصل نیست"
@@ -3133,48 +3720,6 @@ msgstr "امروز انجام دهید"
 msgid "Today's SEO Briefing"
 msgstr "گزارش سئوی امروز"
 
-msgid "Ask anything about your site. Answers are grounded in your real Search Console, audit, competitor and experiment data."
-msgstr "هر سؤالی درباره سایت خود بپرسید. پاسخ‌ها بر اساس داده‌های واقعی سرچ کنسول، ممیزی، رقبا و آزمایش‌های شماست."
-
-msgid "New conversation"
-msgstr "گفتگوی جدید"
-
-msgid "e.g. Why did my organic sales drop this month?"
-msgstr "مثلاً: چرا فروش ارگانیک من این ماه کم شده؟"
-
-msgid "Send"
-msgstr "ارسال"
-
-msgid "Why has my organic traffic dropped?"
-msgstr "چرا ترافیک ارگانیک من کم شده؟"
-
-msgid "Why does this product not rank?"
-msgstr "چرا این محصول رتبه نمی‌گیرد؟"
-
-msgid "Which pages should I optimize today?"
-msgstr "کدام صفحات را باید امروز بهینه کنم؟"
-
-msgid "What did my competitor do recently?"
-msgstr "رقیب من اخیراً چه کاری انجام داده؟"
-
-msgid "Why does this page have a low CTR?"
-msgstr "چرا این صفحه CTR پایینی دارد؟"
-
-msgid "Should I redirect this URL?"
-msgstr "این URL را ریدایرکت کنم؟"
-
-msgid "Data used"
-msgstr "داده‌های استفاده‌شده"
-
-msgid "Analyzing your data…"
-msgstr "در حال تحلیل داده‌های شما…"
-
-msgid "Hi! I am your AI SEO strategist. Ask me about traffic, rankings, products, competitors or what to do next."
-msgstr "سلام! من استراتژیست سئوی هوش مصنوعی شما هستم. درباره ترافیک، رتبه‌ها، محصولات، رقبا یا قدم بعدی از من بپرسید."
-
-msgid "Recent conversations"
-msgstr "گفتگوهای اخیر"
-
 msgid "Every change is previewed, approved, logged and versioned. Nothing destructive happens without your approval unless you enable Autonomous mode."
 msgstr "هر تغییر پیش‌نمایش، تأیید، ثبت و نسخه‌بندی می‌شود. هیچ تغییر مخربی بدون تأیید شما انجام نمی‌شود مگر اینکه حالت خودمختار را فعال کنید."
 
@@ -3231,9 +3776,6 @@ msgstr "تغییری وجود ندارد"
 
 msgid "AI suggestions you generate will appear here for approval."
 msgstr "پیشنهادهای هوش مصنوعی که تولید می‌کنید برای تأیید اینجا نمایش داده می‌شوند."
-
-msgid "Internal link suggestions"
-msgstr "پیشنهادهای لینک داخلی"
 
 msgid "No good link opportunities found"
 msgstr "فرصت مناسبی برای لینک پیدا نشد"
@@ -3307,9 +3849,6 @@ msgstr "تغییرات پیشنهادی"
 msgid "Field"
 msgstr "فیلد"
 
-msgid "Image ALT"
-msgstr "متن جایگزین تصویر (ALT)"
-
 msgid "Preview"
 msgstr "پیش‌نمایش"
 
@@ -3379,31 +3918,6 @@ msgstr "لینک درج شد. برای ماندگاری، نوشته را ذخی
 msgid "Insert link"
 msgstr "درج لینک"
 
-msgid "Analyzing product data, queries and competitors…"
-msgstr "در حال تحلیل داده‌های محصول، کوئری‌ها و رقبا…"
-
-msgid "Writing title, descriptions and keywords…"
-msgstr "در حال نوشتن عنوان، توضیحات و کلمات کلیدی…"
-
-msgid "Scoring before vs. after…"
-msgstr "در حال امتیازدهی قبل و بعد…"
-
-#, php-format
-msgid "SEO score %1$s → %2$s"
-msgstr "امتیاز سئو %1$s ← %2$s"
-
-msgid "Review & apply"
-msgstr "بررسی و اعمال"
-
-msgid "Report reviewed"
-msgstr "گزارش بررسی شد"
-
-msgid "Inserted into the editor. Save the product to keep it."
-msgstr "در ویرایشگر درج شد. برای ماندگاری، محصول را ذخیره کنید."
-
-msgid "Insert into editor"
-msgstr "درج در ویرایشگر"
-
 msgid "Google will generate a snippet from your content. Write a description to control it."
 msgstr "گوگل از محتوای شما یک خلاصه می‌سازد. برای کنترل آن، توضیحات بنویسید."
 
@@ -3464,6 +3978,113 @@ msgstr "بهینه‌سازی چکیده"
 
 msgid "Live SEO analysis"
 msgstr "تحلیل زنده سئو"
+
+msgid "AI request"
+msgstr "درخواست هوش مصنوعی"
+
+msgid "Background job"
+msgstr "کار پس‌زمینه"
+
+msgid "AI agent"
+msgstr "دستیار اجرایی هوش مصنوعی"
+
+msgid "Chat"
+msgstr "چت"
+
+msgid "Change"
+msgstr "تغییر"
+
+msgid "Event"
+msgstr "رویداد"
+
+msgid "Waiting"
+msgstr "در انتظار"
+
+msgid "Info"
+msgstr "اطلاعات"
+
+msgid "Cancelled"
+msgstr "لغو شد"
+
+msgid "This server"
+msgstr "همین سرور"
+
+#, php-format
+msgid "via %s"
+msgstr "از مسیر %s"
+
+msgid "No step details for this entry."
+msgstr "برای این مورد جزئیات مرحله‌ای ثبت نشده است."
+
+#, php-format
+msgid "Model: %s"
+msgstr "مدل: %s"
+
+#, php-format
+msgid "Tokens: %1$s in / %2$s out"
+msgstr "توکن: %1$s ورودی / %2$s خروجی"
+
+#, php-format
+msgid "Knowledge: %s"
+msgstr "دانش: %s"
+
+#, php-format
+msgid "Error code: %s"
+msgstr "کد خطا: %s"
+
+msgid "What SEOlity is doing right now, and an exact timeline of everything it did on your site — every AI answer (with the route it took and any error), every edit, every data collection."
+msgstr "SEOlity همین الان چه می‌کند و خط زمانی دقیق هر کاری که روی سایت شما انجام داده — هر پاسخ هوش مصنوعی (با مسیری که رفت و هر خطا)، هر ویرایش و هر جمع‌آوری داده."
+
+msgid "Live activity"
+msgstr "فعالیت زنده"
+
+msgid "Completed work"
+msgstr "کارهای انجام‌شده"
+
+msgid "Running now"
+msgstr "در حال اجرا"
+
+msgid "Waiting (GitHub / retry)"
+msgstr "در انتظار (گیت‌هاب / تلاش دوباره)"
+
+msgid "Failed in the last hour"
+msgstr "ناموفق در یک ساعت اخیر"
+
+msgid "Jobs in the queue"
+msgstr "کارهای در صف"
+
+msgid "Nothing is running right now"
+msgstr "الان کاری در حال اجرا نیست"
+
+msgid "Start an analysis, an AI edit or a chat question — you will see every step here as it happens."
+msgstr "یک تحلیل، ویرایش هوش مصنوعی یا سؤال چت شروع کنید — هر مرحله را همین‌جا به‌صورت زنده می‌بینید."
+
+msgid "Updates every 3 seconds · finished work moves to “Completed work”."
+msgstr "هر ۳ ثانیه به‌روز می‌شود · کارهای تمام‌شده به «کارهای انجام‌شده» می‌روند."
+
+msgid "Everything"
+msgstr "همه"
+
+msgid "All results"
+msgstr "همه نتیجه‌ها"
+
+msgid "Search…"
+msgstr "جستجو…"
+
+#, php-format
+msgid "%s entries"
+msgstr "%s مورد"
+
+msgid "Everything SEOlity does on your site will be listed here with the exact time."
+msgstr "هر کاری که SEOlity روی سایت شما انجام دهد با زمان دقیق اینجا فهرست می‌شود."
+
+#, php-format
+msgid "%s running"
+msgstr "%s در حال اجرا"
+
+#, php-format
+msgid "%s failed in the last hour"
+msgstr "%s ناموفق در یک ساعت اخیر"
 
 msgid "Approval workflow, SEO rules engine, background queue and the full audit log."
 msgstr "گردش‌کار تأیید، موتور قوانین سئو، صف پس‌زمینه و گزارش کامل رویدادها."
@@ -3640,9 +4261,6 @@ msgstr "در انتظار"
 msgid "Done (3 days)"
 msgstr "انجام‌شده (۳ روز)"
 
-msgid "Failed"
-msgstr "ناموفق"
-
 msgid "Run queue now"
 msgstr "اجرای صف همین حالا"
 
@@ -3704,9 +4322,6 @@ msgstr "مخزن"
 
 msgid "Last sync"
 msgstr "آخرین همگام‌سازی"
-
-msgid "Title"
-msgstr "عنوان"
 
 msgid "topic"
 msgstr "موضوع"
@@ -3968,6 +4583,97 @@ msgstr "موتور سئوی شناسایی‌شده"
 msgid "when another SEO plugin is active, SEOlity writes titles/descriptions into it and does not duplicate head tags."
 msgstr "وقتی افزونه سئوی دیگری فعال است، سئولیتی عنوان/توضیحات را در آن می‌نویسد و تگ‌های head را تکرار نمی‌کند."
 
+msgid "e.g. Why did my organic sales drop this month?"
+msgstr "مثلاً: چرا فروش ارگانیک من این ماه کم شده؟"
+
+msgid "Send"
+msgstr "ارسال"
+
+msgid "Search conversations…"
+msgstr "جست‌وجوی گفتگوها…"
+
+msgid "Ask anything about your site. Answers are grounded in your real Search Console, audit, competitor and experiment data — and stay here even if you reload the page."
+msgstr "هر سؤالی درباره سایتتان بپرسید. پاسخ‌ها بر پایه داده‌های واقعی سرچ کنسول، ممیزی، رقبا و آزمایش‌ها هستند — و حتی اگر صفحه را رفرش کنید همین‌جا می‌مانند."
+
+msgid "Copy conversation"
+msgstr "کپی گفتگو"
+
+msgid "New conversation"
+msgstr "گفتگوی جدید"
+
+msgid "Why has my organic traffic dropped?"
+msgstr "چرا ترافیک ارگانیک من کم شده؟"
+
+msgid "Which pages should I optimize today?"
+msgstr "کدام صفحات را باید امروز بهینه کنم؟"
+
+msgid "Which new articles are not indexed yet?"
+msgstr "کدام مقاله‌های جدید هنوز ایندکس نشده‌اند؟"
+
+msgid "What did my competitor do recently?"
+msgstr "رقیب من اخیراً چه کاری انجام داده؟"
+
+msgid "Why does this page have a low CTR?"
+msgstr "چرا این صفحه CTR پایینی دارد؟"
+
+msgid "Write 5 article ideas my competitors rank for"
+msgstr "۵ ایده مقاله که رقبایم با آن رتبه دارند بنویس"
+
+msgid "Should I redirect this URL?"
+msgstr "این URL را ریدایرکت کنم؟"
+
+msgid "About a page…"
+msgstr "درباره یک صفحه…"
+
+msgid "Enter to send · Shift+Enter for a new line"
+msgstr "Enter برای ارسال · Shift+Enter برای خط جدید"
+
+msgid "Conversations"
+msgstr "گفتگوها"
+
+msgid "Which page is the question about?"
+msgstr "سؤال درباره کدام صفحه است؟"
+
+msgid "Search pages, posts, products…"
+msgstr "جست‌وجوی برگه‌ها، نوشته‌ها، محصولات…"
+
+msgid "The AI is answering through GitHub — the answer will appear here, even after a reload."
+msgstr "هوش مصنوعی از طریق گیت‌هاب پاسخ می‌دهد — پاسخ حتی بعد از رفرش همین‌جا نمایش داده می‌شود."
+
+msgid "Thinking with your site data and the SEO knowledge base…"
+msgstr "در حال فکر کردن با داده‌های سایت و پایگاه دانش سئو…"
+
+msgid "The AI could not answer:"
+msgstr "هوش مصنوعی نتوانست پاسخ دهد:"
+
+msgid "Try again"
+msgstr "دوباره امتحان کنید"
+
+msgid "Check the connection"
+msgstr "بررسی اتصال"
+
+msgid "Data used"
+msgstr "داده‌های استفاده‌شده"
+
+msgid "Copied."
+msgstr "کپی شد."
+
+msgid "Answer again"
+msgstr "پاسخ دوباره"
+
+msgid "Hi! I am your AI SEO strategist. Ask me about traffic, rankings, new articles that are not indexed yet, products, competitors or what to do next."
+msgstr "سلام! من استراتژیست سئوی هوش مصنوعی شما هستم. درباره ترافیک، رتبه‌ها، مقاله‌های جدیدی که هنوز ایندکس نشده‌اند، محصولات، رقبا یا قدم بعدی بپرسید."
+
+msgid "No conversations yet."
+msgstr "هنوز گفتگویی نیست."
+
+#, php-format
+msgid "%s messages"
+msgstr "%s پیام"
+
+msgid "Delete this conversation?"
+msgstr "این گفتگو حذف شود؟"
+
 msgid "Connected"
 msgstr "متصل"
 
@@ -4132,9 +4838,6 @@ msgstr "هر تغییر با قبل/بعد، تأیید، بازگشت با یک
 msgid "Works with any AI: API keys, OpenRouter, local Ollama or your Claude / ChatGPT subscription."
 msgstr "با هر هوش مصنوعی کار می‌کند: کلید API، OpenRouter، Ollama محلی یا اشتراک Claude / ChatGPT شما."
 
-msgid "Copied."
-msgstr "کپی شد."
-
 msgid "You need"
 msgstr "پیش‌نیازها"
 
@@ -4268,9 +4971,6 @@ msgstr "در حال یادگیری"
 msgid "After a few experiments are evaluated, SEOlity learns which changes work best on your site and uses it in every AI suggestion."
 msgstr "پس از ارزیابی چند آزمایش، سئولیتی یاد می‌گیرد کدام تغییرات روی سایت شما بهتر جواب می‌دهد و از آن در همه پیشنهادهای هوش مصنوعی استفاده می‌کند."
 
-msgid "Change"
-msgstr "تغییر"
-
 msgid "Before → After"
 msgstr "قبل ← بعد"
 
@@ -4385,9 +5085,6 @@ msgstr "جدید (۲۴ ساعت)"
 
 msgid "With referrer"
 msgstr "دارای ارجاع‌دهنده"
-
-msgid "Open"
-msgstr "باز"
 
 msgid "Redirected"
 msgstr "ریدایرکت‌شده"
@@ -4611,9 +5308,6 @@ msgstr "گزارش تولید شد."
 msgid "Schedule & recipients"
 msgstr "زمان‌بندی و گیرندگان"
 
-msgid "Report"
-msgstr "گزارش"
-
 msgid "Period"
 msgstr "دوره"
 
@@ -4792,9 +5486,6 @@ msgstr "برنامه قدم‌به‌قدم برای همین سایت. SEOlity 
 msgid "The last analysis failed:"
 msgstr "آخرین تحلیل ناموفق بود:"
 
-msgid "Try again"
-msgstr "دوباره امتحان کنید"
-
 msgid "AI provider connected"
 msgstr "هوش مصنوعی وصل است"
 
@@ -4866,10 +5557,6 @@ msgid "Built without AI"
 msgstr "بدون هوش مصنوعی ساخته شد"
 
 #, php-format
-msgid "Knowledge: %s"
-msgstr "دانش: %s"
-
-#, php-format
 msgid "%1$s tasks · %2$s critical · %3$s high"
 msgstr "%1$s کار · %2$s بحرانی · %3$s بالا"
 
@@ -4937,9 +5624,6 @@ msgstr "برنامه مخصوص سایت شما (هوش مصنوعی)"
 
 msgid "Step by step in your dashboard"
 msgstr "قدم‌به‌قدم در پیشخوان"
-
-msgid "Done when:"
-msgstr "تمام است وقتی:"
 
 msgid "Not relevant"
 msgstr "مربوط نیست"
@@ -5035,9 +5719,6 @@ msgstr "مستثنا (هنوز داده‌ای نیست)"
 
 msgid "All severities"
 msgstr "همه سطوح"
-
-msgid "Info"
-msgstr "اطلاعات"
 
 msgid "Fixed"
 msgstr "رفع‌شده"
@@ -5354,9 +6035,6 @@ msgstr "همگام‌سازی از سرچ کنسول"
 msgid "Keyword Research"
 msgstr "تحقیق کلمات کلیدی"
 
-msgid "SERP analysis"
-msgstr "تحلیل نتایج جست‌وجو (SERP)"
-
 msgid "Cannibalization"
 msgstr "هم‌نوع‌خواری (Cannibalization)"
 
@@ -5506,9 +6184,6 @@ msgstr "خوشه‌های موضوعی"
 
 msgid "Bulk AI"
 msgstr "عملیات گروهی هوش مصنوعی"
-
-msgid "Search…"
-msgstr "جستجو…"
 
 msgid "Posts, pages & products"
 msgstr "نوشته‌ها، برگه‌ها و محصولات"
@@ -5669,9 +6344,6 @@ msgstr "ووکامرس فعال نیست"
 msgid "Product"
 msgstr "محصول"
 
-msgid "Focus keyword"
-msgstr "کلمه کلیدی کانونی"
-
 msgid "no focus keyword"
 msgstr "بدون کلمه کلیدی کانونی"
 
@@ -5683,6 +6355,9 @@ msgstr "ناموجود"
 
 msgid "Description words"
 msgstr "کلمات توضیحات"
+
+msgid "Analyzing product data, queries and competitors…"
+msgstr "در حال تحلیل داده‌های محصول، کوئری‌ها و رقبا…"
 
 msgid "AI Image SEO"
 msgstr "سئوی هوشمند تصاویر"
@@ -5885,26 +6560,8 @@ msgstr "تحلیل و بهینه‌سازی"
 msgid "SEOlity analyzes your text, the real queries you rank for and SEO best practices, then proposes an improved version. Nothing changes until you apply it."
 msgstr "سئولیتی متن شما، کوئری‌های واقعی که برایشان رتبه دارید و بهترین روش‌های سئو را تحلیل می‌کند و نسخه بهبودیافته‌ای پیشنهاد می‌دهد. تا زمانی که اعمال نکنید، چیزی تغییر نمی‌کند."
 
-msgid "Optimizing with SEOlity AI"
-msgstr "بهینه‌سازی با هوش مصنوعی SEOlity"
-
 msgid "Selected text"
 msgstr "متن انتخاب‌شده"
-
-msgid "Analyzing current content…"
-msgstr "در حال تحلیل محتوای فعلی…"
-
-msgid "Reading Search Console queries…"
-msgstr "در حال خواندن کوئری‌های سرچ کنسول…"
-
-msgid "Consulting the SEO knowledge base…"
-msgstr "در حال مراجعه به پایگاه دانش سئو…"
-
-msgid "Writing the optimized version…"
-msgstr "در حال نوشتن نسخه بهینه…"
-
-msgid "Open settings"
-msgstr "باز کردن تنظیمات"
 
 msgid "Semantic coverage"
 msgstr "پوشش معنایی"
@@ -5954,45 +6611,62 @@ msgstr "در ویرایشگر اعمال شد — برای ماندگاری صف
 msgid "Applied (undo anytime from version history)"
 msgstr "اعمال شد (از تاریخچه نسخه‌ها قابل بازگشت است)"
 
+msgid "Copied. Open the page in its editor — the card there inserts the text with one click."
+msgstr "کپی شد. صفحه را در ویرایشگرش باز کنید — کارت آنجا متن را با یک کلیک درج می‌کند."
+
 msgid "Apply to editor"
 msgstr "اعمال در ویرایشگر"
 
 msgid "Apply changes"
 msgstr "اعمال تغییرات"
 
+msgid "Copy & open the editor"
+msgstr "کپی و باز کردن ویرایشگر"
+
 msgid "SEOlity tasks"
 msgstr "کارهای SEOlity"
 
-msgid "Working…"
-msgstr "در حال انجام…"
+#, php-format
+msgid "SEOlity tasks (%s)"
+msgstr "کارهای SEOlity (%s)"
 
-msgid "SEOlity AI"
-msgstr "هوش مصنوعی SEOlity"
+msgid "Minimize"
+msgstr "کوچک کردن"
 
-msgid "Finished — review the result"
-msgstr "تمام شد — نتیجه را ببینید"
+msgid "Show fewer"
+msgstr "نمایش کمتر"
 
-msgid "Analyzing real search queries…"
-msgstr "در حال تحلیل کوئری‌های واقعی جستجو…"
+#, php-format
+msgid "+%s more"
+msgstr "%s مورد دیگر+"
 
-msgid "Writing title and description options…"
-msgstr "در حال نوشتن گزینه‌های عنوان و توضیحات…"
+msgid "Hide details"
+msgstr "بستن جزئیات"
 
-msgid "New title and description options are ready."
-msgstr "گزینه‌های جدید عنوان و توضیحات آماده است."
+msgid "Show details"
+msgstr "نمایش جزئیات"
 
-msgid "Choose & apply"
-msgstr "انتخاب و اعمال"
+msgid "Open the report"
+msgstr "باز کردن گزارش"
+
+msgid "Review & apply"
+msgstr "بررسی و اعمال"
+
+#, php-format
+msgid "Applied: %s"
+msgstr "اعمال شد: %s"
+
+msgid "Inserted into the editor. Save the product to keep it."
+msgstr "در ویرایشگر درج شد. برای ماندگاری، محصول را ذخیره کنید."
+
+msgid "Insert into editor"
+msgstr "درج در ویرایشگر"
 
 msgid "Google preview"
 msgstr "پیش‌نمایش گوگل"
 
 msgid "Title & description applied."
 msgstr "عنوان و توضیحات اعمال شد."
-
-#, php-format
-msgid "Applied: %s"
-msgstr "اعمال شد: %s"
 
 msgid "GSC keyword intelligence"
 msgstr "هوش کلمات کلیدی GSC"
@@ -6187,20 +6861,11 @@ msgstr "جست‌وجوهای مرتبط"
 msgid "Live results fetched %s (cached for 24 hours)."
 msgstr "نتایج زنده در %s دریافت شد (۲۴ ساعت در حافظه نگهداری می‌شود)."
 
-msgid "Short description"
-msgstr "توضیحات کوتاه"
-
 msgid "URL slug"
 msgstr "نامک URL"
 
-msgid "FAQ"
-msgstr "سؤالات متداول"
-
 msgid "Image title"
 msgstr "عنوان تصویر"
-
-msgid "Category description"
-msgstr "توضیحات دسته‌بندی"
 
 msgid "Author bio"
 msgstr "زندگی‌نامه نویسنده"

@@ -15,6 +15,16 @@ final class Jobs {
 
 	public static function register( Queue $q, Plugin $p ) {
 		// Crawler / audit.
+		$q->handler( 'chat_reply', static function ( $a ) use ( $p ) {
+			$p->chat->answer( (int) $a['id'] ); // Errors are stored on the message itself.
+			return true;
+		} );
+		$q->handler( 'agent_run', static function ( $a ) use ( $p ) {
+			return $p->agent->run( (int) $a['id'] );
+		} );
+		$q->handler( 'ai_job', static function ( $a ) use ( $p ) {
+			return $p->aijobs->run( (int) $a['id'] );
+		} );
 		$q->handler( 'roadmap_build', static function ( $a ) use ( $p ) {
 			return $p->roadmap->build( (int) $a['id'] );
 		} );
@@ -213,6 +223,7 @@ final class Jobs {
 		$retention = (int) $p->settings->get( 'retention_days' );
 		$cutoff    = gmdate( 'Y-m-d H:i:s', time() - $retention * DAY_IN_SECONDS );
 		$p->queue->cleanup();
+		$p->activity->cleanup( 90 );
 		$db->query( 'DELETE FROM {ai_cache} WHERE expires_at < %s', array( gmdate( 'Y-m-d H:i:s' ) ) );
 		$db->query( 'DELETE FROM {ai_requests} WHERE created_at < %s', array( $cutoff ) );
 		$db->query( "DELETE FROM {alerts} WHERE status <> 'new' AND created_at < %s", array( $cutoff ) );

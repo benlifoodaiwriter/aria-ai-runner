@@ -67,6 +67,8 @@ final class Settings {
 			'sub_callback'         => array( 'bool', true ),
 			'sub_wait_minutes'     => array( 'int', 45, array( 10, 180 ) ),
 			'sub_warm_minutes'     => array( 'int', 10, array( 1, 30 ) ),
+			'sub_cli_claude'       => array( 'string', '' ), // Path of the Claude Code CLI on this server ('' = find it).
+			'sub_cli_codex'        => array( 'string', '' ),
 			// Network: where the host is and how AI / Google requests travel.
 			'host_region'          => array( 'enum', '', array( '', 'iran', 'abroad' ) ),
 			'ai_route'             => array( 'enum', 'auto', array( 'auto', 'direct', 'cloudflare', 'github' ) ),

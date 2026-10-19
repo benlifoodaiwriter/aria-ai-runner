@@ -31,6 +31,7 @@
 	function adapter( sel ) {
 		return {
 			label: t( 'Elementor widget' ) + ( sel.type ? ' (' + sel.type + ')' : '' ),
+			elementId: sel.container.id,
 			get: function () {
 				return sel.container.settings.get( sel.key ) || '';
 			},
@@ -41,6 +42,21 @@
 			},
 		};
 	}
+
+	/** Adapter for a widget by element id (a finished AI card inserts into the right widget). */
+	SL.elementorAdapter = function ( id ) {
+		try {
+			var container = id && w.elementor.getContainer ? w.elementor.getContainer( id ) : null;
+			if ( ! container ) {
+				return null;
+			}
+			var st = container.settings;
+			var key = st.get( 'editor' ) !== undefined ? 'editor' : st.get( 'title' ) !== undefined ? 'title' : st.get( 'description_text' ) !== undefined ? 'description_text' : null;
+			return key ? adapter( { container: container, key: key, type: '' } ) : null;
+		} catch ( e ) {
+			return null;
+		}
+	};
 
 	function mount() {
 		if ( d.getElementById( 'seolity-elementor-btn' ) ) {

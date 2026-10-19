@@ -292,9 +292,50 @@ runs only on demand. `POST /roadmap/analyze` inserts a `roadmaps` row and queues
 
 ### Task dock
 
-`SL.task()` (ui.js) renders small, non-blocking progress cards (z-index below modals). The optimizer,
-product optimizer and title/description generator run inside a card; the full report opens from it.
-Finished cards persist in sessionStorage until closed.
+`SL.dock` (ui.js) renders small, non-blocking cards (z-index below modals) backed by the server:
+each card is an `activity` row with `dock=1`, restored on every admin page from `GET /activity/dock`
+and polled via `GET /activity/{id}`. At most three cards are shown (+N more, minimize pill); finished
+cards are compact and keep their report (`meta.result`) until closed (`POST /activity/{id}/dismiss`).
+
+### Activity log (`Activity\Activity`)
+
+One table (`{prefix}seolity_activity`) for everything SEOlity does: `kind` = ai | job | agent | chat |
+event, `status` = running | waiting | done | failed | info, `step`/`progress`, `route` (direct,
+cloudflare, github, local), `meta.steps[]` with timestamps. Writers: `AI\Engine::run()` (every AI
+request, with route/model/tokens/error), `Queue::run_job()` (labelled jobs), `AuditLog` (every change,
+redirect, audit, setting …), `AiJobs`, `Agent` and `ChatService`. `GET /activity/live` (running
+items + queue counts) feeds the Live tab; `GET /activity` (filters, pages) the Completed tab. Rows
+older than 90 days are removed by the clean-up job and archived to GitHub with the other logs.
+
+### Server-side AI jobs (`Activity\AiJobs`)
+
+`POST /ai-jobs {type: optimize|meta|product, params}` creates the dock activity and the `ai_job`
+queue item, then runs it after the response (`fastcgi_finish_request`) or via the scheduler kick, so
+closing or reloading the page does not stop it.
+
+### AI agent (`Agent\Agent`)
+
+`GET /recommendations/{id}/guide` returns the manual steps (Guides) and the agent plan;
+`POST /agent/run` starts an `agent_run` job. Actions: optimize_meta, optimize_content,
+optimize_product, generate_faq, set_field, create_redirect, internal_links_to (pending link
+suggestions, or AI task `link_sentence` on related posts found by title words and category, inserted
+after an existing paragraph), apply_link, fix_redirect_chains, bulk, plan_content. All edits go
+through `ChangeManager` (versioned, undoable); state is saved so a retried job resumes.
+
+### Chat
+
+`POST /chat` stores the question and an assistant placeholder, keeps running with
+`ignore_user_abort` and answers; a deferred answer (GitHub route) becomes a `chat_reply` job.
+`GET /chat/{cid}` returns messages plus pending ones and nudges the queue, so answers appear after
+a reload. Each answer stores route, model, time and error.
+
+### Subscription CLI on the host (`AI\Remote\LocalCli`)
+
+If PHP may start programs (`proc_open`) and the official `claude` / `codex` CLI is found (setting
+`sub_cli_<engine>` or PATH; only binaries named claude*/codex* are accepted), subscription requests
+run synchronously on the host (`route = local`) unless the GitHub route is chosen. With the Direct
+route and no CLI, a subscription request fails with an explanation and is never queued on GitHub.
+`POST /network/local-test` checks it.
 
 ## 7. Change management
 

@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: SEOlity 1.0.0\n"
-"POT-Creation-Date: 2026-10-10 16:03+0000\n"
+"POT-Creation-Date: 2026-10-19 11:27+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -17,6 +17,35 @@ msgid "%1$s API error (%2$d): %3$s"
 msgstr ""
 
 msgid "AI provider returned a non-JSON response."
+msgstr ""
+
+msgid "Sending the request to the AI…"
+msgstr ""
+
+msgid "Checking whether the answer has arrived…"
+msgstr ""
+
+#, php-format
+msgid "Asking the AI: %s…"
+msgstr ""
+
+msgid "Waiting for the answer from the GitHub runner…"
+msgstr ""
+
+msgid "Failed"
+msgstr ""
+
+msgid "from cache"
+msgstr ""
+
+msgid "tokens"
+msgstr ""
+
+msgid "Answer received"
+msgstr ""
+
+#, php-format
+msgid "Subscription AI is not ready. Missing: %s."
 msgstr ""
 
 msgid "No AI provider is configured. Add an API key in SEOlity → Settings → AI."
@@ -121,16 +150,19 @@ msgstr ""
 msgid "Local LLM (Ollama)"
 msgstr ""
 
-msgid "Claude subscription (Pro/Max via GitHub)"
+msgid "Claude subscription (Pro/Max)"
 msgstr ""
 
-msgid "ChatGPT subscription (Plus/Pro via GitHub)"
+msgid "ChatGPT subscription (Plus/Pro)"
 msgstr ""
 
-msgid "Runner repository (owner/name)"
+msgid "The official CLI is not installed on this server."
 msgstr ""
 
-msgid "GitHub token"
+msgid "This server does not allow starting the CLI."
+msgstr ""
+
+msgid "The CLI on this server did not answer in time."
 msgstr ""
 
 msgid "Claude subscription token (claude setup-token)"
@@ -139,14 +171,28 @@ msgstr ""
 msgid "ChatGPT auth.json (codex login)"
 msgstr ""
 
+msgid "Claude Code CLI on this server (Direct mode)"
+msgstr ""
+
+msgid "Codex CLI on this server (Direct mode)"
+msgstr ""
+
+msgid "Runner repository (owner/name)"
+msgstr ""
+
+msgid "GitHub token"
+msgstr ""
+
 msgid "Run \"Set up GitHub runner\""
 msgstr ""
 
-msgid "The subscription runner did not answer in time. Check the \"SEOlity AI\" workflow runs on GitHub."
+msgid "Direct connection is selected, so SEOlity will not use GitHub. A Claude subscription can only be used directly when the official Claude Code CLI is installed on this server (a VPS). Install it, use an API key instead, or choose the GitHub route under Server & speed."
 msgstr ""
 
-#, php-format
-msgid "Subscription AI is not ready. Missing: %s."
+msgid "Direct connection is selected, so SEOlity will not use GitHub. A ChatGPT subscription can only be used directly when the official Codex CLI is installed on this server (a VPS). Install it, use an API key instead, or choose the GitHub route under Server & speed."
+msgstr ""
+
+msgid "The subscription runner did not answer in time. Check the \"SEOlity AI\" workflow runs on GitHub."
 msgstr ""
 
 msgid "GitHub did not deliver the AI answer in time. Check the \"SEOlity AI\" workflow runs on GitHub."
@@ -316,6 +362,273 @@ msgstr ""
 msgid "Another provider is active. Press “Use as AI engine” after the test."
 msgstr ""
 
+msgid "Stopped without finishing (the server ended the request)."
+msgstr ""
+
+msgid "Content optimization"
+msgstr ""
+
+msgid "SEO title & description"
+msgstr ""
+
+msgid "CTR title & description rewrite"
+msgstr ""
+
+msgid "Product SEO"
+msgstr ""
+
+msgid "Image ALT text"
+msgstr ""
+
+msgid "Media SEO (ALT, title, caption)"
+msgstr ""
+
+msgid "Keyword research"
+msgstr ""
+
+msgid "Search intent analysis"
+msgstr ""
+
+msgid "Content gap analysis"
+msgstr ""
+
+msgid "Competitor analysis"
+msgstr ""
+
+msgid "Cannibalization advice"
+msgstr ""
+
+msgid "Focus keyword plan"
+msgstr ""
+
+msgid "Internal link suggestions"
+msgstr ""
+
+msgid "FAQ generation"
+msgstr ""
+
+msgid "Content brief"
+msgstr ""
+
+msgid "Content plan"
+msgstr ""
+
+msgid "Topic clusters"
+msgstr ""
+
+msgid "Redirect target"
+msgstr ""
+
+msgid "Experiment verdict"
+msgstr ""
+
+msgid "Daily briefing"
+msgstr ""
+
+msgid "Chat answer"
+msgstr ""
+
+msgid "E-E-A-T analysis"
+msgstr ""
+
+msgid "Schema suggestion"
+msgstr ""
+
+msgid "SERP analysis"
+msgstr ""
+
+msgid "SEO roadmap analysis"
+msgstr ""
+
+msgid "AI edit"
+msgstr ""
+
+msgid "Daily SEO pipeline"
+msgstr ""
+
+msgid "Weekly SEO pipeline"
+msgstr ""
+
+msgid "Search Console sync"
+msgstr ""
+
+msgid "Search Console history import"
+msgstr ""
+
+msgid "Site audit started"
+msgstr ""
+
+msgid "Site audit finished"
+msgstr ""
+
+msgid "Recommendations refresh"
+msgstr ""
+
+msgid "Keyword tracking sync"
+msgstr ""
+
+msgid "Experiment evaluation"
+msgstr ""
+
+msgid "Alert check"
+msgstr ""
+
+msgid "Competitor summary"
+msgstr ""
+
+msgid "Image scan"
+msgstr ""
+
+msgid "Bulk AI optimization item"
+msgstr ""
+
+msgid "Report"
+msgstr ""
+
+msgid "Knowledge sync from GitHub"
+msgstr ""
+
+msgid "Archive data to GitHub"
+msgstr ""
+
+msgid "PageSpeed check"
+msgstr ""
+
+msgid "Route speed test"
+msgstr ""
+
+msgid "Clean-up"
+msgstr ""
+
+msgid "Content"
+msgstr ""
+
+msgid "Title"
+msgstr ""
+
+msgid "Short description"
+msgstr ""
+
+msgid "SEO title"
+msgstr ""
+
+msgid "Meta description"
+msgstr ""
+
+msgid "Focus keyword"
+msgstr ""
+
+msgid "Image ALT"
+msgstr ""
+
+msgid "FAQ"
+msgstr ""
+
+msgid "Robots (noindex)"
+msgstr ""
+
+msgid "Category description"
+msgstr ""
+
+#, php-format
+msgid "Applied: %1$s — %2$s"
+msgstr ""
+
+#, php-format
+msgid "Undone: %1$s — %2$s"
+msgstr ""
+
+#, php-format
+msgid "Suggestion rejected: %1$s — %2$s"
+msgstr ""
+
+#, php-format
+msgid "Suggestion prepared: %1$s — %2$s"
+msgstr ""
+
+#, php-format
+msgid "Redirect saved: %1$s → %2$s"
+msgstr ""
+
+msgid "Redirect deleted"
+msgstr ""
+
+msgid "Settings saved"
+msgstr ""
+
+msgid "Site audit completed"
+msgstr ""
+
+msgid "SEO roadmap built"
+msgstr ""
+
+msgid "Old data archived to GitHub"
+msgstr ""
+
+msgid "Recommendation executed"
+msgstr ""
+
+msgid "Search Console connected"
+msgstr ""
+
+msgid "Cloudflare worker deployed"
+msgstr ""
+
+msgid "Subscription AI runner set up on GitHub"
+msgstr ""
+
+msgid "Knowledge collection started on GitHub"
+msgstr ""
+
+msgid "Bulk AI optimization queued"
+msgstr ""
+
+msgid "Automation rule ran"
+msgstr ""
+
+msgid "Report generated"
+msgstr ""
+
+msgid "Network route saved"
+msgstr ""
+
+msgid "Unknown AI job."
+msgstr ""
+
+msgid "You are not allowed to edit this item."
+msgstr ""
+
+msgid "Optimizing with SEOlity AI"
+msgstr ""
+
+msgid "AI title & description"
+msgstr ""
+
+msgid "AI Product Optimizer"
+msgstr ""
+
+msgid "Queued — starting in a moment…"
+msgstr ""
+
+msgid "Could not start the job (database not ready)."
+msgstr ""
+
+msgid "Reading the content, Search Console queries and the SEO knowledge base…"
+msgstr ""
+
+msgid "Finished — review the result"
+msgstr ""
+
+#, php-format
+msgid "SEO score %1$s → %2$s"
+msgstr ""
+
+msgid "New title and description options are ready."
+msgstr ""
+
+msgid "Not found."
+msgstr ""
+
 msgid "Dashboard"
 msgstr ""
 
@@ -323,6 +636,9 @@ msgid "SEO roadmap"
 msgstr ""
 
 msgid "AI SEO Chat"
+msgstr ""
+
+msgid "Activity"
 msgstr ""
 
 msgid "Site Audit"
@@ -338,9 +654,6 @@ msgid "Rank Math & focus keywords"
 msgstr ""
 
 msgid "Focus keywords"
-msgstr ""
-
-msgid "Content"
 msgstr ""
 
 msgid "Products"
@@ -478,12 +791,6 @@ msgstr ""
 msgid "Stored in %s. Use “GSC keywords” to choose them from real Search Console data."
 msgstr ""
 
-msgid "SEO title"
-msgstr ""
-
-msgid "Meta description"
-msgstr ""
-
 msgid "Noindex this page"
 msgstr ""
 
@@ -497,19 +804,10 @@ msgstr ""
 msgid "GSC keywords"
 msgstr ""
 
-msgid "AI title & description"
-msgstr ""
-
 msgid "Generate FAQ"
 msgstr ""
 
 msgid "Internal links"
-msgstr ""
-
-msgid "E-E-A-T analysis"
-msgstr ""
-
-msgid "AI Product Optimizer"
 msgstr ""
 
 msgid "Version history"
@@ -519,6 +817,234 @@ msgid "Noindex this archive"
 msgstr ""
 
 msgid "Tip: an author bio with real credentials and experience strengthens E-E-A-T. Use “Optimize with SEOlity AI” next to the biography field."
+msgstr ""
+
+msgid "this page"
+msgstr ""
+
+msgid "Recommendation not found."
+msgstr ""
+
+#, php-format
+msgid "Read the real Search Console queries and the content of “%s”."
+msgstr ""
+
+msgid "Write a new SEO title and meta description with AI (SEO knowledge base + competitor results)."
+msgstr ""
+
+#, php-format
+msgid "Save them in %1$s for “%2$s” (a new version; undo anytime)."
+msgstr ""
+
+msgid "Track the result as an experiment (CTR after 14–28 days)."
+msgstr ""
+
+#, php-format
+msgid "Read “%s”, its Search Console queries, the knowledge base and competitor pages."
+msgstr ""
+
+#, php-format
+msgid "Rewrite and expand the content with AI — goal: %s"
+msgstr ""
+
+msgid "Check the result (no keyword stuffing, links and shortcodes kept, score before vs. after)."
+msgstr ""
+
+#, php-format
+msgid "Update “%s” (a new version; undo anytime)."
+msgstr ""
+
+#, php-format
+msgid "Read the product data of “%s” (attributes, price, categories, images, queries)."
+msgstr ""
+
+msgid "Write SEO title, meta description, short description, focus keywords and image ALT with AI."
+msgstr ""
+
+msgid "Save every field (each one versioned; undo anytime)."
+msgstr ""
+
+#, php-format
+msgid "Collect the question queries people search for “%s”."
+msgstr ""
+
+msgid "Write short, factual answers with AI."
+msgstr ""
+
+msgid "Add the FAQ (with FAQPage schema) to the page."
+msgstr ""
+
+#, php-format
+msgid "Change “%1$s” of “%2$s” (a new version; undo anytime)."
+msgstr ""
+
+msgid "the best matching live page"
+msgstr ""
+
+#, php-format
+msgid "Create a 301 redirect from %1$s to %2$s."
+msgstr ""
+
+#, php-format
+msgid "Search the whole site for pages related to “%s” that already mention its topic."
+msgstr ""
+
+#, php-format
+msgid "Add a link with the text “%1$s” in “%2$s”."
+msgstr ""
+
+#, php-format
+msgid "Write one natural sentence with a link into “%s” (AI, using the whole site’s content)."
+msgstr ""
+
+msgid "Save each edited page (versioned; undo anytime)."
+msgstr ""
+
+msgid "Point every redirect of a chain straight to its final URL (loops are left for you to decide)."
+msgstr ""
+
+#, php-format
+msgid "Run the AI on %d items in the background, one by one."
+msgstr ""
+
+msgid "Add the topic to the content planner with an AI brief (headings, questions, length)."
+msgstr ""
+
+msgid "This task needs your decision; follow the steps on the left. SEOlity can open the right screen for you."
+msgstr ""
+
+msgid "This task needs your decision; SEOlity cannot do it alone."
+msgstr ""
+
+msgid "AI is doing it"
+msgstr ""
+
+msgid "Done — every change is versioned (undo in AI Center → AI Changes)."
+msgstr ""
+
+msgid "Finished"
+msgstr ""
+
+msgid "No related page was found to link from. Publish a related article first, or add the link by hand."
+msgstr ""
+
+#, php-format
+msgid "Reading “%s” and writing a sentence that links to the page…"
+msgstr ""
+
+#, php-format
+msgid "Skipped “%s”: the topics do not fit together."
+msgstr ""
+
+#, php-format
+msgid "Adding the link in “%s”…"
+msgstr ""
+
+#, php-format
+msgid "Add internal link \"%1$s\" → %2$s"
+msgstr ""
+
+#, php-format
+msgid "Link “%1$s” written into “%2$s”"
+msgstr ""
+
+msgid "The related pages are about different topics, so no natural link could be added."
+msgstr ""
+
+#, php-format
+msgid "Reading the search queries of “%s”…"
+msgstr ""
+
+msgid "Saving the new SEO title and meta description…"
+msgstr ""
+
+#, php-format
+msgid "%1$s updated on “%2$s”"
+msgstr ""
+
+#, php-format
+msgid "Analyzing “%s” and writing the improved version with AI…"
+msgstr ""
+
+msgid "The AI produced no usable change."
+msgstr ""
+
+#, php-format
+msgid "SEO score %1$s → %2$s — updating the page…"
+msgstr ""
+
+#, php-format
+msgid "“%1$s” rewritten (SEO score %2$s → %3$s)"
+msgstr ""
+
+#, php-format
+msgid "Optimizing the product “%s” with AI…"
+msgstr ""
+
+#, php-format
+msgid "Saving %s…"
+msgstr ""
+
+#, php-format
+msgid "%s saved"
+msgstr ""
+
+#, php-format
+msgid "Writing the FAQ for “%s”…"
+msgstr ""
+
+#, php-format
+msgid "FAQ added to “%s”"
+msgstr ""
+
+#, php-format
+msgid "%1$s changed on “%2$s”"
+msgstr ""
+
+msgid "No matching live page was found; choose the target yourself in Technical SEO → Redirects."
+msgstr ""
+
+#, php-format
+msgid "Creating the redirect %1$s → %2$s…"
+msgstr ""
+
+#, php-format
+msgid "301 redirect created: %1$s → %2$s"
+msgstr ""
+
+#, php-format
+msgid "Finding pages across the site that should link to “%s”…"
+msgstr ""
+
+#, php-format
+msgid "Adding the link “%1$s” in “%2$s”…"
+msgstr ""
+
+#, php-format
+msgid "Link “%1$s” added in “%2$s”"
+msgstr ""
+
+msgid "The suggested anchors are no longer in the source pages."
+msgstr ""
+
+msgid "Adding the link…"
+msgstr ""
+
+msgid "Link added"
+msgstr ""
+
+msgid "Pointing redirect chains straight to their final URL…"
+msgstr ""
+
+#, php-format
+msgid "%d redirects fixed"
+msgstr ""
+
+#, php-format
+msgid "%d items queued — follow them in Live activity"
+msgstr ""
+
+msgid "Topic added to the content planner"
 msgstr ""
 
 #, php-format
@@ -733,7 +1259,7 @@ msgstr ""
 msgid "Unexpected error."
 msgstr ""
 
-msgid "You are not allowed to edit this item."
+msgid "Sorry, you are not allowed to do that."
 msgstr ""
 
 msgid "Change not found."
@@ -748,13 +1274,22 @@ msgstr ""
 msgid "You are not allowed to edit this product."
 msgstr ""
 
-msgid "Sorry, you are not allowed to do that."
-msgstr ""
-
 msgid "Unknown secret."
 msgstr ""
 
 msgid "auth.json must be valid JSON (copy the whole file from ~/.codex/auth.json)."
+msgstr ""
+
+msgid "This host does not allow PHP to start programs (proc_open is disabled). Subscriptions can only run through GitHub here."
+msgstr ""
+
+msgid "Claude Code CLI was not found on this server. Install it (npm install -g @anthropic-ai/claude-code) or enter its full path."
+msgstr ""
+
+msgid "Codex CLI was not found on this server. Install it (npm install -g @openai/codex) or enter its full path."
+msgstr ""
+
+msgid "Save your subscription login first (Settings → AI)."
 msgstr ""
 
 msgid "Dates must be YYYY-MM-DD."
@@ -796,6 +1331,15 @@ msgid "Health score %1$s. %2$d prioritized actions are waiting, %3$d AI changes 
 msgstr ""
 
 msgid "Please type a question."
+msgstr ""
+
+msgid "Reading your site data…"
+msgstr ""
+
+msgid "Message not found."
+msgstr ""
+
+msgid "Chat answer (again)"
 msgstr ""
 
 msgid "Enter a valid domain, e.g. example.com"
@@ -1709,10 +2253,6 @@ msgstr ""
 msgid "The anchor text is no longer present in the source content."
 msgstr ""
 
-#, php-format
-msgid "Add internal link \"%1$s\" → %2$s"
-msgstr ""
-
 msgid "Plan item not found."
 msgstr ""
 
@@ -1720,6 +2260,19 @@ msgid "You cannot create posts."
 msgstr ""
 
 msgid "SEOlity brief — replace the notes below with your own expertise, examples and sources before publishing."
+msgstr ""
+
+msgid "Working…"
+msgstr ""
+
+msgid "Continuing…"
+msgstr ""
+
+msgid "Waiting for the AI answer from GitHub…"
+msgstr ""
+
+#, php-format
+msgid "Error, will retry: %s"
 msgstr ""
 
 msgid "Every minute (SEOlity queue)"
@@ -1860,9 +2413,6 @@ msgid "Flatten %d redirect chain(s)"
 msgstr ""
 
 msgid "Each extra hop slows users and crawlers; point old URLs straight to their final destination."
-msgstr ""
-
-msgid "Recommendation not found."
 msgstr ""
 
 msgid "Higher CTR at the same rankings → more clicks within 2–4 weeks."
@@ -2865,6 +3415,49 @@ msgstr ""
 msgid "Added to the content planner."
 msgstr ""
 
+msgid "Open"
+msgstr ""
+
+msgid "Do it"
+msgstr ""
+
+msgid "Do it yourself — exactly where"
+msgstr ""
+
+msgid "Done when:"
+msgstr ""
+
+msgid "Let the AI do it"
+msgstr ""
+
+msgid "This is exactly what SEOlity will do on your site. Nothing changes until you approve. Every change is versioned — undo anytime in AI Center → AI Changes."
+msgstr ""
+
+msgid "Connect an AI provider first (Settings → AI)."
+msgstr ""
+
+msgid "This task needs your decision; follow the steps on the left."
+msgstr ""
+
+msgid "Approve & let the AI do it"
+msgstr ""
+
+msgid "The AI is working…"
+msgstr ""
+
+msgid "Stopped"
+msgstr ""
+
+msgid "Done"
+msgstr ""
+
+#, php-format
+msgid "AI route: %s"
+msgstr ""
+
+msgid "Review the changes"
+msgstr ""
+
 msgid "Impact"
 msgstr ""
 
@@ -2872,9 +3465,6 @@ msgid "Effort"
 msgstr ""
 
 msgid "Confidence"
-msgstr ""
-
-msgid "Do it"
 msgstr ""
 
 msgid "Why?"
@@ -2909,9 +3499,6 @@ msgid "AI connected"
 msgstr ""
 
 msgid "AI not configured"
-msgstr ""
-
-msgid "Search Console connected"
 msgstr ""
 
 msgid "Search Console not connected"
@@ -3132,48 +3719,6 @@ msgstr ""
 msgid "Today's SEO Briefing"
 msgstr ""
 
-msgid "Ask anything about your site. Answers are grounded in your real Search Console, audit, competitor and experiment data."
-msgstr ""
-
-msgid "New conversation"
-msgstr ""
-
-msgid "e.g. Why did my organic sales drop this month?"
-msgstr ""
-
-msgid "Send"
-msgstr ""
-
-msgid "Why has my organic traffic dropped?"
-msgstr ""
-
-msgid "Why does this product not rank?"
-msgstr ""
-
-msgid "Which pages should I optimize today?"
-msgstr ""
-
-msgid "What did my competitor do recently?"
-msgstr ""
-
-msgid "Why does this page have a low CTR?"
-msgstr ""
-
-msgid "Should I redirect this URL?"
-msgstr ""
-
-msgid "Data used"
-msgstr ""
-
-msgid "Analyzing your data…"
-msgstr ""
-
-msgid "Hi! I am your AI SEO strategist. Ask me about traffic, rankings, products, competitors or what to do next."
-msgstr ""
-
-msgid "Recent conversations"
-msgstr ""
-
 msgid "Every change is previewed, approved, logged and versioned. Nothing destructive happens without your approval unless you enable Autonomous mode."
 msgstr ""
 
@@ -3229,9 +3774,6 @@ msgid "No changes"
 msgstr ""
 
 msgid "AI suggestions you generate will appear here for approval."
-msgstr ""
-
-msgid "Internal link suggestions"
 msgstr ""
 
 msgid "No good link opportunities found"
@@ -3306,9 +3848,6 @@ msgstr ""
 msgid "Field"
 msgstr ""
 
-msgid "Image ALT"
-msgstr ""
-
 msgid "Preview"
 msgstr ""
 
@@ -3378,31 +3917,6 @@ msgstr ""
 msgid "Insert link"
 msgstr ""
 
-msgid "Analyzing product data, queries and competitors…"
-msgstr ""
-
-msgid "Writing title, descriptions and keywords…"
-msgstr ""
-
-msgid "Scoring before vs. after…"
-msgstr ""
-
-#, php-format
-msgid "SEO score %1$s → %2$s"
-msgstr ""
-
-msgid "Review & apply"
-msgstr ""
-
-msgid "Report reviewed"
-msgstr ""
-
-msgid "Inserted into the editor. Save the product to keep it."
-msgstr ""
-
-msgid "Insert into editor"
-msgstr ""
-
 msgid "Google will generate a snippet from your content. Write a description to control it."
 msgstr ""
 
@@ -3462,6 +3976,113 @@ msgid "Optimize excerpt"
 msgstr ""
 
 msgid "Live SEO analysis"
+msgstr ""
+
+msgid "AI request"
+msgstr ""
+
+msgid "Background job"
+msgstr ""
+
+msgid "AI agent"
+msgstr ""
+
+msgid "Chat"
+msgstr ""
+
+msgid "Change"
+msgstr ""
+
+msgid "Event"
+msgstr ""
+
+msgid "Waiting"
+msgstr ""
+
+msgid "Info"
+msgstr ""
+
+msgid "Cancelled"
+msgstr ""
+
+msgid "This server"
+msgstr ""
+
+#, php-format
+msgid "via %s"
+msgstr ""
+
+msgid "No step details for this entry."
+msgstr ""
+
+#, php-format
+msgid "Model: %s"
+msgstr ""
+
+#, php-format
+msgid "Tokens: %1$s in / %2$s out"
+msgstr ""
+
+#, php-format
+msgid "Knowledge: %s"
+msgstr ""
+
+#, php-format
+msgid "Error code: %s"
+msgstr ""
+
+msgid "What SEOlity is doing right now, and an exact timeline of everything it did on your site — every AI answer (with the route it took and any error), every edit, every data collection."
+msgstr ""
+
+msgid "Live activity"
+msgstr ""
+
+msgid "Completed work"
+msgstr ""
+
+msgid "Running now"
+msgstr ""
+
+msgid "Waiting (GitHub / retry)"
+msgstr ""
+
+msgid "Failed in the last hour"
+msgstr ""
+
+msgid "Jobs in the queue"
+msgstr ""
+
+msgid "Nothing is running right now"
+msgstr ""
+
+msgid "Start an analysis, an AI edit or a chat question — you will see every step here as it happens."
+msgstr ""
+
+msgid "Updates every 3 seconds · finished work moves to “Completed work”."
+msgstr ""
+
+msgid "Everything"
+msgstr ""
+
+msgid "All results"
+msgstr ""
+
+msgid "Search…"
+msgstr ""
+
+#, php-format
+msgid "%s entries"
+msgstr ""
+
+msgid "Everything SEOlity does on your site will be listed here with the exact time."
+msgstr ""
+
+#, php-format
+msgid "%s running"
+msgstr ""
+
+#, php-format
+msgid "%s failed in the last hour"
 msgstr ""
 
 msgid "Approval workflow, SEO rules engine, background queue and the full audit log."
@@ -3639,9 +4260,6 @@ msgstr ""
 msgid "Done (3 days)"
 msgstr ""
 
-msgid "Failed"
-msgstr ""
-
 msgid "Run queue now"
 msgstr ""
 
@@ -3702,9 +4320,6 @@ msgid "Repository"
 msgstr ""
 
 msgid "Last sync"
-msgstr ""
-
-msgid "Title"
 msgstr ""
 
 msgid "topic"
@@ -3967,6 +4582,97 @@ msgstr ""
 msgid "when another SEO plugin is active, SEOlity writes titles/descriptions into it and does not duplicate head tags."
 msgstr ""
 
+msgid "e.g. Why did my organic sales drop this month?"
+msgstr ""
+
+msgid "Send"
+msgstr ""
+
+msgid "Search conversations…"
+msgstr ""
+
+msgid "Ask anything about your site. Answers are grounded in your real Search Console, audit, competitor and experiment data — and stay here even if you reload the page."
+msgstr ""
+
+msgid "Copy conversation"
+msgstr ""
+
+msgid "New conversation"
+msgstr ""
+
+msgid "Why has my organic traffic dropped?"
+msgstr ""
+
+msgid "Which pages should I optimize today?"
+msgstr ""
+
+msgid "Which new articles are not indexed yet?"
+msgstr ""
+
+msgid "What did my competitor do recently?"
+msgstr ""
+
+msgid "Why does this page have a low CTR?"
+msgstr ""
+
+msgid "Write 5 article ideas my competitors rank for"
+msgstr ""
+
+msgid "Should I redirect this URL?"
+msgstr ""
+
+msgid "About a page…"
+msgstr ""
+
+msgid "Enter to send · Shift+Enter for a new line"
+msgstr ""
+
+msgid "Conversations"
+msgstr ""
+
+msgid "Which page is the question about?"
+msgstr ""
+
+msgid "Search pages, posts, products…"
+msgstr ""
+
+msgid "The AI is answering through GitHub — the answer will appear here, even after a reload."
+msgstr ""
+
+msgid "Thinking with your site data and the SEO knowledge base…"
+msgstr ""
+
+msgid "The AI could not answer:"
+msgstr ""
+
+msgid "Try again"
+msgstr ""
+
+msgid "Check the connection"
+msgstr ""
+
+msgid "Data used"
+msgstr ""
+
+msgid "Copied."
+msgstr ""
+
+msgid "Answer again"
+msgstr ""
+
+msgid "Hi! I am your AI SEO strategist. Ask me about traffic, rankings, new articles that are not indexed yet, products, competitors or what to do next."
+msgstr ""
+
+msgid "No conversations yet."
+msgstr ""
+
+#, php-format
+msgid "%s messages"
+msgstr ""
+
+msgid "Delete this conversation?"
+msgstr ""
+
 msgid "Connected"
 msgstr ""
 
@@ -4131,9 +4837,6 @@ msgstr ""
 msgid "Works with any AI: API keys, OpenRouter, local Ollama or your Claude / ChatGPT subscription."
 msgstr ""
 
-msgid "Copied."
-msgstr ""
-
 msgid "You need"
 msgstr ""
 
@@ -4267,9 +4970,6 @@ msgstr ""
 msgid "After a few experiments are evaluated, SEOlity learns which changes work best on your site and uses it in every AI suggestion."
 msgstr ""
 
-msgid "Change"
-msgstr ""
-
 msgid "Before → After"
 msgstr ""
 
@@ -4383,9 +5083,6 @@ msgid "New (24h)"
 msgstr ""
 
 msgid "With referrer"
-msgstr ""
-
-msgid "Open"
 msgstr ""
 
 msgid "Redirected"
@@ -4610,9 +5307,6 @@ msgstr ""
 msgid "Schedule & recipients"
 msgstr ""
 
-msgid "Report"
-msgstr ""
-
 msgid "Period"
 msgstr ""
 
@@ -4791,9 +5485,6 @@ msgstr ""
 msgid "The last analysis failed:"
 msgstr ""
 
-msgid "Try again"
-msgstr ""
-
 msgid "AI provider connected"
 msgstr ""
 
@@ -4865,10 +5556,6 @@ msgid "Built without AI"
 msgstr ""
 
 #, php-format
-msgid "Knowledge: %s"
-msgstr ""
-
-#, php-format
 msgid "%1$s tasks · %2$s critical · %3$s high"
 msgstr ""
 
@@ -4935,9 +5622,6 @@ msgid "Plan for your site (AI)"
 msgstr ""
 
 msgid "Step by step in your dashboard"
-msgstr ""
-
-msgid "Done when:"
 msgstr ""
 
 msgid "Not relevant"
@@ -5033,9 +5717,6 @@ msgid "Excluded (no data yet)"
 msgstr ""
 
 msgid "All severities"
-msgstr ""
-
-msgid "Info"
 msgstr ""
 
 msgid "Fixed"
@@ -5353,9 +6034,6 @@ msgstr ""
 msgid "Keyword Research"
 msgstr ""
 
-msgid "SERP analysis"
-msgstr ""
-
 msgid "Cannibalization"
 msgstr ""
 
@@ -5504,9 +6182,6 @@ msgid "Topic Clusters"
 msgstr ""
 
 msgid "Bulk AI"
-msgstr ""
-
-msgid "Search…"
 msgstr ""
 
 msgid "Posts, pages & products"
@@ -5668,9 +6343,6 @@ msgstr ""
 msgid "Product"
 msgstr ""
 
-msgid "Focus keyword"
-msgstr ""
-
 msgid "no focus keyword"
 msgstr ""
 
@@ -5681,6 +6353,9 @@ msgid "missing"
 msgstr ""
 
 msgid "Description words"
+msgstr ""
+
+msgid "Analyzing product data, queries and competitors…"
 msgstr ""
 
 msgid "AI Image SEO"
@@ -5884,25 +6559,7 @@ msgstr ""
 msgid "SEOlity analyzes your text, the real queries you rank for and SEO best practices, then proposes an improved version. Nothing changes until you apply it."
 msgstr ""
 
-msgid "Optimizing with SEOlity AI"
-msgstr ""
-
 msgid "Selected text"
-msgstr ""
-
-msgid "Analyzing current content…"
-msgstr ""
-
-msgid "Reading Search Console queries…"
-msgstr ""
-
-msgid "Consulting the SEO knowledge base…"
-msgstr ""
-
-msgid "Writing the optimized version…"
-msgstr ""
-
-msgid "Open settings"
 msgstr ""
 
 msgid "Semantic coverage"
@@ -5953,44 +6610,61 @@ msgstr ""
 msgid "Applied (undo anytime from version history)"
 msgstr ""
 
+msgid "Copied. Open the page in its editor — the card there inserts the text with one click."
+msgstr ""
+
 msgid "Apply to editor"
 msgstr ""
 
 msgid "Apply changes"
 msgstr ""
 
+msgid "Copy & open the editor"
+msgstr ""
+
 msgid "SEOlity tasks"
 msgstr ""
 
-msgid "Working…"
+#, php-format
+msgid "SEOlity tasks (%s)"
 msgstr ""
 
-msgid "SEOlity AI"
+msgid "Minimize"
 msgstr ""
 
-msgid "Finished — review the result"
+msgid "Show fewer"
 msgstr ""
 
-msgid "Analyzing real search queries…"
+#, php-format
+msgid "+%s more"
 msgstr ""
 
-msgid "Writing title and description options…"
+msgid "Hide details"
 msgstr ""
 
-msgid "New title and description options are ready."
+msgid "Show details"
 msgstr ""
 
-msgid "Choose & apply"
+msgid "Open the report"
+msgstr ""
+
+msgid "Review & apply"
+msgstr ""
+
+#, php-format
+msgid "Applied: %s"
+msgstr ""
+
+msgid "Inserted into the editor. Save the product to keep it."
+msgstr ""
+
+msgid "Insert into editor"
 msgstr ""
 
 msgid "Google preview"
 msgstr ""
 
 msgid "Title & description applied."
-msgstr ""
-
-#, php-format
-msgid "Applied: %s"
 msgstr ""
 
 msgid "GSC keyword intelligence"
@@ -6186,19 +6860,10 @@ msgstr ""
 msgid "Live results fetched %s (cached for 24 hours)."
 msgstr ""
 
-msgid "Short description"
-msgstr ""
-
 msgid "URL slug"
 msgstr ""
 
-msgid "FAQ"
-msgstr ""
-
 msgid "Image title"
-msgstr ""
-
-msgid "Category description"
 msgstr ""
 
 msgid "Author bio"

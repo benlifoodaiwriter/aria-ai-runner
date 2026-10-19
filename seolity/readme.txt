@@ -4,7 +4,7 @@ Tags: seo, ai, search console, woocommerce, schema
 Requires at least: 6.2
 Tested up to: 6.6
 Requires PHP: 7.4
-Stable tag: 1.7.0
+Stable tag: 1.8.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -72,6 +72,14 @@ Yes. The interface is fully translated and RTL-native, text analysis understands
 Enable "Delete all data on uninstall" in Settings → Privacy, then delete the plugin.
 
 == Changelog ==
+
+= 1.8.0 =
+* "Do it" on the dashboard and in the SEO roadmap opens a popup with two sides: exactly where to do it yourself (menu paths and buttons), and the AI's plan for your site. Press "Approve & let the AI do it" and watch every step live (e.g. "Finding pages that should link to …", "Adding the link in …"). It optimizes titles and content, writes FAQs, creates redirects, fixes redirect chains and adds internal links to weak pages by reading related posts across the whole site and writing a natural sentence with the link. Every change is versioned.
+* New Activity page (AI Center → Activity) with two tabs: Live activity (what is running now, step by step, with the route each AI request took) and Completed work (an exact timeline of everything SEOlity did on your site: AI answers with route, model, tokens and error details, edits, redirects, audits, Search Console syncs, archives …, filterable and grouped by day).
+* AI edit cards (optimizer, titles, products, agent) now run on the server and follow you across every admin page and after a reload until you review and close them; finished cards stay compact.
+* Chat: conversations sidebar with search and delete, questions about a specific page, answers that arrive even after a reload or when the page was closed, retry / answer again, copy, and the route, model and time of each answer.
+* Direct really means direct: with the Direct route nothing is sent through GitHub. API keys are called directly; a Claude/ChatGPT subscription runs with the official CLI on your own server (VPS), which SEOlity detects and can test under Server & speed. Without the CLI, Direct shows a clear error instead of silently using GitHub.
+* Server & speed: choosing a route is instant and no longer reloads the page; a route that is not set up yet explains what to do instead of jumping to another page.
 
 = 1.7.0 =
 * New SEO roadmap replaces "What should I do today?": nothing is analyzed until you press "Analyze". SEOlity then reads Search Console, the site audit, your content, new posts and competitors, studies the SEO knowledge base (up to 10 documents plus your site playbook) and writes an expert diagnosis, strengths, risks, the focus for this week and a prioritized plan in four phases (this week, next 2 weeks, this month, later).

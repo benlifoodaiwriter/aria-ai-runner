@@ -131,7 +131,20 @@ final class Queue {
 	}
 
 	private function run_job( array $job ) {
-		$db = $this->plugin->db;
+		$db    = $this->plugin->db;
+		$label = \SEOlity\Activity\Activity::job_label( $job['hook'] );
+		$act   = $label ? $this->plugin->activity : null;
+		$aid   = 0;
+		$prev  = 0;
+		if ( $act ) {
+			$aid = $act->find_open( 'job:' . $job['id'] );
+			if ( ! $aid ) {
+				$aid = $act->start( 'job', $label, array( 'ref' => 'job:' . $job['id'], 'user_id' => isset( $job['args']['user_id'] ) ? (int) $job['args']['user_id'] : 0, 'step' => __( 'Working…', 'seolity' ) ) );
+			} else {
+				$act->step( $aid, __( 'Continuing…', 'seolity' ), null, array( 'status' => 'running' ) );
+			}
+			$prev = \SEOlity\Activity\Activity::set_current( $aid );
+		}
 		try {
 			if ( ! isset( $this->handlers[ $job['hook'] ] ) ) {
 				throw new \RuntimeException( 'No handler registered for ' . $job['hook'] );
@@ -149,7 +162,13 @@ final class Queue {
 				),
 				array( 'id' => (int) $job['id'] )
 			);
+			if ( $act ) {
+				$act->finish( $aid, 'done', null, array(), array( 'step' => __( 'Finished', 'seolity' ) ) );
+			}
 		} catch ( \SEOlity\AI\Deferred $d ) {
+			if ( $act ) {
+				$act->step( $aid, __( 'Waiting for the AI answer from GitHub…', 'seolity' ), null, array( 'status' => 'waiting', 'route' => 'github' ) );
+			}
 			// Waiting for the subscription runner: re-schedule without counting an attempt.
 			$db->query(
 				"UPDATE {jobs} SET status = 'pending', attempts = IF(attempts > 0, attempts - 1, 0), available_at = %s, last_error = %s WHERE id = %d",
@@ -170,6 +189,18 @@ final class Queue {
 			);
 			if ( $final ) {
 				do_action( 'seolity_job_failed', $job, $e );
+			}
+			if ( $act ) {
+				if ( $final ) {
+					$act->finish( $aid, 'failed', $e->getMessage() );
+				} else {
+					/* translators: %s: error */
+					$act->step( $aid, sprintf( __( 'Error, will retry: %s', 'seolity' ), $e->getMessage() ), null, array( 'status' => 'waiting' ) );
+				}
+			}
+		} finally {
+			if ( $act ) {
+				\SEOlity\Activity\Activity::set_current( $prev );
 			}
 		}
 	}

@@ -384,3 +384,15 @@ input[type="color"].sl-input { padding: 4px; width: 80px; }
 .sl-dock__card.is-applied .sl-dock__detail { color: var(--sl-good); font-weight: 600; }
 @keyframes sl-dock-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
 .sl-remote-wait { inset-block-end: auto; inset-block-start: 46px; }
+.sl-dock__route { font-size: 11px; color: var(--sl-brand); font-weight: 600; }
+.sl-dock__bar { height: 4px; border-radius: 99px; background: var(--sl-surface-2); overflow: hidden; }
+.sl-dock__bar span { display: block; height: 100%; background: var(--sl-brand); transition: width .4s; }
+.sl-dock__error { color: var(--sl-bad); font-weight: 500; }
+.sl-dock__list { display: flex; flex-direction: column; gap: 8px; }
+.sl-dock__bar-row { display: flex; gap: 6px; justify-content: flex-end; pointer-events: auto; }
+.sl-dock__bar-row:empty { display: none; }
+.sl-dock__pill { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--sl-border); background: var(--sl-surface); color: var(--sl-text-2); border-radius: 99px; padding: 4px 12px; font: inherit; font-size: 12px; font-weight: 600; cursor: pointer; box-shadow: var(--sl-shadow); }
+.sl-dock__pill:hover { border-color: var(--sl-brand); color: var(--sl-brand); }
+.sl-dock__card[hidden] { display: none; }
+.sl-dock__more { background: none; border: 0; padding: 0; margin-inline-end: 10px; color: var(--sl-brand); font-size: 12px; font-weight: 600; cursor: pointer; }
+.sl-dock__more:hover { text-decoration: underline; }

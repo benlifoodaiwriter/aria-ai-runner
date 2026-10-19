@@ -275,10 +275,8 @@
 				SL.metaModal( tg.object_type, tg.object_id, refresh, tg.label );
 			}, 'primary sl-btn--sm' ) );
 		} else if ( App.cap( 'ai' ) && actions.indexOf( 'ai_targets' ) !== -1 && tg.rec_id ) {
-			acts.push( App.abtn( h( 'span', { class: 'sl-row' }, SL.icon( 'sparkles', 14 ), h( 'span', { text: t( 'Do it with AI' ) } ) ), function () {
-				return SL.api( 'recommendations/' + tg.rec_id + '/execute', { method: 'POST' } ).then( function ( res ) {
-					App.handleResult( res, refresh );
-				} );
+			acts.push( App.btn( h( 'span', { class: 'sl-row' }, SL.icon( 'sparkles', 14 ), h( 'span', { text: t( 'Do it with AI' ) } ) ), function () {
+				App.agentPopup( tg.rec_id, refresh );
 			}, 'primary sl-btn--sm' ) );
 		} else if ( App.cap( 'ai' ) && actions.indexOf( 'ai_targets' ) !== -1 && tg.object_type === 'post' && tg.object_id ) {
 			acts.push( App.btn( h( 'span', { class: 'sl-row' }, SL.icon( 'sparkles', 14 ), h( 'span', { text: t( 'Optimize with AI' ) } ) ), function () {
