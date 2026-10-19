@@ -832,6 +832,7 @@ async function main() {
       const stats = { ...(a.stats || {}), posts: index.counts.posts + (a.stats && a.stats.drafts || 0), products: index.counts.products, pages: index.counts.pages, categories: index.counts.categories, source: 'github' };
       if (ENGINE !== 'none') {
         let fetched = 0; let p2 = prompt;
+        if (a.gsc) { try { const g = await worker('gsc', { action: 'text', site: a.gsc }, 120000); if (g.text) p2 += g.text; } catch (e) { log('search console data skipped:', e.message); } }
         if (Array.isArray(a.competitors) && a.competitors.length) {
           try { const c = await worker('competitors', { urls: a.competitors }, 120000); fetched = c.fetched || 0; if (c.text) p2 += '\n\n# داده‌های واقعی جمع‌آوری‌شده از سایت رقبا' + c.text; } catch (e) { log('competitor fetch failed:', e.message); }
         }
@@ -844,7 +845,7 @@ async function main() {
         if (!analysis || !analysis.topics) throw new Error('خروجی تحلیل قابل پردازش نبود.');
         mailbox.analysis = { result: analysis, meta: { provider: 'sub_' + ENGINE, model: MODEL || (ENGINE === 'claude' ? 'sonnet' : 'default'), web: ENGINE === 'claude', competitors_fetched: fetched, runner: 'github', ms: Date.now() - t0, stats } };
       } else {
-        const r = await worker('analyze', { runtime: t.runtime || {}, system: a.system || '', prompt, competitors: a.competitors || [], web: !!a.web }, 900000);
+        const r = await worker('analyze', { runtime: t.runtime || {}, system: a.system || '', prompt, competitors: a.competitors || [], web: !!a.web, gsc: a.gsc || '' }, 900000);
         mailbox.analysis = { result: r.analysis, meta: { ...(r.meta || {}), runner: 'github+cloudflare', ms: Date.now() - t0, stats } };
       }
       summary(`### تحلیل هوشمند سایت انجام شد: ${mailbox.analysis.result.topics.length} موضوع پیشنهادی`);
