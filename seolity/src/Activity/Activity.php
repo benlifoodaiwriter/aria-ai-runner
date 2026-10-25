@@ -555,6 +555,7 @@ final class Activity {
 			'indexability_scan'       => __( 'Indexability & crawl budget audit', 'seolity' ),
 			'consolidate_prepare'     => __( 'Merging duplicate articles', 'seolity' ),
 			'full_analysis'           => __( 'Full-site analysis', 'seolity' ),
+			'cli_install'             => __( 'Installing the official CLI', 'seolity' ),
 			'duplicates_scan'         => __( 'Duplicate & similar articles analysis', 'seolity' ),
 			'cleanup'                 => __( 'Clean-up', 'seolity' ),
 		);

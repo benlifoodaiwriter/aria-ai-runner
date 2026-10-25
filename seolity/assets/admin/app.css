@@ -626,3 +626,25 @@ button.sl-segcard { cursor: pointer; }
 .sl-dup__meta { min-width: 0; }
 .sl-dup__meta .sl-muted { overflow-wrap: anywhere; }
 @media (max-width: 600px) { .sl-dup__post { grid-template-columns: auto auto 1fr; } .sl-dup__post > .sl-btn { grid-column: 1 / -1; justify-self: start; } }
+.sl-rm-h { margin: 28px 0 10px; font-size: 18px; }
+.sl-rm-an .sl-row { flex-wrap: wrap; }
+.sl-rm-stages { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 4px; font-size: 13px; }
+.sl-rm-stages li { display: flex; gap: 8px; align-items: baseline; }
+.sl-rm-stages__ic { width: 16px; text-align: center; }
+.sl-rm-stages .is-done .sl-rm-stages__ic { color: var(--sl-good); }
+.sl-rm-stages .is-failed .sl-rm-stages__ic { color: var(--sl-bad); }
+.sl-rm-stages .is-running { font-weight: 700; }
+.sl-rm-cats { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0; }
+.sl-rm-catlink { display: inline-flex; align-items: stretch; border: 1px solid var(--sl-border); border-radius: 12px; background: var(--sl-surface); overflow: hidden; }
+.sl-rm-catlink > button, .sl-rm-catlink__main { display: inline-flex; gap: 8px; align-items: center; padding: 8px 12px; border: 0; background: none; color: inherit; cursor: pointer; font: inherit; }
+.sl-rm-catlink.is-on { border-color: var(--sl-brand); box-shadow: 0 0 0 2px color-mix(in srgb, var(--sl-brand) 25%, transparent); }
+.sl-rm-catlink.is-clear { opacity: .7; }
+.sl-rm-catlink__pos { display: inline-grid; place-items: center; min-width: 22px; height: 22px; border-radius: 11px; background: var(--sl-surface-2); font-size: 12px; font-weight: 700; }
+.sl-rm-catlink__go { display: inline-grid; place-items: center; padding: 0 10px; border-inline-start: 1px solid var(--sl-border); text-decoration: none; color: var(--sl-muted); }
+.sl-rm-why { flex-basis: 100%; margin: 0; }
+.sl-rm-item { display: flex; flex-direction: column; gap: 6px; }
+.sl-rm-item p { margin: 0; line-height: 1.8; }
+.sl-rm-item.is-done, .sl-rm-item.is-resolved { opacity: .85; }
+.sl-rm-item__title { flex: 1; min-width: 0; }
+.sl-checks__fix { color: var(--sl-warn, #b45309); }
+.sl-pre { white-space: pre-wrap; overflow-wrap: anywhere; max-height: 220px; overflow: auto; font-size: 12px; margin: 0; }

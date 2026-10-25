@@ -43,9 +43,13 @@
 	}
 
 	App.pages.actions = function ( v ) {
-		var head = App.header( t( 'SEO roadmap — what should I do today?' ), t( 'A step-by-step plan for this site. SEOlity analyzes only when you press “Analyze”: it reads Search Console, the site audit, your content and competitors, studies the SEO knowledge base and keeps the plan stable between analyses.' ) );
+		var head = App.header( t( 'SEO roadmap' ), t( 'Every problem on the site appears here once, in the order it should be fixed. Run a full analysis to update every section; each item can be done by AI (with a preview and your approval) or by hand, and gets a checkmark only after the result was verified on the site.' ) );
 		v.appendChild( head );
+		var ov = h( 'div', { class: 'sl-stack sl-rm-ov' } );
+		v.appendChild( ov );
+		App.roadmapOverview( ov );
 		var box = h( 'div', { class: 'sl-stack sl-rm' } );
+		v.appendChild( h( 'h2', { class: 'sl-rm-h', text: t( 'AI diagnosis and plan' ) } ) );
 		v.appendChild( box );
 		var timer = null;
 		var filter = { phase: 'all', cat: '', done: false };
@@ -344,4 +348,185 @@
 			);
 		} ) );
 	}
+
+	/* ---------------------------------------------- canonical issue roadmap */
+	var ST = {
+		open: [ t( 'To do' ), '' ],
+		in_progress: [ t( 'In progress' ), 'brand' ],
+		done: [ t( 'Done' ), 'good' ],
+		resolved: [ t( 'Resolved' ), 'good' ],
+		dismissed: [ t( 'Dismissed' ), '' ],
+	};
+	var PRIO_CLS = { critical: 'bad', high: 'warn', medium: 'brand', low: '' };
+	var STAGE_ICON = { pending: '○', running: '…', done: '✓', skipped: '–', failed: '✗' };
+
+	function doneBadge( it ) {
+		if ( 'done' !== it.status && 'resolved' !== it.status ) {
+			var s = ST[ it.status ] || [ it.status, '' ];
+			return SL.badge( s[ 0 ], s[ 1 ] );
+		}
+		var v = it.verification || {};
+		if ( it.verified_at ) {
+			return SL.badge( '✓ ' + t( 'Done & verified' ), 'good' );
+		}
+		if ( v.manual ) {
+			return SL.badge( t( 'Marked done by you (not verified)' ), '' );
+		}
+		return SL.badge( t( 'Gone after the last check' ), 'good' );
+	}
+
+	function canAi( it ) {
+		var a = it.action || {};
+		return App.cap( 'ai' ) && !! it.auto_fixable && 'route' !== a.type;
+	}
+
+	App.roadmapOverview = function ( ov ) {
+		var f = { category: '', status: 'active', page: 1 };
+		var timer;
+		var anBox = h( 'div' );
+		var catBox = h( 'div', { class: 'sl-rm-cats' } );
+		var listBox = h( 'div', { class: 'sl-stack' } );
+		ov.appendChild( anBox );
+		ov.appendChild( catBox );
+		ov.appendChild( listBox );
+
+		function analysis( a ) {
+			SL.clear( anBox );
+			var running = a && 'running' === a.status;
+			var btn = App.cap( 'manage' ) ? App.abtn( SL.il( 'pulse', running ? t( 'Analysis running…' ) : t( 'Run full-site analysis' ), 15 ), function () {
+				return SL.api( 'analysis/full', { method: 'POST' } ).then( loadBoard );
+			}, 'primary', { disabled: running } ) : null;
+			var info = a && a.finished_at ? t( 'Last full analysis: %s', SL.date( a.finished_at ) ) : t( 'Crawl, Search Console, issues, indexability, duplicates, 404 targets and the AI plan — all sections updated in one run.' );
+			var card = h( 'div', { class: 'sl-card sl-rm-an' }, h( 'div', { class: 'sl-row' }, btn, h( 'span', { class: 'sl-muted sl-small', text: info } ) ) );
+			if ( a && a.stages ) {
+				card.appendChild( h( 'ol', { class: 'sl-rm-stages' }, Object.keys( a.stages ).map( function ( k ) {
+					var x = a.stages[ k ];
+					return h( 'li', { class: 'is-' + x.status }, h( 'span', { class: 'sl-rm-stages__ic', text: STAGE_ICON[ x.status ] || '○' } ), h( 'b', { text: x.label } ), x.detail ? h( 'span', { class: 'sl-muted', text: ' — ' + x.detail } ) : null );
+				} ) ) );
+			}
+			anBox.appendChild( card );
+		}
+
+		function cats( list ) {
+			SL.clear( catBox );
+			catBox.appendChild( h( 'div', { class: 'sl-rm-catlink' + ( f.category ? '' : ' is-on' ) }, h( 'button', { type: 'button', class: 'sl-rm-catlink__main', onClick: function () {
+				f.category = '';
+				f.page = 1;
+				loadBoard();
+			} }, h( 'b', { text: t( 'All' ) } ) ) ) );
+			list.forEach( function ( c ) {
+				catBox.appendChild( h( 'div', { class: 'sl-rm-catlink' + ( f.category === c.id ? ' is-on' : '' ) + ( c.open ? '' : ' is-clear' ), title: c.reason },
+					h( 'button', { type: 'button', class: 'sl-rm-catlink__main', onClick: function () {
+						f.category = c.id;
+						f.page = 1;
+						loadBoard();
+					} }, h( 'span', { class: 'sl-rm-catlink__pos', text: c.position ? SL.num( c.position, 0 ) : '✓' } ), h( 'b', { text: c.label } ), h( 'span', { class: 'sl-muted sl-small', text: c.open ? t( '%s open', SL.num( c.open, 0 ) ) : t( 'all clear' ) } ) ),
+					c.route ? h( 'a', { class: 'sl-rm-catlink__go', href: c.route, title: t( 'Open the section' ), text: '↗' } ) : null
+				) );
+			} );
+			var cur = list.filter( function ( c ) {
+				return c.id === f.category;
+			} )[ 0 ];
+			if ( cur && cur.reason ) {
+				catBox.appendChild( h( 'p', { class: 'sl-muted sl-small sl-rm-why', text: ( cur.position ? t( 'Step %s:', cur.position ) + ' ' : '' ) + cur.reason } ) );
+			}
+		}
+
+		function item( it ) {
+			var row = h( 'div', { class: 'sl-card sl-rm-item is-' + it.status } );
+			row.appendChild( h( 'div', { class: 'sl-row' }, doneBadge( it ), it.priority ? SL.badge( PRIO[ it.priority ] || it.priority, PRIO_CLS[ it.priority ] || '' ) : null, h( 'b', { dir: 'auto', class: 'sl-rm-item__title', text: it.title } ) ) );
+			if ( it.url ) {
+				row.appendChild( h( 'a', { href: it.url, target: '_blank', rel: 'noopener', dir: 'ltr', class: 'sl-small', text: decodeURI( it.url ) } ) );
+			}
+			if ( it.reason ) {
+				row.appendChild( h( 'p', { class: 'sl-small' }, h( 'b', { text: t( 'AI recommendation:' ) + ' ' } ), h( 'span', { dir: 'auto', text: it.reason } ) ) );
+			}
+			if ( it.verification && it.verification.lines ) {
+				row.appendChild( h( 'details', { class: 'sl-small' }, h( 'summary', { text: t( 'Result and verification' ) } ), h( 'ul', {}, it.verification.lines.map( function ( l ) {
+					return h( 'li', { dir: 'auto', text: l } );
+				} ) ) ) );
+			}
+			var acts = h( 'div', { class: 'sl-row' } );
+			var active = 'open' === it.status || 'in_progress' === it.status;
+			if ( active && canAi( it ) ) {
+				acts.appendChild( App.abtn( SL.il( 'wand', t( 'Do it with AI' ), 14 ), function () {
+					App.agentPopup( it.id, loadBoard );
+					return Promise.resolve();
+				}, 'primary' ) );
+			}
+			if ( it.operation ) {
+				acts.appendChild( App.abtn( t( 'View the change' ), function () {
+					return SL.api( 'operations/' + it.operation.id ).then( function ( op ) {
+						var m = SL.modal( { title: op.title, wide: true, onClose: loadBoard } );
+						var b = h( 'div' );
+						m.body.appendChild( b );
+						App.operationView( b, op, loadBoard );
+					} );
+				} ) );
+			}
+			var a = it.action || {};
+			if ( a.route ) {
+				acts.appendChild( h( 'a', { class: 'sl-btn sl-btn--sm', href: a.route, text: t( 'Open in its section' ) } ) );
+			}
+			if ( it.edit ) {
+				acts.appendChild( h( 'a', { class: 'sl-btn sl-btn--ghost sl-btn--sm', href: it.edit, text: t( 'Edit manually' ) } ) );
+			}
+			if ( App.cap( 'apply' ) ) {
+				if ( active ) {
+					acts.appendChild( App.abtn( t( 'Mark as done' ), function () {
+						return SL.api( 'issues/' + it.id + '/state', { body: { status: 'done' } } ).then( loadBoard );
+					}, 'ghost' ) );
+					acts.appendChild( App.abtn( t( 'Dismiss' ), function () {
+						return SL.api( 'issues/' + it.id + '/state', { body: { status: 'dismissed' } } ).then( loadBoard );
+					}, 'ghost' ) );
+				} else {
+					acts.appendChild( App.abtn( t( 'Reopen' ), function () {
+						return SL.api( 'issues/' + it.id + '/state', { body: { status: 'open' } } ).then( loadBoard );
+					}, 'ghost' ) );
+				}
+			}
+			row.appendChild( acts );
+			return row;
+		}
+
+		function list() {
+			App.load( listBox, SL.api( 'issues/canonical', { query: f } ), function ( r ) {
+				listBox.appendChild( h( 'div', { class: 'sl-toolbar' }, App.select( [ [ 'active', t( 'To do' ) ], [ 'done', t( 'Done' ) ], [ 'dismissed', t( 'Dismissed' ) ], [ 'all', t( 'All' ) ] ], f.status, function ( x ) {
+					f.status = x;
+					f.page = 1;
+					list();
+				} ), h( 'span', { class: 'sl-muted sl-small', text: t( '%s items', SL.num( r.total, 0 ) ) } ) ) );
+				if ( ! r.items.length ) {
+					listBox.appendChild( SL.empty( 'active' === f.status ? t( 'Nothing left to do here' ) : t( 'Nothing here yet' ), '' ) );
+					return;
+				}
+				r.items.forEach( function ( it ) {
+					listBox.appendChild( item( it ) );
+				} );
+				if ( r.total > r.page * r.per_page ) {
+					listBox.appendChild( h( 'div', {}, App.abtn( t( 'Show more' ), function () {
+						f.per_page = r.per_page * ( r.page + 1 );
+						list();
+						return Promise.resolve();
+					} ) ) );
+				}
+			} );
+		}
+
+		function loadBoard() {
+			clearTimeout( timer );
+			if ( ! d.body.contains( ov ) ) {
+				return;
+			}
+			SL.api( 'issues/board' ).then( function ( b ) {
+				analysis( b.analysis );
+				cats( b.categories );
+				list();
+				if ( b.analysis && 'running' === b.analysis.status ) {
+					timer = setTimeout( loadBoard, 4000 );
+				}
+			} ).catch( SL.fail );
+		}
+		loadBoard();
+	};
 } )( window, document );

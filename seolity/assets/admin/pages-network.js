@@ -187,6 +187,47 @@
 	}
 
 	/* ------------------------------------------------------------------ 2b. Subscription CLI on this server */
+	/** Requirements of this server for the official CLI, a controlled install and the login step. */
+	function cliDialog( id, name ) {
+		var m = SL.modal( { title: name + ' — ' + T( 'نصب روی همین سرور', 'install on this server' ), wide: true } );
+		var timer;
+		function draw() {
+			clearTimeout( timer );
+			if ( ! d.body.contains( m.body ) ) {
+				return;
+			}
+			App.load( m.body, SL.api( 'cli/diagnose', { query: { engine: id } } ), function ( r ) {
+				m.body.appendChild( h( 'ul', { class: 'sl-checks' }, r.checks.map( function ( c ) {
+					return h( 'li', { class: 'sl-checks__row' + ( c.ok ? '' : ' is-warn' ) }, SL.icon( c.ok ? 'check-circle' : 'alert', 18 ), h( 'span', { class: 'sl-checks__text' }, h( 'b', { text: c.label } ), h( 'small', { dir: 'auto', text: c.value } ), c.fix ? h( 'small', { class: 'sl-checks__fix', text: c.fix } ) : null ) );
+				} ) ) );
+				var log = r.log || {};
+				if ( r.installed ) {
+					m.body.appendChild( h( 'div', { class: 'sl-alert sl-alert--success' }, h( 'span', { text: T( 'نصب است: ', 'Installed: ' ) } ), h( 'code', { dir: 'ltr', text: r.installed } ), log.version ? h( 'span', { text: ' · ' + log.version } ) : null ) );
+				}
+				if ( 'running' === log.status ) {
+					m.body.appendChild( h( 'div', { class: 'sl-alert sl-alert--info sl-row' }, SL.spinner(), h( 'span', { text: T( 'در حال نصب… (چند دقیقه؛ این پنجره خودش به‌روز می‌شود)', 'Installing… (a few minutes; this window updates by itself)' ) } ) ) );
+					timer = setTimeout( draw, 5000 );
+				} else if ( 'failed' === log.status ) {
+					m.body.appendChild( h( 'div', { class: 'sl-alert sl-alert--error sl-stack' }, h( 'b', { text: T( 'نصب کامل نشد:', 'The installation did not finish:' ) } ), h( 'pre', { dir: 'ltr', class: 'sl-pre', text: log.out || '' } ) ) );
+				}
+				if ( r.possible && 'running' !== log.status ) {
+					m.body.appendChild( h( 'p', { class: 'sl-muted', text: T( 'SEOlity فقط npm را با یک فرمان ثابت اجرا می‌کند (بسته رسمی ', 'SEOlity only runs npm with a fixed command (the official package ' ) + r.package + T( ') و آن را در این پوشه نصب می‌کند: ', ') into this folder: ' ) + r.prefix } ) );
+					m.body.appendChild( h( 'div', {}, App.abtn( r.installed ? T( 'به‌روزرسانی به آخرین نسخه', 'Update to the latest version' ) : T( 'نصب خودکار', 'Install automatically' ), function () {
+						return SL.api( 'cli/install', { body: { engine: id } } ).then( draw );
+					}, 'primary' ) ) );
+				} else if ( ! r.possible ) {
+					m.body.appendChild( h( 'div', { class: 'sl-alert sl-alert--warn', text: T( 'روی این سرور نصب ممکن نیست (موارد بالا). از کلید API یا مسیر گیت‌هاب/کلودفلر استفاده کنید.', 'Installing is not possible on this server (see above). Use an API key or the GitHub/Cloudflare route.' ) } ) );
+				}
+				m.body.appendChild( h( 'details', { class: 'sl-explain' }, h( 'summary', { text: T( 'بعد از نصب: ورود به حساب اشتراک', 'After installing: sign in to your subscription' ) } ), h( 'div', { class: 'sl-explain__body' },
+					'claude' === id
+						? h( 'p', { text: T( 'روی رایانه خودتان (یا با SSH روی سرور) فرمان رسمی «claude setup-token» را اجرا کنید، با حساب Claude وارد شوید و توکن ساخته‌شده را در «تنظیمات ← هوش مصنوعی ← اشتراکی ← Claude» بچسبانید. SEOlity رمز عبور یا کوکی نمی‌گیرد.', 'On your computer (or over SSH on the server) run the official “claude setup-token”, sign in with your Claude account and paste the token into Settings → AI → Subscription → Claude. SEOlity never asks for your password or cookies.' ) } )
+						: h( 'p', { text: T( 'روی رایانه خودتان فرمان رسمی «codex login» را اجرا کنید؛ سپس محتوای فایل ~/.codex/auth.json را در «تنظیمات ← هوش مصنوعی ← اشتراکی ← ChatGPT» بچسبانید. SEOlity رمز عبور یا کوکی نمی‌گیرد.', 'On your computer run the official “codex login”, then paste the content of ~/.codex/auth.json into Settings → AI → Subscription → ChatGPT. SEOlity never asks for your password or cookies.' ) } )
+				) ) );
+			} );
+		}
+		draw();
+	}
+
 	function localCard( st, save ) {
 		var l = st.local || {};
 		var isSub = st.provider.indexOf( 'sub_' ) === 0;
@@ -214,7 +255,10 @@
 							SL.toast( e.message, 'error' );
 						} );
 					} )
-				)
+				),
+				h( 'div', {}, App.btn( SL.il( 'pulse', T( 'بررسی سرور و نصب خودکار', 'Check this server & install' ), 14 ), function () {
+					cliDialog( id, name );
+				} ) )
 			);
 		};
 		var body = h( 'div', { class: 'sl-stack' },

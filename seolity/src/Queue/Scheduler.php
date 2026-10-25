@@ -132,6 +132,27 @@ final class Scheduler {
 		);
 	}
 
+	/**
+	 * Start the worker when a job is due and none is running. Called on SEOlity's own REST
+	 * requests, so delayed steps (a crawl being awaited, a retry) continue while the admin
+	 * page is open even on sites without real cron or visitors.
+	 */
+	public static function kick_if_due() {
+		if ( get_transient( 'seolity_kick_throttle' ) ) {
+			return;
+		}
+		$db  = Plugin::instance()->db;
+		$now = \SEOlity\Core\Database::now();
+		$due = $db->value( "SELECT id FROM {jobs} WHERE status IN ('pending','waiting') AND available_at <= %s LIMIT 1", array( $now ) );
+		if ( ! $due ) {
+			return;
+		}
+		$busy = $db->value( "SELECT id FROM {jobs} WHERE status = 'running' AND IFNULL(heartbeat_at, reserved_at) > DATE_SUB(%s, INTERVAL 60 SECOND) LIMIT 1", array( $now ) );
+		if ( ! $busy ) {
+			self::kick();
+		}
+	}
+
 	public static function handle_kick() {
 		$token = isset( $_POST['token'] ) ? sanitize_text_field( wp_unslash( $_POST['token'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification -- HMAC token instead of nonce for loopback.
 		if ( ! hash_equals( self::kick_token(), $token ) ) {

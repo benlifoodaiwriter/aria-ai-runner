@@ -54,7 +54,7 @@ final class LocalCli {
 		}
 		$found = '';
 		if ( self::can_exec() && isset( self::BINARIES[ $engine ] ) ) {
-			$dirs = array_merge( explode( PATH_SEPARATOR, (string) getenv( 'PATH' ) ), array( '/usr/local/bin', '/usr/bin', '/opt/homebrew/bin', getenv( 'HOME' ) ? getenv( 'HOME' ) . '/.npm-global/bin' : '' ) );
+			$dirs = array_merge( array( CliSetup::prefix() . '/node_modules/.bin' ), explode( PATH_SEPARATOR, (string) getenv( 'PATH' ) ), array( '/usr/local/bin', '/usr/bin', '/opt/homebrew/bin', getenv( 'HOME' ) ? getenv( 'HOME' ) . '/.npm-global/bin' : '' ) );
 			foreach ( array_filter( array_unique( $dirs ) ) as $dir ) {
 				$f = rtrim( $dir, '/' ) . '/' . self::BINARIES[ $engine ];
 				if ( @is_file( $f ) && @is_executable( $f ) ) { // phpcs:ignore WordPress.PHP.NoSilencedErrors
@@ -164,11 +164,19 @@ final class LocalCli {
 		}
 	}
 
-	private function run( array $cmd, $input, array $env, $cwd ) {
+	/**
+	 * Run a fixed argument list (never through a shell) — used by the CLI setup for
+	 * `node --version`, `npm install <official package>` and `<cli> --version` only.
+	 */
+	public function exec( array $cmd, array $env, $cwd, $timeout ) {
+		return $this->run( $cmd, '', $env, $cwd, $timeout );
+	}
+
+	private function run( array $cmd, $input, array $env, $cwd, $timeout = null ) {
 		if ( function_exists( 'set_time_limit' ) ) {
-			@set_time_limit( 600 ); // phpcs:ignore WordPress.PHP.NoSilencedErrors
+			@set_time_limit( $timeout ? $timeout + 60 : 600 ); // phpcs:ignore WordPress.PHP.NoSilencedErrors
 		}
-		$timeout = max( 60, (int) $this->plugin->settings->get( 'ai_timeout' ) * 3 );
+		$timeout = $timeout ? (int) $timeout : max( 60, (int) $this->plugin->settings->get( 'ai_timeout' ) * 3 );
 		$proc    = proc_open( $cmd, array( 0 => array( 'pipe', 'r' ), 1 => array( 'pipe', 'w' ), 2 => array( 'pipe', 'w' ) ), $pipes, $cwd, $env ); // phpcs:ignore
 		if ( ! is_resource( $proc ) ) {
 			return new \WP_Error( 'seolity_local_cli', __( 'This server does not allow starting the CLI.', 'seolity' ) );

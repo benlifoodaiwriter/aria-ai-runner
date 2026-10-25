@@ -169,10 +169,12 @@ final class Plugin {
 			'subscription'    => AI\Remote\SubscriptionRunner::class,
 			'gateway'         => AI\Gateway::class,
 			'localcli'        => AI\Remote\LocalCli::class,
+			'clisetup'        => AI\Remote\CliSetup::class,
 			'aiproviders'     => AI\ProviderManager::class,
 			'operations'      => Operations\Operations::class,
 			'indexability'    => Technical\Indexability::class,
 			'duplicates'      => Content\Duplicates::class,
+			'analysis'        => Analysis\FullAnalysis::class,
 			'roadmap'         => Roadmap\Roadmap::class,
 			'activity'        => Activity\Activity::class,
 			'aijobs'          => Activity\AiJobs::class,
@@ -204,6 +206,17 @@ final class Plugin {
 		Frontend\Frontend::register_hooks( $this );
 
 		add_action( 'rest_api_init', array( new Api\Router( $this ), 'register_routes' ) );
+		add_filter(
+			'rest_pre_dispatch',
+			static function ( $result, $server, $request ) {
+				if ( 0 === strpos( $request->get_route(), '/seolity/v1/' ) && 'GET' === $request->get_method() ) {
+					Queue\Scheduler::kick_if_due();
+				}
+				return $result;
+			},
+			10,
+			3
+		);
 		// A changed key invalidates what we verified with the old one.
 		add_action(
 			'seolity_secret_changed',
@@ -237,6 +250,7 @@ final class Plugin {
 
 		// Content lifecycle hooks used by change tracking, rules and incremental crawling.
 		( new Content\ContentEvents( $this ) )->register_hooks();
+		$this->analysis->register_hooks();
 
 		if ( defined( 'WP_CLI' ) && WP_CLI ) {
 			\WP_CLI::add_command( 'seolity', new Cli\Command( $this ) );

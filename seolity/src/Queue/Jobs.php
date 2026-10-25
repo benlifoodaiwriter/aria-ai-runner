@@ -23,6 +23,12 @@ final class Jobs {
 			$p->indexability->scan();
 			return true;
 		} );
+		$q->handler( 'cli_install', static function ( $a ) use ( $p ) {
+			return $p->clisetup->install( in_array( $a['engine'], array( 'claude', 'codex' ), true ) ? $a['engine'] : 'claude', (int) $a['activity_id'] );
+		} );
+		$q->handler( 'full_analysis', static function ( $a ) use ( $p ) {
+			return $p->analysis->step( (array) $a );
+		} );
 		$q->handler( 'duplicates_scan', static function () use ( $p ) {
 			$p->duplicates->scan();
 			return true;

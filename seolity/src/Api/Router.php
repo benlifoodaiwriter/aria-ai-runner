@@ -274,18 +274,26 @@ final class Router {
 		} );
 		/* ---------------- Canonical issues (roadmap) ---------------- */
 		$this->route( 'GET', '/issues/board', 'view', function () use ( $p ) {
-			return array( 'categories' => $p->recommendations->board(), 'refreshed' => get_option( 'seolity_recommendations_refreshed' ) );
+			return array( 'categories' => $p->recommendations->board(), 'refreshed' => get_option( 'seolity_recommendations_refreshed' ), 'analysis' => $p->analysis->state() );
 		} );
-		$this->route( 'GET', '/issues', 'view', function ( Req $r ) use ( $p ) {
+		$this->route( 'POST', '/analysis/full', 'manage', function () use ( $p ) {
+			return $p->analysis->start();
+		} );
+		$this->route( 'GET', '/analysis/full', 'view', function () use ( $p ) {
+			return array( 'state' => $p->analysis->state() );
+		} );
+		$this->route( 'GET', '/issues/canonical', 'view', function ( Req $r ) use ( $p ) {
 			return $p->recommendations->items( array( 'category' => self::key( $r, 'category' ), 'status' => self::key( $r, 'status', 'active' ), 'q' => self::str( $r, 'q' ), 'page' => self::int( $r, 'page', 1 ), 'per_page' => self::int( $r, 'per_page', 30 ) ) );
 		} );
 		$this->route( 'POST', '/issues/(?P<id>\d+)/state', 'apply', function ( Req $r ) use ( $p ) {
 			$st = self::key( $r, 'status' );
-			if ( ! in_array( $st, array( 'open', 'dismissed', 'snoozed' ), true ) ) {
+			if ( ! in_array( $st, array( 'open', 'dismissed', 'snoozed', 'done' ), true ) ) {
 				return new \WP_Error( 'seolity_issue', __( 'Invalid status.', 'seolity' ), array( 'status' => 400 ) );
 			}
 			$p->audit_log->log( 'issue.' . $st, 'recommendation', self::int( $r, 'id' ) );
-			return array( 'ok' => $p->recommendations->set_state( self::int( $r, 'id' ), $st ) );
+			// "Done" by hand is recorded as such — only a verified operation earns the checkmark.
+			$extra = 'done' === $st ? array( 'verified_at' => null, 'verification' => array( 'manual' => true, 'user_id' => get_current_user_id(), 'at' => gmdate( 'c' ) ) ) : ( 'open' === $st ? array( 'verified_at' => null ) : array() );
+			return array( 'ok' => $p->recommendations->set_state( self::int( $r, 'id' ), $st, $extra ) );
 		} );
 		$this->route( 'POST', '/issues/(?P<id>\d+)/instructions', 'apply', function ( Req $r ) use ( $p ) {
 			return array( 'ok' => $p->recommendations->set_state( self::int( $r, 'id' ), 'open', array( 'instructions' => sanitize_textarea_field( wp_unslash( (string) $r->get_param( 'instructions' ) ) ) ) ) );
@@ -1135,6 +1143,14 @@ final class Router {
 			return $p->gateway->status();
 		} );
 		// Try the official subscription CLI on this server (the "Direct" way for Claude/ChatGPT subscriptions).
+		$this->route( 'GET', '/cli/diagnose', 'manage', function ( Req $r ) use ( $p ) {
+			$e = 'codex' === self::key( $r, 'engine' ) ? 'codex' : 'claude';
+			return $p->clisetup->diagnose( $e );
+		} );
+		$this->route( 'POST', '/cli/install', 'manage', function ( Req $r ) use ( $p ) {
+			$e = 'codex' === self::key( $r, 'engine' ) ? 'codex' : 'claude';
+			return $p->clisetup->start_install( $e );
+		} );
 		$this->route( 'POST', '/network/local-test', 'manage', function ( Req $r ) use ( $p ) {
 			$engine = 'codex' === $r->get_param( 'engine' ) ? 'codex' : 'claude';
 			delete_transient( 'seolity_cli_' . $engine );
