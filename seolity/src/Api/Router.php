@@ -218,7 +218,41 @@ final class Router {
 			if ( ! current_user_can( \SEOlity\Core\Capabilities::AI ) ) {
 				return new \WP_Error( 'seolity_forbidden', __( 'Sorry, you are not allowed to do that.', 'seolity' ), array( 'status' => 403 ) );
 			}
-			return $p->agent->start( (int) $r->get_param( 'rec_id' ) );
+			$instr = $r->get_param( 'instructions' );
+			return $p->agent->start( (int) $r->get_param( 'rec_id' ), null === $instr ? null : wp_unslash( (string) $instr ) );
+		} );
+		/* ---------------- Operations: preview → approve → apply → verify → rollback ---------------- */
+		$this->route( 'GET', '/operations/(?P<id>\d+)', 'view', function ( Req $r ) use ( $p ) {
+			$op = $p->operations->get( self::int( $r, 'id' ) );
+			return $op ? $op : new \WP_Error( 'seolity_op', __( 'Operation not found.', 'seolity' ), array( 'status' => 404 ) );
+		} );
+		$this->route( 'POST', '/operations/(?P<id>\d+)/approve', 'apply', function ( Req $r ) use ( $p ) {
+			$keys = $r->get_param( 'keys' );
+			return $p->operations->approve( self::int( $r, 'id' ), is_array( $keys ) ? array_map( 'sanitize_key', $keys ) : null );
+		} );
+		$this->route( 'POST', '/operations/(?P<id>\d+)/reject', 'apply', function ( Req $r ) use ( $p ) {
+			return $p->operations->reject( self::int( $r, 'id' ) );
+		} );
+		$this->route( 'POST', '/operations/(?P<id>\d+)/rollback', 'apply', function ( Req $r ) use ( $p ) {
+			return $p->operations->rollback( self::int( $r, 'id' ) );
+		} );
+		/* ---------------- Canonical issues (roadmap) ---------------- */
+		$this->route( 'GET', '/issues/board', 'view', function () use ( $p ) {
+			return array( 'categories' => $p->recommendations->board(), 'refreshed' => get_option( 'seolity_recommendations_refreshed' ) );
+		} );
+		$this->route( 'GET', '/issues', 'view', function ( Req $r ) use ( $p ) {
+			return $p->recommendations->items( array( 'category' => self::key( $r, 'category' ), 'status' => self::key( $r, 'status', 'active' ), 'q' => self::str( $r, 'q' ), 'page' => self::int( $r, 'page', 1 ), 'per_page' => self::int( $r, 'per_page', 30 ) ) );
+		} );
+		$this->route( 'POST', '/issues/(?P<id>\d+)/state', 'apply', function ( Req $r ) use ( $p ) {
+			$st = self::key( $r, 'status' );
+			if ( ! in_array( $st, array( 'open', 'dismissed', 'snoozed' ), true ) ) {
+				return new \WP_Error( 'seolity_issue', __( 'Invalid status.', 'seolity' ), array( 'status' => 400 ) );
+			}
+			$p->audit_log->log( 'issue.' . $st, 'recommendation', self::int( $r, 'id' ) );
+			return array( 'ok' => $p->recommendations->set_state( self::int( $r, 'id' ), $st ) );
+		} );
+		$this->route( 'POST', '/issues/(?P<id>\d+)/instructions', 'apply', function ( Req $r ) use ( $p ) {
+			return array( 'ok' => $p->recommendations->set_state( self::int( $r, 'id' ), 'open', array( 'instructions' => sanitize_textarea_field( wp_unslash( (string) $r->get_param( 'instructions' ) ) ) ) ) );
 		} );
 		$this->route( 'POST', '/ai-jobs', 'ai', function ( Req $r ) use ( $p ) {
 			$params = $r->get_param( 'params' );
@@ -743,6 +777,32 @@ final class Router {
 		} );
 		$this->route( 'POST', '/404/(?P<id>\d+)/redirect', 'manage', function ( Req $r ) use ( $p ) {
 			return array( 'id' => $p->not_found->redirect( self::int( $r, 'id' ), self::url( $r, 'target' ), self::int( $r, 'type', 301 ) ) );
+		} );
+		// Bulk: every selected 404 to ITS OWN target. Each redirect is validated, shown for approval,
+		// applied separately and verified separately (one failure never hides the others).
+		$this->route( 'POST', '/404/bulk-redirect', 'manage', function ( Req $r ) use ( $p ) {
+			$rows = (array) $r->get_param( 'items' );
+			if ( ! $rows || count( $rows ) > 200 ) {
+				return new \WP_Error( 'seolity_404', __( 'Select between 1 and 200 URLs.', 'seolity' ), array( 'status' => 400 ) );
+			}
+			$items = array();
+			foreach ( $rows as $i => $row ) {
+				$nf = $p->db->row( 'SELECT id, url, suggested_target FROM {not_found} WHERE id = %d AND project_id = %d', array( (int) ( isset( $row['id'] ) ? $row['id'] : 0 ), $p->db->project_id() ) );
+				if ( ! $nf ) {
+					continue;
+				}
+				$target  = ! empty( $row['target'] ) ? esc_url_raw( wp_unslash( (string) $row['target'] ) ) : (string) $nf['suggested_target'];
+				$items[] = array( 'kind' => 'redirect', 'key' => 'nf' . (int) $nf['id'], 'source' => $nf['url'], 'target' => $target, 'type' => 301, 'origin' => '404', 'not_found_id' => (int) $nf['id'] );
+			}
+			if ( ! $items ) {
+				return new \WP_Error( 'seolity_404', __( 'None of the selected URLs were found.', 'seolity' ), array( 'status' => 400 ) );
+			}
+			if ( function_exists( 'set_time_limit' ) ) {
+				@set_time_limit( 300 ); // phpcs:ignore WordPress.PHP.NoSilencedErrors
+			}
+			/* translators: %d: number of URLs */
+			$id = $p->operations->create( 'bulk_redirect', array( 'title' => sprintf( __( 'Redirect %d broken URLs to their suggested pages', 'seolity' ), count( $items ) ), 'input' => array( 'count' => count( $items ) ) ) );
+			return $p->operations->staged( $id, $items );
 		} );
 		$this->route( 'POST', '/404/(?P<id>\d+)/status', 'manage', function ( Req $r ) use ( $p ) {
 			return array( 'ok' => $p->not_found->set_status( self::int( $r, 'id' ), self::key( $r, 'status' ) ) );

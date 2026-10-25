@@ -31,6 +31,9 @@ final class Agent {
 	/** @var Plugin */
 	private $plugin;
 
+	/** @var array Items prepared for approval (pending changes, redirect proposals …). */
+	private $staged = array();
+
 	public function __construct( Plugin $plugin ) {
 		$this->plugin = $plugin;
 	}
@@ -65,6 +68,12 @@ final class Agent {
 			'plan'      => $this->plan( $r ),
 			'can_run'   => in_array( $type, self::RUNNABLE, true ),
 			'ai_ready'  => $this->plugin->ai->is_ready(),
+			'status'    => $r['status'],
+			'category'  => isset( $r['category'] ) ? $r['category'] : '',
+			'module'    => isset( $r['module'] ) ? $r['module'] : '',
+			'instructions' => isset( $r['instructions'] ) ? (string) $r['instructions'] : '',
+			'verification' => isset( $r['verification'] ) ? $r['verification'] : null,
+			'operation' => $this->plugin->operations->for_issue( (int) $r['id'] ),
 		);
 	}
 
@@ -181,7 +190,16 @@ final class Agent {
 
 	/* ------------------------------------------------------------------ running */
 
-	public function start( $rec_id ) {
+	/**
+	 * Step 1 after the owner's go: prepare the fix in the background (nothing is written to the
+	 * site yet). The prepared items wait for approval in an operation.
+	 *
+	 * @param string $instructions The owner's extra instructions for the AI (kept with the issue).
+	 */
+	public function start( $rec_id, $instructions = null ) {
+		if ( null !== $instructions ) {
+			$this->plugin->recommendations->set_state( (int) $rec_id, 'open', array( 'instructions' => sanitize_textarea_field( (string) $instructions ) ) );
+		}
 		$g = $this->guide( $rec_id );
 		if ( is_wp_error( $g ) ) {
 			return $g;
@@ -199,7 +217,7 @@ final class Agent {
 		}
 		$id = $this->plugin->activity->start(
 			'agent',
-			__( 'AI is doing it', 'seolity' ),
+			__( 'AI is preparing the fix', 'seolity' ),
 			array(
 				'detail' => $g['title'],
 				'dock'   => true,
@@ -208,6 +226,18 @@ final class Agent {
 				'meta'   => array( 'type' => 'agent', 'rec_id' => (int) $rec_id, 'plan' => $g['plan'], 'subject' => $g['title'], 'state' => array() ),
 			)
 		);
+		$op = $this->plugin->operations->create(
+			'agent',
+			array(
+				'issue_id'     => (int) $rec_id,
+				'title'        => $g['title'],
+				'input'        => array( 'action' => $this->plugin->recommendations->get( (int) $rec_id )['action'] ),
+				'instructions' => $g['instructions'],
+				'plan'         => $g['plan'],
+				'activity_id'  => $id,
+			)
+		);
+		$this->plugin->activity->merge_meta( $id, array( 'operation_id' => $op ) );
 		$job = $this->plugin->queue->push( 'agent_run', array( 'id' => $id, 'user_id' => get_current_user_id() ), array( 'unique' => 'agent_' . (int) $rec_id, 'priority' => 0, 'max_attempts' => 2 ) );
 		$this->plugin->activity->attach_job( $id, $job );
 		\SEOlity\Activity\AiJobs::run_after_response( $this->plugin );
@@ -229,23 +259,48 @@ final class Agent {
 			$act->finish( $id, 'failed', __( 'Recommendation not found.', 'seolity' ) );
 			return true;
 		}
-		$prev  = Activity::set_current( (int) $id );
-		$state = isset( $a['meta']['state'] ) ? (array) $a['meta']['state'] : array();
-		$save  = function () use ( $id, &$state ) {
+		$prev   = Activity::set_current( (int) $id );
+		$op_id  = isset( $a['meta']['operation_id'] ) ? (int) $a['meta']['operation_id'] : 0;
+		$state  = isset( $a['meta']['state'] ) ? (array) $a['meta']['state'] : array();
+		$this->staged = isset( $state['staged'] ) ? (array) $state['staged'] : array();
+		$save   = function () use ( $id, &$state ) {
+			$state['staged'] = $this->staged;
 			$this->plugin->db->update( 'activity', array( 'meta' => wp_json_encode( array_merge( (array) $this->plugin->activity->get( $id )['meta'], array( 'state' => $state ) ), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES ) ), array( 'id' => (int) $id ) );
 		};
+		// The owner's instructions go into every AI call of this run.
+		$prev_instr = \SEOlity\AI\Engine::with_instructions( isset( $r['instructions'] ) ? (string) $r['instructions'] : '' );
 		try {
 			$result = $this->execute( (int) $id, $r, $state, $save );
 			if ( is_wp_error( $result ) ) {
+				// Nothing prepared is applied: pending suggestions are withdrawn.
+				foreach ( $this->staged as $it ) {
+					if ( 'change' === $it['kind'] ) {
+						$this->plugin->changes->reject( (int) $it['id'], 'preparation failed' );
+					}
+				}
+				if ( $op_id ) {
+					$this->plugin->operations->update( $op_id, array( 'status' => 'failed', 'error' => $result->get_error_message() ) );
+				}
 				$act->finish( $id, 'failed', $result->get_error_message(), array( 'state' => $state ), array( 'step' => __( 'Failed', 'seolity' ) ) );
 				return true;
 			}
-			$this->plugin->recommendations->mark( (int) $r['id'], 'done' );
-			$act->finish( $id, 'done', $r['title'], array( 'state' => $state, 'summary' => __( 'Done — every change is versioned (undo in AI Center → AI Changes).', 'seolity' ), 'lines' => $result, 'result' => array( 'lines' => $result, 'rec' => (int) $r['id'] ) ), array( 'step' => __( 'Finished', 'seolity' ) ) );
+			if ( $op_id ) {
+				$op = $this->plugin->operations->staged( $op_id, $this->staged, (array) $result );
+				/* translators: %d: number of items */
+				$summary = $op && 'awaiting_approval' === $op['status'] ? sprintf( _n( '%d change prepared — review it and approve to apply it on the site.', '%d changes prepared — review them and approve to apply them on the site.', count( $this->staged ), 'seolity' ), count( $this->staged ) ) : __( 'Nothing to change was found.', 'seolity' );
+				$act->finish( $id, 'done', $r['title'], array( 'state' => $state, 'summary' => $summary, 'awaiting' => $op && 'awaiting_approval' === $op['status'], 'lines' => $result, 'result' => array( 'lines' => $result, 'rec' => (int) $r['id'], 'operation_id' => $op_id ) ), array( 'step' => __( 'Ready for your review', 'seolity' ), 'title' => __( 'AI prepared the fix', 'seolity' ) ) );
+			}
 			return true;
 		} finally {
+			\SEOlity\AI\Engine::with_instructions( $prev_instr );
 			Activity::set_current( $prev );
 		}
+	}
+
+	/** Preparation never writes to the site: items wait for the owner's approval. */
+	private function stage( array $item ) {
+		$this->staged[] = $item;
+		return true;
 	}
 
 	/** Related published posts for a target (title words, same category), best first. */
@@ -345,7 +400,7 @@ final class Agent {
 				return $ok;
 			}
 			/* translators: 1 anchor 2 source page */
-			$done[]             = sprintf( __( 'Link “%1$s” written into “%2$s”', 'seolity' ), $d['anchor'], $title );
+			$done[]             = sprintf( __( 'Link “%1$s” prepared in “%2$s”', 'seolity' ), $d['anchor'], $title );
 			$state['written'][] = $sid;
 			$state['lines']     = $done;
 			$save();
@@ -369,10 +424,9 @@ final class Agent {
 		return rtrim( $html ) . "\n\n<p>" . trim( $add ) . '</p>';
 	}
 
-	/** Apply a proposed change right away (the owner approved the plan). */
+	/** Stage a proposed (pending) change for the owner's approval. */
 	private function apply_change( $cid ) {
-		$res = $this->plugin->changes->apply( (int) $cid );
-		return is_wp_error( $res ) ? $res : true;
+		return $this->stage( array( 'kind' => 'change', 'id' => (int) $cid ) );
 	}
 
 	/**
@@ -397,14 +451,14 @@ final class Agent {
 				if ( is_wp_error( $res ) ) {
 					return $res;
 				}
-				$step( __( 'Saving the new SEO title and meta description…', 'seolity' ), 75 );
+				$step( __( 'Preparing the new SEO title and meta description for your review…', 'seolity' ), 75 );
 				foreach ( $res['changes'] as $field => $cid ) {
 					$ok = $this->apply_change( $cid );
 					if ( is_wp_error( $ok ) ) {
 						return $ok;
 					}
 					/* translators: 1 field 2 page */
-					$done[] = sprintf( __( '%1$s updated on “%2$s”', 'seolity' ), Activity::field_label( $field ), $obj );
+					$done[] = sprintf( __( 'New %1$s for “%2$s” prepared', 'seolity' ), Activity::field_label( $field ), $obj );
 					$act->step( $id, end( $done ), 85, array( 'ok' => true ) );
 				}
 				return $done;
@@ -421,13 +475,13 @@ final class Agent {
 					return new \WP_Error( 'seolity_agent', __( 'The AI produced no usable change.', 'seolity' ) );
 				}
 				/* translators: 1 before 2 after */
-				$step( sprintf( __( 'SEO score %1$s → %2$s — updating the page…', 'seolity' ), $res['before']['score'], $res['after']['score'] ), 80 );
+				$step( sprintf( __( 'SEO score %1$s → %2$s — preparing the new version for your review…', 'seolity' ), $res['before']['score'], $res['after']['score'] ), 80 );
 				$ok = $this->apply_change( $res['changes']['content'] );
 				if ( is_wp_error( $ok ) ) {
 					return $ok;
 				}
 				/* translators: 1 page 2 before 3 after */
-				$done[] = sprintf( __( '“%1$s” rewritten (SEO score %2$s → %3$s)', 'seolity' ), $obj, $res['before']['score'], $res['after']['score'] );
+				$done[] = sprintf( __( 'New version of “%1$s” prepared (SEO score %2$s → %3$s)', 'seolity' ), $obj, $res['before']['score'], $res['after']['score'] );
 				return $done;
 
 			case 'optimize_product':
@@ -442,11 +496,11 @@ final class Agent {
 					$i++;
 					$label = 0 === strpos( $field, 'alt_' ) ? __( 'Image ALT', 'seolity' ) : Activity::field_label( $field );
 					/* translators: %s: field */
-					$step( sprintf( __( 'Saving %s…', 'seolity' ), $label ), 40 + (int) ( 50 * $i / max( 1, count( $res['changes'] ) ) ) );
+					$step( sprintf( __( 'Preparing %s…', 'seolity' ), $label ), 40 + (int) ( 50 * $i / max( 1, count( $res['changes'] ) ) ) );
 					$ok = $this->apply_change( $cid );
 					if ( ! is_wp_error( $ok ) ) {
 						/* translators: %s: field */
-						$done[] = sprintf( __( '%s saved', 'seolity' ), $label );
+						$done[] = sprintf( __( '%s prepared', 'seolity' ), $label );
 					}
 				}
 				return $done;
@@ -463,7 +517,7 @@ final class Agent {
 					return $ok;
 				}
 				/* translators: %s: page */
-				$done[] = sprintf( __( 'FAQ added to “%s”', 'seolity' ), $obj );
+				$done[] = sprintf( __( 'FAQ for “%s” prepared', 'seolity' ), $obj );
 				return $done;
 
 			case 'set_field':
@@ -476,7 +530,7 @@ final class Agent {
 					return $ok;
 				}
 				/* translators: 1 field 2 page */
-				$done[] = sprintf( __( '%1$s changed on “%2$s”', 'seolity' ), Activity::field_label( (string) $a['field'] ), $obj );
+				$done[] = sprintf( __( 'Change of %1$s on “%2$s” prepared', 'seolity' ), Activity::field_label( (string) $a['field'] ), $obj );
 				return $done;
 
 			case 'create_redirect':
@@ -489,13 +543,10 @@ final class Agent {
 					return new \WP_Error( 'seolity_agent', __( 'No matching live page was found; choose the target yourself in Technical SEO → Redirects.', 'seolity' ) );
 				}
 				/* translators: 1 source 2 target */
-				$step( sprintf( __( 'Creating the redirect %1$s → %2$s…', 'seolity' ), urldecode( $a['source'] ), urldecode( $target ) ), 60 );
-				$res = $this->plugin->redirects->create( $a['source'], $target, 301, false, 'ai' );
-				if ( is_wp_error( $res ) ) {
-					return $res;
-				}
+				$step( sprintf( __( 'Checking the redirect %1$s → %2$s…', 'seolity' ), urldecode( $a['source'] ), urldecode( $target ) ), 60 );
+				$this->stage( array( 'kind' => 'redirect', 'source' => $a['source'], 'target' => $target, 'type' => 301, 'origin' => 'ai' ) );
 				/* translators: 1 source 2 target */
-				$done[] = sprintf( __( '301 redirect created: %1$s → %2$s', 'seolity' ), urldecode( $a['source'] ), urldecode( $target ) );
+				$done[] = sprintf( __( '301 redirect prepared: %1$s → %2$s', 'seolity' ), urldecode( $a['source'] ), urldecode( $target ) );
 				return $done;
 
 			case 'internal_links_to':
@@ -520,7 +571,7 @@ final class Agent {
 						$ok = $this->apply_change( $res['change_id'] );
 						if ( ! is_wp_error( $ok ) ) {
 							/* translators: 1 anchor 2 source page */
-							$done[]           = sprintf( __( 'Link “%1$s” added in “%2$s”', 'seolity' ), $l['anchor'], $l['source'] );
+							$done[]           = sprintf( __( 'Link “%1$s” prepared in “%2$s”', 'seolity' ), $l['anchor'], $l['source'] );
 							$state['links'][] = (int) $l['id'];
 							$state['lines']   = $done;
 							$save();
@@ -531,7 +582,7 @@ final class Agent {
 				return $done ? $done : new \WP_Error( 'seolity_agent', __( 'The suggested anchors are no longer in the source pages.', 'seolity' ) );
 
 			case 'apply_link':
-				$step( __( 'Adding the link…', 'seolity' ), 40 );
+				$step( __( 'Preparing the link…', 'seolity' ), 40 );
 				$p   = $this->plugin->links->preview( (int) $a['link_id'] );
 				$res = $this->plugin->links->apply( (int) $a['link_id'] );
 				if ( is_wp_error( $res ) ) {
@@ -542,30 +593,26 @@ final class Agent {
 					return $ok;
 				}
 				/* translators: 1 anchor 2 source page */
-				$done[] = is_wp_error( $p ) ? __( 'Link added', 'seolity' ) : sprintf( __( 'Link “%1$s” added in “%2$s”', 'seolity' ), $p['anchor'], $p['source'] );
+				$done[] = is_wp_error( $p ) ? __( 'Link prepared', 'seolity' ) : sprintf( __( 'Link “%1$s” prepared in “%2$s”', 'seolity' ), $p['anchor'], $p['source'] );
 				return $done;
 
 			case 'fix_redirect_chains':
-				$step( __( 'Pointing redirect chains straight to their final URL…', 'seolity' ), 50 );
-				/* translators: %d: redirects */
-				$done[] = sprintf( __( '%d redirects fixed', 'seolity' ), (int) $this->plugin->redirects->fix_chains() );
+				$step( __( 'Finding redirect chains…', 'seolity' ), 50 );
+				$chains = $this->plugin->redirects->chains();
+				$this->stage( array( 'kind' => 'fix_chains', 'count' => count( $chains ) ) );
+				/* translators: %d: chains */
+				$done[] = sprintf( __( '%d redirect chains will point straight to their final URL', 'seolity' ), count( $chains ) );
 				return $done;
 
 			case 'bulk':
-				$res = $this->plugin->optimizer->queue_bulk( $a['task'], (array) $a['ids'], $a['object_type'] );
-				if ( is_wp_error( $res ) ) {
-					return $res;
-				}
+				$this->stage( array( 'kind' => 'bulk', 'task' => $a['task'], 'ids' => (array) $a['ids'], 'object_type' => $a['object_type'] ) );
 				/* translators: %d: items */
-				$done[] = sprintf( __( '%d items queued — follow them in Live activity', 'seolity' ), (int) $res['queued'] );
+				$done[] = sprintf( __( '%d items will be optimized one by one in the background', 'seolity' ), count( (array) $a['ids'] ) );
 				return $done;
 
 			case 'plan_content':
-				$res = $this->plugin->planner->add_from_opportunity( (array) $a['opportunity'] );
-				if ( is_wp_error( $res ) ) {
-					return $res;
-				}
-				$done[] = __( 'Topic added to the content planner', 'seolity' );
+				$this->stage( array( 'kind' => 'plan', 'opportunity' => (array) $a['opportunity'] ) );
+				$done[] = __( 'Topic will be added to the content planner', 'seolity' );
 				return $done;
 		}
 		return new \WP_Error( 'seolity_agent', __( 'This task needs your decision; SEOlity cannot do it alone.', 'seolity' ) );

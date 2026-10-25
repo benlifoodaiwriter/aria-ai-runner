@@ -589,3 +589,30 @@ button.sl-segcard { cursor: pointer; }
 .sl-aipanel .sl-row .sl-input { flex: 1 1 260px; min-width: 0; }
 .sl-aipanel .sl-select { max-width: 100%; }
 @media (max-width: 600px) { .sl-aiboxes { grid-template-columns: 1fr; } .sl-aibox .sl-providers { grid-template-columns: 1fr; } }
+/* 1.9 navigation: section pages listed under each title */
+.sl-nav__label { display: flex; flex-direction: column; min-width: 0; gap: 1px; }
+.sl-nav__title { line-height: 1.35; }
+.sl-nav__sub { font-size: 11px; font-weight: 400; color: var(--sl-faint); line-height: 1.45; white-space: normal; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+.sl-nav__item.is-active .sl-nav__sub { color: var(--sl-brand-600); opacity: .8; }
+/* 1.9 operations: preview / approval / verified results */
+.sl-op__items { display: grid; gap: 10px; }
+.sl-op__item { border: 1px solid var(--sl-border); border-radius: 12px; padding: 10px 12px; background: var(--sl-surface); }
+.sl-op__item.is-ok { border-color: #a7f3d0; }
+.sl-op__item.is-bad { border-color: #fecaca; background: var(--sl-bad-50); }
+.sl-op__head { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.sl-op__body { margin-top: 6px; }
+.sl-op__ba { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.sl-op__ba p { margin: 2px 0 0; padding: 8px 10px; border-radius: 8px; font-size: 13px; overflow-wrap: anywhere; }
+.sl-op__ba .is-before { background: var(--sl-bad-50); }
+.sl-op__ba .is-after { background: var(--sl-good-50); }
+.sl-op__instr { padding: 8px 10px; border-radius: 8px; background: var(--sl-brand-50); font-size: 13px; }
+.sl-op__actions { margin-top: 10px; align-items: center; }
+.sl-diff { max-height: 360px; overflow: auto; border: 1px solid var(--sl-border); border-radius: 8px; padding: 10px 12px; font-size: 13px; line-height: 1.9; background: var(--sl-surface-2); white-space: pre-wrap; }
+.sl-diff p { margin: 0; }
+.sl-diff ins { background: #bbf7d0; color: #14532d; text-decoration: none; border-radius: 3px; }
+.sl-diff del { background: #fecaca; color: #7f1d1d; border-radius: 3px; }
+.sl-diff__col { margin-bottom: 8px; }
+.sl-text-good { color: var(--sl-good); }
+.sl-text-bad { color: var(--sl-bad); }
+.sl-text-warn { color: var(--sl-warn); }
+@media (max-width: 600px) { .sl-op__ba { grid-template-columns: 1fr; } }

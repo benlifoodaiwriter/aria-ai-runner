@@ -163,7 +163,14 @@ final class ChangeManager {
 			$this->plugin->db->update( 'changes', array( 'experiment_id' => $exp_id ), array( 'id' => (int) $id ) );
 		}
 		if ( $change['recommendation_id'] ) {
-			$this->plugin->recommendations->mark( (int) $change['recommendation_id'], 'done' );
+			// The issue is completed only when the change is confirmed in WordPress / the SEO plugin
+			// (and on the live page where that can be checked) — not because a change was accepted.
+			$v = $this->plugin->operations->verifier()->change( $change );
+			$this->plugin->recommendations->set_state(
+				(int) $change['recommendation_id'],
+				$v['ok'] && false !== $v['effective'] ? 'done' : 'open',
+				array( 'verified_at' => $v['ok'] ? Database::now() : null, 'verification' => array( 'change_id' => (int) $id, 'check' => $v, 'at' => gmdate( 'c' ) ) )
+			);
 		}
 		$this->plugin->audit_log->log(
 			$system ? 'change.auto_applied' : 'change.applied',

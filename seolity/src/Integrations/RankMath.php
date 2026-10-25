@@ -61,6 +61,66 @@ final class RankMath {
 		);
 	}
 
+	/** Rank Math's Redirections module is on: it owns redirects, SEOlity writes into it. */
+	public function owns_redirects() {
+		return $this->active() && in_array( 'redirections', $this->modules(), true ) && class_exists( '\\RankMath\\Redirections\\Redirection' ) && null !== $this->redirections_table();
+	}
+
+	/** Rank Math redirect id whose sources contain this pattern (exact or regex), 0 when none. */
+	public function find_redirect( $pattern, $comparison = 'exact' ) {
+		global $wpdb;
+		$table = $this->redirections_table();
+		if ( ! $table ) {
+			return 0;
+		}
+		$needle = 'exact' === $comparison ? ltrim( (string) $pattern, '/' ) : (string) $pattern;
+		$rows   = $wpdb->get_results( $wpdb->prepare( "SELECT id, sources FROM {$table} WHERE sources LIKE %s LIMIT 50", '%' . $wpdb->esc_like( $needle ) . '%' ), ARRAY_A ); // phpcs:ignore WordPress.DB
+		foreach ( (array) $rows as $r ) {
+			foreach ( (array) maybe_unserialize( $r['sources'] ) as $src ) {
+				if ( isset( $src['pattern'], $src['comparison'] ) && $src['comparison'] === $comparison && untrailingslashit( $src['pattern'] ) === untrailingslashit( $needle ) ) {
+					return (int) $r['id'];
+				}
+			}
+		}
+		return 0;
+	}
+
+	/**
+	 * Create or update a redirect through Rank Math's own model (so it appears and can be
+	 * managed under Rank Math → Redirections, with Rank Math's sanitizing and cache).
+	 *
+	 * @return int|\WP_Error Rank Math redirect id.
+	 */
+	public function save_redirect( $source, $target, $type = 301, $is_regex = false ) {
+		if ( ! $this->owns_redirects() ) {
+			return new \WP_Error( 'seolity_rm_redirect', __( 'Rank Math Redirections is not active.', 'seolity' ) );
+		}
+		$comparison = $is_regex ? 'regex' : 'exact';
+		$data       = array(
+			'sources'     => array( array( 'pattern' => (string) $source, 'comparison' => $comparison ) ),
+			'url_to'      => (string) $target,
+			'header_code' => (int) $type,
+			'status'      => 'active',
+		);
+		$existing = $this->find_redirect( $source, $comparison );
+		if ( $existing ) {
+			$data['id'] = $existing;
+		}
+		$obj = \RankMath\Redirections\Redirection::from( $data );
+		$id  = $obj->save();
+		if ( ! $id ) {
+			return new \WP_Error( 'seolity_rm_redirect', __( 'Rank Math did not accept this redirect.', 'seolity' ) );
+		}
+		return (int) $id;
+	}
+
+	public function delete_redirect( $id ) {
+		if ( $this->owns_redirects() && class_exists( '\\RankMath\\Redirections\\DB' ) ) {
+			return (bool) \RankMath\Redirections\DB::delete( array( (int) $id ) );
+		}
+		return false;
+	}
+
 	private function redirections_table() {
 		global $wpdb;
 		$table = $wpdb->prefix . 'rank_math_redirections';

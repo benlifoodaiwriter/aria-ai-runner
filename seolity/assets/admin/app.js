@@ -277,88 +277,7 @@
 		} ) );
 	};
 
-	/**
-	 * "Do it": exactly where to do it by hand, and "Let the AI do it" — the plan first, then
-	 * after approval a live view of every step the agent takes.
-	 */
-	App.agentPopup = function ( recId, refresh ) {
-		var m = SL.modal( { title: t( 'Do it' ), wide: true } );
-		m.body.appendChild( SL.spinner() );
-		SL.api( 'recommendations/' + recId + '/guide' ).then( function ( g ) {
-			SL.clear( m.body );
-			m.box.querySelector( '.sl-modal__head h2' ).textContent = g.title;
-			var right = h( 'section', { class: 'sl-agent__ai' } );
-			m.body.appendChild( h( 'div', { class: 'sl-row' }, SL.priorityBadge( g.priority ), g.url ? App.ext( g.url ) : null, g.edit ? h( 'a', { class: 'sl-btn sl-btn--sm', href: g.edit, target: '_blank', rel: 'noopener' }, SL.icon( 'edit', 14 ), ' ', t( 'Edit' ) ) : null ) );
-			m.body.appendChild( h( 'p', { class: 'sl-agent__why', text: g.reason } ) );
-			m.body.appendChild( h( 'div', { class: 'sl-agent' },
-				h( 'section', { class: 'sl-agent__manual' }, h( 'h3', null, SL.icon( 'map', 17 ), h( 'span', { text: t( 'Do it yourself — exactly where' ) } ) ), App.guideSteps( g.guide ), g.done_when ? h( 'p', { class: 'sl-muted sl-small', text: t( 'Done when:' ) + ' ' + g.done_when } ) : null ),
-				right
-			) );
-			function planView() {
-				SL.clear( right );
-				right.appendChild( h( 'h3', null, SL.icon( 'sparkles', 17 ), h( 'span', { text: t( 'Let the AI do it' ) } ) ) );
-				right.appendChild( h( 'p', { class: 'sl-muted', text: t( 'This is exactly what SEOlity will do on your site. Nothing changes until you approve. Every change is versioned — undo anytime in AI Center → AI Changes.' ) } ) );
-				right.appendChild( App.guideSteps( g.plan ) );
-				var why = ! g.ai_ready ? t( 'Connect an AI provider first (Settings → AI).' ) : ! g.can_run ? t( 'This task needs your decision; follow the steps on the left.' ) : '';
-				if ( why ) {
-					right.appendChild( h( 'div', { class: 'sl-alert sl-alert--warn', text: why } ) );
-				} else if ( App.cap( 'ai' ) && App.cap( 'apply' ) ) {
-					right.appendChild( App.abtn( h( 'span', { class: 'sl-row' }, SL.icon( 'check', 16 ), h( 'span', { text: t( 'Approve & let the AI do it' ) } ) ), function () {
-						return SL.api( 'agent/run', { body: { rec_id: recId } } ).then( function ( item ) {
-							SL.dock.track( item, { onFinish: refresh } );
-							App.agentLive( right, item );
-						} );
-					}, 'primary' ) );
-				}
-			}
-			planView();
-		} ).catch( function ( e ) {
-			SL.clear( m.body );
-			m.body.appendChild( h( 'div', { class: 'sl-alert sl-alert--error', text: e.message } ) );
-		} );
-	};
-
-	/** Live view of an agent run: every step as it happens. */
-	App.agentLive = function ( box, item ) {
-		var timer;
-		function draw( a ) {
-			if ( ! d.body.contains( box ) ) {
-				clearTimeout( timer );
-				return;
-			}
-			SL.clear( box );
-			var running = [ 'queued', 'running', 'waiting' ].indexOf( a.status ) !== -1;
-			var steps = ( a.meta && a.meta.steps ) || [];
-			box.appendChild( h( 'h3', null, running ? h( 'span', { class: 'sl-spinner sl-spinner--sm' } ) : SL.icon( [ 'failed', 'timed_out', 'interrupted', 'cancelled' ].indexOf( a.status ) !== -1 ? 'x-circle' : 'check-circle', 18 ), h( 'span', { text: running ? t( 'The AI is working…' ) : [ 'failed', 'timed_out', 'interrupted', 'cancelled' ].indexOf( a.status ) !== -1 ? t( 'Stopped' ) : t( 'Done' ) } ) ) );
-			box.appendChild( h( 'div', { class: 'sl-dock__bar sl-agent__bar' }, h( 'span', { style: 'width:' + ( running ? Math.max( 5, a.progress || 5 ) : 100 ) + '%' } ) ) );
-			box.appendChild( h( 'ol', { class: 'sl-agent__log' }, steps.map( function ( s, i ) {
-				var last = i === steps.length - 1 && running;
-				return h( 'li', { class: last ? 'is-active' : 'is-done' }, h( 'span', { class: 'sl-agent__t', text: new Date( s.t ).toLocaleTimeString() } ), h( 'span', { dir: 'auto', text: s.text } ) );
-			} ) ) );
-			if ( a.route ) {
-				box.appendChild( h( 'p', { class: 'sl-muted sl-small', text: t( 'AI route: %s', a.route ) } ) );
-			}
-			if ( [ 'failed', 'timed_out', 'interrupted', 'cancelled' ].indexOf( a.status ) !== -1 ) {
-				box.appendChild( h( 'div', { class: 'sl-alert sl-alert--error', dir: 'auto', text: a.detail } ) );
-			}
-			if ( a.status === 'done' && a.meta && a.meta.lines ) {
-				box.appendChild( h( 'div', { class: 'sl-alert sl-alert--success' }, h( 'b', { text: a.meta.summary || '' } ), h( 'ul', null, a.meta.lines.map( function ( l ) {
-					return h( 'li', { dir: 'auto', text: l } );
-				} ) ) ) );
-				box.appendChild( App.link( t( 'Review the changes' ), 'changes' ) );
-			}
-			if ( running ) {
-				timer = setTimeout( function () {
-					SL.api( 'activity/' + a.id, { noWait: true } ).then( draw ).catch( function () {
-						timer = setTimeout( function () {
-							draw( a );
-						}, 6000 );
-					} );
-				}, 2000 );
-			}
-		}
-		draw( item );
-	};
+	// App.agentPopup / App.agentLive / App.operationView live in pages-ops.js.
 
 	App.recommendationRow = function ( r, refresh ) {
 		return h( 'div', { class: 'sl-rec sl-rec--' + r.priority },
@@ -389,24 +308,28 @@
 	var root;
 	var view;
 	var nav;
-	var ICONS = { dashboard: 'dashboard', actions: 'wand', ai: 'prompt', audit: 'pulse', gsc: 'chart', keywords: 'key', content: 'content', products: 'bag', images: 'image', links: 'link', competitors: 'swords', experiments: 'flask', changes: 'undo', redirects: 'corner', 404: 'unlink', schema: 'braces', sitemap: 'map', robots: 'bot', reports: 'review', alerts: 'bell', automation: 'zap', knowledge: 'book', settings: 'settings', rankmath: 'target', guide: 'lifebuoy', subscription: 'sparkles', github: 'github', cloudflare: 'cloud', network: 'server', activity: 'activity' };
+	var ICONS = { dashboard: 'dashboard', actions: 'wand', ai: 'prompt', audit: 'pulse', gsc: 'chart', keywords: 'key', content: 'content', products: 'bag', images: 'image', links: 'link', competitors: 'swords', experiments: 'flask', changes: 'undo', redirects: 'corner', 404: 'unlink', schema: 'braces', sitemap: 'map', robots: 'bot', reports: 'review', alerts: 'bell', automation: 'zap', knowledge: 'book', settings: 'settings', rankmath: 'target', guide: 'lifebuoy', subscription: 'sparkles', github: 'github', cloudflare: 'cloud', network: 'server', activity: 'activity', indexability: 'eye-off', duplicates: 'copy' };
 	/** Sidebar groups (ARIAGH-style navigation sections). */
 	/**
 	 * Simple navigation: a few sections; related pages are tabs inside a section.
 	 * [ hub id, label, icon, child route slugs ] — every page keeps its own URL (#/slug).
 	 */
+	/*
+	 * Grouped by function: everything that gathers site data (full analysis, Search Console,
+	 * competitors and the knowledge base) lives under "Data collection"; every correction type
+	 * lives in its own specialized section; the roadmap in the AI Center links to all of them.
+	 */
 	var HUBS = [
 		[ 'home', 'Dashboard', 'dashboard', [ 'dashboard', 'alerts', 'reports' ] ],
-		[ 'aicenter', 'AI Center', 'wand', [ 'actions', 'ai', 'activity', 'changes' ] ],
-		[ 'contenthub', 'Content', 'content', [ 'content', 'products', 'images' ] ],
+		[ 'aicenter', 'AI Center', 'wand', [ 'actions', 'ai', 'activity', 'changes', 'experiments' ] ],
+		[ 'datahub', 'Data collection', 'database', [ 'audit', 'gsc', 'competitors', 'knowledge' ] ],
+		[ 'contenthub', 'Content', 'content', [ 'content', 'duplicates', 'products', 'images' ] ],
 		[ 'kwhub', 'Keywords & links', 'key', [ 'keywords', 'rankmath', 'links' ] ],
-		[ 'gschub', 'Search Console', 'chart', [ 'gsc' ] ],
-		[ 'analysis', 'Analysis', 'pulse', [ 'audit', 'competitors', 'experiments' ] ],
-		[ 'technical', 'Technical SEO', 'wrench', [ 'redirects', '404', 'schema', 'sitemap', 'robots' ] ],
+		[ 'technical', 'Technical SEO', 'wrench', [ 'redirects', '404', 'indexability', 'schema', 'sitemap', 'robots' ] ],
 		[ 'connections', 'Connections', 'link', [ 'network', 'subscription', 'github', 'cloudflare', 'guide' ] ],
-		[ 'system', 'Settings', 'settings', [ 'settings', 'automation', 'knowledge' ] ],
+		[ 'system', 'Settings', 'settings', [ 'settings', 'automation' ] ],
 	];
-	var HUB_LABELS = { Dashboard: t( 'Dashboard' ), 'AI Center': t( 'AI Center' ), Content: t( 'Content' ), 'Keywords & links': t( 'Keywords & links' ), 'Search Console': t( 'Search Console' ), Analysis: t( 'Analysis' ), 'Technical SEO': t( 'Technical SEO' ), Connections: t( 'Connections' ), Settings: t( 'Settings' ) };
+	var HUB_LABELS = { Dashboard: t( 'Dashboard' ), 'AI Center': t( 'AI Center' ), 'Data collection': t( 'Data collection' ), Content: t( 'Content' ), 'Keywords & links': t( 'Keywords & links' ), 'Technical SEO': t( 'Technical SEO' ), Connections: t( 'Connections' ), Settings: t( 'Settings' ) };
 	var HUB_COUNT = { home: 'alerts', aicenter: 'changes' }; // Counters shown on a section item.
 	App.hubOf = function ( slug ) {
 		for ( var i = 0; i < HUBS.length; i++ ) {
@@ -462,13 +385,17 @@
 			if ( ! kids.length ) {
 				return;
 			}
-			if ( i === 7 ) {
+			if ( hub[ 0 ] === 'connections' ) {
 				nav.appendChild( h( 'div', { class: 'sl-nav__group', text: t( 'Setup' ) } ) );
 			}
 			kids.forEach( function ( k ) {
 				used[ k ] = true;
 			} );
-			nav.appendChild( h( 'a', { href: '#/' + kids[ 0 ], class: 'sl-nav__item', 'data-hub': hub[ 0 ] }, SL.icon( hub[ 2 ], 18, 'sl-nav__icon' ), h( 'span', { class: 'sl-nav__label', text: HUB_LABELS[ hub[ 1 ] ] || hub[ 1 ] } ), h( 'em', { class: 'sl-nav__count', 'data-count': HUB_COUNT[ hub[ 0 ] ] || kids[ 0 ] } ) ) );
+			// The section's own pages, in small text under its title (what you find inside).
+			var subs = kids.map( function ( k ) {
+				return bySlug[ k ].label;
+			} ).join( C.rtl ? '، ' : ', ' );
+			nav.appendChild( h( 'a', { href: '#/' + kids[ 0 ], class: 'sl-nav__item', 'data-hub': hub[ 0 ], title: subs }, SL.icon( hub[ 2 ], 18, 'sl-nav__icon' ), h( 'span', { class: 'sl-nav__label' }, h( 'span', { class: 'sl-nav__title', text: HUB_LABELS[ hub[ 1 ] ] || hub[ 1 ] } ), kids.length > 1 ? h( 'small', { class: 'sl-nav__sub', text: subs } ) : null ), h( 'em', { class: 'sl-nav__count', 'data-count': HUB_COUNT[ hub[ 0 ] ] || kids[ 0 ] } ) ) );
 		} );
 		( C.routes || [] ).forEach( function ( r ) {
 			if ( ! used[ r.slug ] ) {

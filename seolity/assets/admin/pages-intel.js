@@ -306,11 +306,53 @@
 		function load() {
 			App.load( body, SL.api( '404', { query: f } ), function ( r ) {
 				body.appendChild( h( 'div', { class: 'sl-kpis' }, App.kpi( t( 'Open 404s' ), SL.num( r.stats.open, 0 ) ), App.kpi( t( 'Hits (7 days)' ), SL.num( r.stats.hits_7d, 0 ) ), App.kpi( t( 'New (24h)' ), SL.num( r.stats.new_24h, 0 ) ), App.kpi( t( 'With referrer' ), SL.num( r.stats.with_referrer, 0 ) ) ) );
+				// Bulk: each selected URL goes to its own (editable) target.
+				var sel = {};
+				var targets = {};
+				var boxes = [];
+				var bulkOn = 'open' === f.status && App.cap( 'manage' );
+				var counter = h( 'span', { class: 'sl-muted sl-small', text: '' } );
+				function count() {
+					var n = Object.keys( sel ).filter( function ( k ) {
+						return sel[ k ];
+					} ).length;
+					counter.textContent = n ? t( '%s selected', n ) : '';
+					bulkBtn.disabled = ! n;
+				}
+				var bulkBtn = App.abtn( SL.il( 'corner', t( 'Redirect selected to their own targets' ), 15 ), function () {
+					var items = Object.keys( sel ).filter( function ( k ) {
+						return sel[ k ];
+					} ).map( function ( k ) {
+						return { id: Number( k ), target: targets[ k ] ? targets[ k ].value.trim() : '' };
+					} );
+					return SL.api( '404/bulk-redirect', { body: { items: items } } ).then( function ( op ) {
+						var m = SL.modal( { title: op.title, wide: true, onClose: load } );
+						m.body.appendChild( h( 'p', { class: 'sl-muted', text: t( 'Every redirect was checked: the target must be a live page, no loop may be created and the old URL must really be gone. Untick anything you do not want, then approve.' ) } ) );
+						var box = h( 'div' );
+						m.body.appendChild( box );
+						App.operationView( box, op, load );
+					} );
+				}, 'primary', { disabled: true } );
+				var all = h( 'input', { type: 'checkbox', 'aria-label': t( 'Select all' ), title: t( 'Select all' ), onChange: function ( e ) {
+					boxes.forEach( function ( b ) {
+						b.checked = e.target.checked;
+						sel[ b.value ] = e.target.checked;
+					} );
+					count();
+				} } );
 				body.appendChild( h( 'div', { class: 'sl-toolbar' }, App.select( [ [ 'open', t( 'Open' ) ], [ 'redirected', t( 'Redirected' ) ], [ 'ignored', t( 'Ignored' ) ] ], f.status, function ( x ) {
 					f.status = x;
 					load();
-				} ) ) );
+				} ), bulkOn ? bulkBtn : null, bulkOn ? counter : null ) );
 				body.appendChild( App.table( [
+					bulkOn ? { label: all, render: function ( x ) {
+						var b = h( 'input', { type: 'checkbox', value: String( x.id ), 'aria-label': t( 'Select' ), onChange: function ( e ) {
+							sel[ x.id ] = e.target.checked;
+							count();
+						} } );
+						boxes.push( b );
+						return b;
+					} } : null,
 					{ label: t( 'URL' ), render: function ( x ) {
 						return h( 'code', { dir: 'ltr', text: x.url } );
 					} },
@@ -327,6 +369,10 @@
 						return SL.date( x.last_seen );
 					} },
 					{ label: t( 'Suggested redirect' ), render: function ( x ) {
+						if ( bulkOn ) {
+							targets[ x.id ] = h( 'input', { class: 'sl-input sl-input--sm', dir: 'ltr', value: x.suggested_target ? decodeURI( x.suggested_target ) : '', placeholder: x.suggested_target === '' ? t( 'no good match — enter a target' ) : t( 'pending' ) } );
+							return h( 'div', { class: 'sl-stack' }, targets[ x.id ], x.suggested_target ? h( 'small', { class: 'sl-muted', text: t( 'match %s%', x.suggestion_score || 0 ) } ) : null );
+						}
 						return x.suggested_target ? h( 'div', null, App.ext( x.suggested_target ), h( 'small', { class: 'sl-muted', text: ' ' + ( x.suggestion_score || 0 ) + '%' } ) ) : h( 'span', { class: 'sl-muted', text: x.suggested_target === '' ? t( 'no good match' ) : t( 'pending' ) } );
 					} },
 					{ label: '', render: function ( x ) {

@@ -253,13 +253,31 @@ final class MetaStore {
 		} elseif ( isset( self::POST_KEYS[ $engine ][ $field ] ) ) {
 			update_post_meta( $post_id, self::POST_KEYS[ $engine ][ $field ], $this->normalize_in( $engine, $field, $value ) );
 		} elseif ( 'rankmath' === $engine && in_array( $field, array( 'noindex', 'nofollow' ), true ) ) {
-			$robots = array_diff( (array) get_post_meta( $post_id, 'rank_math_robots', true ), array( $field, 'index', 'follow' ) );
-			if ( $value ) {
-				$robots[] = $field;
-			}
-			update_post_meta( $post_id, 'rank_math_robots', array_values( array_filter( $robots ) ) );
+			update_post_meta( $post_id, 'rank_math_robots', self::rankmath_robots( (array) get_post_meta( $post_id, 'rank_math_robots', true ), $field, (bool) $value ) );
 		}
 		clean_post_cache( $post_id );
+		self::rankmath_flush( 'post', $post_id );
+	}
+
+	/**
+	 * Rank Math stores robots as one array ("index"/"noindex", "follow"/"nofollow", …). Setting a
+	 * directive always writes the explicit opposite too, so the Rank Math editor shows exactly
+	 * what is in effect (no shadow setting, no silent fallback to defaults).
+	 */
+	private static function rankmath_robots( array $robots, $field, $on ) {
+		$robots = array_values( array_filter( array_map( 'strval', $robots ) ) );
+		$pair   = 'noindex' === $field ? array( 'noindex', 'index' ) : array( 'nofollow', 'follow' );
+		$robots = array_values( array_diff( $robots, $pair ) );
+		$robots[] = $on ? $pair[0] : $pair[1];
+		return array_values( array_unique( $robots ) );
+	}
+
+	/** Let Rank Math rebuild what it caches for the object (sitemap). */
+	private static function rankmath_flush( $kind, $id ) {
+		if ( class_exists( '\RankMath\Sitemap\Cache' ) && method_exists( '\RankMath\Sitemap\Cache', 'invalidate_storage' ) ) {
+			\RankMath\Sitemap\Cache::invalidate_storage();
+		}
+		do_action( 'seolity_meta_written', $kind, (int) $id );
 	}
 
 	/* ------------------------------ Terms ------------------------------ */
@@ -288,6 +306,9 @@ final class MetaStore {
 			}
 		} elseif ( isset( self::POST_KEYS[ $engine ][ $field ] ) && 'yoast' !== $engine ) {
 			$value = get_term_meta( $term_id, self::POST_KEYS[ $engine ][ $field ], true );
+		} elseif ( 'rankmath' === $engine && in_array( $field, array( 'noindex', 'nofollow' ), true ) ) {
+			$robots = (array) get_term_meta( $term_id, 'rank_math_robots', true );
+			return in_array( $field, $robots, true ) ? '1' : '';
 		}
 		if ( '' === $value || null === $value ) {
 			$value = get_term_meta( $term_id, self::OWN[ $field ], true );
@@ -319,7 +340,12 @@ final class MetaStore {
 			}
 		} elseif ( isset( self::POST_KEYS[ $engine ][ $field ] ) && 'yoast' !== $engine ) {
 			update_term_meta( $term_id, self::POST_KEYS[ $engine ][ $field ], $this->normalize_in( $engine, $field, $value ) );
+		} elseif ( 'rankmath' === $engine && in_array( $field, array( 'noindex', 'nofollow' ), true ) ) {
+			// Rank Math reads term robots from its own term meta (an array, like posts).
+			update_term_meta( $term_id, 'rank_math_robots', self::rankmath_robots( (array) get_term_meta( $term_id, 'rank_math_robots', true ), $field, (bool) $value ) );
 		}
+		clean_term_cache( $term_id );
+		self::rankmath_flush( 'term', $term_id );
 	}
 
 	/* ------------------------------ Helpers ------------------------------ */

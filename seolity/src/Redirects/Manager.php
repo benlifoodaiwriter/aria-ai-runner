@@ -79,6 +79,17 @@ final class Manager {
 		if ( ! $is_regex && $target && $this->creates_loop( $source, $target ) ) {
 			return new \WP_Error( 'seolity_redirect_loop', __( 'This redirect would create a loop.', 'seolity' ), array( 'status' => 400 ) );
 		}
+		// Rank Math's Redirections module owns redirects on this site: write into it (visible and
+		// manageable under Rank Math → Redirections). SEOlity keeps a reference row for history/undo
+		// with status "external" — it never serves those itself, so there is no duplicate rule.
+		$external = '';
+		if ( $this->plugin->rankmath->owns_redirects() && ! in_array( $type, array( 451 ), true ) ) {
+			$rm = $this->plugin->rankmath->save_redirect( $source, $target, $type, $is_regex );
+			if ( is_wp_error( $rm ) ) {
+				return $rm;
+			}
+			$external = 'rankmath:' . $rm;
+		}
 		$db       = $this->plugin->db;
 		$hash     = Database::hash( $is_regex ? 'regex:' . $source : $source );
 		$existing = $db->value( 'SELECT id FROM {redirects} WHERE project_id = %d AND source_hash = %s', array( $db->project_id(), $hash ) );
@@ -89,9 +100,9 @@ final class Manager {
 			'target'      => $target,
 			'type'        => $type,
 			'is_regex'    => $is_regex ? 1 : 0,
-			'status'      => 'active',
+			'status'      => $external ? 'external' : 'active',
 			'origin'      => sanitize_key( $origin ),
-			'notes'       => sanitize_text_field( $notes ),
+			'notes'       => $external ? $external : sanitize_text_field( $notes ),
 		);
 		if ( $existing ) {
 			$db->update( 'redirects', $row, array( 'id' => (int) $existing ) );
@@ -105,7 +116,7 @@ final class Manager {
 			$db->query( "UPDATE {redirects} SET target = %s WHERE project_id = %d AND is_regex = 0 AND id <> %d AND target IN (%s, %s)", array( $target, $db->project_id(), $id, home_url( $source ), $source ) );
 		}
 		$this->refresh_cache();
-		$this->plugin->audit_log->log( 'redirect.saved', 'redirect', $id, array( 'source' => $source, 'target' => $target, 'type' => $type, 'origin' => $origin ) );
+		$this->plugin->audit_log->log( 'redirect.saved', 'redirect', $id, array( 'source' => $source, 'target' => $target, 'type' => $type, 'origin' => $origin, 'owner' => $external ? 'rankmath' : 'seolity' ) );
 		// Resolve matching 404 log entries.
 		$db->query( "UPDATE {not_found} SET status = 'redirected' WHERE project_id = %d AND url_hash = %s", array( $db->project_id(), Database::hash( $source ) ) );
 		return $id;
@@ -135,7 +146,7 @@ final class Manager {
 				return true;
 			}
 			$seen[] = $cur;
-			$next   = $this->plugin->db->value( "SELECT target FROM {redirects} WHERE project_id = %d AND source_hash = %s AND status = 'active' AND is_regex = 0", array( $this->plugin->db->project_id(), Database::hash( $cur ) ) );
+			$next   = $this->plugin->db->value( "SELECT target FROM {redirects} WHERE project_id = %d AND source_hash = %s AND status IN ('active','external') AND is_regex = 0", array( $this->plugin->db->project_id(), Database::hash( $cur ) ) );
 			if ( ! $next || ! $this->is_local( $next ) ) {
 				return false;
 			}
@@ -165,7 +176,22 @@ final class Manager {
 		);
 	}
 
+	/** Where a redirect lives: array( 'rankmath', id ) or array( 'seolity', id ). */
+	public function owner( array $row ) {
+		if ( 'external' === $row['status'] && 0 === strpos( (string) $row['notes'], 'rankmath:' ) ) {
+			return array( 'rankmath', (int) substr( $row['notes'], 9 ) );
+		}
+		return array( 'seolity', (int) $row['id'] );
+	}
+
 	public function delete( $id ) {
+		$row = $this->plugin->db->row( 'SELECT * FROM {redirects} WHERE id = %d', array( (int) $id ) );
+		if ( $row ) {
+			$own = $this->owner( $row );
+			if ( 'rankmath' === $own[0] ) {
+				$this->plugin->rankmath->delete_redirect( $own[1] );
+			}
+		}
 		$ok = $this->plugin->db->delete( 'redirects', array( 'id' => (int) $id ) );
 		$this->refresh_cache();
 		$this->plugin->audit_log->log( 'redirect.deleted', 'redirect', (int) $id );

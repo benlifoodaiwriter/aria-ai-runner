@@ -27,6 +27,7 @@ defined( 'ABSPATH' ) || exit;
  * @property-read AI\Gateway                 $gateway
  * @property-read AI\Remote\LocalCli         $localcli
  * @property-read AI\ProviderManager          $aiproviders
+ * @property-read Operations\Operations        $operations
  * @property-read Roadmap\Roadmap            $roadmap
  * @property-read Activity\Activity          $activity
  * @property-read Activity\AiJobs            $aijobs
@@ -168,6 +169,7 @@ final class Plugin {
 			'gateway'         => AI\Gateway::class,
 			'localcli'        => AI\Remote\LocalCli::class,
 			'aiproviders'     => AI\ProviderManager::class,
+			'operations'      => Operations\Operations::class,
 			'roadmap'         => Roadmap\Roadmap::class,
 			'activity'        => Activity\Activity::class,
 			'aijobs'          => Activity\AiJobs::class,

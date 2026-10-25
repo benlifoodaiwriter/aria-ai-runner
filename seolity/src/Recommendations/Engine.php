@@ -34,18 +34,73 @@ final class Engine {
 		$this->plugin = $plugin;
 	}
 
+	/**
+	 * Every issue type → [category (roadmap section), owning module route].
+	 * One canonical record per (type, page); other screens only reference it.
+	 */
+	const CATEGORIES = array(
+		'create_redirect'     => array( '404', '#/404' ),
+		'not_found'           => array( '404', '#/404' ),
+		'fix_redirect_chains' => array( 'technical', '#/redirects' ),
+		'redirect_loops'      => array( 'technical', '#/redirects' ),
+		'http_5xx'            => array( 'technical', '#/audit' ),
+		'remove_noindex'      => array( 'indexability', '#/indexability' ),
+		'canonical_fix'       => array( 'indexability', '#/indexability' ),
+		'index_waste'         => array( 'indexability', '#/indexability' ),
+		'noindex_in_sitemap'  => array( 'indexability', '#/indexability' ),
+		'thin_noindex'        => array( 'duplicates', '#/duplicates' ),
+		'cannibalization'     => array( 'duplicates', '#/duplicates' ),
+		'duplicate_cluster'   => array( 'duplicates', '#/duplicates' ),
+		'meta_fix'            => array( 'onpage', '#/audit?category=meta' ),
+		'headings_fix'        => array( 'onpage', '#/audit?category=content' ),
+		'bulk_meta'           => array( 'onpage', '#/audit?category=meta' ),
+		'ctr_opportunity'     => array( 'content', '#/content' ),
+		'striking_distance'   => array( 'content', '#/content' ),
+		'declining_page'      => array( 'content', '#/content' ),
+		'thin_expand'         => array( 'content', '#/content' ),
+		'faq_opportunity'     => array( 'content', '#/content' ),
+		'orphan_page'         => array( 'links', '#/links' ),
+		'internal_link'       => array( 'links', '#/links' ),
+		'optimize_product'    => array( 'products', '#/products' ),
+		'strengthen_category' => array( 'products', '#/products' ),
+		'content_gap'         => array( 'competitors', '#/competitors' ),
+	);
+
+	/** Types measured with search data: a fixed one only re-opens after a full new measuring window. */
+	const METRIC_TYPES = array( 'ctr_opportunity', 'striking_distance', 'declining_page', 'faq_opportunity', 'content_gap', 'strengthen_category', 'thin_expand', 'cannibalization' );
+
+	/** @var array<string,bool> Types whose generator ran in this refresh. */
+	private $owned = array();
+
+	public static function category_of( $type ) {
+		return isset( self::CATEGORIES[ $type ] ) ? self::CATEGORIES[ $type ] : array( 'other', '#/actions' );
+	}
+
+	/** A generator declares the types it is responsible for (so missing ones count as resolved). */
+	public function own( array $types ) {
+		foreach ( $types as $t ) {
+			$this->owned[ $t ] = true;
+		}
+	}
+
 	public function refresh() {
 		$this->run_started = Database::now();
 		$this->generated   = 0;
+		$this->owned       = array();
 		$gsc               = $this->plugin->gsc_oauth->is_connected() && $this->plugin->gsc_analytics->has_data();
 		if ( $gsc ) {
+			$this->own( array( 'ctr_opportunity', 'striking_distance', 'declining_page', 'cannibalization', 'faq_opportunity' ) );
 			$this->gen_ctr();
 			$this->gen_striking_distance();
 			$this->gen_declining();
 			$this->gen_cannibalization();
 			$this->gen_faq();
 		}
+		$this->own( array( 'remove_noindex', 'create_redirect', 'orphan_page', 'thin_noindex', 'thin_expand', 'bulk_meta', 'redirect_loops', 'internal_link', 'optimize_product', 'strengthen_category', 'content_gap', 'fix_redirect_chains', 'meta_fix', 'headings_fix', 'canonical_fix' ) );
+		$this->own( array( 'not_found' ) );
 		$this->gen_from_issues( $gsc );
+		$this->gen_audit_checks();
+		$this->gen_not_found();
 		$this->gen_internal_links();
 		$this->gen_products();
 		$this->gen_categories( $gsc );
@@ -53,13 +108,162 @@ final class Engine {
 		$this->gen_redirect_chains();
 		do_action( 'seolity_generate_recommendations', $this );
 
-		// Anything not re-generated in this run is stale.
-		$this->plugin->db->query(
-			"UPDATE {recommendations} SET status = 'stale' WHERE project_id = %d AND status = 'open' AND updated_at < %s",
-			array( $this->plugin->db->project_id(), $this->run_started )
-		);
+		// Issues of a checked type that were not detected again are resolved (the problem is gone);
+		// types whose detector did not run (e.g. no Search Console) keep their state.
+		if ( $this->owned ) {
+			$types = array_keys( $this->owned );
+			$in    = implode( ',', array_fill( 0, count( $types ), '%s' ) );
+			$this->plugin->db->query(
+				"UPDATE {recommendations} SET status = 'resolved', resolved_at = %s WHERE project_id = %d AND status IN ('open','stale') AND updated_at < %s AND type IN ($in)",
+				array_merge( array( Database::now(), $this->plugin->db->project_id(), $this->run_started ), $types )
+			);
+		}
 		update_option( 'seolity_recommendations_refreshed', time(), false );
+		do_action( 'seolity_issues_refreshed', $this->generated );
 		return $this->generated;
+	}
+
+	/**
+	 * Change the state of a canonical issue (operations, verification, the owner).
+	 *
+	 * @param string $status open | in_progress | done | resolved | dismissed | snoozed.
+	 * @param array  $extra  verified_at, verification, operation_id, instructions.
+	 */
+	public function set_state( $id, $status, array $extra = array() ) {
+		$data = array( 'status' => $status, 'updated_at' => Database::now() );
+		if ( in_array( $status, array( 'done', 'resolved' ), true ) ) {
+			$data['resolved_at'] = Database::now();
+		}
+		foreach ( array( 'verified_at', 'operation_id', 'instructions' ) as $k ) {
+			if ( array_key_exists( $k, $extra ) ) {
+				$data[ $k ] = $extra[ $k ];
+			}
+		}
+		if ( isset( $extra['verification'] ) ) {
+			$data['verification'] = wp_json_encode( $extra['verification'], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES );
+		}
+		$ok = (bool) $this->plugin->db->update( 'recommendations', $data, array( 'id' => (int) $id ) );
+		do_action( 'seolity_issue_state', (int) $id, $status );
+		return $ok;
+	}
+
+	/** Mark the issues of some types about one URL as done + verified (event-driven sync). */
+	public function resolve_url( array $types, $url, array $verification ) {
+		$db   = $this->plugin->db;
+		$in   = implode( ',', array_fill( 0, count( $types ), '%s' ) );
+		$path = \SEOlity\Redirects\Manager::normalize_source( $url );
+		$rows = $db->rows( "SELECT id, url FROM {recommendations} WHERE project_id = %d AND type IN ($in) AND status IN ('open','in_progress','stale')", array_merge( array( $db->project_id() ), $types ) );
+		foreach ( $rows as $r ) {
+			if ( \SEOlity\Redirects\Manager::normalize_source( (string) $r['url'] ) === $path ) {
+				$this->set_state( (int) $r['id'], 'done', array( 'verified_at' => Database::now(), 'verification' => $verification ) );
+			}
+		}
+	}
+
+	/** Logged 404s that matter (repeated hits or linked from somewhere) → one issue per URL. */
+	private function gen_not_found() {
+		$db   = $this->plugin->db;
+		$rows = $db->rows( "SELECT id, url, hits, referrer, suggested_target, suggestion_score FROM {not_found} WHERE project_id = %d AND status = 'open' AND is_bot = 0 AND ( hits >= 2 OR ( referrer IS NOT NULL AND referrer <> '' ) ) ORDER BY hits DESC LIMIT 300", array( $db->project_id() ) );
+		foreach ( $rows as $r ) {
+			$target = (string) $r['suggested_target'];
+			$path   = urldecode( (string) wp_parse_url( $r['url'], PHP_URL_PATH ) );
+			$this->add(
+				array(
+					'type'         => 'not_found',
+					'url'          => $r['url'],
+					/* translators: %s: path */
+					'title'        => sprintf( __( 'Redirect the 404 URL %s', 'seolity' ), $path ),
+					/* translators: %d: hits */
+					'reason'       => sprintf( __( 'Visitors or bots requested it %d times and got “page not found”.', 'seolity' ), (int) $r['hits'] ) . ( $target ? ' ' . sprintf( /* translators: %s url */ __( 'Suggested target: %s', 'seolity' ), urldecode( $target ) ) : ' ' . __( 'No good target was found yet — choose one or mark it as gone (410).', 'seolity' ) ),
+					'evidence'     => array( 'source' => '404', 'hits' => (int) $r['hits'], 'referrer' => $r['referrer'], 'not_found_id' => (int) $r['id'], 'score' => (int) $r['suggestion_score'] ),
+					'action'       => array( 'type' => 'create_redirect', 'source' => $r['url'], 'target' => $target ),
+					'impact'       => min( 80, 30 + 2 * (int) $r['hits'] + ( $r['referrer'] ? 15 : 0 ) ),
+					'effort'       => 5,
+					'confidence'   => $target ? min( 90, 40 + (int) $r['suggestion_score'] / 2 ) : 35,
+					'auto_fixable' => '' !== $target,
+				)
+			);
+		}
+	}
+
+	/** Give older records their category / owning section (migration). */
+	public function backfill_categories() {
+		foreach ( self::CATEGORIES as $type => $c ) {
+			$this->plugin->db->query( "UPDATE {recommendations} SET category = %s, module = %s WHERE type = %s AND category = ''", array( $c[0], $c[1], $type ) );
+		}
+		$this->plugin->db->query( "UPDATE {recommendations} SET status = 'resolved', resolved_at = updated_at WHERE status = 'stale'" );
+	}
+
+	/**
+	 * Crawler findings that need a per-page fix become one canonical issue per page
+	 * (title + description problems of a page = one "meta" fix; heading problems = one fix).
+	 */
+	private function gen_audit_checks() {
+		$db     = $this->plugin->db;
+		$groups = array(
+			'meta_fix'      => array( 'title_missing', 'title_too_long', 'title_too_short', 'title_multiple', 'duplicate_title', 'meta_desc_missing', 'meta_desc_length', 'duplicate_meta' ),
+			'headings_fix'  => array( 'h1_missing', 'h1_multiple', 'heading_skip' ),
+			'canonical_fix' => array( 'canonical_multiple', 'canonical_invalid', 'canonical_to_error' ),
+		);
+		$names  = array(
+			'title_missing'      => __( 'no SEO title', 'seolity' ),
+			'title_too_long'     => __( 'title too long', 'seolity' ),
+			'title_too_short'    => __( 'title too short', 'seolity' ),
+			'title_multiple'     => __( 'several <title> tags', 'seolity' ),
+			'duplicate_title'    => __( 'title used on other pages too', 'seolity' ),
+			'meta_desc_missing'  => __( 'no meta description', 'seolity' ),
+			'meta_desc_length'   => __( 'description length', 'seolity' ),
+			'duplicate_meta'     => __( 'description used on other pages too', 'seolity' ),
+			'h1_missing'         => __( 'no H1 heading', 'seolity' ),
+			'h1_multiple'        => __( 'several H1 headings', 'seolity' ),
+			'heading_skip'       => __( 'heading levels skipped', 'seolity' ),
+			'canonical_multiple' => __( 'several canonical tags', 'seolity' ),
+			'canonical_invalid'  => __( 'invalid canonical URL', 'seolity' ),
+			'canonical_to_error' => __( 'canonical points to an error page', 'seolity' ),
+		);
+		foreach ( $groups as $type => $codes ) {
+			$in   = implode( ',', array_fill( 0, count( $codes ), '%s' ) );
+			$rows = $db->rows( "SELECT u.url, u.object_type, u.object_id, GROUP_CONCAT(i.check_code) codes, MAX(FIELD(i.severity,'low','medium','high','critical')) sev FROM {issues} i JOIN {urls} u ON u.id = i.url_id WHERE i.project_id = %d AND i.status = 'open' AND i.check_code IN ($in) AND u.status_code = 200 GROUP BY u.id ORDER BY sev DESC, u.inlinks DESC LIMIT 400", array_merge( array( $db->project_id() ), $codes ) );
+			foreach ( $rows as $r ) {
+				$found = array_values( array_unique( explode( ',', (string) $r['codes'] ) ) );
+				$list  = implode( '، ', array_map( static function ( $c ) use ( $names ) {
+					return isset( $names[ $c ] ) ? $names[ $c ] : $c;
+				}, $found ) );
+				$obj   = $r['object_type'] && $r['object_id'];
+				$label = $this->label( $r['url'], $r['object_type'], $r['object_id'] );
+				if ( 'meta_fix' === $type ) {
+					/* translators: %s: page */
+					$title  = sprintf( __( 'Fix the SEO title / description of “%s”', 'seolity' ), $label );
+					$action = $obj ? array( 'type' => 'optimize_meta', 'object_type' => $r['object_type'], 'object_id' => (int) $r['object_id'] ) : array( 'type' => 'route', 'route' => '#/audit?category=meta' );
+				} elseif ( 'headings_fix' === $type ) {
+					/* translators: %s: page */
+					$title  = sprintf( __( 'Fix the heading structure of “%s”', 'seolity' ), $label );
+					$action = $obj ? array( 'type' => 'optimize_content', 'object_type' => $r['object_type'], 'object_id' => (int) $r['object_id'], 'goal' => __( 'Fix the heading structure: exactly one H1 that states the topic, logical H2/H3 levels without skipped levels. Do not change the meaning of the text.', 'seolity' ) ) : array( 'type' => 'route', 'route' => '#/audit?category=content' );
+				} else {
+					/* translators: %s: page */
+					$title  = sprintf( __( 'Fix the canonical tag of “%s”', 'seolity' ), $label );
+					$action = $obj ? array( 'type' => 'set_field', 'object_type' => $r['object_type'], 'object_id' => (int) $r['object_id'], 'field' => 'canonical', 'value' => '' ) : array( 'type' => 'route', 'route' => '#/indexability' );
+				}
+				$sev = (int) $r['sev'];
+				$this->add(
+					array(
+						'type'         => $type,
+						'url'          => $r['url'],
+						'object_type'  => $r['object_type'],
+						'object_id'    => $r['object_id'],
+						'title'        => $title,
+						/* translators: %s: list of problems */
+						'reason'       => sprintf( __( 'Found by the site audit: %s.', 'seolity' ), $list ),
+						'evidence'     => array( 'source' => 'audit', 'checks' => $found ),
+						'action'       => $action,
+						'impact'       => 'canonical_fix' === $type ? 70 : 25 + 12 * $sev,
+						'effort'       => 'headings_fix' === $type ? 30 : 8,
+						'confidence'   => 80,
+						'auto_fixable' => $obj,
+					)
+				);
+			}
+		}
 	}
 
 	/**
@@ -78,7 +282,8 @@ final class Engine {
 		}
 		$key = sha1( $r['type'] . '|' . ( isset( $r['key'] ) ? $r['key'] : ( isset( $r['url'] ) ? $r['url'] : $r['title'] ) ) );
 		$db  = $this->plugin->db;
-		$existing = $db->row( 'SELECT id, status FROM {recommendations} WHERE project_id = %d AND dedupe_key = %s', array( $db->project_id(), $key ) );
+		$cat = self::category_of( $r['type'] );
+		$existing = $db->row( 'SELECT id, status, resolved_at FROM {recommendations} WHERE project_id = %d AND dedupe_key = %s', array( $db->project_id(), $key ) );
 		$row = array(
 			'type'         => $r['type'],
 			'object_type'  => isset( $r['object_type'] ) ? $r['object_type'] : null,
@@ -94,11 +299,29 @@ final class Engine {
 			'confidence'   => $confidence,
 			'score'        => $score,
 			'auto_fixable' => ! empty( $r['auto_fixable'] ),
+			'category'     => $cat[0],
+			'module'       => $cat[1],
+			'source'       => isset( $r['evidence']['source'] ) ? substr( (string) $r['evidence']['source'], 0, 30 ) : '',
+			'detected_at'  => Database::now(),
 			'updated_at'   => Database::now(),
 		);
 		if ( $existing ) {
-			if ( in_array( $existing['status'], array( 'dismissed', 'done' ), true ) ) {
+			if ( in_array( $existing['status'], array( 'dismissed', 'snoozed' ), true ) ) {
 				return (int) $existing['id']; // Respect user decisions.
+			}
+			if ( 'in_progress' === $existing['status'] ) {
+				unset( $row['status'] );
+				$db->update( 'recommendations', $row, array( 'id' => (int) $existing['id'] ) );
+				return (int) $existing['id']; // A fix is being prepared / applied: keep its state.
+			}
+			if ( in_array( $existing['status'], array( 'done', 'resolved' ), true ) ) {
+				// Search-data findings lag behind fixes: only a full new window can re-open them.
+				$age = $existing['resolved_at'] ? time() - strtotime( $existing['resolved_at'] . ' UTC' ) : PHP_INT_MAX;
+				if ( in_array( $r['type'], self::METRIC_TYPES, true ) && $age < 28 * DAY_IN_SECONDS ) {
+					return (int) $existing['id'];
+				}
+				// Detected again on the live site → it really came back.
+				$row['evidence'] = array_merge( (array) $row['evidence'], array( 'regressed' => true, 'previously_resolved' => $existing['resolved_at'] ) );
 			}
 			$row['status'] = 'open';
 			$db->update( 'recommendations', $row, array( 'id' => (int) $existing['id'] ) );
@@ -352,8 +575,9 @@ final class Engine {
 				)
 			);
 		}
-		// Missing meta descriptions (bulk).
-		$missing = (int) $db->value( "SELECT COUNT(*) FROM {issues} WHERE project_id = %d AND status = 'open' AND check_code IN ('meta_desc_missing','title_missing')", array( $pid ) );
+		// Missing titles / descriptions are per-page issues now (gen_audit_checks); a bulk run is a
+		// roadmap action over those records, never a second copy of them.
+		$missing = 0;
 		if ( $missing ) {
 			$ids = $db->column( "SELECT u.object_id FROM {issues} i JOIN {urls} u ON u.id = i.url_id WHERE i.project_id = %d AND i.status = 'open' AND i.check_code = 'meta_desc_missing' AND u.object_type = 'post' LIMIT 200", array( $pid ) );
 			$this->add(
@@ -574,7 +798,154 @@ final class Engine {
 	}
 
 	public function get( $id ) {
-		return Database::decode( $this->plugin->db->row( 'SELECT * FROM {recommendations} WHERE id = %d', array( (int) $id ) ), array( 'evidence', 'action' ) );
+		return Database::decode( $this->plugin->db->row( 'SELECT * FROM {recommendations} WHERE id = %d', array( (int) $id ) ), array( 'evidence', 'action', 'verification' ) );
+	}
+
+	/**
+	 * Why a category comes in this position of the recommended order (dependency first:
+	 * pages Google cannot reach or should not index are fixed before pages are polished).
+	 */
+	const ORDER = array(
+		'indexability' => 100,
+		'technical'    => 95,
+		'404'          => 90,
+		'duplicates'   => 85,
+		'onpage'       => 75,
+		'links'        => 70,
+		'content'      => 65,
+		'products'     => 60,
+		'competitors'  => 40,
+		'other'        => 30,
+	);
+
+	public static function category_names() {
+		return array(
+			'404'          => __( '404 errors', 'seolity' ),
+			'duplicates'   => __( 'Duplicate & similar articles', 'seolity' ),
+			'indexability' => __( 'Indexability & crawl budget', 'seolity' ),
+			'technical'    => __( 'Technical SEO', 'seolity' ),
+			'onpage'       => __( 'Site audit: titles, descriptions, headings', 'seolity' ),
+			'links'        => __( 'Internal links', 'seolity' ),
+			'content'      => __( 'Content & CTR', 'seolity' ),
+			'products'     => __( 'Products & categories', 'seolity' ),
+			'competitors'  => __( 'Competitor gaps', 'seolity' ),
+			'other'        => __( 'Other', 'seolity' ),
+		);
+	}
+
+	private static function order_reason( $cat ) {
+		$r = array(
+			'indexability' => __( 'First: pages that should not be in Google waste crawl budget, and important pages that cannot be indexed earn nothing — everything else depends on this.', 'seolity' ),
+			'technical'    => __( 'Redirect loops/chains and server errors block crawlers and visitors; fix them before working on content.', 'seolity' ),
+			'404'          => __( 'Broken URLs lose links and visitors; a correct 301 recovers them quickly and is low effort.', 'seolity' ),
+			'duplicates'   => __( 'Merge competing articles before polishing them — otherwise you optimize pages that will be redirected.', 'seolity' ),
+			'onpage'       => __( 'Missing or duplicate titles, descriptions and headings: quick fixes with direct CTR impact.', 'seolity' ),
+			'links'        => __( 'Internal links spread authority to the pages you just fixed.', 'seolity' ),
+			'content'      => __( 'Content improvements based on Search Console data: highest upside once the basics are clean.', 'seolity' ),
+			'products'     => __( 'Product and category pages: important for shops after the site-wide basics.', 'seolity' ),
+			'competitors'  => __( 'New content for topics competitors win: a longer-term growth step.', 'seolity' ),
+			'other'        => '',
+		);
+		return isset( $r[ $cat ] ) ? $r[ $cat ] : '';
+	}
+
+	/**
+	 * Roadmap board: every category with its counts, its recommended position and the reason,
+	 * computed from the canonical issue records (severity, impact, number of URLs, dependency).
+	 */
+	public function board() {
+		$db   = $this->plugin->db;
+		$rows = $db->rows( "SELECT category, status, COUNT(*) c, MAX(score) top, AVG(impact) imp, SUM(priority = 'critical') crit FROM {recommendations} WHERE project_id = %d AND status IN ('open','in_progress','done','resolved') GROUP BY category, status", array( $db->project_id() ) );
+		$cats = array();
+		foreach ( $rows as $r ) {
+			$k = '' === $r['category'] ? 'other' : $r['category'];
+			if ( ! isset( $cats[ $k ] ) ) {
+				$cats[ $k ] = array( 'id' => $k, 'open' => 0, 'in_progress' => 0, 'done' => 0, 'top' => 0, 'impact' => 0, 'critical' => 0 );
+			}
+			$key                 = 'resolved' === $r['status'] ? 'done' : $r['status'];
+			$cats[ $k ][ $key ] += (int) $r['c'];
+			if ( 'open' === $r['status'] ) {
+				$cats[ $k ]['top']      = (float) $r['top'];
+				$cats[ $k ]['impact']   = (float) $r['imp'];
+				$cats[ $k ]['critical'] = (int) $r['crit'];
+			}
+		}
+		$names  = self::category_names();
+		$routes = array();
+		foreach ( self::CATEGORIES as $c ) {
+			$routes[ $c[0] ] = isset( $routes[ $c[0] ] ) ? $routes[ $c[0] ] : $c[1];
+		}
+		foreach ( $cats as $k => &$c ) {
+			$c['label']  = isset( $names[ $k ] ) ? $names[ $k ] : $k;
+			$c['route']  = isset( $routes[ $k ] ) ? $routes[ $k ] : '#/actions';
+			$c['reason'] = self::order_reason( $k );
+			// Dependency order first; within close positions, critical findings and impact move a category up.
+			$c['rank'] = ( isset( self::ORDER[ $k ] ) ? self::ORDER[ $k ] : 30 ) + min( 8, 2 * $c['critical'] ) + $c['impact'] / 25 - ( $c['open'] ? 0 : 200 );
+		}
+		unset( $c );
+		uasort(
+			$cats,
+			static function ( $a, $b ) {
+				return $b['rank'] <=> $a['rank'];
+			}
+		);
+		$pos = 0;
+		foreach ( $cats as &$c ) {
+			$c['position'] = $c['open'] ? ++$pos : null;
+		}
+		unset( $c );
+		return array_values( $cats );
+	}
+
+	/**
+	 * Canonical issues for the roadmap list.
+	 *
+	 * @param array $f category, status (open|in_progress|done|all), q, page, per_page.
+	 */
+	public function items( array $f ) {
+		$db    = $this->plugin->db;
+		$where = array( 'project_id = %d' );
+		$args  = array( $db->project_id() );
+		$st    = isset( $f['status'] ) ? (string) $f['status'] : 'active';
+		if ( 'active' === $st ) {
+			$where[] = "status IN ('open','in_progress')";
+		} elseif ( 'done' === $st ) {
+			$where[] = "status IN ('done','resolved')";
+		} elseif ( in_array( $st, array( 'open', 'in_progress', 'dismissed' ), true ) ) {
+			$where[] = 'status = %s';
+			$args[]  = $st;
+		}
+		if ( ! empty( $f['category'] ) ) {
+			$where[] = 'category = %s';
+			$args[]  = (string) $f['category'];
+		}
+		if ( ! empty( $f['q'] ) ) {
+			$where[] = '(title LIKE %s OR url LIKE %s)';
+			$like    = '%' . $db->wpdb->esc_like( (string) $f['q'] ) . '%';
+			$args[]  = $like;
+			$args[]  = $like;
+		}
+		$per   = isset( $f['per_page'] ) ? max( 10, min( 200, (int) $f['per_page'] ) ) : 30;
+		$page  = isset( $f['page'] ) ? max( 1, (int) $f['page'] ) : 1;
+		$total = (int) $db->value( 'SELECT COUNT(*) FROM {recommendations} WHERE ' . implode( ' AND ', $where ), $args );
+		$rows  = $db->rows( 'SELECT * FROM {recommendations} WHERE ' . implode( ' AND ', $where ) . " ORDER BY FIELD(status,'in_progress','open','done','resolved','dismissed'), FIELD(priority,'critical','high','medium','low'), score DESC, id ASC LIMIT %d OFFSET %d", array_merge( $args, array( $per, ( $page - 1 ) * $per ) ) );
+		$ops   = $this->plugin->operations;
+		$items = array_map(
+			function ( $r ) use ( $ops ) {
+				$r = Database::decode( $r, array( 'evidence', 'action', 'verification' ) );
+				foreach ( array( 'id', 'object_id', 'impact', 'effort', 'confidence', 'operation_id' ) as $k ) {
+					$r[ $k ] = null === $r[ $k ] ? null : (int) $r[ $k ];
+				}
+				$r['edit'] = 'post' === $r['object_type'] && $r['object_id'] ? admin_url( 'post.php?post=' . $r['object_id'] . '&action=edit' ) : '';
+				if ( $r['operation_id'] ) {
+					$op           = $this->plugin->db->row( 'SELECT id, status, error, updated_at FROM {operations} WHERE id = %d', array( (int) $r['operation_id'] ) );
+					$r['operation'] = $op ? $op : null;
+				}
+				return $r;
+			},
+			$rows
+		);
+		return array( 'items' => $items, 'total' => $total, 'page' => $page, 'per_page' => $per );
 	}
 
 	public function mark( $id, $status ) {

@@ -146,6 +146,9 @@ final class Engine {
 			return new \WP_Error( 'seolity_ai_budget', __( 'Monthly AI budget reached. Increase it in Settings or wait until next month.', 'seolity' ), array( 'status' => 402 ) );
 		}
 
+		if ( '' !== self::$owner_instructions && empty( $input['owner_instructions'] ) ) {
+			$input['owner_instructions'] = self::$owner_instructions;
+		}
 		$knowledge = array();
 		if ( $this->plugin->settings->get( 'ai_use_knowledge' ) && ! empty( $def['topics'] ) ) {
 			$query     = isset( $opts['knowledge_query'] ) ? $opts['knowledge_query'] : $this->knowledge_query( $input );
@@ -368,7 +371,22 @@ final class Engine {
 		$parts[] = '';
 		$parts[] = 'TASK INSTRUCTIONS:';
 		$parts[] = $def['instructions'];
+		if ( ! empty( $input['owner_instructions'] ) ) {
+			$parts[] = '';
+			$parts[] = 'OWNER INSTRUCTIONS FOR THIS JOB (written by the site owner in the admin; follow them exactly — they take precedence over generic SEO preferences — but never invent facts, never break the site and always keep the required output format):';
+			$parts[] = mb_substr( (string) $input['owner_instructions'], 0, 4000 );
+		}
 		return implode( "\n", $parts );
+	}
+
+	/** @var string Owner instructions applied to every AI call of the running operation. */
+	private static $owner_instructions = '';
+
+	/** Carry the owner's instructions into all AI calls until reset (operations, consolidation). */
+	public static function with_instructions( $text ) {
+		$prev                     = self::$owner_instructions;
+		self::$owner_instructions = trim( (string) $text );
+		return $prev;
 	}
 
 	private function log( ProviderInterface $provider, $model, $task, array $def, array $usage, $start, $status, $error ) {
