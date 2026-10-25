@@ -616,3 +616,6 @@ button.sl-segcard { cursor: pointer; }
 .sl-text-bad { color: var(--sl-bad); }
 .sl-text-warn { color: var(--sl-warn); }
 @media (max-width: 600px) { .sl-op__ba { grid-template-columns: 1fr; } }
+.sl-finding { display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; }
+.sl-finding p { margin: 0; line-height: 1.8; }
+.sl-explain ul { margin: 0; padding: 0 30px 12px; line-height: 1.9; }

@@ -1041,7 +1041,7 @@
 		}
 		var cards = Array.prototype.slice.call( dockList.children );
 		cards.forEach( function ( c, i ) {
-			c.hidden = dockMin || ( ! dockAll && i >= 3 );
+			c.hidden = dockMin || ( ! dockAll && i >= ( w.innerWidth < 600 ? 1 : 3 ) );
 		} );
 		SL.clear( dockMore );
 		if ( ! cards.length ) {
