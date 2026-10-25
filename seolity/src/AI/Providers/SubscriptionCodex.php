@@ -24,6 +24,16 @@ final class SubscriptionCodex extends Subscription {
 	}
 
 	public function model() {
-		return (string) $this->plugin->settings->get( 'ai_model_sub_codex', '' );
+		return parent::model();
+	}
+
+	/**
+	 * Codex picks the model your ChatGPT plan includes when no model is given; a specific model id
+	 * can be entered and is confirmed by a real test run (there is no official model-list API).
+	 */
+	public function list_models() {
+		return array(
+			array( 'id' => '', 'label' => __( 'Default model of your ChatGPT plan', 'seolity' ), 'chat' => true, 'note' => __( 'recommended', 'seolity' ) ),
+		);
 	}
 }

@@ -21,6 +21,18 @@ abstract class Subscription extends AbstractProvider {
 		return $this->plugin->subscription->is_ready( $this->engine() );
 	}
 
+	public function engine_name() {
+		return $this->engine();
+	}
+
+	public function key_name() {
+		return \SEOlity\AI\Remote\SubscriptionRunner::ENGINE_SECRETS[ $this->engine() ][1];
+	}
+
+	public function has_key() {
+		return $this->plugin->settings->has_secret( $this->key_name() );
+	}
+
 	/** Answers asynchronously: may throw \SEOlity\AI\Deferred. */
 	public function complete( array $request ) {
 		return $this->plugin->subscription->complete( $this->engine(), $this->model(), $request );

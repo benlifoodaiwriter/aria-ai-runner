@@ -189,17 +189,27 @@ final class Agent {
 		if ( ! $g['can_run'] ) {
 			return new \WP_Error( 'seolity_agent', __( 'This task needs your decision; SEOlity cannot do it alone.', 'seolity' ), array( 'status' => 400 ) );
 		}
+		// One run per task: a second click shows the run that is already queued or working.
+		$alive = $this->plugin->queue->find_unique( 'agent_run', 'agent_' . (int) $rec_id );
+		if ( $alive ) {
+			$aid = (int) $this->plugin->db->value( 'SELECT id FROM {activity} WHERE job_id = %d ORDER BY id DESC LIMIT 1', array( $alive ) );
+			if ( $aid ) {
+				return $this->plugin->activity->get( $aid, false );
+			}
+		}
 		$id = $this->plugin->activity->start(
 			'agent',
 			__( 'AI is doing it', 'seolity' ),
 			array(
 				'detail' => $g['title'],
 				'dock'   => true,
+				'status' => 'queued',
 				'step'   => __( 'Queued — starting in a moment…', 'seolity' ),
 				'meta'   => array( 'type' => 'agent', 'rec_id' => (int) $rec_id, 'plan' => $g['plan'], 'subject' => $g['title'], 'state' => array() ),
 			)
 		);
-		$this->plugin->queue->push( 'agent_run', array( 'id' => $id, 'user_id' => get_current_user_id() ), array( 'priority' => 0, 'max_attempts' => 2 ) );
+		$job = $this->plugin->queue->push( 'agent_run', array( 'id' => $id, 'user_id' => get_current_user_id() ), array( 'unique' => 'agent_' . (int) $rec_id, 'priority' => 0, 'max_attempts' => 2 ) );
+		$this->plugin->activity->attach_job( $id, $job );
 		\SEOlity\Activity\AiJobs::run_after_response( $this->plugin );
 		return $this->plugin->activity->get( $id, false );
 	}
@@ -375,6 +385,8 @@ final class Agent {
 		$obj  = isset( $a['object_type'] ) ? $this->label( $a['object_type'], isset( $a['object_id'] ) ? $a['object_id'] : 0 ) : '';
 		$done = isset( $state['lines'] ) ? (array) $state['lines'] : array();
 		$step = function ( $text, $pct ) use ( $act, $id ) {
+			// Safe point between steps: a cancel request stops the run here, before the next write.
+			$this->plugin->queue->checkpoint( $pct );
 			$act->step( $id, $text, $pct );
 		};
 		switch ( $type ) {

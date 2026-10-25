@@ -1073,6 +1073,7 @@
 		return Date.now() - new Date( String( dt ).replace( ' ', 'T' ) + 'Z' ).getTime();
 	}
 	var ROUTE_NAMES = { direct: t( 'Direct' ), cloudflare: 'Cloudflare', github: 'GitHub', local: t( 'This server' ) };
+	var DOCK_ACTIVE = [ 'queued', 'running', 'waiting' ];
 
 	SL.dock = {
 		/** Register how a finished job of a type opens its report: fn( result, item, extra ). */
@@ -1091,13 +1092,13 @@
 				list.insertBefore( c.el, list.firstChild );
 				c.timer = setInterval( function () {
 					var tm = c.el.querySelector( '.sl-dock__time' );
-					if ( tm && c.item && ( c.item.status === 'running' || c.item.status === 'waiting' ) ) {
+					if ( tm && c.item && DOCK_ACTIVE.indexOf( c.item.status ) !== -1 ) {
 						tm.textContent = clock( since( c.item.started_at ) );
 					}
 				}, 1000 );
 			}
 			SL.dock.render( item );
-			if ( item.status === 'running' || item.status === 'waiting' ) {
+			if ( DOCK_ACTIVE.indexOf( item.status ) !== -1 ) {
 				clearTimeout( c.poll );
 				c.poll = setTimeout( function () {
 					SL.api( 'activity/' + item.id, { noWait: true } ).then( SL.dock.track ).catch( function () {
@@ -1115,8 +1116,9 @@
 			}
 			c.item = item;
 			var meta = item.meta || {};
-			var running = item.status === 'running' || item.status === 'waiting';
-			var icon = running ? h( 'span', { class: 'sl-spinner sl-spinner--sm', 'aria-hidden': 'true' } ) : SL.icon( item.status === 'failed' ? 'x-circle' : 'check-circle', 18 );
+			var running = DOCK_ACTIVE.indexOf( item.status ) !== -1;
+			var failed = [ 'failed', 'timed_out', 'interrupted', 'cancelled' ].indexOf( item.status ) !== -1;
+			var icon = running ? ( 'queued' === item.status ? SL.icon( 'clock', 18 ) : h( 'span', { class: 'sl-spinner sl-spinner--sm', 'aria-hidden': 'true' } ) ) : SL.icon( failed ? 'x-circle' : 'check-circle', 18 );
 			c.el.className = 'sl-dock__card is-' + ( running ? 'running' : item.status ) + ( meta.outcome ? ' is-applied' : '' );
 			SL.clear( c.el );
 			var head = h( 'div', { class: 'sl-dock__head' },
@@ -1137,8 +1139,31 @@
 			if ( item.progress && running ) {
 				body.appendChild( h( 'div', { class: 'sl-dock__bar' }, h( 'span', { style: 'width:' + item.progress + '%' } ) ) );
 			}
-			if ( item.status === 'failed' ) {
+			if ( running ) {
+				body.appendChild( h( 'button', { type: 'button', class: 'sl-dock__more', onClick: function ( e ) {
+					e.target.disabled = true;
+					SL.api( 'activity/' + item.id + '/cancel', { method: 'POST' } ).then( SL.dock.track ).catch( function ( err ) {
+						e.target.disabled = false;
+						SL.fail( err );
+					} );
+				} }, t( 'Cancel' ) ) );
+			}
+			if ( failed ) {
 				body.appendChild( h( 'p', { class: 'sl-dock__summary sl-dock__error', dir: 'auto', text: item.detail || t( 'Failed' ) } ) );
+				if ( 'cancelled' !== item.status || item.job_id ) {
+					body.appendChild( h( 'button', { type: 'button', class: 'sl-btn sl-btn--sm', onClick: function ( e ) {
+						e.target.disabled = true;
+						SL.api( 'activity/' + item.id + '/retry', { method: 'POST' } ).then( function ( n ) {
+							if ( n && n.id && n.id !== item.id ) {
+								SL.dock.close( item.id );
+							}
+							SL.dock.track( n && n.id ? n : item );
+						} ).catch( function ( err ) {
+							e.target.disabled = false;
+							SL.fail( err );
+						} );
+					} }, t( 'Retry' ) ) );
+				}
 			} else if ( ! running ) {
 				if ( meta.summary ) {
 					body.appendChild( h( 'p', { class: 'sl-dock__summary', text: meta.summary } ) );

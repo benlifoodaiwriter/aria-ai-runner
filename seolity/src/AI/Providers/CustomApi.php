@@ -325,6 +325,20 @@ final class CustomApi extends AbstractProvider {
 	 * @return string[]|\WP_Error
 	 */
 	public function list_models() {
+		$ids = $this->model_ids();
+		if ( is_wp_error( $ids ) ) {
+			return $ids;
+		}
+		return array_map(
+			static function ( $id ) {
+				return array( 'id' => $id, 'label' => $id, 'chat' => ! preg_match( '/(embed|whisper|tts|moderation|rerank)/i', $id ) );
+			},
+			$ids
+		);
+	}
+
+	/** Model ids from the service's models list (…/models). */
+	public function model_ids() {
 		$url = $this->models_url();
 		if ( '' === $this->base_url() ) {
 			return new \WP_Error( 'seolity_ai_url', __( 'Enter the base URL first.', 'seolity' ), array( 'status' => 400 ) );

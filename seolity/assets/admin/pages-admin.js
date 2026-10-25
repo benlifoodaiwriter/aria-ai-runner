@@ -259,7 +259,7 @@
 	};
 	var GROUPS = [
 		[ 'general', 'General', [ 'approval_mode', 'ui_language', 'admin_webfont', 'frontend_output', 'title_separator', 'brand_name', 'brand_logo', 'brand_color' ] ],
-		[ 'ai', 'AI', [ 'ai_provider', 'ai_model_anthropic', 'ai_model_openai', 'ai_model_gemini', 'ai_model_openrouter', 'ai_model_ollama', 'ollama_base_url', 'ai_effort', 'ai_content_language', 'ai_brand_voice', 'ai_use_knowledge', 'ai_media_on_upload', 'ai_max_tokens', 'ai_timeout', 'ai_monthly_budget', 'ai_cache_hours' ] ],
+		[ 'ai', 'AI', [ 'ai_effort', 'ai_content_language', 'ai_brand_voice', 'ai_use_knowledge', 'ai_media_on_upload', 'ai_max_tokens', 'ai_timeout', 'ai_monthly_budget', 'ai_cache_hours' ] ],
 		[ 'crawler', 'Crawler & audits', [ 'crawl_frequency', 'crawl_max_urls', 'crawl_batch_size', 'crawl_timeout', 'thin_content_words', 'crawl_check_external', 'competitor_max_pages', 'experiment_window', 'gsc_sync_days', 'gsc_row_limit' ] ],
 		[ 'reports', 'Alerts & reports', [ 'alert_email_enabled', 'alert_email', 'alert_drop_percent', 'report_frequency', 'report_recipients' ] ],
 		[ 'technical', 'Technical SEO', [ 'sitemap_enabled', 'sitemap_exclude_types', 'redirects_enabled', 'log_404', 'log_404_bots' ] ],
@@ -268,7 +268,6 @@
 	];
 	var GROUP_ICONS = { general: 'settings', ai: 'cpu', subscription: 'sparkles', crawler: 'pulse', reports: 'bell', technical: 'wrench', schema: 'braces', github: 'github', privacy: 'lock' };
 	var SECRETS = {
-		ai: [ [ 'anthropic_api_key', 'Anthropic API key' ], [ 'openai_api_key', 'OpenAI API key' ], [ 'gemini_api_key', 'Google Gemini API key' ], [ 'openrouter_api_key', 'OpenRouter API key' ] ],
 		crawler: [ [ 'pagespeed_api_key', 'PageSpeed Insights API key (optional)' ], [ 'serp_api_key', 'SERP data API key (optional)' ] ],
 	};
 
@@ -526,22 +525,21 @@
 						SL.toast( t( 'Settings saved.' ), 'success' );
 					} );
 				}, 'primary' ),
-				App.abtn( SL.il( 'zap', t( 'Test connection' ) ), function () {
+				App.abtn( SL.il( 'zap', t( 'Test model' ) ), function () {
 					return save().then( function () {
-						return SL.api( 'settings/test-ai', { body: { provider: 'custom' } } );
-					} ).then( function ( r ) {
-						SL.toast( t( 'Connection OK — model %s', r.model ), 'success' );
+						return SL.api( 'ai/providers/custom/verify', { body: { model: model.value.trim() } } );
+					} ).then( function () {
+						SL.toast( t( 'The model works.' ), 'success' );
 					} );
 				} ),
-				App.abtn( SL.il( 'check', t( 'Use as AI engine' ) ), function () {
+				App.abtn( SL.il( 'check', t( 'Use for all AI features' ) ), function () {
 					return save().then( function () {
-						return SL.api( 'settings', { body: { ai_provider: 'custom' } } );
-					} ).then( function ( r ) {
-						data.settings = r.settings;
+						return SL.api( 'ai/providers/custom/activate', { body: { model: model.value.trim() } } );
+					} ).then( function () {
 						App.refreshBoot();
 						SL.toast( t( 'AI engine switched.' ), 'success' );
 					} );
-				} ),
+				}, 'primary' ),
 				h( 'a', { class: 'sl-btn sl-btn--ghost', href: '#/guide?service=custom' }, SL.il( 'lifebuoy', t( 'Guide' ), 15 ) )
 			) );
 			SL.api( 'settings/custom-describe' ).then( function ( d2 ) {
@@ -563,29 +561,10 @@
 		function group( g, data, dirty ) {
 			var box = h( 'div', { class: 'sl-settings' } );
 			if ( g[ 0 ] === 'ai' ) {
-				var MONO = { anthropic: [ 'AN', '#d97757' ], openai: [ 'OA', '#10a37f' ], gemini: [ 'GE', '#4285f4' ], openrouter: [ 'OR', '#6366f1' ], ollama: [ 'OL', '#0f172a' ], custom: [ 'API', '#64748b' ], sub_claude: [ 'CL', '#d97757' ], sub_codex: [ 'GPT', '#10a37f' ] };
-				box.appendChild( h( 'div', { class: 'sl-providers' }, data.providers.map( function ( p ) {
-					var mono = MONO[ p.id ] || [ p.id.slice( 0, 2 ).toUpperCase(), '#1D4ED8' ];
-					var active = data.settings.ai_provider === p.id;
-					return h( 'div', { class: 'sl-provider' + ( p.configured ? ' is-ok' : '' ) + ( active ? ' is-active' : '' ), 'data-active-label': t( 'Active' ) },
-						h( 'div', { class: 'sl-provider__head' },
-							h( 'span', { class: 'sl-mono', style: { '--c': mono[ 1 ] }, text: mono[ 0 ] } ),
-							h( 'div', null, h( 'b', { text: p.label } ), h( 'small', { dir: 'ltr', text: p.model || '—' } ) ),
-							h( 'span', { class: 'sl-provider__state', title: p.configured ? t( 'configured' ) : t( 'not configured' ) }, SL.icon( p.configured ? 'check-circle' : 'x-circle', 20 ) )
-						),
-						h( 'div', { class: 'sl-provider__actions' },
-							SL.badge( p.configured ? t( 'configured' ) : t( 'not configured' ), p.configured ? 'good' : 'default' ),
-							p.configured ? App.abtn( t( 'Test' ), function () {
-								return SL.api( 'settings/test-ai', { body: { provider: p.id } } ).then( function ( r ) {
-									SL.toast( t( 'Connection OK — model %s', r.model ), 'success' );
-								} );
-							}, 'sm' ) : null
-						)
-					);
-				} ) ) );
-			}
-			if ( g[ 0 ] === 'ai' ) {
-				box.appendChild( h( 'a', { class: 'sl-promo', href: '#/subscription' }, h( 'span', { class: 'sl-card__ic' }, SL.icon( 'sparkles', 20 ) ), h( 'div', null, h( 'b', { text: t( 'Use your Claude or ChatGPT subscription instead of an API key' ) } ), h( 'small', { text: t( 'Step-by-step setup with GitHub (free) and an optional Cloudflare relay.' ) } ) ), SL.icon( C.rtl ? 'arrow-left' : 'arrow-right', 18 ) ) );
+				// Two connection methods, each provider with its own panel (pages-ai.js).
+				box.appendChild( App.aiConnections( h( 'div', { class: 'sl-stack' } ), { customCard: function () {
+					return customApiCard( data, dirty );
+				} } ) );
 			}
 			if ( g[ 0 ] === 'privacy' ) {
 				box.appendChild( h( 'div', { class: 'sl-alert sl-alert--info', text: t( 'Encryption' ) + ': ' + data.encryption + '. ' + t( 'For maximum security define SEOLITY_ENCRYPTION_KEY in wp-config.php. You can also define any secret as a constant, e.g. SEOLITY_ANTHROPIC_API_KEY.' ) } ) );
@@ -596,10 +575,7 @@
 					fields.appendChild( input( key, data.schema[ key ], data.settings[ key ], dirty, data.providers ) );
 				}
 			} );
-			box.appendChild( App.card( t( g[ 1 ] ), fields, { icon: GROUP_ICONS[ g[ 0 ] ] || 'settings' } ) );
-			if ( g[ 0 ] === 'ai' ) {
-				box.appendChild( customApiCard( data, dirty ) );
-			}
+			box.appendChild( App.card( g[ 0 ] === 'ai' ? t( 'AI writing settings' ) : t( g[ 1 ] ), fields, { icon: GROUP_ICONS[ g[ 0 ] ] || 'settings', sub: g[ 0 ] === 'ai' ? t( 'Apply to every AI connection.' ) : null } ) );
 			if ( ( SECRETS[ g[ 0 ] ] || [] ).length ) {
 				var keys = h( 'div', { class: 'sl-form' } );
 				SECRETS[ g[ 0 ] ].forEach( function ( s ) {

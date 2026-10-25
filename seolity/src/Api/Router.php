@@ -139,6 +139,7 @@ final class Router {
 				'user'      => array( 'id' => $user->ID, 'name' => $user->display_name ),
 				'ai_ready'  => $p->ai->is_ready(),
 				'ai_label'  => ( $prov = \SEOlity\AI\ProviderRegistry::get( $p, (string) $p->settings->get( 'ai_provider' ) ) ) ? $prov->label() : '',
+				'ai_state'  => $p->aiproviders->summary(),
 				'gsc_property' => (string) $p->settings->get( 'gsc_property' ),
 				'gsc'       => $p->gsc_oauth->is_connected(),
 				'github'    => array( 'token' => $p->github->has_token(), 'login' => is_array( get_transient( 'seolity_gh_whoami' ) ) && ! empty( get_transient( 'seolity_gh_whoami' )['login'] ) ? get_transient( 'seolity_gh_whoami' )['login'] : '' ),
@@ -203,8 +204,9 @@ final class Router {
 				return new \WP_Error( 'seolity_activity', __( 'Not found.', 'seolity' ), array( 'status' => 404 ) );
 			}
 			// Low-traffic sites: move queued work forward while somebody is watching it.
-			if ( in_array( $a['status'], array( 'running', 'waiting' ), true ) && time() - strtotime( $a['updated_at'] . ' UTC' ) > 3 ) {
+			if ( in_array( $a['status'], array( 'queued', 'running', 'waiting' ), true ) && time() - strtotime( $a['updated_at'] . ' UTC' ) > 3 ) {
 				$p->queue->work( 15 );
+				$p->activity->reconcile();
 				$a = $p->activity->get( (int) $r->get_param( 'id' ) );
 			}
 			return $a;
@@ -227,6 +229,56 @@ final class Router {
 		} );
 		$this->route( 'POST', '/activity/(?P<id>\d+)/dismiss', 'view', function ( Req $r ) use ( $p ) {
 			return array( 'dismissed' => $p->activity->dismiss( (int) $r->get_param( 'id' ) ) );
+		} );
+		// Task management: cancel / retry / delete. Owners manage their own cards; managers manage everything.
+		$own = static function ( $id ) use ( $p ) {
+			$a = $p->activity->get( (int) $id, false );
+			if ( ! $a ) {
+				return new \WP_Error( 'seolity_activity', __( 'Not found.', 'seolity' ), array( 'status' => 404 ) );
+			}
+			if ( (int) $a['user_id'] !== get_current_user_id() && ! current_user_can( \SEOlity\Core\Capabilities::MANAGE ) ) {
+				return new \WP_Error( 'seolity_forbidden', __( 'You can only manage your own tasks.', 'seolity' ), array( 'status' => 403 ) );
+			}
+			return $a;
+		};
+		$this->route( 'POST', '/activity/(?P<id>\d+)/cancel', 'view', function ( Req $r ) use ( $p, $own ) {
+			$a = $own( $r->get_param( 'id' ) );
+			return is_wp_error( $a ) ? $a : $p->activity->cancel( (int) $a['id'] );
+		} );
+		$this->route( 'POST', '/activity/(?P<id>\d+)/retry', 'view', function ( Req $r ) use ( $p, $own ) {
+			$a = $own( $r->get_param( 'id' ) );
+			return is_wp_error( $a ) ? $a : $p->activity->retry( (int) $a['id'] );
+		} );
+		$this->route( 'POST', '/activity/delete', 'manage', function ( Req $r ) use ( $p ) {
+			return array( 'deleted' => $p->activity->delete( array_map( 'intval', (array) $r->get_param( 'ids' ) ) ) );
+		} );
+		$this->route( 'POST', '/activity/purge', 'manage', function ( Req $r ) use ( $p ) {
+			return array( 'deleted' => $p->activity->purge( array( 'kind' => self::key( $r, 'kind' ), 'status' => self::key( $r, 'status' ), 'older_than' => self::int( $r, 'older_than' ) ) ) );
+		} );
+		$this->route( 'GET', '/tasks', 'manage', function ( Req $r ) use ( $p ) {
+			$p->activity->reconcile();
+			return $p->queue->query( array( 'status' => self::key( $r, 'status', 'active' ), 'page' => self::int( $r, 'page', 1 ), 'per_page' => self::int( $r, 'per_page', 50 ) ) );
+		} );
+		$this->route( 'POST', '/tasks/(?P<id>\d+)/cancel', 'manage', function ( Req $r ) use ( $p ) {
+			return $p->queue->cancel( self::int( $r, 'id' ) );
+		} );
+		$this->route( 'POST', '/tasks/(?P<id>\d+)/retry', 'manage', function ( Req $r ) use ( $p ) {
+			$res = $p->queue->retry( self::int( $r, 'id' ) );
+			if ( ! is_wp_error( $res ) ) {
+				\SEOlity\Activity\AiJobs::run_after_response( $p );
+			}
+			return $res;
+		} );
+		$this->route( 'POST', '/tasks/(?P<id>\d+)/delete', 'manage', function ( Req $r ) use ( $p ) {
+			return array( 'deleted' => $p->queue->delete( self::int( $r, 'id' ) ) );
+		} );
+		$this->route( 'POST', '/tasks/purge', 'manage', function ( Req $r ) use ( $p ) {
+			return array( 'deleted' => $p->queue->purge( self::key( $r, 'status' ) ) );
+		} );
+		// Check every unfinished task now (dead workers, expired waits) and correct its state.
+		$this->route( 'POST', '/tasks/recover', 'manage', function () use ( $p ) {
+			$fixed = $p->activity->reconcile( true );
+			return array( 'fixed' => $fixed, 'counts' => $p->queue->counts() );
 		} );
 
 		/* ---------------- SEO roadmap ("What should I do today?") ---------------- */
@@ -877,6 +929,42 @@ final class Router {
 			$synced = $p->subscription->sync_secret( $key ); // Keep the runner repository's secret in step.
 			return array( 'secrets' => $p->settings->secret_flags(), 'runner_synced' => is_wp_error( $synced ) ? $synced->get_error_message() : $synced );
 		} );
+		/* ---------------- AI provider manager: connect, models, verify, activate ---------------- */
+		$this->route( 'GET', '/ai/providers', 'manage', function () use ( $p ) {
+			return $p->aiproviders->all();
+		} );
+		$this->route( 'GET', '/ai/providers/(?P<id>[a-z_]+)', 'manage', function ( Req $r ) use ( $p ) {
+			$id = self::key( $r, 'id' );
+			$st = $p->aiproviders->state( $id );
+			if ( ! $st ) {
+				return new \WP_Error( 'seolity_ai_provider', __( 'Unknown AI provider.', 'seolity' ), array( 'status' => 404 ) );
+			}
+			// A runner test in progress: collect its answer.
+			if ( ! empty( $st['pending'] ) && is_array( $st['pending'] ) ) {
+				$p->subscription->collect();
+				$v = $p->aiproviders->verify( $id, (string) $st['pending']['model'] );
+				return is_wp_error( $v ) ? array_merge( $p->aiproviders->state( $id ), array( 'verify_error' => $v->get_error_message() ) ) : $v;
+			}
+			return $st;
+		} );
+		$this->route( 'POST', '/ai/providers/(?P<id>[a-z_]+)/connect', 'manage', function ( Req $r ) use ( $p ) {
+			$key = $r->get_param( 'key' );
+			return $p->aiproviders->connect( self::key( $r, 'id' ), null === $key ? null : trim( wp_unslash( (string) $key ) ), array( 'base_url' => self::url( $r, 'base_url' ) ) );
+		} );
+		$this->route( 'POST', '/ai/providers/(?P<id>[a-z_]+)/verify', 'manage', function ( Req $r ) use ( $p ) {
+			return $p->aiproviders->verify( self::key( $r, 'id' ), self::str( $r, 'model' ) );
+		} );
+		$this->route( 'POST', '/ai/providers/(?P<id>[a-z_]+)/activate', 'manage', function ( Req $r ) use ( $p ) {
+			return $p->aiproviders->activate( self::key( $r, 'id' ), self::str( $r, 'model' ) );
+		} );
+		$this->route( 'POST', '/ai/providers/(?P<id>[a-z_]+)/disconnect', 'manage', function ( Req $r ) use ( $p ) {
+			return $p->aiproviders->disconnect( self::key( $r, 'id' ) );
+		} );
+		$this->route( 'POST', '/ai/providers/(?P<id>sub_claude|sub_codex)/method', 'manage', function ( Req $r ) use ( $p ) {
+			$engine = 'sub_codex' === self::key( $r, 'id' ) ? 'codex' : 'claude';
+			$res    = $p->settings->update( array( 'sub_method_' . $engine => self::key( $r, 'method', 'auto' ) ) );
+			return is_wp_error( $res ) ? $res : $p->aiproviders->state( self::key( $r, 'id' ) );
+		} );
 		$this->route( 'POST', '/settings/test-ai', 'manage', function ( Req $r ) use ( $p ) {
 			return $p->ai->test( self::key( $r, 'provider' ) ? self::key( $r, 'provider' ) : null );
 		} );
@@ -1002,7 +1090,7 @@ final class Router {
 		} );
 		$this->route( 'POST', '/settings/custom-models', 'manage', function () use ( $p ) {
 			$custom = \SEOlity\AI\ProviderRegistry::get( $p, 'custom' );
-			$models = $custom ? $custom->list_models() : array();
+			$models = $custom ? $custom->model_ids() : array();
 			return is_wp_error( $models ) ? $models : array( 'models' => $models );
 		} );
 		$this->route( 'GET', '/settings/custom-describe', 'manage', function () use ( $p ) {

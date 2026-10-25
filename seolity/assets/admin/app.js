@@ -327,9 +327,9 @@
 				return;
 			}
 			SL.clear( box );
-			var running = a.status === 'running' || a.status === 'waiting';
+			var running = [ 'queued', 'running', 'waiting' ].indexOf( a.status ) !== -1;
 			var steps = ( a.meta && a.meta.steps ) || [];
-			box.appendChild( h( 'h3', null, running ? h( 'span', { class: 'sl-spinner sl-spinner--sm' } ) : SL.icon( a.status === 'failed' ? 'x-circle' : 'check-circle', 18 ), h( 'span', { text: running ? t( 'The AI is working…' ) : a.status === 'failed' ? t( 'Stopped' ) : t( 'Done' ) } ) ) );
+			box.appendChild( h( 'h3', null, running ? h( 'span', { class: 'sl-spinner sl-spinner--sm' } ) : SL.icon( [ 'failed', 'timed_out', 'interrupted', 'cancelled' ].indexOf( a.status ) !== -1 ? 'x-circle' : 'check-circle', 18 ), h( 'span', { text: running ? t( 'The AI is working…' ) : [ 'failed', 'timed_out', 'interrupted', 'cancelled' ].indexOf( a.status ) !== -1 ? t( 'Stopped' ) : t( 'Done' ) } ) ) );
 			box.appendChild( h( 'div', { class: 'sl-dock__bar sl-agent__bar' }, h( 'span', { style: 'width:' + ( running ? Math.max( 5, a.progress || 5 ) : 100 ) + '%' } ) ) );
 			box.appendChild( h( 'ol', { class: 'sl-agent__log' }, steps.map( function ( s, i ) {
 				var last = i === steps.length - 1 && running;
@@ -338,7 +338,7 @@
 			if ( a.route ) {
 				box.appendChild( h( 'p', { class: 'sl-muted sl-small', text: t( 'AI route: %s', a.route ) } ) );
 			}
-			if ( a.status === 'failed' ) {
+			if ( [ 'failed', 'timed_out', 'interrupted', 'cancelled' ].indexOf( a.status ) !== -1 ) {
 				box.appendChild( h( 'div', { class: 'sl-alert sl-alert--error', dir: 'auto', text: a.detail } ) );
 			}
 			if ( a.status === 'done' && a.meta && a.meta.lines ) {
@@ -510,7 +510,9 @@
 				h( 'span', { class: 'sl-engine__text' }, h( 'b', { text: title } ), h( 'small', { dir: 'auto', text: sub } ) )
 			);
 		};
-		box.appendChild( card( 'cpu', t( 'AI engine' ), b.ai_ready ? ( b.ai_label || t( 'AI connected' ) ) : t( 'AI not configured' ), b.ai_ready, b.ai_ready ? 'settings?tab=ai' : 'settings?tab=ai' ) );
+		var ai = b.ai_state || {};
+		var aiSub = b.ai_ready ? ( ai.label || b.ai_label || t( 'AI connected' ) ) + ( ai.model ? ' · ' + ai.model : '' ) + ( ai.status === 'verified' ? ' ✓' : ai.status === 'error' ? ' — ' + t( 'Error' ) : '' ) : ( ai.reason || t( 'AI not configured' ) );
+		box.appendChild( card( 'cpu', t( 'AI engine' ), aiSub, b.ai_ready && ai.status !== 'error', 'settings?tab=ai' ) );
 		box.appendChild( card( 'chart', t( 'Search Console' ), b.gsc ? ( b.gsc_property || t( 'Search Console connected' ) ).replace( /^sc-domain:/, '' ) : t( 'Search Console not connected' ), b.gsc, 'gsc' ) );
 		if ( App.cap( 'manage' ) ) {
 			var gh = b.github || {};

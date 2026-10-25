@@ -131,11 +131,27 @@ final class SubscriptionRunner {
 	}
 
 	/** Everything needed before a request can be sent for this engine. */
+	/**
+	 * How this subscription runs: "cli" (the official CLI on this server, never GitHub) or
+	 * "runner" (the official CLI on the owner's private GitHub Actions runner). "auto" uses the CLI
+	 * when it is installed here; otherwise the runner — except with the Direct route, which never
+	 * sends anything to GitHub.
+	 */
+	public function method( $engine ) {
+		$m = (string) $this->plugin->settings->get( 'sub_method_' . $engine );
+		if ( in_array( $m, array( 'cli', 'runner' ), true ) ) {
+			return $m;
+		}
+		if ( $this->plugin->localcli->available( $engine ) ) {
+			return 'cli';
+		}
+		return 'direct' === $this->plugin->gateway->mode() ? 'cli' : 'runner';
+	}
+
 	public function missing( $engine ) {
 		$missing = array();
 		if ( isset( self::ENGINE_SECRETS[ $engine ] ) ) {
-			$mode = $this->plugin->gateway->mode();
-			if ( ( 'github' !== $mode && $this->plugin->localcli->available( $engine ) ) || 'direct' === $mode ) {
+			if ( 'cli' === $this->method( $engine ) ) {
 				// Runs on this server's CLI: GitHub is not involved at all.
 				if ( ! $this->plugin->settings->has_secret( self::ENGINE_SECRETS[ $engine ][1] ) ) {
 					$missing[] = 'claude' === $engine ? __( 'Claude subscription token (claude setup-token)', 'seolity' ) : __( 'ChatGPT auth.json (codex login)', 'seolity' );
@@ -206,19 +222,18 @@ final class SubscriptionRunner {
 	 */
 	public function complete( $engine, $model, array $request ) {
 		list( $system, $prompt ) = self::flatten( $request );
-		$mode = $this->plugin->gateway->mode();
-		// Direct: the official CLI on this server answers, the request never touches GitHub.
-		if ( 'github' !== $mode && $this->plugin->localcli->available( $engine ) ) {
+		// The official CLI on this server answers; the request never touches GitHub.
+		if ( 'cli' === $this->method( $engine ) && $this->plugin->localcli->available( $engine ) ) {
 			$this->route = 'local';
 			return $this->plugin->localcli->complete( $engine, $model, $system, $prompt, $this->raw_secret( self::ENGINE_SECRETS[ $engine ][1] ) );
 		}
-		if ( 'direct' === $mode ) {
+		if ( 'cli' === $this->method( $engine ) ) {
 			$this->route = 'local';
 			return new \WP_Error(
 				'seolity_local_cli',
 				'claude' === $engine
-					? __( 'Direct connection is selected, so SEOlity will not use GitHub. A Claude subscription can only be used directly when the official Claude Code CLI is installed on this server (a VPS). Install it, use an API key instead, or choose the GitHub route under Server & speed.', 'seolity' )
-					: __( 'Direct connection is selected, so SEOlity will not use GitHub. A ChatGPT subscription can only be used directly when the official Codex CLI is installed on this server (a VPS). Install it, use an API key instead, or choose the GitHub route under Server & speed.', 'seolity' ),
+					? __( 'Your Claude subscription is set to run directly on this server, so SEOlity will not send it to GitHub — but the official Claude Code CLI is not installed here. Install it (VPS), choose the GitHub runner as the connection method, or use an API key.', 'seolity' )
+					: __( 'Your ChatGPT subscription is set to run directly on this server, so SEOlity will not send it to GitHub — but the official Codex CLI is not installed here. Install it (VPS), choose the GitHub runner as the connection method, or use an API key.', 'seolity' ),
 				array( 'status' => 400 )
 			);
 		}

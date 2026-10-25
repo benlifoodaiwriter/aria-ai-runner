@@ -23,7 +23,7 @@ final class Settings {
 	const SECRET_FIELDS = array(
 		'openai_api_key', 'anthropic_api_key', 'gemini_api_key', 'openrouter_api_key', 'custom_api_key',
 		'gsc_client_secret', 'gsc_tokens', 'github_token', 'pagespeed_api_key', 'serp_api_key',
-		'claude_oauth_token', 'codex_auth_json', 'sub_shared_secret', 'cloudflare_api_token',
+		'claude_oauth_token', 'codex_auth_json', 'sub_shared_secret', 'cloudflare_api_token', 'github_models_api_key',
 	);
 
 	/** @var Plugin|null */
@@ -52,11 +52,15 @@ final class Settings {
 			'frontend_output'      => array( 'enum', 'auto', array( 'auto', 'on', 'off' ) ),
 			'title_separator'      => array( 'string', '|' ),
 			// AI.
-			'ai_provider'          => array( 'enum', 'anthropic', array( 'openai', 'anthropic', 'gemini', 'openrouter', 'ollama', 'custom', 'sub_claude', 'sub_codex' ) ),
-			'ai_model_openai'      => array( 'string', 'gpt-4.1-mini' ),
-			'ai_model_anthropic'   => array( 'string', 'claude-opus-5-5' ),
-			'ai_model_gemini'      => array( 'string', 'gemini-2.5-flash' ),
-			'ai_model_openrouter'  => array( 'string', 'anthropic/claude-opus-5-5' ),
+			'ai_provider'          => array( 'enum', 'anthropic', array( 'openai', 'anthropic', 'gemini', 'openrouter', 'ollama', 'custom', 'sub_claude', 'sub_codex', 'github_models' ) ),
+			'ai_model_github_models' => array( 'string', '' ),
+			// How a Claude / ChatGPT subscription runs: auto (this server's CLI when installed, else the GitHub runner), runner, cli.
+			'sub_method_claude'    => array( 'enum', 'auto', array( 'auto', 'runner', 'cli' ) ),
+			'sub_method_codex'     => array( 'enum', 'auto', array( 'auto', 'runner', 'cli' ) ),
+			'ai_model_openai'      => array( 'string', '' ),
+			'ai_model_anthropic'   => array( 'string', '' ),
+			'ai_model_gemini'      => array( 'string', '' ),
+			'ai_model_openrouter'  => array( 'string', '' ),
 			'ai_model_ollama'      => array( 'string', 'llama3.1' ),
 			'ai_model_custom'      => array( 'string', '' ),
 			'ai_model_sub_claude'  => array( 'string', 'sonnet' ),
@@ -298,7 +302,9 @@ final class Settings {
 			$plain           = is_array( $value ) ? wp_json_encode( $value ) : (string) $value;
 			$secrets[ $key ] = $this->crypto()->encrypt( $plain );
 		}
-		return update_option( self::SECRETS, $secrets, false );
+		$changed = update_option( self::SECRETS, $secrets, false );
+		do_action( 'seolity_secret_changed', $key );
+		return $changed;
 	}
 
 	public function has_secret( $key ) {

@@ -97,4 +97,45 @@ class OpenAI extends AbstractProvider {
 			'stop_reason' => isset( $choice['finish_reason'] ) ? (string) $choice['finish_reason'] : '',
 		);
 	}
+
+	/** Models URL of the same API (…/v1/models). */
+	protected function models_endpoint() {
+		return preg_replace( '#/chat/completions$#', '/models', $this->endpoint() );
+	}
+
+	/** Text-generation models (the list also contains audio, image, embedding and moderation models). */
+	protected static function is_chat_model( $id ) {
+		$id = strtolower( (string) $id );
+		if ( preg_match( '/(embedding|whisper|tts|dall-e|davinci|babbage|moderation|transcribe|realtime|audio|image|search-preview|computer-use|sora)/', $id ) ) {
+			return false;
+		}
+		return (bool) preg_match( '/^(gpt-|o\d|chatgpt-|codex)/', $id );
+	}
+
+	/** Models API: https://platform.openai.com/docs/api-reference/models/list — only models this key can use. */
+	public function list_models() {
+		$body = $this->get( $this->models_endpoint(), $this->headers() );
+		if ( is_wp_error( $body ) ) {
+			return $body;
+		}
+		$out = array();
+		foreach ( isset( $body['data'] ) ? (array) $body['data'] : array() as $m ) {
+			if ( empty( $m['id'] ) ) {
+				continue;
+			}
+			$out[] = array(
+				'id'      => (string) $m['id'],
+				'label'   => (string) $m['id'],
+				'created' => isset( $m['created'] ) ? gmdate( 'Y-m-d', (int) $m['created'] ) : '',
+				'chat'    => static::is_chat_model( $m['id'] ),
+			);
+		}
+		usort(
+			$out,
+			static function ( $a, $b ) {
+				return strcmp( $b['created'], $a['created'] );
+			}
+		);
+		return $out;
+	}
 }

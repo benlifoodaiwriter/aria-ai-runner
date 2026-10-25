@@ -99,6 +99,10 @@ final class Engine {
 			throw $e;
 		}
 		$route = $this->route_used( $provider );
+		// The connection state in Settings → AI follows real usage (key rejected, model gone, works).
+		if ( $prov_obj && ( is_wp_error( $res ) ? 'seolity_ai_not_configured' !== $res->get_error_code() && 'seolity_ai_parse' !== $res->get_error_code() && 'seolity_ai_budget' !== $res->get_error_code() : empty( $res['meta']['cached'] ) ) ) {
+			$this->plugin->aiproviders->observe( $provider, $prov_obj->model(), is_wp_error( $res ) ? $res : null );
+		}
 		if ( is_wp_error( $res ) ) {
 			$act->finish( $id, 'failed', $pname . ' — ' . $res->get_error_message(), array( 'error' => $res->get_error_code() ), array( 'route' => $route, 'step' => __( 'Failed', 'seolity' ) ) );
 		} else {

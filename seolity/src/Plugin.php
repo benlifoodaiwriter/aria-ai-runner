@@ -26,6 +26,7 @@ defined( 'ABSPATH' ) || exit;
  * @property-read Content\Optimizer          $optimizer
  * @property-read AI\Gateway                 $gateway
  * @property-read AI\Remote\LocalCli         $localcli
+ * @property-read AI\ProviderManager          $aiproviders
  * @property-read Roadmap\Roadmap            $roadmap
  * @property-read Activity\Activity          $activity
  * @property-read Activity\AiJobs            $aijobs
@@ -166,6 +167,7 @@ final class Plugin {
 			'subscription'    => AI\Remote\SubscriptionRunner::class,
 			'gateway'         => AI\Gateway::class,
 			'localcli'        => AI\Remote\LocalCli::class,
+			'aiproviders'     => AI\ProviderManager::class,
 			'roadmap'         => Roadmap\Roadmap::class,
 			'activity'        => Activity\Activity::class,
 			'aijobs'          => Activity\AiJobs::class,
@@ -197,6 +199,13 @@ final class Plugin {
 		Frontend\Frontend::register_hooks( $this );
 
 		add_action( 'rest_api_init', array( new Api\Router( $this ), 'register_routes' ) );
+		// A changed key invalidates what we verified with the old one.
+		add_action(
+			'seolity_secret_changed',
+			function ( $key ) {
+				$this->aiproviders->on_secret_changed( $key );
+			}
+		);
 
 		// Google / SERP / AI calls from servers that cannot reach them directly go through the relay.
 		add_filter(

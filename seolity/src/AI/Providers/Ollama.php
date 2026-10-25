@@ -63,4 +63,31 @@ final class Ollama extends AbstractProvider {
 			'stop_reason' => isset( $res['done_reason'] ) ? (string) $res['done_reason'] : '',
 		);
 	}
+
+	public function key_name() {
+		return '';
+	}
+
+	public function has_key() {
+		return true;
+	}
+
+	/** Models installed on the Ollama server (GET /api/tags). */
+	public function list_models() {
+		$url = untrailingslashit( (string) $this->plugin->settings->get( 'ollama_base_url' ) ) . '/api/tags';
+		$res = \SEOlity\Core\Http::json( 'GET', $url, null, array(), 15 );
+		if ( is_wp_error( $res ) ) {
+			return new \WP_Error( 'seolity_ai_http', sprintf( __( 'Ollama could not be reached at %1$s: %2$s', 'seolity' ), $url, $res->get_error_message() ) );
+		}
+		if ( $res['status'] >= 400 || ! is_array( $res['body'] ) ) {
+			return new \WP_Error( 'seolity_ai_api', sprintf( __( 'Ollama answered HTTP %d.', 'seolity' ), $res['status'] ) );
+		}
+		$out = array();
+		foreach ( isset( $res['body']['models'] ) ? (array) $res['body']['models'] : array() as $m ) {
+			if ( ! empty( $m['name'] ) ) {
+				$out[] = array( 'id' => (string) $m['name'], 'label' => (string) $m['name'], 'chat' => true, 'note' => isset( $m['details']['parameter_size'] ) ? (string) $m['details']['parameter_size'] : '' );
+			}
+		}
+		return $out;
+	}
 }

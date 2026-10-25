@@ -62,12 +62,22 @@ final class AiJobs {
 		$subject = isset( $params['label'] ) ? sanitize_text_field( (string) $params['label'] ) : '';
 		$name    = $oid ? Objects::label( $otype, $oid ) : ( isset( $params['title'] ) ? sanitize_text_field( (string) $params['title'] ) : '' );
 		$subject = trim( $subject . ( $subject && $name ? ' — ' : '' ) . $name );
+		// The same edit of the same item is never queued twice.
+		$unique = $type . '|' . $otype . '|' . $oid . '|' . ( isset( $params['field'] ) ? sanitize_key( (string) $params['field'] ) : '' ) . '|' . ( isset( $params['elementId'] ) ? sanitize_key( (string) $params['elementId'] ) : '' );
+		$alive  = $oid ? $this->plugin->queue->find_unique( 'ai_job', $unique ) : 0;
+		if ( $alive ) {
+			$aid = (int) $this->plugin->db->value( 'SELECT id FROM {activity} WHERE job_id = %d ORDER BY id DESC LIMIT 1', array( $alive ) );
+			if ( $aid ) {
+				return $this->plugin->activity->get( $aid, false );
+			}
+		}
 		$id      = $this->plugin->activity->start(
 			'edit',
 			$titles[ $type ],
 			array(
 				'detail' => $subject,
 				'dock'   => true,
+				'status' => 'queued',
 				'step'   => __( 'Queued — starting in a moment…', 'seolity' ),
 				'meta'   => array( 'type' => $type, 'params' => $params, 'subject' => $subject, 'object' => array( 'type' => $otype, 'id' => $oid ), 'edit_url' => $oid && 'post' === $otype ? admin_url( 'post.php?post=' . $oid . '&action=edit' ) : '' ),
 			)
@@ -75,7 +85,8 @@ final class AiJobs {
 		if ( ! $id ) {
 			return new \WP_Error( 'seolity_job', __( 'Could not start the job (database not ready).', 'seolity' ), array( 'status' => 500 ) );
 		}
-		$this->plugin->queue->push( 'ai_job', array( 'id' => $id, 'user_id' => get_current_user_id() ), array( 'priority' => 0, 'max_attempts' => 2 ) );
+		$job = $this->plugin->queue->push( 'ai_job', array( 'id' => $id, 'user_id' => get_current_user_id() ), array( 'unique' => $oid ? $unique : false, 'priority' => 0, 'max_attempts' => 2 ) );
+		$this->plugin->activity->attach_job( $id, $job );
 		self::run_after_response( $this->plugin );
 		return $this->plugin->activity->get( $id, false );
 	}

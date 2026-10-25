@@ -561,3 +561,31 @@ button.sl-segcard { cursor: pointer; }
 .sl-local__head code { font-size: 12px; overflow-wrap: anywhere; }
 .sl-local .sl-row { flex-wrap: wrap; }
 .sl-local .sl-input { flex: 1 1 220px; min-width: 0; }
+/* 1.9 task manager */
+.sl-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.sl-chip { display: inline-flex; align-items: center; gap: 6px; padding: 5px 11px; border-radius: 999px; border: 1px solid var(--sl-border); background: var(--sl-surface); color: var(--sl-text-2); font: inherit; font-size: 12.5px; font-weight: 600; cursor: pointer; }
+.sl-chip b { font-weight: 700; color: var(--sl-text); }
+.sl-chip.is-on { background: var(--sl-brand-50); border-color: var(--sl-brand); color: var(--sl-brand-600); }
+.sl-chip.is-on b { color: var(--sl-brand-600); }
+.sl-act__actions { margin-top: 6px; gap: 6px; }
+.sl-act__check { margin-top: 4px; flex: 0 0 auto; }
+.sl-act__item.is-timed_out, .sl-act__item.is-interrupted { border-inline-start-color: var(--sl-bad); }
+.sl-act__item.is-queued { opacity: .9; }
+/* 1.9 AI settings: two connection boxes + provider panels */
+.sl-aiboxes { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 18px; align-items: start; }
+.sl-aibox { padding: 18px; }
+.sl-aibox__head { display: flex; gap: 12px; align-items: flex-start; margin-bottom: 14px; }
+.sl-aibox__head h3 { margin: 0 0 4px; font-size: 18px; }
+.sl-aibox__head p { margin: 0; color: var(--sl-text-2); font-size: 13px; }
+.sl-aibox .sl-providers { grid-template-columns: 1fr; gap: 10px; }
+.sl-provider--tile { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.sl-provider--tile .sl-provider__actions { margin: 0; }
+.sl-provider--tile { font: inherit; text-align: start; cursor: pointer; width: 100%; }
+.sl-provider--tile:hover { border-color: var(--sl-brand); box-shadow: var(--sl-shadow); }
+.sl-provider--tile:focus-visible { outline: 2px solid var(--sl-brand); outline-offset: 2px; }
+.sl-aipanel__head { display: flex; gap: 12px; align-items: center; }
+.sl-aipanel__head b { font-size: 16px; }
+.sl-aipanel__step { margin: 10px 0 0; font-size: 14px; }
+.sl-aipanel .sl-row .sl-input { flex: 1 1 260px; min-width: 0; }
+.sl-aipanel .sl-select { max-width: 100%; }
+@media (max-width: 600px) { .sl-aiboxes { grid-template-columns: 1fr; } .sl-aibox .sl-providers { grid-template-columns: 1fr; } }

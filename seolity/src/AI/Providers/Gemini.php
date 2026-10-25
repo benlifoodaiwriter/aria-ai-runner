@@ -70,4 +70,34 @@ final class Gemini extends AbstractProvider {
 			'stop_reason' => $finish,
 		);
 	}
+
+	/** Models API: https://ai.google.dev/api/models#method:-models.list — models that support generateContent. */
+	public function list_models() {
+		$out   = array();
+		$token = '';
+		for ( $i = 0; $i < 5; $i++ ) {
+			$url  = 'https://generativelanguage.googleapis.com/v1beta/models?pageSize=1000' . ( '' !== $token ? '&pageToken=' . rawurlencode( $token ) : '' );
+			$body = $this->get( $url, array( 'x-goog-api-key' => $this->api_key() ) );
+			if ( is_wp_error( $body ) ) {
+				return $body;
+			}
+			foreach ( isset( $body['models'] ) ? (array) $body['models'] : array() as $m ) {
+				if ( empty( $m['name'] ) ) {
+					continue;
+				}
+				$methods = isset( $m['supportedGenerationMethods'] ) ? (array) $m['supportedGenerationMethods'] : array();
+				$out[]   = array(
+					'id'      => preg_replace( '#^models/#', '', (string) $m['name'] ),
+					'label'   => isset( $m['displayName'] ) ? (string) $m['displayName'] : (string) $m['name'],
+					'context' => isset( $m['inputTokenLimit'] ) ? (int) $m['inputTokenLimit'] : 0,
+					'chat'    => in_array( 'generateContent', $methods, true ) && ! preg_match( '/(embedding|aqa|imagen|veo|tts|image-generation|live)/', (string) $m['name'] ),
+				);
+			}
+			if ( empty( $body['nextPageToken'] ) ) {
+				break;
+			}
+			$token = (string) $body['nextPageToken'];
+		}
+		return $out;
+	}
 }

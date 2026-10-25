@@ -43,6 +43,7 @@ final class ChatService {
 		$this->store( $conversation_id, 'user', $message, $page ? array( 'page' => $page ) : array() );
 		$aid = $this->plugin->activity->start( 'chat', __( 'Chat answer', 'seolity' ) . ': ' . mb_substr( $message, 0, 70 ), array( 'ref' => 'chat:' . $conversation_id, 'step' => __( 'Reading your site data…', 'seolity' ) ) );
 		$id  = $this->store( $conversation_id, 'assistant', '', array( 'status' => 'pending', 'activity' => $aid, 'question' => $message, 'page' => $page, 'started' => gmdate( 'c' ) ) );
+		$this->plugin->activity->merge_meta( $aid, array( 'message_id' => (int) $id ) );
 		ignore_user_abort( true ); // A reload must not lose the answer.
 		if ( function_exists( 'set_time_limit' ) ) {
 			@set_time_limit( 300 ); // phpcs:ignore WordPress.PHP.NoSilencedErrors
@@ -50,8 +51,7 @@ final class ChatService {
 		try {
 			$this->answer( $id );
 		} catch ( \SEOlity\AI\Deferred $d ) {
-			$this->update_meta( $id, array( 'status' => 'waiting', 'job' => $d->job_id() ) );
-			$this->plugin->queue->push( 'chat_reply', array( 'id' => $id, 'user_id' => get_current_user_id() ), array( 'unique' => 'chat_reply_' . $id, 'priority' => 0, 'delay' => 5, 'max_attempts' => 3 ) );
+			$this->defer( $id, $aid, $d );
 		}
 		return array( 'conversation_id' => $conversation_id, 'message' => $this->message( $id ) );
 	}
@@ -131,16 +131,45 @@ final class ChatService {
 			return new \WP_Error( 'seolity_chat', __( 'Message not found.', 'seolity' ), array( 'status' => 404 ) );
 		}
 		$meta = (array) json_decode( (string) $row['meta'], true );
-		$aid  = $this->plugin->activity->start( 'chat', __( 'Chat answer (again)', 'seolity' ) . ': ' . mb_substr( isset( $meta['question'] ) ? $meta['question'] : '', 0, 70 ), array( 'step' => __( 'Reading your site data…', 'seolity' ) ) );
+		$aid  = $this->plugin->activity->start( 'chat', __( 'Chat answer (again)', 'seolity' ) . ': ' . mb_substr( isset( $meta['question'] ) ? $meta['question'] : '', 0, 70 ), array( 'step' => __( 'Reading your site data…', 'seolity' ), 'meta' => array( 'message_id' => (int) $id ) ) );
 		$this->plugin->db->update( 'chat', array( 'content' => '', 'meta' => wp_json_encode( array_merge( $meta, array( 'status' => 'pending', 'error' => null, 'activity' => $aid, 'started' => gmdate( 'c' ) ) ), JSON_UNESCAPED_UNICODE ) ), array( 'id' => (int) $id ) );
 		ignore_user_abort( true );
 		try {
 			$this->answer( $id );
 		} catch ( \SEOlity\AI\Deferred $d ) {
-			$this->update_meta( $id, array( 'status' => 'waiting', 'job' => $d->job_id() ) );
-			$this->plugin->queue->push( 'chat_reply', array( 'id' => $id, 'user_id' => get_current_user_id() ), array( 'unique' => 'chat_reply_' . $id, 'priority' => 0, 'delay' => 5, 'max_attempts' => 3 ) );
+			$this->defer( $id, $aid, $d );
 		}
 		return array( 'message' => $this->message( $id ) );
+	}
+
+	/** The AI answers through GitHub: a queue job fills the placeholder later (linked to the activity). */
+	private function defer( $id, $aid, \SEOlity\AI\Deferred $d ) {
+		$this->update_meta( $id, array( 'status' => 'waiting', 'job' => $d->job_id() ) );
+		$job = $this->plugin->queue->push( 'chat_reply', array( 'id' => $id, 'user_id' => get_current_user_id() ), array( 'unique' => 'chat_reply_' . $id, 'priority' => 0, 'delay' => 5, 'max_attempts' => 3 ) );
+		if ( $job && $aid ) {
+			$this->plugin->activity->attach_job( $aid, $job );
+			$this->plugin->db->update( 'activity', array( 'status' => 'waiting' ), array( 'id' => (int) $aid ) );
+		}
+	}
+
+	/**
+	 * Answers whose work ended without an answer (cancelled, timed out, interrupted) are shown as
+	 * failed with the reason, so the chat never waits forever.
+	 */
+	private function settle( $conversation_id ) {
+		$this->plugin->activity->reconcile();
+		$db   = $this->plugin->db;
+		$rows = $db->rows( "SELECT id, meta FROM {chat} WHERE user_id = %d AND conversation_id = %s AND role = 'assistant' AND content = '' ORDER BY id DESC LIMIT 20", array( get_current_user_id(), (string) $conversation_id ) );
+		foreach ( $rows as $r ) {
+			$meta = (array) json_decode( (string) $r['meta'], true );
+			if ( empty( $meta['activity'] ) || ! isset( $meta['status'] ) || ! in_array( $meta['status'], array( 'pending', 'waiting' ), true ) ) {
+				continue;
+			}
+			$act = $db->row( 'SELECT status, detail FROM {activity} WHERE id = %d', array( (int) $meta['activity'] ) );
+			if ( $act && in_array( $act['status'], array( 'failed', 'cancelled', 'timed_out', 'interrupted' ), true ) ) {
+				$this->update_meta( (int) $r['id'], array( 'status' => 'failed', 'error' => (string) $act['detail'], 'code' => 'seolity_' . $act['status'] ) );
+			}
+		}
 	}
 
 	private function update_meta( $id, array $changes ) {
@@ -252,6 +281,7 @@ final class ChatService {
 	}
 
 	public function history( $conversation_id ) {
+		$this->settle( $conversation_id );
 		$rows = $this->plugin->db->rows( 'SELECT id, role, content, meta, created_at FROM {chat} WHERE user_id = %d AND conversation_id = %s ORDER BY id ASC LIMIT 200', array( get_current_user_id(), (string) $conversation_id ) );
 		return array_map(
 			static function ( $r ) {

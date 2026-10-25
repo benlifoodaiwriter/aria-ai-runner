@@ -44,13 +44,17 @@ final class Installer {
 	}
 
 	public static function maybe_upgrade() {
-		if ( get_option( self::DB_OPTION ) !== SEOLITY_DB_VERSION ) {
+		$from_db = (string) get_option( self::DB_OPTION );
+		if ( $from_db !== SEOLITY_DB_VERSION ) {
 			self::create_tables();
 			Capabilities::install();
 			Settings::install_defaults();
 			self::migrate_settings();
 			self::ensure_default_project();
 			update_option( self::DB_OPTION, SEOLITY_DB_VERSION, false );
+			if ( '' !== $from_db && version_compare( $from_db, '1.5.0', '<' ) ) {
+				self::migrate_150();
+			}
 		}
 		$prev = (string) get_option( 'seolity_plugin_version', '' );
 		if ( SEOLITY_VERSION !== $prev ) {
@@ -71,6 +75,27 @@ final class Installer {
 	}
 
 	/** One-off settings migrations between versions. */
+	/**
+	 * DB 1.5.0 (plugin 1.9): link existing activity rows to their jobs and close work that is no
+	 * longer alive (the "permanently running" tasks of earlier versions), and give existing
+	 * recommendations their category so they appear in the right section of the roadmap.
+	 */
+	private static function migrate_150() {
+		$db = new Database();
+		$db->query( "UPDATE {activity} SET job_id = CAST(SUBSTRING(ref, 5) AS UNSIGNED) WHERE job_id IS NULL AND ref LIKE 'job:%'" );
+		// Legacy rows created as "running" before their job started (agent / AI edit cards): close the ones idle for 15+ minutes.
+		$db->query(
+			"UPDATE {activity} SET status = 'interrupted', finished_at = %s, detail = %s WHERE status IN ('running','waiting') AND job_id IS NULL AND updated_at < %s",
+			array( Database::now(), __( 'Stopped without finishing (closed by the 1.9 update: this work was no longer running).', 'seolity' ), gmdate( 'Y-m-d H:i:s', time() - 15 * MINUTE_IN_SECONDS ) )
+		);
+		if ( function_exists( 'seolity' ) ) {
+			seolity()->activity->reconcile( true );
+			if ( method_exists( seolity()->recommendations, 'backfill_categories' ) ) {
+				seolity()->recommendations->backfill_categories();
+			}
+		}
+	}
+
 	private static function migrate_settings() {
 		$s = get_option( Settings::OPTION, array() );
 		if ( is_array( $s ) && isset( $s['brand_color'] ) && '#6d28d9' === strtolower( (string) $s['brand_color'] ) ) {

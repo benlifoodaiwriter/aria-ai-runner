@@ -109,4 +109,33 @@ final class Anthropic extends AbstractProvider {
 			'stop_reason' => $stop,
 		);
 	}
+
+	/** Models API: https://docs.anthropic.com/en/api/models-list (paginated). */
+	public function list_models() {
+		$out   = array();
+		$after = '';
+		for ( $i = 0; $i < 10; $i++ ) {
+			$url  = 'https://api.anthropic.com/v1/models?limit=1000' . ( '' !== $after ? '&after_id=' . rawurlencode( $after ) : '' );
+			$body = $this->get( $url, array( 'x-api-key' => $this->api_key(), 'anthropic-version' => '2023-06-01' ) );
+			if ( is_wp_error( $body ) ) {
+				return $body;
+			}
+			foreach ( isset( $body['data'] ) ? (array) $body['data'] : array() as $m ) {
+				if ( empty( $m['id'] ) ) {
+					continue;
+				}
+				$out[] = array(
+					'id'      => (string) $m['id'],
+					'label'   => isset( $m['display_name'] ) ? (string) $m['display_name'] : (string) $m['id'],
+					'created' => isset( $m['created_at'] ) ? (string) $m['created_at'] : '',
+					'chat'    => true,
+				);
+			}
+			if ( empty( $body['has_more'] ) || empty( $body['last_id'] ) ) {
+				break;
+			}
+			$after = (string) $body['last_id'];
+		}
+		return $out;
+	}
 }

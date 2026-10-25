@@ -32,6 +32,7 @@ final class ProviderRegistry {
 				'custom'     => new Providers\CustomApi( $plugin ),
 				'sub_claude' => new Providers\SubscriptionClaude( $plugin ),
 				'sub_codex'  => new Providers\SubscriptionCodex( $plugin ),
+				'github_models' => new Providers\GitHubModels( $plugin ),
 			);
 			$providers = apply_filters( 'seolity_ai_providers', $providers, $plugin );
 			self::$providers = array_filter(

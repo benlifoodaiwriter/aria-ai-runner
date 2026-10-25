@@ -203,6 +203,13 @@ final class Crawler {
 		if ( ! $audit || 'running' !== $audit['status'] ) {
 			return true;
 		}
+		try {
+			$this->plugin->queue->checkpoint();
+		} catch ( \SEOlity\Queue\Cancelled $c ) {
+			$db->update( 'audits', array( 'status' => 'cancelled', 'finished_at' => Database::now() ), array( 'id' => (int) $audit_id ) );
+			$db->query( "UPDATE {urls} SET crawl_status = 'pending' WHERE project_id = %d AND crawl_status = 'crawling'", array( $this->pid() ) );
+			throw $c;
+		}
 		$size = (int) $this->plugin->settings->get( 'crawl_batch_size' );
 		$rows = $db->rows( "SELECT * FROM {urls} WHERE project_id = %d AND crawl_status = 'pending' ORDER BY depth ASC, id ASC LIMIT %d", array( $this->pid(), $size ) );
 		if ( ! $rows ) {
