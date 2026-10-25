@@ -23,6 +23,16 @@ final class Jobs {
 			$p->indexability->scan();
 			return true;
 		} );
+		$q->handler( 'duplicates_scan', static function () use ( $p ) {
+			$p->duplicates->scan();
+			return true;
+		} );
+		$q->handler( 'consolidate_prepare', static function ( $a ) use ( $p ) {
+			if ( ! empty( $a['user_id'] ) ) {
+				wp_set_current_user( (int) $a['user_id'] );
+			}
+			return $p->duplicates->prepare( (int) $a['id'] );
+		} );
 		$q->handler( 'operation_apply', static function ( $a ) use ( $p ) {
 			if ( ! empty( $a['user_id'] ) ) {
 				wp_set_current_user( (int) $a['user_id'] );

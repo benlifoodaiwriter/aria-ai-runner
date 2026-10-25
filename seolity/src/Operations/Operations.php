@@ -128,7 +128,7 @@ final class Operations {
 		foreach ( $items as $i => $it ) {
 			$it['key'] = isset( $it['key'] ) ? $it['key'] : 'i' . $i;
 			if ( 'redirect' === $it['kind'] && empty( $it['check'] ) ) {
-				$it['check'] = $this->check_redirect( $it['source'], $it['target'] );
+				$it['check'] = $this->check_redirect( $it['source'], $it['target'], ! empty( $it['merge'] ) );
 			}
 			$clean[] = $it;
 		}
@@ -164,7 +164,7 @@ final class Operations {
 	}
 
 	/** Validate a proposed redirect before anyone approves it. */
-	public function check_redirect( $source, $target ) {
+	public function check_redirect( $source, $target, $merge = false ) {
 		$src  = \SEOlity\Redirects\Manager::normalize_source( $source );
 		$out  = array( 'ok' => true, 'problems' => array() );
 		if ( '' === trim( (string) $target ) ) {
@@ -186,7 +186,7 @@ final class Operations {
 			$out['problems'][] = sprintf( __( 'Replaces the existing redirect to %s.', 'seolity' ), urldecode( $existing['target'] ) );
 		}
 		$live = $this->verifier->fetch( home_url( $src ), false );
-		if ( ! is_wp_error( $live ) && 200 === (int) $live['status'] ) {
+		if ( ! $merge && ! is_wp_error( $live ) && 200 === (int) $live['status'] ) {
 			$out['ok']         = false;
 			$out['problems'][] = __( 'The old URL is a live page (HTTP 200): redirecting it would hide existing content.', 'seolity' );
 		}
@@ -280,6 +280,15 @@ final class Operations {
 					continue;
 				}
 				$this->plugin->queue->checkpoint( (int) ( 90 * $i / $n ) );
+				$blocked = $this->blocked_by( $it, $items );
+				if ( $blocked ) {
+					/* translators: %s: step */
+					$it['result'] = array( 'ok' => false, 'skipped' => true, 'detail' => sprintf( __( 'Skipped: it depends on “%s”, which was not applied and verified.', 'seolity' ), $blocked ) );
+					$fail++;
+					$lines[] = '✗ ' . $this->describe( $it ) . ' — ' . $it['result']['detail'];
+					$this->update( $id, array( 'preview' => wp_json_encode( $items, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES ) ) );
+					continue;
+				}
 				$act->step( $aid, $this->describe( $it ), (int) ( 90 * $i / $n ) );
 				$res          = $this->apply_item( $it, $roll );
 				$it['result'] = $res;
@@ -315,6 +324,18 @@ final class Operations {
 		do_action( 'seolity_operation_finished', $this->get( $id ) );
 		Activity::set_current( $prev );
 		return true;
+	}
+
+	/** Name of a required item that did not succeed (merge before redirects, redirects before links). */
+	private function blocked_by( array $it, array $items ) {
+		foreach ( isset( $it['requires'] ) ? (array) $it['requires'] : array() as $req ) {
+			foreach ( $items as $o ) {
+				if ( $o['key'] === $req && ( empty( $o['result'] ) || empty( $o['result']['ok'] ) ) ) {
+					return $this->describe( $o );
+				}
+			}
+		}
+		return '';
 	}
 
 	/** Human line for one item. */

@@ -172,6 +172,7 @@ final class Plugin {
 			'aiproviders'     => AI\ProviderManager::class,
 			'operations'      => Operations\Operations::class,
 			'indexability'    => Technical\Indexability::class,
+			'duplicates'      => Content\Duplicates::class,
 			'roadmap'         => Roadmap\Roadmap::class,
 			'activity'        => Activity\Activity::class,
 			'aijobs'          => Activity\AiJobs::class,

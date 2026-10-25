@@ -619,3 +619,10 @@ button.sl-segcard { cursor: pointer; }
 .sl-finding { display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; }
 .sl-finding p { margin: 0; line-height: 1.8; }
 .sl-explain ul { margin: 0; padding: 0 30px 12px; line-height: 1.9; }
+.sl-dup__posts { display: grid; gap: 6px; }
+.sl-dup__post { display: grid; grid-template-columns: auto auto 1fr auto; gap: 10px; align-items: center; padding: 8px 10px; border: 1px solid var(--sl-border); border-radius: 10px; }
+.sl-dup__post.is-primary { border-color: var(--sl-good); background: var(--sl-surface-2); }
+.sl-dup__pick { display: inline-flex; gap: 4px; align-items: center; font-size: 12px; white-space: nowrap; }
+.sl-dup__meta { min-width: 0; }
+.sl-dup__meta .sl-muted { overflow-wrap: anywhere; }
+@media (max-width: 600px) { .sl-dup__post { grid-template-columns: auto auto 1fr; } .sl-dup__post > .sl-btn { grid-column: 1 / -1; justify-self: start; } }

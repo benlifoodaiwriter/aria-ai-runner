@@ -246,6 +246,29 @@ final class Router {
 			\SEOlity\Activity\AiJobs::run_after_response( $p );
 			return array( 'queued' => (bool) $job );
 		} );
+		$this->route( 'GET', '/duplicates', 'view', function () use ( $p ) {
+			$running = $p->queue->find_unique( 'duplicates_scan', true );
+			$last    = $p->duplicates->last();
+			if ( $last ) {
+				// Each group carries its canonical issue (state, instructions, latest operation).
+				foreach ( $last['clusters'] as &$c ) {
+					$c['issue'] = $p->db->row( 'SELECT id, status, instructions, operation_id, verified_at FROM {recommendations} WHERE project_id = %d AND dedupe_key = %s', array( $p->db->project_id(), sha1( 'duplicate_cluster|' . $c['key'] ) ) );
+				}
+				unset( $c );
+			}
+			return array( 'last' => $last, 'running' => (bool) $running, 'instructions' => $p->duplicates->instructions(), 'ai' => $p->ai->is_ready() );
+		} );
+		$this->route( 'POST', '/duplicates/scan', 'manage', function () use ( $p ) {
+			$job = $p->queue->push( 'duplicates_scan', array( 'user_id' => get_current_user_id() ), array( 'unique' => true, 'priority' => 1, 'max_attempts' => 2 ) );
+			\SEOlity\Activity\AiJobs::run_after_response( $p );
+			return array( 'queued' => (bool) $job );
+		} );
+		$this->route( 'POST', '/duplicates/instructions', 'manage', function ( Req $r ) use ( $p ) {
+			return array( 'instructions' => $p->duplicates->save_instructions( (string) $r->get_param( 'instructions' ) ) );
+		} );
+		$this->route( 'POST', '/duplicates/consolidate', 'apply', function ( Req $r ) use ( $p ) {
+			return $p->duplicates->start( sanitize_text_field( (string) $r->get_param( 'key' ) ), (int) $r->get_param( 'primary' ), array_map( 'intval', (array) $r->get_param( 'secondaries' ) ), (string) $r->get_param( 'instructions' ) );
+		} );
 		$this->route( 'POST', '/indexability/fix', 'manage', function ( Req $r ) use ( $p ) {
 			return $p->indexability->prepare_fix( sanitize_text_field( (string) $r->get_param( 'key' ) ) );
 		} );

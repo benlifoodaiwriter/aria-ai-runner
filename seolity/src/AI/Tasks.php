@@ -353,6 +353,25 @@ final class Tasks {
 					)
 				),
 			),
+			'consolidate'        => array(
+				'version'      => 'consolidate@1.0',
+				'max_tokens'   => 16000,
+				'topics'       => array( 'cannibalization', 'on-page', 'content' ),
+				'cache'        => false,
+				'instructions' => 'Several articles of this site cover the same topic and compete with each other. Merge them into ONE primary article. Keep the primary article\'s content, structure, links and images (HTML) unless something is wrong or outdated. Add every unique, useful piece of information from the secondary articles that the primary lacks (facts, sections, steps, examples, tables, FAQs) in the right place, without repeating what is already there. Keep the site\'s language and tone. Never invent facts, prices or statistics. Return the full merged body as clean HTML (no html/body tags). Then write an SEO title (max 60 characters), a meta description (max 155 characters) and the focus keyword for the merged article. List, per secondary URL, what you carried over, and anything you deliberately left out and why.',
+				'schema'       => S::obj(
+					array(
+						'content'          => S::str( 'Full merged article body (HTML).' ),
+						'title'            => S::str( 'Post title (H1).' ),
+						'meta_title'       => S::str(),
+						'meta_description' => S::str(),
+						'focus_keyword'    => S::str(),
+						'merged'           => S::arr( S::obj( array( 'url' => S::str(), 'added' => S::strings() ) ) ),
+						'dropped'          => S::strings(),
+						'notes'            => S::str(),
+					)
+				),
+			),
 			'keyword_plan'       => array(
 				'version'      => 'keyword_plan@1.0',
 				'max_tokens'   => 4000,
