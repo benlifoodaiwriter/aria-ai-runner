@@ -769,3 +769,24 @@ Country breakdown | Search Console metrics per country | International insights 
 Google Business Profile insights | Calls, directions, reviews from GBP | Local performance | GBP API | Metrics | ed=Pro
 Hreflang generator | Builds hreflang sets for multilingual plugins | Correct international setup | Translations | Tags | ed=Pro
 ''')
+
+cat('Verified operations, roadmap & site hygiene (1.9)', intro='Every proposed change is previewed, approved, applied, verified on the live site and undoable; every problem exists once.',
+    deps='Rank Math (optional, authoritative when active), AI provider for AI actions', ui='AI Center → SEO roadmap, Technical SEO, Content', auto='Semi-auto', risk='Low', db='operations, recommendations, jobs, activity', api='/operations, /issues, /analysis/full', features='''
+Operations engine | preview → approval → apply → verify → undo for every AI or bulk change | Nothing is written without your approval and nothing counts as done until it is confirmed | Proposed items | Verified result per item | api=/operations/{id}/approve|reject|rollback
+Item dependencies | Redirects only after the merged article was saved and verified, links only after their redirect | No half-finished consolidations | Item requirements | Skipped items with the reason
+Live verification | Checks the saved value (incl. Rank Math meta/options) and the effect on the live page (robots, canonical, title, HTTP status/Location) | Real, not assumed, results | Change | Persisted + effective state
+Canonical issues | One record per problem across audit, 404, indexability, duplicates, Search Console and competitors | No duplicates in the roadmap | Detectors | Issue with category, state, verification | db=recommendations
+SEO roadmap («مسیر راه») | Category links in dependency order with the reason, individual items with status, priority, AI recommendation, AI or manual fix | Clear order of work | Issues | Ordered plan | ui=AI Center → SEO roadmap
+Verified checkmark | Done & verified only after a verified operation; manual “done” shown separately | Honest progress | Operation result | Badge
+Full-site analysis | One button: Search Console, crawl, issues, indexability, duplicates, 404 targets, AI roadmap | Every section from the same data | — | Updated sections | api=POST /analysis/full
+Event-driven re-checks | Rank Math setting changes, publish/unpublish and saves schedule re-checks | Sections stay current | WordPress events | Queue jobs
+Indexability & crawl budget audit | Templates (Elementor), attachments, author/date archives, search, tags, empty taxonomies, parameter URLs, feeds, pagination | Google indexes what it should, nothing else | Live probes + Rank Math settings + optional URL inspection | Findings with the correct mechanism | ui=Technical SEO → Indexability
+Duplicate & near-duplicate detection | Content shingles, titles, H1 and shared Search Console queries, clustered | Finds cannibalization | Published articles | Groups with a suggested primary | ui=Content → Duplicate & similar articles
+AI consolidation | Owner instructions (standing + per merge), AI merge, meta, noindex + 301 of the old articles, internal links updated | Merges without losing content or links | Group + primary | Verified operation; nothing deleted
+Bulk 404 redirects | Many 404s, each to its own validated target | Fast recovery of broken URLs | Selected 404s | Verified redirects per URL | ui=Technical SEO → 404
+Rank Math redirects | Redirects are created in Rank Math Redirections when it is active | One redirect manager | Redirect | Rank Math redirect + live 301 check
+Task lifecycle | Heartbeat, time limits, interruption detection, retry, cancel at safe points, delete, accurate counts | No task stuck “running” | Queue jobs | Task queue tab | ui=AI Center → Activity → Task queue
+AI provider manager | Two boxes (API / subscription), models read from your account, one-request test, classified errors | Settings that really work | Key | Verified connection | ui=Settings → AI
+GitHub Models provider | GitHub’s official model API with a fine-grained token | Free, rate-limited AI | Token (Models: Read) | Completions | api=models.github.ai
+Official CLI on the host | Server diagnosis (PHP, Node, npm, disk, memory) and fixed-command install of Claude Code / Codex | Direct subscription use on a VPS | Host | Installed, version-verified CLI | ui=Connections → Server & speed
+''')

@@ -249,6 +249,36 @@ http://localhost:1234/v1   (LM Studio)
 
 **مستندات رسمی:** [احراز هویت Codex](https://github.com/openai/codex/blob/main/docs/authentication.md) · [مخزن Codex CLI](https://github.com/openai/codex)
 
+#### نصب CLI رسمی روی سرور خودتان (حالت مستقیم)
+
+`اختیاری` `VPS / سرور اختصاصی`
+
+اگر Claude Code یا Codex روی همان سروری نصب باشد که وردپرس روی آن است، اشتراک شما بدون GitHub و با سرعت کامل جواب می‌دهد. SEOlity سرور را بررسی می‌کند و فقط وقتی همه شرایط فراهم باشد، بسته رسمی را با یک فرمان ثابت npm نصب می‌کند (بدون اجرای هیچ دستور دلخواهی).
+
+**پیش‌نیازها:** اجازه اجرای برنامه در PHP (تابع proc_open فعال باشد) — در بیشتر هاست‌های اشتراکی بسته است؛ لینوکس یا مک روی پردازنده x64 یا arm64؛ Node.js نسخه ۲۲ یا بالاتر برای Claude Code (برای Codex نسخه ۱۶+) همراه npm؛ فضای خالی دیسک: Claude Code حدود ۲۹۲ مگابایت (۲.۱.۳۱۰، لینوکس x64) و Codex حدود ۴۴۴ مگابایت (۰.۱۶۴.۰) — با حافظه موقت npm حداقل ۷۰۰ مگابایت و ۱ گیگابایت خالی؛ حافظه آزاد حداقل ۵۱۲ مگابایت برای هر درخواست
+
+1. صفحه «سرور و سرعت» را باز کنید و در کارت «اشتراک روی همین سرور» دکمه «بررسی سرور و نصب خودکار» را بزنید. هر شرط با مقدار واقعی سرور و راه‌حل نشان داده می‌شود.
+2. در cPanel (هاست‌های CloudLinux) با «Setup Node.js App» یک برنامه با جدیدترین Node.js بسازید؛ SEOlity همان Node را پیدا می‌کند.
+3. اگر همه موارد سبز بود «نصب خودکار» را بزنید. نصب چند دقیقه در پس‌زمینه طول می‌کشد، در «وظایف» دیده می‌شود و در پایان با اجرای «--version» تأیید می‌شود.
+4. برای ورود، روی رایانه خودتان claude setup-token (یا codex login) را اجرا و نتیجه را در «تنظیمات ← هوش مصنوعی ← اشتراکی» ذخیره کنید؛ سپس «آزمایش» را بزنید.
+
+   ```
+   claude setup-token
+   ```
+5. یا با SSH خودتان نصب کنید و مسیر کامل را وارد کنید:
+
+   ```
+   npm install -g @anthropic-ai/claude-code
+   ```
+
+**رفع مشکل**
+
+- **proc_open غیرفعال است** — هاست اشتراکی اجازه اجرای برنامه نمی‌دهد و راه دور زدن مجاز نیست؛ از کلید API یا مسیر GitHub/کلادفلر استفاده کنید یا به VPS مهاجرت کنید.
+- **نصب به‌خاطر حافظه یا زمان قطع شد** — هاست فرایندهای طولانی را می‌بندد؛ نصب را با SSH انجام دهید یا از مسیر GitHub استفاده کنید.
+- **نصب شد ولی پاسخ نمی‌دهد** — توکن/ورود اشتراک را در تنظیمات هوش مصنوعی ذخیره کنید؛ CLI بدون ورود رسمی کار نمی‌کند.
+
+**مستندات رسمی:** [نصب Claude Code](https://code.claude.com/docs/en/setup) · [مخزن Codex CLI](https://github.com/openai/codex)
+
 ### GitHub، کلادفلر، دانش و داده
 
 #### GitHub
@@ -663,6 +693,36 @@ Uses your ChatGPT plan through the Codex CLI on GitHub Actions. The login is ref
 - **Login errors after some weeks** — SEOlity stores refreshed logins automatically; if it still fails, run codex login again and re-save the file.
 
 **Official docs:** [Codex authentication](https://github.com/openai/codex/blob/main/docs/authentication.md) · [Codex CLI repository](https://github.com/openai/codex)
+
+#### Official CLI on your own server (Direct mode)
+
+`Optional` `VPS / dedicated server`
+
+When Claude Code or Codex is installed on the same server as WordPress, your subscription answers without GitHub and at full speed. SEOlity checks the server and, only when everything is in place, installs the official package with one fixed npm command (it never runs arbitrary commands).
+
+**You need:** PHP may start programs (proc_open enabled) — blocked on most shared hosting; Linux or macOS on x64 or arm64; Node.js 22+ for Claude Code (16+ for Codex) with npm; Free disk: Claude Code ≈ 292 MB (2.1.310, linux x64), Codex ≈ 444 MB (0.164.0) — with npm’s temporary cache at least 700 MB and 1 GB free; At least 512 MB of free memory per request
+
+1. Open “Server & speed” and press “Check this server & install” in the “Subscription on this server” card. Every requirement is shown with the real value of the server and the fix.
+2. On cPanel (CloudLinux hosts) create an app with the newest Node.js in “Setup Node.js App”; SEOlity finds that Node automatically.
+3. If every item is green press “Install automatically”. It runs for a few minutes in the background, appears in Tasks and is verified at the end by running “--version”.
+4. To sign in, run claude setup-token (or codex login) on your own computer and save the result in Settings → AI → Subscription; then press “Test”.
+
+   ```
+   claude setup-token
+   ```
+5. Or install it yourself over SSH and enter the full path:
+
+   ```
+   npm install -g @anthropic-ai/claude-code
+   ```
+
+**Troubleshooting**
+
+- **proc_open is disabled** — Shared hosting does not allow starting programs and there is no legitimate way around it; use an API key, the GitHub/Cloudflare route or move to a VPS.
+- **The install stopped for memory or time limits** — The host kills long processes; install over SSH or use the GitHub route.
+- **Installed but it does not answer** — Save the subscription token/login in the AI settings; the CLI does not work without the official sign-in.
+
+**Official docs:** [Claude Code setup](https://code.claude.com/docs/en/setup) · [Codex CLI repository](https://github.com/openai/codex)
 
 ### GitHub, Cloudflare, knowledge & data
 

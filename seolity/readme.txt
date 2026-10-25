@@ -4,7 +4,7 @@ Tags: seo, ai, search console, woocommerce, schema
 Requires at least: 6.2
 Tested up to: 6.6
 Requires PHP: 7.4
-Stable tag: 1.8.0
+Stable tag: 1.9.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -72,6 +72,18 @@ Yes. The interface is fully translated and RTL-native, text analysis understands
 Enable "Delete all data on uninstall" in Settings → Privacy, then delete the plugin.
 
 == Changelog ==
+
+= 1.9.0 =
+* AI settings rebuilt into two boxes — "AI with API" and "Subscription" — with one panel per provider: key field and link, "Connect & load models" (the models are read from your own account: Anthropic, OpenAI, Gemini, OpenRouter, Ollama, custom APIs and the new GitHub Models), a real one-request model test, a clear status (not connected / key works / model tested) and plain-language errors (wrong key, no credit, model not available, rate limit, network). Fixed: a saved and working AI connection could still show "not configured".
+* Subscriptions are offered only the way each company allows: Claude Pro/Max through the official Claude Code program, ChatGPT plans through the official Codex program — on your private GitHub runner or, new, on your own server. SEOlity never asks for passwords or cookies.
+* Server & speed → "Check this server & install": checks PHP, Node.js, npm, disk (measured package sizes: Claude Code ≈ 292 MB, Codex ≈ 444 MB), memory and folder rights, and installs the official CLI with one fixed npm command when the host allows it; shared hosts get an honest explanation.
+* Tasks: no task stays "running" forever any more. Every background task has a heartbeat and a time limit, is detected when the server kills it, retried and finally marked "timed out". New Task queue tab with cancel, retry, delete and exact counts.
+* SEO roadmap («مسیر راه»): one "Run full-site analysis" button updates every section (crawl, Search Console, issues, indexability, duplicates, 404 targets, AI plan). Every problem appears once, with category links in the recommended order and the reason, status, priority, AI recommendation, "Do it with AI" (preview → approval → apply → verify → undo) or manual edit. A checkmark appears only after the result was verified on the live site; "mark as done" by hand is shown as such.
+* New: Indexability & crawl budget audit — Elementor templates, attachments, author/date archives, internal search, tags, empty taxonomies, parameter URLs, feeds and pagination are checked live (status, robots meta, X-Robots-Tag, canonical, robots.txt, sitemap, internal links, Rank Math settings, optional Search Console inspection), with the right fix for each (noindex vs robots.txt vs sitemap vs 301) applied in Rank Math and verified.
+* New: Duplicate & near-duplicate articles («مقالات تکراری و شبه تکراری») — finds articles that repeat or compete (content overlap, titles, H1, shared queries) and merges them into the strongest one: your standing and per-merge instructions, AI merge, full before/after preview, then noindex, 301 redirects and internal-link updates only after the merged article was saved and verified. Nothing is deleted; every edit keeps a WordPress revision and can be undone.
+* 404 monitor: select many URLs and redirect each one to its own target in one step, with validation and a verified result per URL.
+* Rank Math is the authority when it is active: robots, titles, descriptions and settings are written where Rank Math reads them, redirects are created in Rank Math Redirections, and every change is checked both in the database and on the live page.
+* Navigation: every menu item shows its sections underneath; the knowledge base moved to "Data collection".
 
 = 1.8.0 =
 * "Do it" on the dashboard and in the SEO roadmap opens a popup with two sides: exactly where to do it yourself (menu paths and buttons), and the AI's plan for your site. Press "Approve & let the AI do it" and watch every step live (e.g. "Finding pages that should link to …", "Adding the link in …"). It optimizes titles and content, writes FAQs, creates redirects, fixes redirect chains and adds internal links to weak pages by reading related posts across the whole site and writing a natural sentence with the link. Every change is versioned.

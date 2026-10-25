@@ -193,6 +193,11 @@ final class Queue {
 	 *
 	 * @throws Cancelled When cancellation was requested.
 	 */
+	private static function job_locale( array $args ) {
+		$locale = ! empty( $args['user_id'] ) ? get_user_locale( (int) $args['user_id'] ) : (string) get_option( 'seolity_ui_locale', '' );
+		return $locale && function_exists( 'switch_to_locale' ) && determine_locale() !== $locale ? switch_to_locale( $locale ) : false;
+	}
+
 	public function checkpoint( $progress = null ) {
 		if ( ! self::$current ) {
 			return;
@@ -228,7 +233,16 @@ final class Queue {
 			if ( ! isset( $this->handlers[ $job['hook'] ] ) ) {
 				throw new \RuntimeException( 'No handler registered for ' . $job['hook'] );
 			}
-			$result = call_user_func( $this->handlers[ $job['hook'] ], is_array( $job['args'] ) ? $job['args'] : array(), $job );
+			// Texts written by the job (issue titles, activity steps) use the reader's language,
+			// not the site language: the user who started it, else the admin who last opened SEOlity.
+			$switched = self::job_locale( is_array( $job['args'] ) ? $job['args'] : array() );
+			try {
+				$result = call_user_func( $this->handlers[ $job['hook'] ], is_array( $job['args'] ) ? $job['args'] : array(), $job );
+			} finally {
+				if ( $switched ) {
+					restore_previous_locale();
+				}
+			}
 			if ( is_wp_error( $result ) ) {
 				throw new \RuntimeException( $result->get_error_message() );
 			}

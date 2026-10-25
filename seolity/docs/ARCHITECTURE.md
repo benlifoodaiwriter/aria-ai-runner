@@ -329,6 +329,26 @@ through `ChangeManager` (versioned, undoable); state is saved so a retried job r
 `GET /chat/{cid}` returns messages plus pending ones and nudges the queue, so answers appear after
 a reload. Each answer stores route, model, time and error.
 
+### Operations engine (`Operations\Operations`, `Operations\Verifier`) — 1.9
+
+Every write that the AI (or a bulk action) proposes is an *operation*: `preparing → awaiting_approval → approved → applying → done | partial | failed | cancelled | rolled_back`. Items are typed (`change`, `redirect`, `setting`, `fix_chains`, `bulk`, `plan`); `change` items reference rows of the change manager (before/after, revisions, revert). Items may declare `requires` — e.g. consolidation redirects require the merged article — and are skipped with a reason when a requirement was not applied *and verified*. The verifier checks the persisted value (incl. Rank Math meta/options) and the effective state on the live page (robots, canonical, title, HTTP status/Location for redirects). Only a verified operation marks its canonical issue done (`verified_at`).
+
+### Canonical issues (`Recommendations\Engine`)
+
+One row per problem (`dedupe_key`), with `category` (`indexability`, `technical`, `404`, `duplicates`, `onpage`, `links`, `content`, `products`, `competitors`), state, instructions, operation link and verification. `board()` ranks categories by dependency order plus severity and impact; `items()` feeds the roadmap list. Sections that own a type (indexability, duplicates, 404) resolve their issues when the problem disappears.
+
+### Full-site analysis (`Analysis\FullAnalysis`)
+
+A chain of short queue steps: Search Console → crawl (awaited by re-queuing every 15 s, never by blocking a request) → issues → indexability → duplicates → 404 targets → AI roadmap. A failing section never stops the others. `Queue\Scheduler::kick_if_due()` runs on SEOlity's own GET requests so delayed steps continue while the admin is open, even without real cron. Rank Math option changes and publish/unpublish events schedule incremental re-checks.
+
+### Indexability (`Technical\Indexability`) and duplicates (`Content\Duplicates`)
+
+Indexability probes one sample URL per group live and compares technical with intended indexability; fixes are operation items (Rank Math options with a live `check_url`). Duplicates uses 3-word shingles with an inverted index (boilerplate shingles skipped), title/H1 tokens and Search Console query overlap, clusters pairs with union-find and suggests the primary (clicks → internal links → length → age). Consolidation stages: merged content + meta of the primary, noindex of each secondary, 301 (with `merge` flag, allowed although the source is live), and internal-link changes in other posts — all previewed, ordered by `requires`, verified and undoable.
+
+### AI provider manager (`AI\ProviderManager`)
+
+Per-provider connection state in `seolity_ai_connections`: key → `discover()` (the provider's own model list) → `verify()` (one real request) → `activate()`. Errors are classified (auth, credit, model, rate, network) with a fix. Subscriptions use only the official CLIs (`AI\Remote\SubscriptionRunner` on GitHub, `LocalCli` on the host). `AI\Remote\CliSetup` diagnoses the host and installs the official package with a fixed argv (no shell, no user input).
+
 ### Subscription CLI on the host (`AI\Remote\LocalCli`)
 
 If PHP may start programs (`proc_open`) and the official `claude` / `codex` CLI is found (setting

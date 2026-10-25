@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: SEOlity 1.0.0\n"
-"POT-Creation-Date: 2026-10-25 22:42+0000\n"
+"POT-Creation-Date: 2026-10-25 22:47+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -10,11 +10,11 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 msgid "This provider does not offer a model list."
-msgstr ""
+msgstr "این سرویس فهرست مدل ارائه نمی‌دهد."
 
 #, php-format
 msgid "%1$s could not be reached: %2$s"
-msgstr ""
+msgstr "%1$s در دسترس نبود: %2$s"
 
 #, php-format
 msgid "%1$s API error (%2$d): %3$s"
@@ -131,96 +131,96 @@ msgid "New figure \"%s\" not found in original — verify accuracy."
 msgstr "عدد جدید «%s» در متن اصلی نبود — صحت آن را بررسی کنید."
 
 msgid "Billed per use by Anthropic. A Claude Pro/Max subscription is not an API key — use the “Subscription” section for that."
-msgstr ""
+msgstr "هزینه بر اساس مصرف از Anthropic گرفته می‌شود. اشتراک Claude Pro/Max کلید API نیست — برای آن از بخش «اشتراکی» استفاده کنید."
 
 msgid "OpenAI API billing is separate from ChatGPT Plus/Pro: a ChatGPT subscription does not include API credit."
-msgstr ""
+msgstr "صورت‌حساب API در OpenAI از ChatGPT Plus/Pro جداست: اشتراک ChatGPT اعتبار API ندارد."
 
 msgid "Google AI Studio keys include a free tier with rate limits."
-msgstr ""
+msgstr "کلیدهای Google AI Studio یک سهمیه رایگان با محدودیت تعداد درخواست دارند."
 
 msgid "One key for hundreds of models from many companies."
-msgstr ""
+msgstr "یک کلید برای صدها مدل از شرکت‌های مختلف."
 
 msgid "DeepSeek, Groq, Mistral, xAI, Azure OpenAI, Cloudflare Workers AI or any OpenAI/Anthropic-compatible service."
-msgstr ""
+msgstr "DeepSeek، Groq، Mistral، xAI، Azure OpenAI، Cloudflare Workers AI یا هر سرویس سازگار با OpenAI/Anthropic."
 
 msgid "Models running on your own computer or server (no key)."
-msgstr ""
+msgstr "مدل‌هایی که روی رایانه یا سرور خودتان اجرا می‌شوند (بدون کلید)."
 
 msgid "Anthropic lets a Claude Pro/Max plan be used programmatically only through its official Claude Code program, signed in with a token from “claude setup-token”. SEOlity therefore runs Claude Code for you — on your private GitHub runner (nothing to install) or, optionally, on this server (VPS with Node.js). A direct connection from WordPress without Claude Code is not offered by Anthropic for subscriptions."
-msgstr ""
+msgstr "Anthropic استفاده برنامه‌ای از اشتراک Claude Pro/Max را فقط از طریق برنامه رسمی Claude Code و با توکن «claude setup-token» مجاز می‌داند. برای همین SEOlity خودش Claude Code را برای شما اجرا می‌کند — روی اجراکننده خصوصی GitHub شما (بدون نصب) یا در صورت تمایل روی همین سرور (VPS با Node.js). اتصال مستقیم وردپرس بدون Claude Code برای اشتراک‌ها از طرف Anthropic ارائه نشده است."
 
 msgid "OpenAI lets a ChatGPT plan be used programmatically only through its official Codex program (“Sign in with ChatGPT”, saved in auth.json). SEOlity runs Codex for you — on your private GitHub runner or, optionally, on this server. The OpenAI API does not accept ChatGPT logins."
-msgstr ""
+msgstr "OpenAI استفاده برنامه‌ای از اشتراک ChatGPT را فقط از طریق برنامه رسمی Codex («Sign in with ChatGPT» که در auth.json ذخیره می‌شود) مجاز می‌داند. SEOlity خودش Codex را اجرا می‌کند — روی اجراکننده خصوصی GitHub شما یا در صورت تمایل روی همین سرور. API شرکت OpenAI ورود ChatGPT را نمی‌پذیرد."
 
 msgid "GitHub’s official AI model API, called directly from WordPress — no CLI, no runner. Every GitHub account gets free, rate-limited use; Copilot plans raise the limits. Create a fine-grained token with the permission “Models: Read”."
-msgstr ""
+msgstr "API رسمی مدل‌های هوش مصنوعی GitHub که مستقیم از وردپرس صدا زده می‌شود — بدون CLI و بدون اجراکننده. هر حساب GitHub استفاده رایگان با محدودیت دارد و پلن‌های Copilot سقف را بالا می‌برند. یک توکن fine-grained با دسترسی «Models: Read» بسازید."
 
 msgid "Choose an AI connection in Settings → AI."
-msgstr ""
+msgstr "در «تنظیمات ← هوش مصنوعی» یک اتصال هوش مصنوعی انتخاب کنید."
 
 #, php-format
 msgid "Missing: %s"
-msgstr ""
+msgstr "کم است: %s"
 
 msgid "No API key saved for the selected provider."
-msgstr ""
+msgstr "برای سرویس انتخاب‌شده کلید API ذخیره نشده است."
 
 msgid "No model selected yet — load the models and pick one."
-msgstr ""
+msgstr "هنوز مدلی انتخاب نشده — مدل‌ها را بارگیری و یکی را انتخاب کنید."
 
 msgid "Unknown AI provider."
-msgstr ""
+msgstr "سرویس هوش مصنوعی ناشناخته است."
 
 msgid "Enter the API key first."
-msgstr ""
+msgstr "اول کلید API را وارد کنید."
 
 #, php-format
 msgid "Connecting %s: loading the models of your account"
-msgstr ""
+msgstr "اتصال %s: بارگیری مدل‌های حساب شما"
 
 msgid "Asking the provider for its model list…"
-msgstr ""
+msgstr "درخواست فهرست مدل‌ها از سرویس…"
 
 #, php-format
 msgid "%d models available to this connection"
-msgstr ""
+msgstr "%d مدل برای این اتصال در دسترس است"
 
 #, php-format
 msgid "Connection test: %1$s · %2$s"
-msgstr ""
+msgstr "آزمایش اتصال: %1$s · %2$s"
 
 msgid "default model"
-msgstr ""
+msgstr "مدل پیش‌فرض"
 
 msgid "Sending a short test request…"
-msgstr ""
+msgstr "ارسال یک درخواست کوتاه آزمایشی…"
 
 #, php-format
 msgid "Model %1$s answered in %2$s ms"
-msgstr ""
+msgstr "مدل %1$s در %2$s میلی‌ثانیه پاسخ داد"
 
 msgid "Choose a model first."
-msgstr ""
+msgstr "اول یک مدل انتخاب کنید."
 
 msgid "The model test did not succeed."
-msgstr ""
+msgstr "آزمایش مدل موفق نبود."
 
 msgid "The key was rejected: check that it was copied completely, has not been revoked, and belongs to this provider — or create a new one."
-msgstr ""
+msgstr "کلید پذیرفته نشد: مطمئن شوید کامل کپی شده، باطل نشده و متعلق به همین سرویس است — یا کلید تازه بسازید."
 
 msgid "The key works but the account has no usable credit or quota. Add credit / a payment method in the provider’s console."
-msgstr ""
+msgstr "کلید کار می‌کند اما حساب اعتبار یا سهمیه قابل‌استفاده ندارد. در کنسول سرویس اعتبار یا روش پرداخت اضافه کنید."
 
 msgid "This model is not available to your key. Pick another model from the list loaded from your account."
-msgstr ""
+msgstr "این مدل برای کلید شما در دسترس نیست. مدل دیگری از فهرستی که از حسابتان بارگیری شده انتخاب کنید."
 
 msgid "The provider is limiting requests right now. Wait a minute and try again."
-msgstr ""
+msgstr "سرویس الان تعداد درخواست‌ها را محدود کرده است. یک دقیقه صبر کنید و دوباره امتحان کنید."
 
 msgid "This server could not reach the provider. Check Connections → Server & speed (servers in Iran need the Cloudflare or GitHub relay)."
-msgstr ""
+msgstr "این سرور به سرویس دسترسی نداشت. «اتصال‌ها ← سرور و سرعت» را بررسی کنید (سرورهای داخل ایران به رله کلادفلر یا GitHub نیاز دارند)."
 
 msgid "The model declined this request."
 msgstr "مدل این درخواست را رد کرد."
@@ -248,135 +248,135 @@ msgid "Gemini blocked this response for safety reasons."
 msgstr "جمینای این پاسخ را به دلایل ایمنی مسدود کرد."
 
 msgid "GitHub Models (GitHub / Copilot account)"
-msgstr ""
+msgstr "GitHub Models (حساب GitHub / Copilot)"
 
 #, php-format
 msgid "rate limit: %s"
-msgstr ""
+msgstr "محدودیت درخواست: %s"
 
 msgid "Local LLM (Ollama)"
 msgstr "مدل زبانی محلی (Ollama)"
 
 #, php-format
 msgid "Ollama could not be reached at %1$s: %2$s"
-msgstr ""
+msgstr "Ollama در %1$s در دسترس نبود: %2$s"
 
 #, php-format
 msgid "Ollama answered HTTP %d."
-msgstr ""
+msgstr "Ollama با کد HTTP %d پاسخ داد."
 
 msgid "needs credits (your key is on the free tier)"
-msgstr ""
+msgstr "اعتبار لازم دارد (کلید شما روی سهمیه رایگان است)"
 
 msgid "free"
-msgstr ""
+msgstr "رایگان"
 
 msgid "Claude subscription (Pro/Max)"
 msgstr "اشتراک Claude (Pro/Max)"
 
 msgid "Sonnet (latest)"
-msgstr ""
+msgstr "Sonnet (آخرین نسخه)"
 
 msgid "alias — included in Pro and Max"
-msgstr ""
+msgstr "نام مستعار — در Pro و Max موجود است"
 
 msgid "Opus (latest)"
-msgstr ""
+msgstr "Opus (آخرین نسخه)"
 
 msgid "alias — availability depends on your plan"
-msgstr ""
+msgstr "نام مستعار — بسته به پلن شما در دسترس است"
 
 msgid "Haiku (latest)"
-msgstr ""
+msgstr "Haiku (آخرین نسخه)"
 
 msgid "alias"
-msgstr ""
+msgstr "نام مستعار"
 
 msgid "ChatGPT subscription (Plus/Pro)"
 msgstr "اشتراک ChatGPT (Plus/Pro)"
 
 msgid "Default model of your ChatGPT plan"
-msgstr ""
+msgstr "مدل پیش‌فرض پلن ChatGPT شما"
 
 msgid "recommended"
-msgstr ""
+msgstr "پیشنهادی"
 
 msgid "PHP may start programs (proc_open)"
-msgstr ""
+msgstr "PHP اجازه اجرای برنامه دارد (proc_open)"
 
 msgid "Allowed"
-msgstr ""
+msgstr "مجاز"
 
 msgid "Disabled by the host"
-msgstr ""
+msgstr "غیرفعال توسط هاست"
 
 msgid "Most shared hosts disable this on purpose. Ask the host to allow proc_open, or use a VPS — otherwise use the GitHub or Cloudflare route."
-msgstr ""
+msgstr "بیشتر هاست‌های اشتراکی این را عمداً می‌بندند. از هاست بخواهید proc_open را فعال کند یا از VPS استفاده کنید — در غیر این صورت از مسیر GitHub یا کلادفلر استفاده کنید."
 
 msgid "Operating system"
-msgstr ""
+msgstr "سیستم‌عامل"
 
 msgid "The official CLIs ship for Linux and macOS on x64/arm64 only."
-msgstr ""
+msgstr "CLIهای رسمی فقط برای لینوکس و مک روی x64/arm64 منتشر می‌شوند."
 
 #, php-format
 msgid "Node.js %d or newer"
-msgstr ""
+msgstr "Node.js نسخه %d یا بالاتر"
 
 msgid "Not found"
-msgstr ""
+msgstr "پیدا نشد"
 
 msgid "In cPanel open “Setup Node.js App” and create an app with the newest Node.js (this installs it for your account), or install Node.js on the server."
-msgstr ""
+msgstr "در cPanel بخش «Setup Node.js App» را باز کنید و با جدیدترین Node.js یک برنامه بسازید (این کار Node.js را برای حساب شما نصب می‌کند) یا Node.js را روی سرور نصب کنید."
 
 msgid "npm comes with Node.js; reinstall Node.js with npm."
-msgstr ""
+msgstr "npm همراه Node.js نصب می‌شود؛ Node.js را همراه npm دوباره نصب کنید."
 
 #, php-format
 msgid "Free disk space: %1$d MB (package %2$d MB + npm cache)"
-msgstr ""
+msgstr "فضای خالی دیسک: %1$d مگابایت (بسته %2$d مگابایت + حافظه موقت npm)"
 
 msgid "Unknown (the host does not report it)"
-msgstr ""
+msgstr "نامشخص (هاست آن را گزارش نمی‌کند)"
 
 msgid "Free up space or ask for a larger plan; shared plans with 1–2 GB of total space usually cannot hold it."
-msgstr ""
+msgstr "فضا آزاد کنید یا پلن بزرگ‌تری بگیرید؛ پلن‌های اشتراکی با ۱ تا ۲ گیگابایت فضای کل معمولاً جای آن را ندارند."
 
 #, php-format
 msgid "Available memory: %d MB"
-msgstr ""
+msgstr "حافظه آزاد: %d مگابایت"
 
 msgid "Unknown"
-msgstr ""
+msgstr "نامشخص"
 
 msgid "The CLI is a Node.js program; hosts that limit processes to a few hundred MB stop it while it answers."
-msgstr ""
+msgstr "CLI یک برنامه Node.js است؛ هاست‌هایی که حافظه هر فرایند را به چند صد مگابایت محدود می‌کنند آن را هنگام پاسخ دادن متوقف می‌کنند."
 
 msgid "Install folder is writable"
-msgstr ""
+msgstr "پوشه نصب قابل نوشتن است"
 
 msgid "(inside the web root — protected with deny rules)"
-msgstr ""
+msgstr "(داخل ریشه وب — با قواعد deny محافظت شده)"
 
 msgid "Make the folder writable for the PHP user."
-msgstr ""
+msgstr "پوشه را برای کاربر PHP قابل نوشتن کنید."
 
 msgid "This server does not meet the requirements — see the checks."
-msgstr ""
+msgstr "این سرور شرایط لازم را ندارد — موارد بررسی را ببینید."
 
 msgid "Installing the official CLI"
-msgstr ""
+msgstr "نصب CLI رسمی"
 
 #, php-format
 msgid "npm install %s …"
-msgstr ""
+msgstr "npm install %s …"
 
 #, php-format
 msgid "Installed and verified: %s"
-msgstr ""
+msgstr "نصب و تأیید شد: %s"
 
 msgid "The installation did not finish — see the log."
-msgstr ""
+msgstr "نصب کامل نشد — گزارش را ببینید."
 
 msgid "The official CLI is not installed on this server."
 msgstr "ابزار رسمی (CLI) روی این سرور نصب نیست."
@@ -409,10 +409,10 @@ msgid "Run \"Set up GitHub runner\""
 msgstr "دکمه «راه‌اندازی اجراکننده گیت‌هاب» را بزنید"
 
 msgid "Your Claude subscription is set to run directly on this server, so SEOlity will not send it to GitHub — but the official Claude Code CLI is not installed here. Install it (VPS), choose the GitHub runner as the connection method, or use an API key."
-msgstr ""
+msgstr "اشتراک Claude شما برای اجرای مستقیم روی همین سرور تنظیم شده، پس SEOlity آن را به GitHub نمی‌فرستد — اما CLI رسمی Claude Code اینجا نصب نیست. آن را نصب کنید (VPS)، اجراکننده GitHub را به‌عنوان روش اتصال انتخاب کنید یا از کلید API استفاده کنید."
 
 msgid "Your ChatGPT subscription is set to run directly on this server, so SEOlity will not send it to GitHub — but the official Codex CLI is not installed here. Install it (VPS), choose the GitHub runner as the connection method, or use an API key."
-msgstr ""
+msgstr "اشتراک ChatGPT شما برای اجرای مستقیم روی همین سرور تنظیم شده، پس SEOlity آن را به GitHub نمی‌فرستد — اما CLI رسمی Codex اینجا نصب نیست. آن را نصب کنید (VPS)، اجراکننده GitHub را به‌عنوان روش اتصال انتخاب کنید یا از کلید API استفاده کنید."
 
 msgid "The subscription runner did not answer in time. Check the \"SEOlity AI\" workflow runs on GitHub."
 msgstr "اجراکننده اشتراکی به‌موقع پاسخ نداد. اجراهای گردش‌کار «SEOlity AI» را در گیت‌هاب بررسی کنید."
@@ -588,32 +588,32 @@ msgid "Finished"
 msgstr "تمام شد"
 
 msgid "Queued again"
-msgstr ""
+msgstr "دوباره در صف قرار گرفت"
 
 msgid "The background task no longer exists (it was removed or cleaned up)."
-msgstr ""
+msgstr "وظیفه پس‌زمینه دیگر وجود ندارد (حذف یا پاک‌سازی شده است)."
 
 msgid "Stopped without finishing: the server ended the request (PHP time limit or closed connection)."
-msgstr ""
+msgstr "بدون اتمام متوقف شد: سرور درخواست را بست (محدودیت زمان PHP یا قطع اتصال)."
 
 #, php-format
 msgid "No AI answer arrived within %d minutes."
-msgstr ""
+msgstr "در %d دقیقه هیچ پاسخی از هوش مصنوعی نرسید."
 
 msgid "Not found."
 msgstr "پیدا نشد."
 
 msgid "This task has already finished."
-msgstr ""
+msgstr "این وظیفه قبلاً تمام شده است."
 
 msgid "Cancelled by the user."
-msgstr ""
+msgstr "توسط کاربر لغو شد."
 
 msgid "Only failed, cancelled, interrupted or timed-out work can be retried."
-msgstr ""
+msgstr "فقط کارهای ناموفق، لغوشده، قطع‌شده یا منقضی‌شده را می‌توان دوباره اجرا کرد."
 
 msgid "This entry cannot be repeated automatically; start it again from its page."
-msgstr ""
+msgstr "این مورد خودکار تکرار نمی‌شود؛ آن را از صفحه خودش دوباره شروع کنید."
 
 msgid "Content optimization"
 msgstr "بهینه‌سازی محتوا"
@@ -649,7 +649,7 @@ msgid "Cannibalization advice"
 msgstr "راهکار هم‌نوع‌خواری کلمات"
 
 msgid "Merge duplicate articles"
-msgstr ""
+msgstr "ادغام مقالات تکراری"
 
 msgid "Focus keyword plan"
 msgstr "برنامه کلمه کلیدی اصلی"
@@ -691,7 +691,7 @@ msgid "SERP analysis"
 msgstr "تحلیل نتایج جست‌وجو (SERP)"
 
 msgid "SEO roadmap analysis"
-msgstr "تحلیل نقشه راه سئو"
+msgstr "تحلیل مسیر راه"
 
 msgid "AI edit"
 msgstr "ویرایش هوش مصنوعی"
@@ -751,34 +751,34 @@ msgid "Route speed test"
 msgstr "آزمون سرعت مسیرها"
 
 msgid "Indexability & crawl budget audit"
-msgstr ""
+msgstr "ممیزی ایندکس‌پذیری و بودجه خزش"
 
 msgid "Merging duplicate articles"
-msgstr ""
+msgstr "در حال ادغام مقالات تکراری"
 
 msgid "Full-site analysis"
-msgstr ""
+msgstr "تحلیل کامل سایت"
 
 msgid "Duplicate & similar articles analysis"
-msgstr ""
+msgstr "تحلیل مقالات تکراری و شبه تکراری"
 
 msgid "Clean-up"
 msgstr "پاک‌سازی"
 
 msgid "AI agent run"
-msgstr ""
+msgstr "اجرای عامل هوش مصنوعی"
 
 msgid "Site audit: crawling a batch of pages"
-msgstr ""
+msgstr "ممیزی سایت: خزش یک دسته از صفحات"
 
 msgid "Send AI requests to GitHub"
-msgstr ""
+msgstr "ارسال درخواست‌های هوش مصنوعی به GitHub"
 
 msgid "Collect AI answers from GitHub"
-msgstr ""
+msgstr "دریافت پاسخ‌های هوش مصنوعی از GitHub"
 
 msgid "SEO operation"
-msgstr ""
+msgstr "عملیات سئو"
 
 msgid "Content"
 msgstr "محتوا"
@@ -840,7 +840,7 @@ msgid "Site audit completed"
 msgstr "ممیزی سایت کامل شد"
 
 msgid "SEO roadmap built"
-msgstr "نقشه راه سئو ساخته شد"
+msgstr "مسیر راه ساخته شد"
 
 msgid "Old data archived to GitHub"
 msgstr "داده‌های قدیمی در گیت‌هاب بایگانی شد"
@@ -910,7 +910,7 @@ msgid "Dashboard"
 msgstr "داشبورد"
 
 msgid "SEO roadmap"
-msgstr "نقشه راه سئو"
+msgstr "مسیر راه"
 
 msgid "AI SEO Chat"
 msgstr "چت سئوی هوش مصنوعی"
@@ -952,7 +952,7 @@ msgid "AI Changes"
 msgstr "تغییرات هوش مصنوعی"
 
 msgid "Duplicate & similar articles"
-msgstr ""
+msgstr "مقالات تکراری و شبه تکراری"
 
 msgid "Redirects"
 msgstr "ریدایرکت‌ها"
@@ -961,7 +961,7 @@ msgid "404 Monitor"
 msgstr "پایشگر ۴۰۴"
 
 msgid "Indexability & crawl budget"
-msgstr ""
+msgstr "ایندکس‌پذیری و بودجه خزش"
 
 msgid "Schema"
 msgstr "اسکیما"
@@ -997,7 +997,7 @@ msgid "Cloudflare relay"
 msgstr "رله کلادفلر"
 
 msgid "Connection guide"
-msgstr "راهنمای اتصال"
+msgstr "راهنمایی"
 
 msgid "Settings"
 msgstr "تنظیمات"
@@ -1006,7 +1006,7 @@ msgid "AI Center"
 msgstr "مرکز هوش مصنوعی"
 
 msgid "Data collection"
-msgstr ""
+msgstr "جمع آوری اطلاعات"
 
 msgid "Keywords & links"
 msgstr "کلمات کلیدی و لینک‌ها"
@@ -1200,16 +1200,16 @@ msgid "This task needs your decision; SEOlity cannot do it alone."
 msgstr "این کار به تصمیم شما نیاز دارد؛ SEOlity به‌تنهایی نمی‌تواند انجامش دهد."
 
 msgid "AI is preparing the fix"
-msgstr ""
+msgstr "هوش مصنوعی در حال آماده کردن اصلاح است"
 
 msgid "Nothing to change was found."
-msgstr ""
+msgstr "موردی برای تغییر پیدا نشد."
 
 msgid "Ready for your review"
-msgstr ""
+msgstr "آماده بررسی شما"
 
 msgid "AI prepared the fix"
-msgstr ""
+msgstr "هوش مصنوعی اصلاح را آماده کرد"
 
 msgid "No related page was found to link from. Publish a related article first, or add the link by hand."
 msgstr "صفحه مرتبطی برای لینک دادن پیدا نشد. اول یک مقاله مرتبط منتشر کنید یا لینک را دستی اضافه کنید."
@@ -1232,7 +1232,7 @@ msgstr "افزودن لینک داخلی «%1$s» ← %2$s"
 
 #, php-format
 msgid "Link “%1$s” prepared in “%2$s”"
-msgstr ""
+msgstr "لینک «%1$s» در «%2$s» آماده شد"
 
 msgid "The related pages are about different topics, so no natural link could be added."
 msgstr "صفحات مرتبط درباره موضوع‌های دیگری هستند، پس لینک طبیعی اضافه نشد."
@@ -1242,11 +1242,11 @@ msgid "Reading the search queries of “%s”…"
 msgstr "خواندن جست‌وجوهای «%s»…"
 
 msgid "Preparing the new SEO title and meta description for your review…"
-msgstr ""
+msgstr "در حال آماده کردن عنوان سئو و توضیحات متای جدید برای بررسی شما…"
 
 #, php-format
 msgid "New %1$s for “%2$s” prepared"
-msgstr ""
+msgstr "%1$s جدید برای «%2$s» آماده شد"
 
 #, php-format
 msgid "Analyzing “%s” and writing the improved version with AI…"
@@ -1257,11 +1257,11 @@ msgstr "هوش مصنوعی تغییر قابل استفاده‌ای نداد."
 
 #, php-format
 msgid "SEO score %1$s → %2$s — preparing the new version for your review…"
-msgstr ""
+msgstr "امتیاز سئو %1$s ← %2$s — در حال آماده کردن نسخه جدید برای بررسی شما…"
 
 #, php-format
 msgid "New version of “%1$s” prepared (SEO score %2$s → %3$s)"
-msgstr ""
+msgstr "نسخه جدید «%1$s» آماده شد (امتیاز سئو %2$s ← %3$s)"
 
 #, php-format
 msgid "Optimizing the product “%s” with AI…"
@@ -1269,11 +1269,11 @@ msgstr "بهینه‌سازی محصول «%s» با هوش مصنوعی…"
 
 #, php-format
 msgid "Preparing %s…"
-msgstr ""
+msgstr "در حال آماده کردن %s…"
 
 #, php-format
 msgid "%s prepared"
-msgstr ""
+msgstr "%s آماده شد"
 
 #, php-format
 msgid "Writing the FAQ for “%s”…"
@@ -1281,22 +1281,22 @@ msgstr "نوشتن پرسش‌های متداول برای «%s»…"
 
 #, php-format
 msgid "FAQ for “%s” prepared"
-msgstr ""
+msgstr "پرسش‌های متداول «%s» آماده شد"
 
 #, php-format
 msgid "Change of %1$s on “%2$s” prepared"
-msgstr ""
+msgstr "تغییر %1$s در «%2$s» آماده شد"
 
 msgid "No matching live page was found; choose the target yourself in Technical SEO → Redirects."
 msgstr "صفحه فعال مناسبی پیدا نشد؛ مقصد را خودتان در سئوی فنی ← ریدایرکت‌ها انتخاب کنید."
 
 #, php-format
 msgid "Checking the redirect %1$s → %2$s…"
-msgstr ""
+msgstr "بررسی ریدایرکت %1$s ← %2$s…"
 
 #, php-format
 msgid "301 redirect prepared: %1$s → %2$s"
-msgstr ""
+msgstr "ریدایرکت ۳۰۱ آماده شد: %1$s ← %2$s"
 
 #, php-format
 msgid "Finding pages across the site that should link to “%s”…"
@@ -1310,33 +1310,33 @@ msgid "The suggested anchors are no longer in the source pages."
 msgstr "متن‌های لینک پیشنهادی دیگر در صفحات مبدأ نیستند."
 
 msgid "Preparing the link…"
-msgstr ""
+msgstr "در حال آماده کردن لینک…"
 
 msgid "Link prepared"
-msgstr ""
+msgstr "لینک آماده شد"
 
 msgid "Finding redirect chains…"
-msgstr ""
+msgstr "یافتن زنجیره‌های ریدایرکت…"
 
 #, php-format
 msgid "%d redirect chains will point straight to their final URL"
-msgstr ""
+msgstr "%d زنجیره ریدایرکت مستقیم به آدرس نهایی اشاره خواهند کرد"
 
 #, php-format
 msgid "%d items will be optimized one by one in the background"
-msgstr ""
+msgstr "%d مورد یکی‌یکی در پس‌زمینه بهینه می‌شوند"
 
 msgid "Reading the indexability finding and the matching SEO plugin settings…"
-msgstr ""
+msgstr "خواندن یافته ایندکس‌پذیری و تنظیمات افزونه سئوی مربوط…"
 
 msgid "This finding needs a manual change; see the suggested solution."
-msgstr ""
+msgstr "این یافته تغییر دستی لازم دارد؛ راه‌حل پیشنهادی را ببینید."
 
 msgid "Finding not found — run the indexability audit again."
-msgstr ""
+msgstr "یافته پیدا نشد — ممیزی ایندکس‌پذیری را دوباره اجرا کنید."
 
 msgid "Topic will be added to the content planner"
-msgstr ""
+msgstr "موضوع به برنامه‌ریز محتوا اضافه می‌شود"
 
 #, php-format
 msgid "Organic clicks dropped %1$s%% week over week"
@@ -1545,63 +1545,63 @@ msgid "Several sentences are repeated — remove boilerplate to increase informa
 msgstr "چند جمله تکرار شده‌اند — متن‌های تکراری را حذف کنید تا ارزش اطلاعاتی افزایش یابد."
 
 msgid "Search Console data"
-msgstr ""
+msgstr "داده‌های سرچ کنسول"
 
 msgid "Crawl of the whole site"
-msgstr ""
+msgstr "خزش کل سایت"
 
 msgid "Issues and opportunities"
-msgstr ""
+msgstr "مشکلات و فرصت‌ها"
 
 msgid "404 redirect targets"
-msgstr ""
+msgstr "مقصدهای ریدایرکت ۴۰۴"
 
 msgid "AI roadmap"
-msgstr ""
+msgstr "مسیر راه هوش مصنوعی"
 
 msgid "Not connected — skipped."
-msgstr ""
+msgstr "متصل نیست — رد شد."
 
 msgid "Last days updated."
-msgstr ""
+msgstr "روزهای اخیر به‌روز شد."
 
 msgid "Crawling…"
-msgstr ""
+msgstr "در حال خزش…"
 
 #, php-format
 msgid "%d pages checked so far…"
-msgstr ""
+msgstr "تا اینجا %d صفحه بررسی شد…"
 
 #, php-format
 msgid "%d pages crawled"
-msgstr ""
+msgstr "%d صفحه خزش شد"
 
 msgid "The crawl did not finish; the other sections use the latest available data."
-msgstr ""
+msgstr "خزش تمام نشد؛ بخش‌های دیگر از آخرین داده موجود استفاده می‌کنند."
 
 #, php-format
 msgid "%d findings"
-msgstr ""
+msgstr "%d یافته"
 
 #, php-format
 msgid "%d groups"
-msgstr ""
+msgstr "%d گروه"
 
 msgid "No AI engine — slug matching only."
-msgstr ""
+msgstr "موتور هوش مصنوعی نیست — فقط تطبیق نامک."
 
 msgid "Running in the background."
-msgstr ""
+msgstr "در پس‌زمینه در حال اجراست."
 
 msgid "The AI is writing the roadmap in the background."
-msgstr ""
+msgstr "هوش مصنوعی در پس‌زمینه مسیر راه را می‌نویسد."
 
 #, php-format
 msgid "All sections updated. %d open items in the roadmap."
-msgstr ""
+msgstr "همه بخش‌ها به‌روز شد. %d مورد باز در مسیر راه."
 
 msgid "Some sections could not be updated — see the details."
-msgstr ""
+msgstr "بعضی بخش‌ها به‌روز نشدند — جزئیات را ببینید."
 
 msgid "Your AI subscription is working on this request on GitHub…"
 msgstr "اشتراک هوش مصنوعی شما در حال انجام این درخواست روی گیت‌هاب است…"
@@ -1613,13 +1613,13 @@ msgid "Sorry, you are not allowed to do that."
 msgstr "متأسفیم، اجازهٔ انجام این کار را ندارید."
 
 msgid "Operation not found."
-msgstr ""
+msgstr "عملیات پیدا نشد."
 
 msgid "Invalid status."
-msgstr ""
+msgstr "وضعیت نامعتبر است."
 
 msgid "You can only manage your own tasks."
-msgstr ""
+msgstr "فقط وظایف خودتان را می‌توانید مدیریت کنید."
 
 msgid "Change not found."
 msgstr "تغییر پیدا نشد."
@@ -1634,14 +1634,14 @@ msgid "You are not allowed to edit this product."
 msgstr "شما اجازه ویرایش این محصول را ندارید."
 
 msgid "Select between 1 and 200 URLs."
-msgstr ""
+msgstr "بین ۱ تا ۲۰۰ آدرس انتخاب کنید."
 
 msgid "None of the selected URLs were found."
-msgstr ""
+msgstr "هیچ‌کدام از آدرس‌های انتخاب‌شده پیدا نشد."
 
 #, php-format
 msgid "Redirect %d broken URLs to their suggested pages"
-msgstr ""
+msgstr "ریدایرکت %d آدرس خراب به صفحات پیشنهادی"
 
 msgid "Unknown secret."
 msgstr "کلید محرمانه ناشناخته."
@@ -1748,92 +1748,92 @@ msgstr "این صفحه در ۲۸ روز گذشته %1$d کلیک گرفته و 
 
 #, php-format
 msgid "Reading %d articles…"
-msgstr ""
+msgstr "خواندن %d مقاله…"
 
 msgid "Comparing articles…"
-msgstr ""
+msgstr "مقایسه مقالات…"
 
 #, php-format
 msgid "Most Search Console clicks (%d in 90 days)."
-msgstr ""
+msgstr "بیشترین کلیک در سرچ کنسول (%d در ۹۰ روز)."
 
 #, php-format
 msgid "Most internal links pointing to it (%d)."
-msgstr ""
+msgstr "بیشترین لینک داخلی به آن (%d)."
 
 #, php-format
 msgid "Most complete article (%d words)."
-msgstr ""
+msgstr "کامل‌ترین مقاله (%d کلمه)."
 
 msgid "Duplicate articles"
-msgstr ""
+msgstr "مقالات تکراری"
 
 msgid "Near-duplicate articles"
-msgstr ""
+msgstr "مقالات شبه تکراری"
 
 msgid "Articles competing for the same topic"
-msgstr ""
+msgstr "مقالاتی که برای یک موضوع با هم رقابت می‌کنند"
 
 #, php-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
 
 msgid "Several articles answer the same question, so Google splits rankings, links and clicks between them. Merging them into the strongest one usually lifts it."
-msgstr ""
+msgstr "چند مقاله به یک پرسش پاسخ می‌دهند، پس گوگل رتبه، لینک‌ها و کلیک‌ها را بین آن‌ها تقسیم می‌کند. ادغام آن‌ها در قوی‌ترین مقاله معمولاً آن را بالا می‌برد."
 
 msgid "This group was not found — run the scan again."
-msgstr ""
+msgstr "این گروه پیدا نشد — بررسی را دوباره اجرا کنید."
 
 msgid "The primary article must be one of the group."
-msgstr ""
+msgstr "مقاله اصلی باید یکی از اعضای گروه باشد."
 
 msgid "Choose at least one article to merge into the primary."
-msgstr ""
+msgstr "حداقل یک مقاله برای ادغام در مقاله اصلی انتخاب کنید."
 
 msgid "Connect an AI engine first (Settings → AI)."
-msgstr ""
+msgstr "اول یک موتور هوش مصنوعی وصل کنید (تنظیمات ← هوش مصنوعی)."
 
 #, php-format
 msgid "Merge into “%s”"
-msgstr ""
+msgstr "ادغام در «%s»"
 
 msgid "Preparing the merge"
-msgstr ""
+msgstr "آماده کردن ادغام"
 
 msgid "The articles no longer exist."
-msgstr ""
+msgstr "این مقالات دیگر وجود ندارند."
 
 msgid "AI is merging the articles…"
-msgstr ""
+msgstr "هوش مصنوعی در حال ادغام مقالات است…"
 
 msgid "The AI returned a merged article much shorter than the primary one, so nothing was prepared. Try again or add instructions."
-msgstr ""
+msgstr "هوش مصنوعی مقاله ادغام‌شده‌ای بسیار کوتاه‌تر از مقاله اصلی برگرداند، پس چیزی آماده نشد. دوباره امتحان کنید یا دستورالعمل اضافه کنید."
 
 msgid "Preparing the preview…"
-msgstr ""
+msgstr "آماده کردن پیش‌نمایش…"
 
 #, php-format
 msgid "Merged with %d competing article(s)."
-msgstr ""
+msgstr "با %d مقاله رقیب ادغام شد."
 
 msgid "The merged article could not be prepared."
-msgstr ""
+msgstr "مقاله ادغام‌شده آماده نشد."
 
 msgid "Merged into the primary article: keep it out of the index and the sitemap (it is not deleted)."
-msgstr ""
+msgstr "در مقاله اصلی ادغام شد: از ایندکس و نقشه سایت خارج می‌شود (حذف نمی‌شود)."
 
 msgid "Internal link now points straight at the merged article."
-msgstr ""
+msgstr "لینک داخلی اکنون مستقیم به مقاله ادغام‌شده اشاره می‌کند."
 
 #, php-format
 msgid "From %1$s: %2$s"
-msgstr ""
+msgstr "از %1$s: %2$s"
 
 msgid "Left out:"
-msgstr ""
+msgstr "کنار گذاشته شد:"
 
 msgid "Order: merged article first; the old articles get noindex, a 301 and updated internal links only after the merge was saved and verified. Nothing is deleted and every edit keeps a WordPress revision."
-msgstr ""
+msgstr "ترتیب: اول مقاله ادغام‌شده؛ مقالات قدیمی فقط بعد از ذخیره و تأیید ادغام، noindex، ریدایرکت ۳۰۱ و لینک‌های داخلی به‌روز می‌گیرند. هیچ چیز حذف نمی‌شود و هر ویرایش یک نسخه بازبینی وردپرس دارد."
 
 msgid "FAQ must be valid JSON."
 msgstr "سؤالات متداول باید JSON معتبر باشد."
@@ -1857,7 +1857,7 @@ msgid "SEOlity Client"
 msgstr "مشتری سئولیتی"
 
 msgid "Stopped without finishing (closed by the 1.9 update: this work was no longer running)."
-msgstr ""
+msgstr "بدون اتمام متوقف شد (با به‌روزرسانی ۱.۹ بسته شد: این کار دیگر در حال اجرا نبود)."
 
 msgid "Pages returning 4xx errors"
 msgstr "صفحات با خطای 4xx"
@@ -2644,10 +2644,10 @@ msgid "Cloudflare worker answered HTTP %d. Deploy it again."
 msgstr "ورکر کلادفلر پاسخ HTTP %d داد. دوباره مستقر کنید."
 
 msgid "Rank Math Redirections is not active."
-msgstr ""
+msgstr "ماژول ریدایرکت Rank Math فعال نیست."
 
 msgid "Rank Math did not accept this redirect."
-msgstr ""
+msgstr "Rank Math این ریدایرکت را نپذیرفت."
 
 msgid "No Rank Math redirections table was found."
 msgstr "جدول ریدایرکت‌های رنک مث پیدا نشد."
@@ -2721,146 +2721,146 @@ msgid "The anchor text is no longer present in the source content."
 msgstr "انکر تکست دیگر در محتوای مبدأ وجود ندارد."
 
 msgid "No target URL."
-msgstr ""
+msgstr "آدرس مقصد وجود ندارد."
 
 msgid "Source and target are the same."
 msgstr "مبدأ و مقصد یکسان هستند."
 
 #, php-format
 msgid "Replaces the existing redirect to %s."
-msgstr ""
+msgstr "جایگزین ریدایرکت فعلی به %s می‌شود."
 
 msgid "The old URL is a live page (HTTP 200): redirecting it would hide existing content."
-msgstr ""
+msgstr "آدرس قدیمی یک صفحه زنده است (HTTP 200): ریدایرکت آن محتوای موجود را پنهان می‌کند."
 
 msgid "This operation is not waiting for approval."
-msgstr ""
+msgstr "این عملیات منتظر تأیید نیست."
 
 msgid "Select at least one item."
-msgstr ""
+msgstr "حداقل یک مورد انتخاب کنید."
 
 msgid "Applying approved changes"
-msgstr ""
+msgstr "اعمال تغییرات تأییدشده"
 
 msgid "This operation cannot be rejected any more."
-msgstr ""
+msgstr "این عملیات دیگر قابل رد کردن نیست."
 
 msgid "Rejected by the user — nothing was changed."
-msgstr ""
+msgstr "توسط کاربر رد شد — چیزی تغییر نکرد."
 
 #, php-format
 msgid "Skipped: it depends on “%s”, which was not applied and verified."
-msgstr ""
+msgstr "رد شد: به «%s» وابسته است که اعمال و تأیید نشد."
 
 msgid "Cancelled by the user. Items already applied stay applied (use Undo to roll them back)."
-msgstr ""
+msgstr "توسط کاربر لغو شد. موارد اعمال‌شده باقی می‌مانند (برای برگرداندن از «بازگردانی» استفاده کنید)."
 
 msgid "Some items failed — see the details."
-msgstr ""
+msgstr "بعضی موارد ناموفق بودند — جزئیات را ببینید."
 
 msgid "Applied and verified on the site."
-msgstr ""
+msgstr "روی سایت اعمال و تأیید شد."
 
 msgid "Finished with errors — some items were not applied or could not be confirmed."
-msgstr ""
+msgstr "با خطا تمام شد — بعضی موارد اعمال یا تأیید نشدند."
 
 #, php-format
 msgid "%1$s of “%2$s”"
-msgstr ""
+msgstr "%1$s در «%2$s»"
 
 msgid "Change"
 msgstr "تغییر"
 
 #, php-format
 msgid "301 redirect %1$s → %2$s"
-msgstr ""
+msgstr "ریدایرکت ۳۰۱ %1$s ← %2$s"
 
 msgid "Point redirect chains straight to their final URL"
-msgstr ""
+msgstr "زنجیره‌های ریدایرکت مستقیم به آدرس نهایی اشاره کنند"
 
 #, php-format
 msgid "Queue AI optimization for %d items"
-msgstr ""
+msgstr "قرار دادن بهینه‌سازی هوش مصنوعی برای %d مورد در صف"
 
 msgid "Add the topic to the content planner"
-msgstr ""
+msgstr "افزودن موضوع به برنامه‌ریز محتوا"
 
 #, php-format
 msgid "%1$d redirects updated; %2$d chains left."
-msgstr ""
+msgstr "%1$d ریدایرکت به‌روز شد؛ %2$d زنجیره باقی ماند."
 
 #, php-format
 msgid "%d items queued (each one is a separate task with its own result)."
-msgstr ""
+msgstr "%d مورد در صف قرار گرفت (هر کدام یک وظیفه جدا با نتیجه خودش است)."
 
 msgid "Added to the content planner."
 msgstr "به برنامه‌ریز محتوا اضافه شد."
 
 msgid "Unknown item."
-msgstr ""
+msgstr "مورد ناشناخته."
 
 msgid "This setting is not on the list of settings SEOlity may change."
-msgstr ""
+msgstr "این تنظیم در فهرست تنظیماتی که SEOlity اجازه تغییرشان را دارد نیست."
 
 msgid "Setting saved."
-msgstr ""
+msgstr "تنظیم ذخیره شد."
 
 msgid "The setting could not be saved."
-msgstr ""
+msgstr "تنظیم ذخیره نشد."
 
 #, php-format
 msgid "Confirmed on %1$s (%2$s)."
-msgstr ""
+msgstr "روی %1$s تأیید شد (%2$s)."
 
 #, php-format
 msgid "Saved, but %s does not show the effect yet."
-msgstr ""
+msgstr "ذخیره شد، اما %s هنوز اثر آن را نشان نمی‌دهد."
 
 msgid "Nothing to roll back."
-msgstr ""
+msgstr "چیزی برای بازگردانی نیست."
 
 msgid "Saved value confirmed."
-msgstr ""
+msgstr "مقدار ذخیره‌شده تأیید شد."
 
 msgid "The saved value differs from the approved value."
-msgstr ""
+msgstr "مقدار ذخیره‌شده با مقدار تأییدشده فرق دارد."
 
 msgid "Rank Math does not hold the new value."
-msgstr ""
+msgstr "Rank Math مقدار جدید را ندارد."
 
 msgid "Rank Math robots setting was not updated."
-msgstr ""
+msgstr "تنظیم robots در Rank Math به‌روز نشد."
 
 msgid "Saved; the live page could not be checked right now."
-msgstr ""
+msgstr "ذخیره شد؛ صفحه زنده الان قابل بررسی نبود."
 
 msgid "Confirmed on the live page."
-msgstr ""
+msgstr "روی صفحه زنده تأیید شد."
 
 msgid "Saved, but the live page does not show it yet (a page cache may need clearing)."
-msgstr ""
+msgstr "ذخیره شد، اما صفحه زنده هنوز آن را نشان نمی‌دهد (شاید کش صفحه باید پاک شود)."
 
 #, php-format
 msgid "The old URL answers %1$d → %2$s."
-msgstr ""
+msgstr "آدرس قدیمی با %1$d ← %2$s پاسخ می‌دهد."
 
 #, php-format
 msgid "The old URL answers %1$d %2$s instead of the redirect."
-msgstr ""
+msgstr "آدرس قدیمی به‌جای ریدایرکت با %1$d %2$s پاسخ می‌دهد."
 
 #, php-format
 msgid "The target itself redirects to %s (this would create a chain)."
-msgstr ""
+msgstr "خود مقصد به %s ریدایرکت می‌شود (زنجیره ایجاد می‌شود)."
 
 #, php-format
 msgid "The target answers HTTP %d."
-msgstr ""
+msgstr "مقصد با HTTP %d پاسخ می‌دهد."
 
 msgid "The target is live but set to noindex."
-msgstr ""
+msgstr "مقصد زنده است ولی noindex شده است."
 
 msgid "The target is a live page."
-msgstr ""
+msgstr "مقصد یک صفحه زنده است."
 
 msgid "Plan item not found."
 msgstr "مورد برنامه پیدا نشد."
@@ -2886,104 +2886,104 @@ msgstr "خطا، دوباره تلاش می‌شود: %s"
 
 #, php-format
 msgid "Stopped: the worker gave no sign of life for %d minutes (PHP time limit, memory limit or a server restart). Use “Retry” to run it again."
-msgstr ""
+msgstr "متوقف شد: پردازشگر %d دقیقه هیچ نشانه‌ای از فعالیت نداد (محدودیت زمان یا حافظه PHP یا راه‌اندازی مجدد سرور). برای اجرای دوباره «تلاش دوباره» را بزنید."
 
 msgid "Interrupted (the server stopped the worker). Retrying automatically…"
-msgstr ""
+msgstr "قطع شد (سرور پردازشگر را متوقف کرد). تلاش دوباره خودکار…"
 
 msgid "Task not found."
-msgstr ""
+msgstr "وظیفه پیدا نشد."
 
 msgid "Cancelling — the task stops at its next safe point…"
-msgstr ""
+msgstr "در حال لغو — وظیفه در نقطه امن بعدی متوقف می‌شود…"
 
 msgid "Only failed, cancelled or timed-out tasks can be retried."
-msgstr ""
+msgstr "فقط وظایف ناموفق، لغوشده یا منقضی‌شده را می‌توان دوباره اجرا کرد."
 
 msgid "The same task is already queued or running."
-msgstr ""
+msgstr "همین وظیفه از قبل در صف یا در حال اجراست."
 
 msgid "This task is still active. Cancel it first."
-msgstr ""
+msgstr "این وظیفه هنوز فعال است. اول آن را لغو کنید."
 
 msgid "Every minute (SEOlity queue)"
 msgstr "هر دقیقه (صف سئولیتی)"
 
 #, php-format
 msgid "Redirect the 404 URL %s"
-msgstr ""
+msgstr "ریدایرکت آدرس ۴۰۴ %s"
 
 #, php-format
 msgid "Visitors or bots requested it %d times and got “page not found”."
-msgstr ""
+msgstr "بازدیدکنندگان یا ربات‌ها %d بار آن را خواستند و «صفحه پیدا نشد» گرفتند."
 
 #, php-format
 msgid "Suggested target: %s"
-msgstr ""
+msgstr "مقصد پیشنهادی: %s"
 
 msgid "No good target was found yet — choose one or mark it as gone (410)."
-msgstr ""
+msgstr "هنوز مقصد مناسبی پیدا نشده — یکی انتخاب کنید یا آن را حذف‌شده (410) علامت بزنید."
 
 msgid "no SEO title"
-msgstr ""
+msgstr "بدون عنوان سئو"
 
 msgid "title too long"
-msgstr ""
+msgstr "عنوان خیلی بلند"
 
 msgid "title too short"
-msgstr ""
+msgstr "عنوان خیلی کوتاه"
 
 msgid "several <title> tags"
-msgstr ""
+msgstr "چند تگ <title>"
 
 msgid "title used on other pages too"
-msgstr ""
+msgstr "عنوان در صفحات دیگر هم استفاده شده"
 
 msgid "no meta description"
-msgstr ""
+msgstr "بدون توضیحات متا"
 
 msgid "description length"
-msgstr ""
+msgstr "طول توضیحات"
 
 msgid "description used on other pages too"
-msgstr ""
+msgstr "توضیحات در صفحات دیگر هم استفاده شده"
 
 msgid "no H1 heading"
-msgstr ""
+msgstr "بدون سرتیتر H1"
 
 msgid "several H1 headings"
-msgstr ""
+msgstr "چند سرتیتر H1"
 
 msgid "heading levels skipped"
-msgstr ""
+msgstr "سطح سرتیترها جا افتاده"
 
 msgid "several canonical tags"
-msgstr ""
+msgstr "چند تگ canonical"
 
 msgid "invalid canonical URL"
-msgstr ""
+msgstr "آدرس canonical نامعتبر"
 
 msgid "canonical points to an error page"
-msgstr ""
+msgstr "canonical به صفحه خطا اشاره می‌کند"
 
 #, php-format
 msgid "Fix the SEO title / description of “%s”"
-msgstr ""
+msgstr "اصلاح عنوان / توضیحات سئوی «%s»"
 
 #, php-format
 msgid "Fix the heading structure of “%s”"
-msgstr ""
+msgstr "اصلاح ساختار سرتیترهای «%s»"
 
 msgid "Fix the heading structure: exactly one H1 that states the topic, logical H2/H3 levels without skipped levels. Do not change the meaning of the text."
-msgstr ""
+msgstr "ساختار سرتیترها را اصلاح کن: دقیقاً یک H1 که موضوع را بیان کند و سطح‌های منطقی H2/H3 بدون جا انداختن سطح. معنای متن را تغییر نده."
 
 #, php-format
 msgid "Fix the canonical tag of “%s”"
-msgstr ""
+msgstr "اصلاح تگ canonical «%s»"
 
 #, php-format
 msgid "Found by the site audit: %s."
-msgstr ""
+msgstr "یافته ممیزی سایت: %s."
 
 #, php-format
 msgid "Rewrite the title & meta description of \"%s\""
@@ -3123,16 +3123,16 @@ msgid "Each extra hop slows users and crawlers; point old URLs straight to their
 msgstr "هر پرش اضافه کاربران و خزنده‌ها را کند می‌کند؛ URLهای قدیمی را مستقیم به مقصد نهایی هدایت کنید."
 
 msgid "404 errors"
-msgstr ""
+msgstr "خطاهای ۴۰۴"
 
 msgid "Site audit: titles, descriptions, headings"
-msgstr ""
+msgstr "ممیزی سایت: عنوان‌ها، توضیحات، سرتیترها"
 
 msgid "Content & CTR"
-msgstr ""
+msgstr "محتوا و نرخ کلیک"
 
 msgid "Products & categories"
-msgstr ""
+msgstr "محصولات و دسته‌ها"
 
 msgid "Competitor gaps"
 msgstr "شکاف‌ها نسبت به رقبا"
@@ -3141,31 +3141,31 @@ msgid "Other"
 msgstr "سایر"
 
 msgid "First: pages that should not be in Google waste crawl budget, and important pages that cannot be indexed earn nothing — everything else depends on this."
-msgstr ""
+msgstr "اول: صفحاتی که نباید در گوگل باشند بودجه خزش را هدر می‌دهند و صفحات مهمی که ایندکس نمی‌شوند هیچ سودی ندارند — بقیه کارها به این وابسته است."
 
 msgid "Redirect loops/chains and server errors block crawlers and visitors; fix them before working on content."
-msgstr ""
+msgstr "حلقه‌ها و زنجیره‌های ریدایرکت و خطاهای سرور جلوی خزنده‌ها و بازدیدکنندگان را می‌گیرند؛ قبل از کار روی محتوا آن‌ها را رفع کنید."
 
 msgid "Broken URLs lose links and visitors; a correct 301 recovers them quickly and is low effort."
-msgstr ""
+msgstr "آدرس‌های خراب لینک و بازدیدکننده را از دست می‌دهند؛ یک ریدایرکت ۳۰۱ درست آن‌ها را سریع و با کمترین زحمت برمی‌گرداند."
 
 msgid "Merge competing articles before polishing them — otherwise you optimize pages that will be redirected."
-msgstr ""
+msgstr "مقالات رقیب را قبل از بهینه‌سازی ادغام کنید — وگرنه صفحاتی را بهینه می‌کنید که بعداً ریدایرکت می‌شوند."
 
 msgid "Missing or duplicate titles, descriptions and headings: quick fixes with direct CTR impact."
-msgstr ""
+msgstr "عنوان، توضیحات و سرتیترهای ناموجود یا تکراری: اصلاحات سریع با اثر مستقیم روی نرخ کلیک."
 
 msgid "Internal links spread authority to the pages you just fixed."
-msgstr ""
+msgstr "لینک‌های داخلی اعتبار را به صفحاتی که تازه اصلاح کردید می‌رسانند."
 
 msgid "Content improvements based on Search Console data: highest upside once the basics are clean."
-msgstr ""
+msgstr "بهبود محتوا بر اساس داده‌های سرچ کنسول: بیشترین رشد وقتی پایه‌ها درست شد."
 
 msgid "Product and category pages: important for shops after the site-wide basics."
-msgstr ""
+msgstr "صفحات محصول و دسته: برای فروشگاه‌ها بعد از پایه‌های کل سایت مهم‌اند."
 
 msgid "New content for topics competitors win: a longer-term growth step."
-msgstr ""
+msgstr "محتوای جدید برای موضوعاتی که رقبا می‌برند: یک گام رشد بلندمدت."
 
 msgid "Higher CTR at the same rankings → more clicks within 2–4 weeks."
 msgstr "CTR بالاتر با همان رتبه‌ها ← کلیک بیشتر طی ۲ تا ۴ هفته."
@@ -4002,171 +4002,171 @@ msgid "The data repository must be private. Change its visibility on GitHub or c
 msgstr "مخزن داده باید خصوصی باشد. حالت آن را در GitHub تغییر دهید یا نام دیگری انتخاب کنید."
 
 msgid "Checking post types, templates and attachments…"
-msgstr ""
+msgstr "بررسی انواع نوشته، قالب‌ها و پیوست‌ها…"
 
 msgid "a plugin or the theme"
-msgstr ""
+msgstr "یک افزونه یا پوسته"
 
 #, php-format
 msgid "Rank Math: use custom robots for “%s”"
-msgstr ""
+msgstr "Rank Math: استفاده از robots سفارشی برای «%s»"
 
 #, php-format
 msgid "Rank Math: noindex all “%s”"
-msgstr ""
+msgstr "Rank Math: noindex برای همه «%s»"
 
 #, php-format
 msgid "Rank Math: remove “%s” from the sitemap"
-msgstr ""
+msgstr "Rank Math: حذف «%s» از نقشه سایت"
 
 #, php-format
 msgid "%1$s templates are public: %2$d URLs can be crawled and indexed."
-msgstr ""
+msgstr "قالب‌های %1$s عمومی هستند: %2$d آدرس قابل خزش و ایندکس است."
 
 msgid "These are layout parts (headers, footers, popups, saved sections) for internal use. As separate URLs they are thin, duplicate fragments that waste crawl budget and can appear in Google."
-msgstr ""
+msgstr "این‌ها بخش‌های چیدمان (هدر، فوتر، پاپ‌آپ، بخش‌های ذخیره‌شده) برای استفاده داخلی‌اند. به‌عنوان آدرس جدا، تکه‌های کم‌محتوا و تکراری‌اند که بودجه خزش را هدر می‌دهند و ممکن است در گوگل دیده شوند."
 
 msgid "Set them to noindex and remove them from the XML sitemap. Do not block them in robots.txt — Google must be able to crawl them to see the noindex. Templates keep working inside your pages."
-msgstr ""
+msgstr "آن‌ها را noindex کنید و از نقشه XML سایت حذف کنید. در robots.txt مسدودشان نکنید — گوگل باید بتواند آن‌ها را بخزد تا noindex را ببیند. قالب‌ها داخل صفحات شما کار می‌کنند."
 
 msgid "noindex is set, but robots.txt blocks these URLs."
-msgstr ""
+msgstr "noindex تنظیم شده، اما robots.txt این آدرس‌ها را مسدود می‌کند."
 
 msgid "A blocked URL is not crawled, so Google never sees its noindex. URLs Google already knows can stay in the index as “Indexed, though blocked by robots.txt”."
-msgstr ""
+msgstr "آدرس مسدود خزیده نمی‌شود، پس گوگل هرگز noindex آن را نمی‌بیند. آدرس‌هایی که گوگل از قبل می‌شناسد ممکن است با وضعیت «ایندکس شده، با وجود مسدود بودن در robots.txt» بمانند."
 
 msgid "Remove the robots.txt rule for these URLs (keep the noindex). After Google has recrawled them and dropped them, a robots.txt rule may be added back if crawl budget matters."
-msgstr ""
+msgstr "قاعده robots.txt این آدرس‌ها را بردارید (noindex بماند). بعد از اینکه گوگل دوباره آن‌ها را خزید و حذف کرد، اگر بودجه خزش مهم است می‌توانید قاعده را برگردانید."
 
 msgid "Attachment pages"
-msgstr ""
+msgstr "صفحات پیوست"
 
 msgid "Every uploaded image has its own indexable page."
-msgstr ""
+msgstr "هر تصویر بارگذاری‌شده یک صفحه قابل ایندکس جدا دارد."
 
 msgid "Attachment pages contain only an image: thousands of thin pages that dilute crawl budget."
-msgstr ""
+msgstr "صفحات پیوست فقط یک تصویر دارند: هزاران صفحه کم‌محتوا که بودجه خزش را پخش می‌کنند."
 
 msgid "Redirect attachment pages to the post they belong to (301). Image search keeps working (it uses the image file, not the attachment page)."
-msgstr ""
+msgstr "صفحات پیوست را به نوشته‌ای که به آن تعلق دارند ریدایرکت ۳۰۱ کنید. جستجوی تصویر کار می‌کند (از خود فایل تصویر استفاده می‌کند، نه صفحه پیوست)."
 
 msgid "Rank Math: redirect attachment pages to their parent post"
-msgstr ""
+msgstr "Rank Math: ریدایرکت صفحات پیوست به نوشته والد"
 
 msgid "Checking archives, internal search and feeds…"
-msgstr ""
+msgstr "بررسی بایگانی‌ها، جستجوی داخلی و خوراک‌ها…"
 
 msgid "Author archives"
-msgstr ""
+msgstr "بایگانی نویسندگان"
 
 msgid "Author archive"
-msgstr ""
+msgstr "بایگانی نویسنده"
 
 msgid "The site has one author, so the author archive duplicates the blog list."
-msgstr ""
+msgstr "سایت یک نویسنده دارد، پس بایگانی نویسنده تکرار فهرست وبلاگ است."
 
 msgid "A second URL listing exactly the same posts competes with the blog / category pages."
-msgstr ""
+msgstr "آدرس دومی که دقیقاً همان نوشته‌ها را فهرست می‌کند با صفحات وبلاگ و دسته رقابت می‌کند."
 
 msgid "Disable the author archive (it redirects to the home page). With several authors, keep author pages indexable only if they have real biographies."
-msgstr ""
+msgstr "بایگانی نویسنده را غیرفعال کنید (به صفحه اصلی ریدایرکت می‌شود). با چند نویسنده، صفحات نویسنده را فقط وقتی قابل ایندکس نگه دارید که زندگی‌نامه واقعی دارند."
 
 msgid "Rank Math: disable author archives"
-msgstr ""
+msgstr "Rank Math: غیرفعال کردن بایگانی نویسندگان"
 
 msgid "Date archives"
-msgstr ""
+msgstr "بایگانی‌های تاریخ"
 
 msgid "Year / month / day archives are indexable."
-msgstr ""
+msgstr "بایگانی‌های سال / ماه / روز قابل ایندکس هستند."
 
 msgid "Date archives repeat the same posts in many lists with no search demand."
-msgstr ""
+msgstr "بایگانی‌های تاریخ همان نوشته‌ها را در فهرست‌های زیادی تکرار می‌کنند و کسی آن‌ها را جستجو نمی‌کند."
 
 msgid "Disable date archives (they redirect to the home page)."
-msgstr ""
+msgstr "بایگانی‌های تاریخ را غیرفعال کنید (به صفحه اصلی ریدایرکت می‌شوند)."
 
 msgid "Rank Math: disable date archives"
-msgstr ""
+msgstr "Rank Math: غیرفعال کردن بایگانی‌های تاریخ"
 
 msgid "Internal search results"
-msgstr ""
+msgstr "نتایج جستجوی داخلی"
 
 msgid "Internal search result pages can be indexed."
-msgstr ""
+msgstr "صفحات نتایج جستجوی داخلی قابل ایندکس هستند."
 
 msgid "Anyone can create unlimited search URLs (spam keywords included) that Google may crawl and index."
-msgstr ""
+msgstr "هر کسی می‌تواند بی‌نهایت آدرس جستجو (حتی با کلمات اسپم) بسازد که گوگل ممکن است بخزد و ایندکس کند."
 
 msgid "Set search result pages to noindex."
-msgstr ""
+msgstr "صفحات نتایج جستجو را noindex کنید."
 
 msgid "Rank Math: noindex internal search results"
-msgstr ""
+msgstr "Rank Math: noindex نتایج جستجوی داخلی"
 
 #, php-format
 msgid "%1$d of %2$d tags have one post or none, and all are indexable."
-msgstr ""
+msgstr "%1$d از %2$d برچسب یک نوشته یا هیچ نوشته‌ای دارند و همه قابل ایندکس‌اند."
 
 msgid "Tag pages with one post are near-duplicates of that post; many of them waste crawl budget."
-msgstr ""
+msgstr "صفحات برچسب با یک نوشته تقریباً تکرار همان نوشته‌اند؛ تعداد زیادشان بودجه خزش را هدر می‌دهد."
 
 msgid "Noindex tag archives and remove them from the sitemap (categories stay indexable). Tags keep working for visitors."
-msgstr ""
+msgstr "بایگانی برچسب‌ها را noindex کنید و از نقشه سایت حذف کنید (دسته‌ها قابل ایندکس می‌مانند). برچسب‌ها برای بازدیدکنندگان کار می‌کنند."
 
 #, php-format
 msgid "Rank Math: noindex “%s” archives"
-msgstr ""
+msgstr "Rank Math: noindex بایگانی‌های «%s»"
 
 msgid "Empty categories / tags"
-msgstr ""
+msgstr "دسته‌ها / برچسب‌های خالی"
 
 #, php-format
 msgid "%d categories / tags have no posts and are indexable."
-msgstr ""
+msgstr "%d دسته / برچسب هیچ نوشته‌ای ندارند و قابل ایندکس‌اند."
 
 msgid "Empty archive pages are soft-404s for Google."
-msgstr ""
+msgstr "صفحات بایگانی خالی برای گوگل soft-404 هستند."
 
 msgid "Noindex empty categories and tags automatically."
-msgstr ""
+msgstr "دسته‌ها و برچسب‌های خالی را خودکار noindex کنید."
 
 msgid "Rank Math: noindex empty taxonomies"
-msgstr ""
+msgstr "Rank Math: noindex طبقه‌بندی‌های خالی"
 
 msgid "URL with parameters"
-msgstr ""
+msgstr "آدرس دارای پارامتر"
 
 msgid "internal links / a plugin"
-msgstr ""
+msgstr "لینک‌های داخلی / یک افزونه"
 
 msgid "A parameter URL is indexable and has no canonical to the clean URL."
-msgstr ""
+msgstr "یک آدرس پارامتردار قابل ایندکس است و canonical به آدرس تمیز ندارد."
 
 #, php-format
 msgid "Duplicate versions of the same page split signals. %d internal links point to it."
-msgstr ""
+msgstr "نسخه‌های تکراری یک صفحه سیگنال‌ها را تقسیم می‌کنند. %d لینک داخلی به آن اشاره می‌کند."
 
 msgid "Change the links that generate this URL, or make the page output a canonical to the clean URL. Blocking parameters in robots.txt is only right once no indexed version is left."
-msgstr ""
+msgstr "لینک‌هایی را که این آدرس را می‌سازند تغییر دهید یا صفحه را وادار کنید canonical به آدرس تمیز بدهد. مسدود کردن پارامترها در robots.txt فقط وقتی درست است که هیچ نسخه ایندکس‌شده‌ای نمانده باشد."
 
 msgid "RSS feed"
-msgstr ""
+msgstr "خوراک RSS"
 
 msgid "Paginated archives"
-msgstr ""
+msgstr "بایگانی‌های صفحه‌بندی‌شده"
 
 msgid "Paginated pages should normally stay indexable (Google uses them to find older posts)."
-msgstr ""
+msgstr "صفحات صفحه‌بندی‌شده معمولاً باید قابل ایندکس بمانند (گوگل با آن‌ها نوشته‌های قدیمی‌تر را پیدا می‌کند)."
 
 msgid "Feeds are not shown as pages in Google; nothing to do."
-msgstr ""
+msgstr "خوراک‌ها در گوگل به‌عنوان صفحه نمایش داده نمی‌شوند؛ کاری لازم نیست."
 
 msgid "Run the audit first."
-msgstr ""
+msgstr "اول ممیزی را اجرا کنید."
 
 msgid "Finding not found — run the audit again."
-msgstr ""
+msgstr "یافته پیدا نشد — ممیزی را دوباره اجرا کنید."
 
 msgid "robots.txt is empty or missing. That allows all crawling, but you lose the chance to block crawl waste and reference your sitemap."
 msgstr "robots.txt خالی یا ناموجود است. همه خزش‌ها مجازند، اما فرصت جلوگیری از هدررفت خزش و معرفی نقشه سایت را از دست می‌دهید."
@@ -4866,7 +4866,7 @@ msgid "Event"
 msgstr "رویداد"
 
 msgid "Queued"
-msgstr ""
+msgstr "در صف"
 
 msgid "Waiting"
 msgstr "در انتظار"
@@ -4881,31 +4881,31 @@ msgid "Cancelled"
 msgstr "لغو شد"
 
 msgid "Timed out"
-msgstr ""
+msgstr "منقضی شد"
 
 msgid "Interrupted"
-msgstr ""
+msgstr "قطع شد"
 
 msgid "Scheduled"
-msgstr ""
+msgstr "زمان‌بندی‌شده"
 
 msgid "Cancelling…"
-msgstr ""
+msgstr "در حال لغو…"
 
 msgid "Interrupted — retrying"
-msgstr ""
+msgstr "قطع شد — تلاش دوباره"
 
 msgid "This server"
 msgstr "همین سرور"
 
 msgid "Cancelled."
-msgstr ""
+msgstr "لغو شد."
 
 msgid "Retry"
-msgstr ""
+msgstr "تلاش دوباره"
 
 msgid "Queued again."
-msgstr ""
+msgstr "دوباره در صف قرار گرفت."
 
 msgid "Select"
 msgstr "انتخاب"
@@ -4940,7 +4940,7 @@ msgid "Live activity"
 msgstr "فعالیت زنده"
 
 msgid "Task queue"
-msgstr ""
+msgstr "صف وظایف"
 
 msgid "Completed work"
 msgstr "کارهای انجام‌شده"
@@ -4976,20 +4976,20 @@ msgid "Search…"
 msgstr "جستجو…"
 
 msgid "Delete selected"
-msgstr ""
+msgstr "حذف انتخاب‌شده‌ها"
 
 msgid "Select entries first."
-msgstr ""
+msgstr "اول موارد را انتخاب کنید."
 
 #, php-format
 msgid "%s entries deleted."
-msgstr ""
+msgstr "%s مورد حذف شد."
 
 msgid "Delete entries older than 30 days"
-msgstr ""
+msgstr "حذف موارد قدیمی‌تر از ۳۰ روز"
 
 msgid "Delete finished entries older than 30 days? Running work is never deleted."
-msgstr ""
+msgstr "موارد تمام‌شده قدیمی‌تر از ۳۰ روز حذف شوند؟ کارهای در حال اجرا هرگز حذف نمی‌شوند."
 
 #, php-format
 msgid "%s entries"
@@ -4999,14 +4999,14 @@ msgid "Everything SEOlity does on your site will be listed here with the exact t
 msgstr "هر کاری که SEOlity روی سایت شما انجام دهد با زمان دقیق اینجا فهرست می‌شود."
 
 msgid "Check stuck tasks now"
-msgstr ""
+msgstr "بررسی وظایف گیرکرده"
 
 #, php-format
 msgid "%s tasks corrected."
-msgstr ""
+msgstr "%s وظیفه اصلاح شد."
 
 msgid "All task states are correct."
-msgstr ""
+msgstr "وضعیت همه وظایف درست است."
 
 msgid "Run queue now"
 msgstr "اجرای صف همین حالا"
@@ -5016,45 +5016,45 @@ msgid "%s jobs processed."
 msgstr "%s کار پردازش شد."
 
 msgid "Delete all in this list"
-msgstr ""
+msgstr "حذف همه موارد این فهرست"
 
 msgid "Delete these finished task records? This only removes history; nothing on your site changes."
-msgstr ""
+msgstr "سوابق این وظایف تمام‌شده حذف شوند؟ فقط تاریخچه پاک می‌شود و چیزی در سایت شما تغییر نمی‌کند."
 
 msgid "No tasks here"
-msgstr ""
+msgstr "وظیفه‌ای اینجا نیست"
 
 msgid "Nothing is queued or running. Background work appears here as soon as it is queued."
-msgstr ""
+msgstr "چیزی در صف یا درحال اجرا نیست. کارهای پس‌زمینه به محض قرار گرفتن در صف اینجا دیده می‌شوند."
 
 msgid "No tasks in this state."
-msgstr ""
+msgstr "وظیفه‌ای در این وضعیت نیست."
 
 msgid "Task"
 msgstr "وظیفه"
 
 msgid "State"
-msgstr ""
+msgstr "وضعیت"
 
 msgid "Attempts"
 msgstr "تلاش‌ها"
 
 #, php-format
 msgid "%s interruptions"
-msgstr ""
+msgstr "%s بار قطع شد"
 
 msgid "Started"
 msgstr "شروع"
 
 #, php-format
 msgid "at %s"
-msgstr ""
+msgstr "در %s"
 
 msgid "Last sign of life"
-msgstr ""
+msgstr "آخرین نشانه فعالیت"
 
 msgid "A task whose worker stops (PHP time limit, memory, server restart) is detected automatically, retried, and after repeated interruptions marked “Timed out” — it never stays “running” forever. Cancelling a running task stops it at its next safe point, never in the middle of a change."
-msgstr ""
+msgstr "وظیفه‌ای که پردازشگرش متوقف شود (محدودیت زمان PHP، حافظه، راه‌اندازی مجدد سرور) خودکار شناسایی و دوباره اجرا می‌شود و بعد از قطع‌های پیاپی «منقضی شد» علامت می‌خورد — هیچ وقت برای همیشه «درحال اجرا» نمی‌ماند. لغو یک وظیفه در حال اجرا آن را در نقطه امن بعدی متوقف می‌کند، هرگز وسط یک تغییر."
 
 #, php-format
 msgid "%s running"
@@ -5467,13 +5467,13 @@ msgid "Save Custom API"
 msgstr "ذخیره API سفارشی"
 
 msgid "Test model"
-msgstr ""
+msgstr "آزمایش مدل"
 
 msgid "The model works."
-msgstr ""
+msgstr "مدل کار می‌کند."
 
 msgid "Use for all AI features"
-msgstr ""
+msgstr "استفاده برای همه قابلیت‌های هوش مصنوعی"
 
 msgid "AI engine switched."
 msgstr "موتور هوش مصنوعی تغییر کرد."
@@ -5494,10 +5494,10 @@ msgid "For maximum security define SEOLITY_ENCRYPTION_KEY in wp-config.php. You 
 msgstr "برای بیشترین امنیت، SEOLITY_ENCRYPTION_KEY را در wp-config.php تعریف کنید. هر کلید محرمانه را هم می‌توانید به‌صورت ثابت تعریف کنید، مثلاً SEOLITY_ANTHROPIC_API_KEY."
 
 msgid "AI writing settings"
-msgstr ""
+msgstr "تنظیمات نگارش هوش مصنوعی"
 
 msgid "Apply to every AI connection."
-msgstr ""
+msgstr "برای همه اتصال‌های هوش مصنوعی اعمال می‌شود."
 
 msgid "Keys & tokens"
 msgstr "کلیدها و توکن‌ها"
@@ -5536,188 +5536,188 @@ msgid "when another SEO plugin is active, SEOlity writes titles/descriptions int
 msgstr "وقتی افزونه سئوی دیگری فعال است، سئولیتی عنوان/توضیحات را در آن می‌نویسد و تگ‌های head را تکرار نمی‌کند."
 
 msgid "Not connected"
-msgstr ""
+msgstr "متصل نیست"
 
 msgid "Key saved — not checked yet"
-msgstr ""
+msgstr "کلید ذخیره شده — هنوز بررسی نشده"
 
 msgid "Connected — key works"
-msgstr ""
+msgstr "متصل — کلید کار می‌کند"
 
 msgid "Model tested ✓"
-msgstr ""
+msgstr "مدل آزمایش شد ✓"
 
 msgid "current setting — not in the list from your account"
-msgstr ""
+msgstr "تنظیم فعلی — در فهرست حساب شما نیست"
 
 msgid "Default model"
-msgstr ""
+msgstr "مدل پیش‌فرض"
 
 msgid "Not tested yet. “Test model” sends one short real request."
-msgstr ""
+msgstr "هنوز آزمایش نشده. «آزمایش مدل» یک درخواست واقعی کوتاه می‌فرستد."
 
 #, php-format
 msgid "This model answered (%s)."
-msgstr ""
+msgstr "این مدل پاسخ داد (%s)."
 
 #, php-format
 msgid "Answered by: %s"
-msgstr ""
+msgstr "پاسخ‌دهنده: %s"
 
 msgid "In use"
-msgstr ""
+msgstr "در حال استفاده"
 
 msgid "Supported plans:"
-msgstr ""
+msgstr "پلن‌های پشتیبانی‌شده:"
 
 msgid "The test request is running on your GitHub runner; the result appears here (usually within a minute)."
-msgstr ""
+msgstr "درخواست آزمایشی روی اجراکننده GitHub شما در حال اجراست؛ نتیجه اینجا نمایش داده می‌شود (معمولاً کمتر از یک دقیقه)."
 
 msgid "Open the full step-by-step setup (GitHub runner, token, Cloudflare)"
-msgstr ""
+msgstr "باز کردن راه‌اندازی کامل مرحله‌به‌مرحله (اجراکننده GitHub، توکن، کلادفلر)"
 
 msgid "Download Ollama"
-msgstr ""
+msgstr "دانلود Ollama"
 
 msgid "Create a GitHub token (Models: Read)"
-msgstr ""
+msgstr "ساخت توکن GitHub (Models: Read)"
 
 msgid "Official documentation"
 msgstr "مستندات رسمی"
 
 msgid "1. Ollama server address"
-msgstr ""
+msgstr "۱. آدرس سرور Ollama"
 
 msgid "1. API key"
-msgstr ""
+msgstr "۱. کلید API"
 
 msgid "Load models again"
-msgstr ""
+msgstr "بارگیری دوباره مدل‌ها"
 
 msgid "Connect & load models"
-msgstr ""
+msgstr "اتصال و بارگیری مدل‌ها"
 
 #, php-format
 msgid "Connected — %s models available to your account."
-msgstr ""
+msgstr "متصل — %s مدل برای حساب شما در دسترس است."
 
 msgid "Disconnect"
 msgstr "قطع اتصال"
 
 #, php-format
 msgid "Remove the saved key of %s? AI features that use it stop working."
-msgstr ""
+msgstr "کلید ذخیره‌شده %s حذف شود؟ قابلیت‌های هوش مصنوعی که از آن استفاده می‌کنند متوقف می‌شوند."
 
 msgid "SEOlity asks this server which models are installed."
-msgstr ""
+msgstr "SEOlity از این سرور می‌پرسد چه مدل‌هایی نصب است."
 
 msgid "The key is stored encrypted on your server and never sent back to the browser. SEOlity then asks the provider which models this key can use."
-msgstr ""
+msgstr "کلید به‌صورت رمزنگاری‌شده روی سرور شما ذخیره می‌شود و هرگز به مرورگر برنمی‌گردد. سپس SEOlity از سرویس می‌پرسد این کلید به چه مدل‌هایی دسترسی دارد."
 
 msgid "1. Where the official program runs"
-msgstr ""
+msgstr "۱. برنامه رسمی کجا اجرا شود"
 
 msgid "Your private GitHub runner"
-msgstr ""
+msgstr "اجراکننده خصوصی GitHub شما"
 
 #, php-format
 msgid "Ready: %s"
-msgstr ""
+msgstr "آماده: %s"
 
 msgid "Not set up yet — use the step-by-step setup below (free, nothing to install on your host)."
-msgstr ""
+msgstr "هنوز راه‌اندازی نشده — از راه‌اندازی مرحله‌به‌مرحله پایین استفاده کنید (رایگان، بدون نصب روی هاست)."
 
 msgid "This server (official CLI, optional)"
-msgstr ""
+msgstr "همین سرور (CLI رسمی، اختیاری)"
 
 #, php-format
 msgid "Found: %s"
-msgstr ""
+msgstr "پیدا شد: %s"
 
 msgid "Not installed. See Connections → Server & speed."
-msgstr ""
+msgstr "نصب نیست. «اتصال‌ها ← سرور و سرعت» را ببینید."
 
 msgid "Not possible on this host (PHP cannot start programs). Typical for shared hosting."
-msgstr ""
+msgstr "روی این هاست ممکن نیست (PHP نمی‌تواند برنامه اجرا کند). معمول هاست‌های اشتراکی است."
 
 msgid "This server when the CLI is installed, otherwise the GitHub runner (never GitHub when the route is “Direct”)."
-msgstr ""
+msgstr "همین سرور اگر CLI نصب باشد، وگرنه اجراکننده GitHub (وقتی مسیر «مستقیم» است هرگز GitHub نه)."
 
 msgid "Used now:"
-msgstr ""
+msgstr "در حال استفاده:"
 
 msgid "this server (no GitHub)"
-msgstr ""
+msgstr "همین سرور (بدون GitHub)"
 
 msgid "GitHub runner"
 msgstr "اجراکننده گیت‌هاب"
 
 msgid "Claude token saved"
-msgstr ""
+msgstr "توکن Claude ذخیره شده"
 
 msgid "ChatGPT login saved"
-msgstr ""
+msgstr "ورود ChatGPT ذخیره شده"
 
 msgid "Claude token missing"
-msgstr ""
+msgstr "توکن Claude وجود ندارد"
 
 msgid "ChatGPT login missing"
-msgstr ""
+msgstr "ورود ChatGPT وجود ندارد"
 
 #, php-format
 msgid "Remove the saved login of %s?"
-msgstr ""
+msgstr "ورود ذخیره‌شده %s حذف شود؟"
 
 msgid "2. Model"
-msgstr ""
+msgstr "۲. مدل"
 
 msgid "Press “Connect & load models” to load the models of your account."
-msgstr ""
+msgstr "«اتصال و بارگیری مدل‌ها» را بزنید تا مدل‌های حساب شما بارگیری شوند."
 
 msgid "Connect first to see the models of your account."
-msgstr ""
+msgstr "اول وصل شوید تا مدل‌های حساب شما را ببینید."
 
 msgid "or a model id (optional)"
-msgstr ""
+msgstr "یا شناسه یک مدل (اختیاری)"
 
 msgid "Subscriptions have no official model list: these are the official aliases. A model only counts as available after a successful test."
-msgstr ""
+msgstr "اشتراک‌ها فهرست رسمی مدل ندارند: این‌ها نام‌های مستعار رسمی‌اند. یک مدل فقط بعد از آزمایش موفق در دسترس حساب می‌شود."
 
 #, php-format
 msgid "%s models from your account’s model list (loaded %s). ✓ = tested successfully."
-msgstr ""
+msgstr "%s مدل از فهرست مدل‌های حساب شما (بارگیری %s). ✓ = آزمایش موفق."
 
 msgid "Test sent to your GitHub runner…"
-msgstr ""
+msgstr "آزمایش به اجراکننده GitHub شما فرستاده شد…"
 
 #, php-format
 msgid "AI engine switched: %s"
-msgstr ""
+msgstr "موتور هوش مصنوعی تغییر کرد: %s"
 
 #, php-format
 msgid "%s models"
-msgstr ""
+msgstr "%s مدل"
 
 msgid "AI engine in use:"
-msgstr ""
+msgstr "موتور هوش مصنوعی در حال استفاده:"
 
 msgid "Tested and working — every AI feature uses it."
-msgstr ""
+msgstr "آزمایش شده و کار می‌کند — همه قابلیت‌های هوش مصنوعی از آن استفاده می‌کنند."
 
 msgid "Configured but not tested yet. Open it and press “Test model”."
-msgstr ""
+msgstr "تنظیم شده اما هنوز آزمایش نشده. آن را باز کنید و «آزمایش مدل» را بزنید."
 
 msgid "AI with API"
-msgstr ""
+msgstr "هوش مصنوعی با API"
 
 msgid "Pay per use with an API key from the provider. The most reliable option."
-msgstr ""
+msgstr "پرداخت بر اساس مصرف با کلید API از سرویس‌دهنده. مطمئن‌ترین گزینه."
 
 msgid "Subscription"
-msgstr ""
+msgstr "اشتراکی"
 
 msgid "Use an AI plan you already pay for — only through the official methods each company allows."
-msgstr ""
+msgstr "از پلن هوش مصنوعی که هزینه‌اش را می‌پردازید استفاده کنید — فقط از راه‌های رسمی که هر شرکت اجازه می‌دهد."
 
 msgid "e.g. Why did my organic sales drop this month?"
 msgstr "مثلاً: چرا فروش ارگانیک من این ماه کم شده؟"
@@ -6218,13 +6218,13 @@ msgstr "دارای ارجاع‌دهنده"
 
 #, php-format
 msgid "%s selected"
-msgstr ""
+msgstr "%s مورد انتخاب شد"
 
 msgid "Redirect selected to their own targets"
-msgstr ""
+msgstr "ریدایرکت موارد انتخاب‌شده به مقصد خودشان"
 
 msgid "Every redirect was checked: the target must be a live page, no loop may be created and the old URL must really be gone. Untick anything you do not want, then approve."
-msgstr ""
+msgstr "هر ریدایرکت بررسی شد: مقصد باید صفحه زنده باشد، حلقه ایجاد نشود و آدرس قدیمی واقعاً از بین رفته باشد. تیک هر چیزی را که نمی‌خواهید بردارید و سپس تأیید کنید."
 
 msgid "Select all"
 msgstr "انتخاب همه"
@@ -6248,14 +6248,14 @@ msgid "Suggested redirect"
 msgstr "ریدایرکت پیشنهادی"
 
 msgid "no good match — enter a target"
-msgstr ""
+msgstr "تطابق خوبی نیست — مقصد را وارد کنید"
 
 msgid "pending"
 msgstr "در انتظار"
 
 #, php-format
 msgid "match %s%"
-msgstr ""
+msgstr "تطابق %s%"
 
 msgid "no good match"
 msgstr "مورد مناسبی نیست"
@@ -6583,98 +6583,98 @@ msgid "Set up GitHub"
 msgstr "راه‌اندازی گیت‌هاب"
 
 msgid "Preparing"
-msgstr ""
+msgstr "در حال آماده‌سازی"
 
 msgid "Waiting for your approval"
-msgstr ""
+msgstr "منتظر تأیید شما"
 
 msgid "Approved — applying"
-msgstr ""
+msgstr "تأیید شد — در حال اعمال"
 
 msgid "Applying"
-msgstr ""
+msgstr "در حال اعمال"
 
 msgid "Done & verified"
-msgstr ""
+msgstr "انجام و تأیید شد"
 
 msgid "Partly applied"
-msgstr ""
+msgstr "بخشی اعمال شد"
 
 msgid "Rejected — nothing changed"
-msgstr ""
+msgstr "رد شد — چیزی تغییر نکرد"
 
 msgid "Undone"
-msgstr ""
+msgstr "بازگردانده شد"
 
 msgid "Your instructions:"
-msgstr ""
+msgstr "دستورالعمل شما:"
 
 msgid "Apply this item"
-msgstr ""
+msgstr "این مورد اعمال شود"
 
 msgid "Not applied"
-msgstr ""
+msgstr "اعمال نشد"
 
 #, php-format
 msgid "Risk: %s"
-msgstr ""
+msgstr "ریسک: %s"
 
 msgid "Edit manually"
-msgstr ""
+msgstr "ویرایش دستی"
 
 msgid "Checked: the target is a live page and no loop is created."
-msgstr ""
+msgstr "بررسی شد: مقصد صفحه زنده است و حلقه‌ای ایجاد نمی‌شود."
 
 #, php-format
 msgid "Problem: %s"
-msgstr ""
+msgstr "مشکل: %s"
 
 msgid "Verified:"
-msgstr ""
+msgstr "تأیید شد:"
 
 msgid "Not confirmed:"
-msgstr ""
+msgstr "تأیید نشد:"
 
 msgid "Approve & apply selected"
-msgstr ""
+msgstr "تأیید و اعمال موارد انتخاب‌شده"
 
 msgid "Approved — applying on the site…"
-msgstr ""
+msgstr "تأیید شد — در حال اعمال روی سایت…"
 
 msgid "Reject"
 msgstr "رد"
 
 msgid "Rejected — nothing was changed."
-msgstr ""
+msgstr "رد شد — چیزی تغییر نکرد."
 
 msgid "Nothing has been changed on your site yet."
-msgstr ""
+msgstr "هنوز هیچ چیزی در سایت شما تغییر نکرده است."
 
 msgid "Undo all of it"
-msgstr ""
+msgstr "بازگردانی همه"
 
 msgid "Undo every change of this operation (restore the previous versions, remove the redirects)?"
-msgstr ""
+msgstr "همه تغییرات این عملیات بازگردانده شود (نسخه‌های قبلی برگردند و ریدایرکت‌ها حذف شوند)؟"
 
 msgid "Undone."
-msgstr ""
+msgstr "بازگردانده شد."
 
 msgid "Applied and verified on the site. The roadmap item is marked as completed."
-msgstr ""
+msgstr "روی سایت اعمال و تأیید شد. مورد مسیر راه انجام‌شده علامت خورد."
 
 msgid "Every approved item was applied and verified on the site; the related roadmap items are completed."
-msgstr ""
+msgstr "همه موارد تأییدشده روی سایت اعمال و تأیید شدند؛ موارد مربوط در مسیر راه تکمیل شدند."
 
 #, php-format
 msgid "Point %s redirect chains straight to their final URL"
-msgstr ""
+msgstr "%s زنجیره ریدایرکت مستقیم به آدرس نهایی اشاره کنند"
 
 #, php-format
 msgid "Optimize %s items with AI in the background"
-msgstr ""
+msgstr "بهینه‌سازی %s مورد با هوش مصنوعی در پس‌زمینه"
 
 msgid "Open its section"
-msgstr ""
+msgstr "باز کردن بخش مربوط"
 
 msgid "Do it yourself — exactly where"
 msgstr "خودتان انجام دهید — دقیقاً کجا"
@@ -6686,19 +6686,19 @@ msgid "Let the AI do it"
 msgstr "بگذارید هوش مصنوعی انجام دهد"
 
 msgid "The AI prepares the fix first and shows you every change before anything is written. You approve what should be applied; every change is verified on the site and can be undone."
-msgstr ""
+msgstr "هوش مصنوعی اول اصلاح را آماده می‌کند و قبل از نوشتن هر چیزی همه تغییرات را به شما نشان می‌دهد. شما تأیید می‌کنید چه چیزی اعمال شود؛ هر تغییر روی سایت تأیید می‌شود و قابل بازگردانی است."
 
 msgid "AI recommendation (plan)"
-msgstr ""
+msgstr "پیشنهاد هوش مصنوعی (برنامه)"
 
 msgid "Optional: your instructions for the AI (what to keep, what to emphasize, style, which page stays primary…)"
-msgstr ""
+msgstr "اختیاری: دستورالعمل شما برای هوش مصنوعی (چه چیزی بماند، روی چه تأکید شود، سبک، کدام صفحه اصلی بماند…)"
 
 msgid "Your instructions for the AI"
-msgstr ""
+msgstr "دستورالعمل شما برای هوش مصنوعی"
 
 msgid "Kept with this task and used on every new attempt until you change them."
-msgstr ""
+msgstr "همراه این کار ذخیره می‌شود و در هر تلاش بعدی استفاده می‌شود تا وقتی تغییرش دهید."
 
 msgid "Connect an AI provider first (Settings → AI)."
 msgstr "اول یک سرویس هوش مصنوعی وصل کنید (تنظیمات ← هوش مصنوعی)."
@@ -6707,10 +6707,10 @@ msgid "This task needs your decision; follow the steps on the left."
 msgstr "این کار به تصمیم شما نیاز دارد؛ مراحل سمت چپ را دنبال کنید."
 
 msgid "Prepare the fix with AI"
-msgstr ""
+msgstr "آماده کردن اصلاح با هوش مصنوعی"
 
 msgid "Prepare a new fix"
-msgstr ""
+msgstr "آماده کردن اصلاح جدید"
 
 msgid "The AI is working…"
 msgstr "هوش مصنوعی در حال کار است…"
@@ -6765,10 +6765,10 @@ msgid "Studying the SEO knowledge base and writing the roadmap"
 msgstr "مطالعه پایگاه دانش سئو و نوشتن نقشه راه"
 
 msgid "Every problem on the site appears here once, in the order it should be fixed. Run a full analysis to update every section; each item can be done by AI (with a preview and your approval) or by hand, and gets a checkmark only after the result was verified on the site."
-msgstr ""
+msgstr "هر مشکل سایت فقط یک بار اینجا و به ترتیبی که باید رفع شود نمایش داده می‌شود. تحلیل کامل را اجرا کنید تا همه بخش‌ها به‌روز شوند؛ هر مورد را می‌توان با هوش مصنوعی (با پیش‌نمایش و تأیید شما) یا دستی انجام داد و فقط بعد از تأیید نتیجه روی سایت تیک می‌خورد."
 
 msgid "AI diagnosis and plan"
-msgstr ""
+msgstr "تشخیص و برنامه هوش مصنوعی"
 
 msgid "The last analysis failed:"
 msgstr "آخرین تحلیل ناموفق بود:"
@@ -6919,71 +6919,71 @@ msgid "Working on it"
 msgstr "در حال انجام"
 
 msgid "To do"
-msgstr ""
+msgstr "باید انجام شود"
 
 msgid "Resolved"
-msgstr ""
+msgstr "حل شده"
 
 msgid "Dismissed"
-msgstr ""
+msgstr "کنار گذاشته شده"
 
 msgid "Marked done by you (not verified)"
-msgstr ""
+msgstr "توسط شما انجام‌شده علامت خورد (تأیید نشده)"
 
 msgid "Gone after the last check"
-msgstr ""
+msgstr "در آخرین بررسی دیگر وجود نداشت"
 
 msgid "Analysis running…"
-msgstr ""
+msgstr "تحلیل در حال اجرا…"
 
 msgid "Run full-site analysis"
-msgstr ""
+msgstr "اجرای تحلیل کامل سایت"
 
 #, php-format
 msgid "Last full analysis: %s"
-msgstr ""
+msgstr "آخرین تحلیل کامل: %s"
 
 msgid "Crawl, Search Console, issues, indexability, duplicates, 404 targets and the AI plan — all sections updated in one run."
-msgstr ""
+msgstr "خزش، سرچ کنسول، مشکلات، ایندکس‌پذیری، مقالات تکراری، مقصدهای ۴۰۴ و برنامه هوش مصنوعی — همه بخش‌ها در یک اجرا به‌روز می‌شوند."
 
 #, php-format
 msgid "%s open"
-msgstr ""
+msgstr "%s باز"
 
 msgid "all clear"
-msgstr ""
+msgstr "همه درست"
 
 msgid "Open the section"
-msgstr ""
+msgstr "باز کردن بخش"
 
 #, php-format
 msgid "Step %s:"
-msgstr ""
+msgstr "گام %s:"
 
 msgid "AI recommendation:"
-msgstr ""
+msgstr "پیشنهاد هوش مصنوعی:"
 
 msgid "Result and verification"
-msgstr ""
+msgstr "نتیجه و تأیید"
 
 msgid "View the change"
-msgstr ""
+msgstr "مشاهده تغییر"
 
 msgid "Open in its section"
-msgstr ""
+msgstr "باز کردن در بخش خودش"
 
 msgid "Reopen"
-msgstr ""
+msgstr "باز کردن دوباره"
 
 #, php-format
 msgid "%s items"
-msgstr ""
+msgstr "%s مورد"
 
 msgid "Nothing left to do here"
-msgstr ""
+msgstr "اینجا کاری باقی نمانده"
 
 msgid "Show more"
-msgstr ""
+msgstr "نمایش بیشتر"
 
 msgid "Site Audit & SEO Doctor"
 msgstr "ممیزی سایت و دکتر سئو"
@@ -7803,94 +7803,94 @@ msgid "Most linked pages"
 msgstr "پرلینک‌ترین صفحات"
 
 msgid "No response"
-msgstr ""
+msgstr "بدون پاسخ"
 
 msgid "Blocked in robots.txt"
-msgstr ""
+msgstr "مسدود در robots.txt"
 
 msgid "In sitemap"
-msgstr ""
+msgstr "در نقشه سایت"
 
 msgid "noindex, robots.txt and the sitemap do different jobs"
-msgstr ""
+msgstr "noindex، robots.txt و نقشه سایت کارهای متفاوتی انجام می‌دهند"
 
 msgid "noindex (meta robots or X-Robots-Tag): the page may be crawled but is kept out of Google. Use it for pages that must exist but should not rank."
-msgstr ""
+msgstr "noindex (متای robots یا X-Robots-Tag): صفحه می‌تواند خزیده شود اما از گوگل بیرون می‌ماند. برای صفحاتی که باید وجود داشته باشند ولی نباید رتبه بگیرند."
 
 msgid "robots.txt Disallow: Google does not crawl the URL at all, so it never sees a noindex there. Use it only for crawl budget, after the URLs are already out of the index."
-msgstr ""
+msgstr "Disallow در robots.txt: گوگل اصلاً آدرس را نمی‌خزد، پس noindex آن را هم نمی‌بیند. فقط برای بودجه خزش و بعد از خارج شدن آدرس‌ها از ایندکس استفاده کنید."
 
 msgid "XML sitemap: a list of pages you want indexed. Never list noindexed, redirected or blocked URLs."
-msgstr ""
+msgstr "نقشه XML سایت: فهرست صفحاتی که می‌خواهید ایندکس شوند. هرگز آدرس‌های noindex، ریدایرکت‌شده یا مسدود را در آن نگذارید."
 
 msgid "301 redirect: the page should not exist on its own (e.g. attachment pages) — visitors and Google go to the right page."
-msgstr ""
+msgstr "ریدایرکت ۳۰۱: صفحه نباید جدا وجود داشته باشد (مثلاً صفحات پیوست) — بازدیدکننده و گوگل به صفحه درست می‌روند."
 
 msgid "Checks templates, attachments, archives, search, parameters, feeds and pagination: live status, robots meta, X-Robots-Tag, canonical, robots.txt, sitemap, internal links and Rank Math settings — intended vs. technical indexability."
-msgstr ""
+msgstr "قالب‌ها، پیوست‌ها، بایگانی‌ها، جستجو، پارامترها، خوراک‌ها و صفحه‌بندی را بررسی می‌کند: وضعیت زنده، متای robots، X-Robots-Tag، canonical، robots.txt، نقشه سایت، لینک‌های داخلی و تنظیمات Rank Math — ایندکس‌پذیری مورد نظر در برابر ایندکس‌پذیری فنی."
 
 msgid "Run the audit"
-msgstr ""
+msgstr "اجرای ممیزی"
 
 msgid "The audit is running — results refresh automatically."
-msgstr ""
+msgstr "ممیزی در حال اجراست — نتایج خودکار به‌روز می‌شوند."
 
 msgid "Run it to see what Google can index on this site."
-msgstr ""
+msgstr "آن را اجرا کنید تا ببینید گوگل چه چیزهایی از این سایت را می‌تواند ایندکس کند."
 
 msgid "Findings"
-msgstr ""
+msgstr "یافته‌ها"
 
 msgid "High severity"
-msgstr ""
+msgstr "شدت بالا"
 
 msgid "URL groups checked"
-msgstr ""
+msgstr "گروه‌های آدرس بررسی‌شده"
 
 #, php-format
 msgid "Last audit: %s"
-msgstr ""
+msgstr "آخرین ممیزی: %s"
 
 msgid "Connect Search Console to include Google’s own index status."
-msgstr ""
+msgstr "سرچ کنسول را وصل کنید تا وضعیت ایندکس خود گوگل هم آورده شود."
 
 msgid "Nothing to fix: every URL group is indexed (or kept out) the way it should be."
-msgstr ""
+msgstr "چیزی برای رفع نیست: هر گروه آدرس همان‌طور که باید ایندکس می‌شود (یا بیرون می‌ماند)."
 
 #, php-format
 msgid "%s URLs"
-msgstr ""
+msgstr "%s آدرس"
 
 #, php-format
 msgid "Source: %s"
-msgstr ""
+msgstr "منبع: %s"
 
 msgid "Problem:"
-msgstr ""
+msgstr "مشکل:"
 
 msgid "Why it matters:"
-msgstr ""
+msgstr "چرا مهم است:"
 
 msgid "Solution:"
-msgstr ""
+msgstr "راه‌حل:"
 
 msgid "Fix it (preview first)"
-msgstr ""
+msgstr "رفع کن (اول پیش‌نمایش)"
 
 msgid "Fix manually"
-msgstr ""
+msgstr "رفع دستی"
 
 msgid "Everything that was checked"
-msgstr ""
+msgstr "همه چیزهایی که بررسی شد"
 
 msgid "URL group"
-msgstr ""
+msgstr "گروه آدرس"
 
 msgid "Count"
-msgstr ""
+msgstr "تعداد"
 
 msgid "Should be indexed"
-msgstr ""
+msgstr "باید ایندکس شود"
 
 msgid "Yes"
 msgstr "بله"
@@ -7899,137 +7899,137 @@ msgid "No"
 msgstr "خیر"
 
 msgid "Live state"
-msgstr ""
+msgstr "وضعیت زنده"
 
 msgid "Sample URL"
-msgstr ""
+msgstr "آدرس نمونه"
 
 msgid "Duplicate"
-msgstr ""
+msgstr "تکراری"
 
 msgid "Near-duplicate"
-msgstr ""
+msgstr "شبه تکراری"
 
 msgid "Same topic (cannibalization)"
-msgstr ""
+msgstr "موضوع یکسان (هم نوع خواری)"
 
 #, php-format
 msgid "%s articles"
-msgstr ""
+msgstr "%s مقاله"
 
 #, php-format
 msgid "%s clicks (90 days)"
-msgstr ""
+msgstr "%s کلیک (۹۰ روز)"
 
 msgid "Keep this one (primary)"
-msgstr ""
+msgstr "این یکی بماند (اصلی)"
 
 msgid "Primary"
 msgstr "اصلی"
 
 msgid "Keep"
-msgstr ""
+msgstr "نگه‌داشتن"
 
 msgid "Merge into the primary article"
-msgstr ""
+msgstr "ادغام در مقاله اصلی"
 
 #, php-format
 msgid "%s words"
-msgstr ""
+msgstr "%s کلمه"
 
 #, php-format
 msgid "%s clicks"
-msgstr ""
+msgstr "%s کلیک"
 
 #, php-format
 msgid "%s internal links"
-msgstr ""
+msgstr "%s لینک داخلی"
 
 msgid "same content"
-msgstr ""
+msgstr "محتوای یکسان"
 
 msgid "similar titles"
-msgstr ""
+msgstr "عنوان‌های مشابه"
 
 msgid "same H1"
-msgstr ""
+msgstr "H1 یکسان"
 
 #, php-format
 msgid "both rank for: %s"
-msgstr ""
+msgstr "هر دو رتبه دارند برای: %s"
 
 msgid "Why they are grouped:"
-msgstr ""
+msgstr "چرا در یک گروه‌اند:"
 
 msgid "Keep the suggested primary and merge the others into it."
-msgstr ""
+msgstr "مقاله اصلی پیشنهادی را نگه دارید و بقیه را در آن ادغام کنید."
 
 msgid "Instructions for this merge (optional), e.g. “keep the price table from the second article”, “do not change the introduction”."
-msgstr ""
+msgstr "دستورالعمل این ادغام (اختیاری)، مثلاً «جدول قیمت مقاله دوم بماند»، «مقدمه تغییر نکند»."
 
 msgid "Open the last operation"
-msgstr ""
+msgstr "باز کردن آخرین عملیات"
 
 msgid "Fix cannibalization"
-msgstr ""
+msgstr "رفع هم نوع خواری"
 
 msgid "The AI merges the articles first. You then see the full before/after of every step. Redirects and link updates run only after the merged article was saved and verified; nothing is deleted and every edit keeps a WordPress revision."
-msgstr ""
+msgstr "هوش مصنوعی اول مقالات را ادغام می‌کند. سپس قبل/بعد کامل هر مرحله را می‌بینید. ریدایرکت‌ها و به‌روزرسانی لینک‌ها فقط بعد از ذخیره و تأیید مقاله ادغام‌شده انجام می‌شوند؛ هیچ چیز حذف نمی‌شود و هر ویرایش یک نسخه بازبینی وردپرس دارد."
 
 msgid "Duplicate & near-duplicate articles"
-msgstr ""
+msgstr "مقالات تکراری و شبه تکراری"
 
 msgid "Finds articles that repeat each other or compete for the same topic (content overlap, titles, H1, shared Search Console queries) and merges them into the strongest one — preview first, then 301 redirects and internal links, all verified."
-msgstr ""
+msgstr "مقالاتی را که یکدیگر را تکرار می‌کنند یا برای یک موضوع رقابت می‌کنند (هم‌پوشانی محتوا، عنوان، H1، کوئری‌های مشترک سرچ کنسول) پیدا می‌کند و در قوی‌ترین مقاله ادغام می‌کند — اول پیش‌نمایش، سپس ریدایرکت ۳۰۱ و لینک‌های داخلی، همه تأییدشده."
 
 msgid "Scan for duplicates"
-msgstr ""
+msgstr "بررسی مقالات تکراری"
 
 msgid "Scan started in the background."
-msgstr ""
+msgstr "بررسی در پس‌زمینه شروع شد."
 
 msgid "The scan is running — results refresh automatically."
-msgstr ""
+msgstr "بررسی در حال اجراست — نتایج خودکار به‌روز می‌شوند."
 
 msgid "Rules for every merge, e.g. “keep our brand voice”, “never remove prices”, “keep FAQs at the end”."
-msgstr ""
+msgstr "قواعد هر ادغام، مثلاً «لحن برند ما حفظ شود»، «قیمت‌ها هرگز حذف نشوند»، «پرسش‌های متداول در انتها بمانند»."
 
 msgid "Your standing instructions for merges"
-msgstr ""
+msgstr "دستورالعمل‌های ثابت شما برای ادغام"
 
 msgid "Saved and added to every AI merge, together with the instructions of each group."
-msgstr ""
+msgstr "ذخیره می‌شود و همراه دستورالعمل هر گروه به هر ادغام هوش مصنوعی اضافه می‌شود."
 
 msgid "Save instructions"
-msgstr ""
+msgstr "ذخیره دستورالعمل"
 
 msgid "No scan yet"
-msgstr ""
+msgstr "هنوز بررسی انجام نشده"
 
 msgid "Run it to find articles that repeat or compete with each other."
-msgstr ""
+msgstr "آن را اجرا کنید تا مقالاتی که تکرار یا با هم رقابت می‌کنند پیدا شوند."
 
 msgid "Articles checked"
-msgstr ""
+msgstr "مقالات بررسی‌شده"
 
 msgid "Duplicate groups"
-msgstr ""
+msgstr "گروه‌های تکراری"
 
 msgid "Near-duplicate groups"
-msgstr ""
+msgstr "گروه‌های شبه تکراری"
 
 msgid "Competing topics"
-msgstr ""
+msgstr "موضوعات رقیب"
 
 #, php-format
 msgid "Last scan: %s"
-msgstr ""
+msgstr "آخرین بررسی: %s"
 
 msgid "Connect Search Console to also find pages that compete for the same queries."
-msgstr ""
+msgstr "سرچ کنسول را وصل کنید تا صفحاتی که برای کوئری‌های یکسان رقابت می‌کنند هم پیدا شوند."
 
 msgid "No duplicate or competing articles found."
-msgstr ""
+msgstr "هیچ مقاله تکراری یا رقیبی پیدا نشد."
 
 #, php-format
 msgid "AI is answering through GitHub (%s)…"

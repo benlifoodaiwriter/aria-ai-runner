@@ -125,6 +125,9 @@ final class Admin {
 		if ( ! current_user_can( Capabilities::VIEW ) ) {
 			wp_die( esc_html__( 'You are not allowed to access this page.', 'seolity' ), 403 );
 		}
+		if ( get_option( 'seolity_ui_locale' ) !== get_user_locale() ) {
+			update_option( 'seolity_ui_locale', get_user_locale(), false );
+		}
 		$notice = isset( $_GET['seolity_gsc'] ) ? sanitize_key( wp_unslash( $_GET['seolity_gsc'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification
 		echo '<div class="wrap seolity-wrap"><div id="seolity-app" data-gsc-notice="' . esc_attr( $notice ) . '">';
 		echo '<div class="sl-boot"><div class="sl-spinner"></div><p>' . esc_html( $this->brand() ) . '</p></div>';
