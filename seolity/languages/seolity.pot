@@ -1,15 +1,18 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: SEOlity 1.0.0\n"
-"POT-Creation-Date: 2026-10-19 11:27+0000\n"
+"POT-Creation-Date: 2026-10-25 22:42+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Domain: seolity\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+msgid "This provider does not offer a model list."
+msgstr ""
+
 #, php-format
-msgid "%1$s request failed: %2$s"
+msgid "%1$s could not be reached: %2$s"
 msgstr ""
 
 #, php-format
@@ -17,6 +20,10 @@ msgid "%1$s API error (%2$d): %3$s"
 msgstr ""
 
 msgid "AI provider returned a non-JSON response."
+msgstr ""
+
+#, php-format
+msgid "%1$s request failed: %2$s"
 msgstr ""
 
 msgid "Sending the request to the AI…"
@@ -122,6 +129,98 @@ msgstr ""
 msgid "New figure \"%s\" not found in original — verify accuracy."
 msgstr ""
 
+msgid "Billed per use by Anthropic. A Claude Pro/Max subscription is not an API key — use the “Subscription” section for that."
+msgstr ""
+
+msgid "OpenAI API billing is separate from ChatGPT Plus/Pro: a ChatGPT subscription does not include API credit."
+msgstr ""
+
+msgid "Google AI Studio keys include a free tier with rate limits."
+msgstr ""
+
+msgid "One key for hundreds of models from many companies."
+msgstr ""
+
+msgid "DeepSeek, Groq, Mistral, xAI, Azure OpenAI, Cloudflare Workers AI or any OpenAI/Anthropic-compatible service."
+msgstr ""
+
+msgid "Models running on your own computer or server (no key)."
+msgstr ""
+
+msgid "Anthropic lets a Claude Pro/Max plan be used programmatically only through its official Claude Code program, signed in with a token from “claude setup-token”. SEOlity therefore runs Claude Code for you — on your private GitHub runner (nothing to install) or, optionally, on this server (VPS with Node.js). A direct connection from WordPress without Claude Code is not offered by Anthropic for subscriptions."
+msgstr ""
+
+msgid "OpenAI lets a ChatGPT plan be used programmatically only through its official Codex program (“Sign in with ChatGPT”, saved in auth.json). SEOlity runs Codex for you — on your private GitHub runner or, optionally, on this server. The OpenAI API does not accept ChatGPT logins."
+msgstr ""
+
+msgid "GitHub’s official AI model API, called directly from WordPress — no CLI, no runner. Every GitHub account gets free, rate-limited use; Copilot plans raise the limits. Create a fine-grained token with the permission “Models: Read”."
+msgstr ""
+
+msgid "Choose an AI connection in Settings → AI."
+msgstr ""
+
+#, php-format
+msgid "Missing: %s"
+msgstr ""
+
+msgid "No API key saved for the selected provider."
+msgstr ""
+
+msgid "No model selected yet — load the models and pick one."
+msgstr ""
+
+msgid "Unknown AI provider."
+msgstr ""
+
+msgid "Enter the API key first."
+msgstr ""
+
+#, php-format
+msgid "Connecting %s: loading the models of your account"
+msgstr ""
+
+msgid "Asking the provider for its model list…"
+msgstr ""
+
+#, php-format
+msgid "%d models available to this connection"
+msgstr ""
+
+#, php-format
+msgid "Connection test: %1$s · %2$s"
+msgstr ""
+
+msgid "default model"
+msgstr ""
+
+msgid "Sending a short test request…"
+msgstr ""
+
+#, php-format
+msgid "Model %1$s answered in %2$s ms"
+msgstr ""
+
+msgid "Choose a model first."
+msgstr ""
+
+msgid "The model test did not succeed."
+msgstr ""
+
+msgid "The key was rejected: check that it was copied completely, has not been revoked, and belongs to this provider — or create a new one."
+msgstr ""
+
+msgid "The key works but the account has no usable credit or quota. Add credit / a payment method in the provider’s console."
+msgstr ""
+
+msgid "This model is not available to your key. Pick another model from the list loaded from your account."
+msgstr ""
+
+msgid "The provider is limiting requests right now. Wait a minute and try again."
+msgstr ""
+
+msgid "This server could not reach the provider. Check Connections → Server & speed (servers in Iran need the Cloudflare or GitHub relay)."
+msgstr ""
+
 msgid "The model declined this request."
 msgstr ""
 
@@ -147,13 +246,135 @@ msgstr ""
 msgid "Gemini blocked this response for safety reasons."
 msgstr ""
 
+msgid "GitHub Models (GitHub / Copilot account)"
+msgstr ""
+
+#, php-format
+msgid "rate limit: %s"
+msgstr ""
+
 msgid "Local LLM (Ollama)"
+msgstr ""
+
+#, php-format
+msgid "Ollama could not be reached at %1$s: %2$s"
+msgstr ""
+
+#, php-format
+msgid "Ollama answered HTTP %d."
+msgstr ""
+
+msgid "needs credits (your key is on the free tier)"
+msgstr ""
+
+msgid "free"
 msgstr ""
 
 msgid "Claude subscription (Pro/Max)"
 msgstr ""
 
+msgid "Sonnet (latest)"
+msgstr ""
+
+msgid "alias — included in Pro and Max"
+msgstr ""
+
+msgid "Opus (latest)"
+msgstr ""
+
+msgid "alias — availability depends on your plan"
+msgstr ""
+
+msgid "Haiku (latest)"
+msgstr ""
+
+msgid "alias"
+msgstr ""
+
 msgid "ChatGPT subscription (Plus/Pro)"
+msgstr ""
+
+msgid "Default model of your ChatGPT plan"
+msgstr ""
+
+msgid "recommended"
+msgstr ""
+
+msgid "PHP may start programs (proc_open)"
+msgstr ""
+
+msgid "Allowed"
+msgstr ""
+
+msgid "Disabled by the host"
+msgstr ""
+
+msgid "Most shared hosts disable this on purpose. Ask the host to allow proc_open, or use a VPS — otherwise use the GitHub or Cloudflare route."
+msgstr ""
+
+msgid "Operating system"
+msgstr ""
+
+msgid "The official CLIs ship for Linux and macOS on x64/arm64 only."
+msgstr ""
+
+#, php-format
+msgid "Node.js %d or newer"
+msgstr ""
+
+msgid "Not found"
+msgstr ""
+
+msgid "In cPanel open “Setup Node.js App” and create an app with the newest Node.js (this installs it for your account), or install Node.js on the server."
+msgstr ""
+
+msgid "npm comes with Node.js; reinstall Node.js with npm."
+msgstr ""
+
+#, php-format
+msgid "Free disk space: %1$d MB (package %2$d MB + npm cache)"
+msgstr ""
+
+msgid "Unknown (the host does not report it)"
+msgstr ""
+
+msgid "Free up space or ask for a larger plan; shared plans with 1–2 GB of total space usually cannot hold it."
+msgstr ""
+
+#, php-format
+msgid "Available memory: %d MB"
+msgstr ""
+
+msgid "Unknown"
+msgstr ""
+
+msgid "The CLI is a Node.js program; hosts that limit processes to a few hundred MB stop it while it answers."
+msgstr ""
+
+msgid "Install folder is writable"
+msgstr ""
+
+msgid "(inside the web root — protected with deny rules)"
+msgstr ""
+
+msgid "Make the folder writable for the PHP user."
+msgstr ""
+
+msgid "This server does not meet the requirements — see the checks."
+msgstr ""
+
+msgid "Installing the official CLI"
+msgstr ""
+
+#, php-format
+msgid "npm install %s …"
+msgstr ""
+
+#, php-format
+msgid "Installed and verified: %s"
+msgstr ""
+
+msgid "The installation did not finish — see the log."
 msgstr ""
 
 msgid "The official CLI is not installed on this server."
@@ -186,10 +407,10 @@ msgstr ""
 msgid "Run \"Set up GitHub runner\""
 msgstr ""
 
-msgid "Direct connection is selected, so SEOlity will not use GitHub. A Claude subscription can only be used directly when the official Claude Code CLI is installed on this server (a VPS). Install it, use an API key instead, or choose the GitHub route under Server & speed."
+msgid "Your Claude subscription is set to run directly on this server, so SEOlity will not send it to GitHub — but the official Claude Code CLI is not installed here. Install it (VPS), choose the GitHub runner as the connection method, or use an API key."
 msgstr ""
 
-msgid "Direct connection is selected, so SEOlity will not use GitHub. A ChatGPT subscription can only be used directly when the official Codex CLI is installed on this server (a VPS). Install it, use an API key instead, or choose the GitHub route under Server & speed."
+msgid "Your ChatGPT subscription is set to run directly on this server, so SEOlity will not send it to GitHub — but the official Codex CLI is not installed here. Install it (VPS), choose the GitHub runner as the connection method, or use an API key."
 msgstr ""
 
 msgid "The subscription runner did not answer in time. Check the \"SEOlity AI\" workflow runs on GitHub."
@@ -362,7 +583,35 @@ msgstr ""
 msgid "Another provider is active. Press “Use as AI engine” after the test."
 msgstr ""
 
-msgid "Stopped without finishing (the server ended the request)."
+msgid "Finished"
+msgstr ""
+
+msgid "Queued again"
+msgstr ""
+
+msgid "The background task no longer exists (it was removed or cleaned up)."
+msgstr ""
+
+msgid "Stopped without finishing: the server ended the request (PHP time limit or closed connection)."
+msgstr ""
+
+#, php-format
+msgid "No AI answer arrived within %d minutes."
+msgstr ""
+
+msgid "Not found."
+msgstr ""
+
+msgid "This task has already finished."
+msgstr ""
+
+msgid "Cancelled by the user."
+msgstr ""
+
+msgid "Only failed, cancelled, interrupted or timed-out work can be retried."
+msgstr ""
+
+msgid "This entry cannot be repeated automatically; start it again from its page."
 msgstr ""
 
 msgid "Content optimization"
@@ -396,6 +645,9 @@ msgid "Competitor analysis"
 msgstr ""
 
 msgid "Cannibalization advice"
+msgstr ""
+
+msgid "Merge duplicate articles"
 msgstr ""
 
 msgid "Focus keyword plan"
@@ -497,7 +749,34 @@ msgstr ""
 msgid "Route speed test"
 msgstr ""
 
+msgid "Indexability & crawl budget audit"
+msgstr ""
+
+msgid "Merging duplicate articles"
+msgstr ""
+
+msgid "Full-site analysis"
+msgstr ""
+
+msgid "Duplicate & similar articles analysis"
+msgstr ""
+
 msgid "Clean-up"
+msgstr ""
+
+msgid "AI agent run"
+msgstr ""
+
+msgid "Site audit: crawling a batch of pages"
+msgstr ""
+
+msgid "Send AI requests to GitHub"
+msgstr ""
+
+msgid "Collect AI answers from GitHub"
+msgstr ""
+
+msgid "SEO operation"
 msgstr ""
 
 msgid "Content"
@@ -626,9 +905,6 @@ msgstr ""
 msgid "New title and description options are ready."
 msgstr ""
 
-msgid "Not found."
-msgstr ""
-
 msgid "Dashboard"
 msgstr ""
 
@@ -674,10 +950,16 @@ msgstr ""
 msgid "AI Changes"
 msgstr ""
 
+msgid "Duplicate & similar articles"
+msgstr ""
+
 msgid "Redirects"
 msgstr ""
 
 msgid "404 Monitor"
+msgstr ""
+
+msgid "Indexability & crawl budget"
 msgstr ""
 
 msgid "Schema"
@@ -722,10 +1004,10 @@ msgstr ""
 msgid "AI Center"
 msgstr ""
 
-msgid "Keywords & links"
+msgid "Data collection"
 msgstr ""
 
-msgid "Analysis"
+msgid "Keywords & links"
 msgstr ""
 
 msgid "Technical SEO"
@@ -916,13 +1198,16 @@ msgstr ""
 msgid "This task needs your decision; SEOlity cannot do it alone."
 msgstr ""
 
-msgid "AI is doing it"
+msgid "AI is preparing the fix"
 msgstr ""
 
-msgid "Done — every change is versioned (undo in AI Center → AI Changes)."
+msgid "Nothing to change was found."
 msgstr ""
 
-msgid "Finished"
+msgid "Ready for your review"
+msgstr ""
+
+msgid "AI prepared the fix"
 msgstr ""
 
 msgid "No related page was found to link from. Publish a related article first, or add the link by hand."
@@ -945,7 +1230,7 @@ msgid "Add internal link \"%1$s\" → %2$s"
 msgstr ""
 
 #, php-format
-msgid "Link “%1$s” written into “%2$s”"
+msgid "Link “%1$s” prepared in “%2$s”"
 msgstr ""
 
 msgid "The related pages are about different topics, so no natural link could be added."
@@ -955,11 +1240,11 @@ msgstr ""
 msgid "Reading the search queries of “%s”…"
 msgstr ""
 
-msgid "Saving the new SEO title and meta description…"
+msgid "Preparing the new SEO title and meta description for your review…"
 msgstr ""
 
 #, php-format
-msgid "%1$s updated on “%2$s”"
+msgid "New %1$s for “%2$s” prepared"
 msgstr ""
 
 #, php-format
@@ -970,11 +1255,11 @@ msgid "The AI produced no usable change."
 msgstr ""
 
 #, php-format
-msgid "SEO score %1$s → %2$s — updating the page…"
+msgid "SEO score %1$s → %2$s — preparing the new version for your review…"
 msgstr ""
 
 #, php-format
-msgid "“%1$s” rewritten (SEO score %2$s → %3$s)"
+msgid "New version of “%1$s” prepared (SEO score %2$s → %3$s)"
 msgstr ""
 
 #, php-format
@@ -982,11 +1267,11 @@ msgid "Optimizing the product “%s” with AI…"
 msgstr ""
 
 #, php-format
-msgid "Saving %s…"
+msgid "Preparing %s…"
 msgstr ""
 
 #, php-format
-msgid "%s saved"
+msgid "%s prepared"
 msgstr ""
 
 #, php-format
@@ -994,22 +1279,22 @@ msgid "Writing the FAQ for “%s”…"
 msgstr ""
 
 #, php-format
-msgid "FAQ added to “%s”"
+msgid "FAQ for “%s” prepared"
 msgstr ""
 
 #, php-format
-msgid "%1$s changed on “%2$s”"
+msgid "Change of %1$s on “%2$s” prepared"
 msgstr ""
 
 msgid "No matching live page was found; choose the target yourself in Technical SEO → Redirects."
 msgstr ""
 
 #, php-format
-msgid "Creating the redirect %1$s → %2$s…"
+msgid "Checking the redirect %1$s → %2$s…"
 msgstr ""
 
 #, php-format
-msgid "301 redirect created: %1$s → %2$s"
+msgid "301 redirect prepared: %1$s → %2$s"
 msgstr ""
 
 #, php-format
@@ -1020,31 +1305,36 @@ msgstr ""
 msgid "Adding the link “%1$s” in “%2$s”…"
 msgstr ""
 
-#, php-format
-msgid "Link “%1$s” added in “%2$s”"
-msgstr ""
-
 msgid "The suggested anchors are no longer in the source pages."
 msgstr ""
 
-msgid "Adding the link…"
+msgid "Preparing the link…"
 msgstr ""
 
-msgid "Link added"
+msgid "Link prepared"
 msgstr ""
 
-msgid "Pointing redirect chains straight to their final URL…"
-msgstr ""
-
-#, php-format
-msgid "%d redirects fixed"
+msgid "Finding redirect chains…"
 msgstr ""
 
 #, php-format
-msgid "%d items queued — follow them in Live activity"
+msgid "%d redirect chains will point straight to their final URL"
 msgstr ""
 
-msgid "Topic added to the content planner"
+#, php-format
+msgid "%d items will be optimized one by one in the background"
+msgstr ""
+
+msgid "Reading the indexability finding and the matching SEO plugin settings…"
+msgstr ""
+
+msgid "This finding needs a manual change; see the suggested solution."
+msgstr ""
+
+msgid "Finding not found — run the indexability audit again."
+msgstr ""
+
+msgid "Topic will be added to the content planner"
 msgstr ""
 
 #, php-format
@@ -1253,6 +1543,65 @@ msgstr ""
 msgid "Several sentences are repeated — remove boilerplate to increase information gain."
 msgstr ""
 
+msgid "Search Console data"
+msgstr ""
+
+msgid "Crawl of the whole site"
+msgstr ""
+
+msgid "Issues and opportunities"
+msgstr ""
+
+msgid "404 redirect targets"
+msgstr ""
+
+msgid "AI roadmap"
+msgstr ""
+
+msgid "Not connected — skipped."
+msgstr ""
+
+msgid "Last days updated."
+msgstr ""
+
+msgid "Crawling…"
+msgstr ""
+
+#, php-format
+msgid "%d pages checked so far…"
+msgstr ""
+
+#, php-format
+msgid "%d pages crawled"
+msgstr ""
+
+msgid "The crawl did not finish; the other sections use the latest available data."
+msgstr ""
+
+#, php-format
+msgid "%d findings"
+msgstr ""
+
+#, php-format
+msgid "%d groups"
+msgstr ""
+
+msgid "No AI engine — slug matching only."
+msgstr ""
+
+msgid "Running in the background."
+msgstr ""
+
+msgid "The AI is writing the roadmap in the background."
+msgstr ""
+
+#, php-format
+msgid "All sections updated. %d open items in the roadmap."
+msgstr ""
+
+msgid "Some sections could not be updated — see the details."
+msgstr ""
+
 msgid "Your AI subscription is working on this request on GitHub…"
 msgstr ""
 
@@ -1260,6 +1609,15 @@ msgid "Unexpected error."
 msgstr ""
 
 msgid "Sorry, you are not allowed to do that."
+msgstr ""
+
+msgid "Operation not found."
+msgstr ""
+
+msgid "Invalid status."
+msgstr ""
+
+msgid "You can only manage your own tasks."
 msgstr ""
 
 msgid "Change not found."
@@ -1272,6 +1630,16 @@ msgid "This property is not available for the connected account."
 msgstr ""
 
 msgid "You are not allowed to edit this product."
+msgstr ""
+
+msgid "Select between 1 and 200 URLs."
+msgstr ""
+
+msgid "None of the selected URLs were found."
+msgstr ""
+
+#, php-format
+msgid "Redirect %d broken URLs to their suggested pages"
 msgstr ""
 
 msgid "Unknown secret."
@@ -1377,6 +1745,95 @@ msgstr ""
 msgid "It received %1$d clicks in the last 28 days and has %2$d internal links. Add a 301 redirect to the closest relevant page to keep its value."
 msgstr ""
 
+#, php-format
+msgid "Reading %d articles…"
+msgstr ""
+
+msgid "Comparing articles…"
+msgstr ""
+
+#, php-format
+msgid "Most Search Console clicks (%d in 90 days)."
+msgstr ""
+
+#, php-format
+msgid "Most internal links pointing to it (%d)."
+msgstr ""
+
+#, php-format
+msgid "Most complete article (%d words)."
+msgstr ""
+
+msgid "Duplicate articles"
+msgstr ""
+
+msgid "Near-duplicate articles"
+msgstr ""
+
+msgid "Articles competing for the same topic"
+msgstr ""
+
+#, php-format
+msgid "%1$s: %2$s"
+msgstr ""
+
+msgid "Several articles answer the same question, so Google splits rankings, links and clicks between them. Merging them into the strongest one usually lifts it."
+msgstr ""
+
+msgid "This group was not found — run the scan again."
+msgstr ""
+
+msgid "The primary article must be one of the group."
+msgstr ""
+
+msgid "Choose at least one article to merge into the primary."
+msgstr ""
+
+msgid "Connect an AI engine first (Settings → AI)."
+msgstr ""
+
+#, php-format
+msgid "Merge into “%s”"
+msgstr ""
+
+msgid "Preparing the merge"
+msgstr ""
+
+msgid "The articles no longer exist."
+msgstr ""
+
+msgid "AI is merging the articles…"
+msgstr ""
+
+msgid "The AI returned a merged article much shorter than the primary one, so nothing was prepared. Try again or add instructions."
+msgstr ""
+
+msgid "Preparing the preview…"
+msgstr ""
+
+#, php-format
+msgid "Merged with %d competing article(s)."
+msgstr ""
+
+msgid "The merged article could not be prepared."
+msgstr ""
+
+msgid "Merged into the primary article: keep it out of the index and the sitemap (it is not deleted)."
+msgstr ""
+
+msgid "Internal link now points straight at the merged article."
+msgstr ""
+
+#, php-format
+msgid "From %1$s: %2$s"
+msgstr ""
+
+msgid "Left out:"
+msgstr ""
+
+msgid "Order: merged article first; the old articles get noindex, a 301 and updated internal links only after the merge was saved and verified. Nothing is deleted and every edit keeps a WordPress revision."
+msgstr ""
+
 msgid "FAQ must be valid JSON."
 msgstr ""
 
@@ -1396,6 +1853,9 @@ msgid "Page has an empty title, so no H1 / title tag is generated."
 msgstr ""
 
 msgid "SEOlity Client"
+msgstr ""
+
+msgid "Stopped without finishing (closed by the 1.9 update: this work was no longer running)."
 msgstr ""
 
 msgid "Pages returning 4xx errors"
@@ -2182,6 +2642,12 @@ msgstr ""
 msgid "Cloudflare worker answered HTTP %d. Deploy it again."
 msgstr ""
 
+msgid "Rank Math Redirections is not active."
+msgstr ""
+
+msgid "Rank Math did not accept this redirect."
+msgstr ""
+
 msgid "No Rank Math redirections table was found."
 msgstr ""
 
@@ -2253,6 +2719,148 @@ msgstr ""
 msgid "The anchor text is no longer present in the source content."
 msgstr ""
 
+msgid "No target URL."
+msgstr ""
+
+msgid "Source and target are the same."
+msgstr ""
+
+#, php-format
+msgid "Replaces the existing redirect to %s."
+msgstr ""
+
+msgid "The old URL is a live page (HTTP 200): redirecting it would hide existing content."
+msgstr ""
+
+msgid "This operation is not waiting for approval."
+msgstr ""
+
+msgid "Select at least one item."
+msgstr ""
+
+msgid "Applying approved changes"
+msgstr ""
+
+msgid "This operation cannot be rejected any more."
+msgstr ""
+
+msgid "Rejected by the user — nothing was changed."
+msgstr ""
+
+#, php-format
+msgid "Skipped: it depends on “%s”, which was not applied and verified."
+msgstr ""
+
+msgid "Cancelled by the user. Items already applied stay applied (use Undo to roll them back)."
+msgstr ""
+
+msgid "Some items failed — see the details."
+msgstr ""
+
+msgid "Applied and verified on the site."
+msgstr ""
+
+msgid "Finished with errors — some items were not applied or could not be confirmed."
+msgstr ""
+
+#, php-format
+msgid "%1$s of “%2$s”"
+msgstr ""
+
+msgid "Change"
+msgstr ""
+
+#, php-format
+msgid "301 redirect %1$s → %2$s"
+msgstr ""
+
+msgid "Point redirect chains straight to their final URL"
+msgstr ""
+
+#, php-format
+msgid "Queue AI optimization for %d items"
+msgstr ""
+
+msgid "Add the topic to the content planner"
+msgstr ""
+
+#, php-format
+msgid "%1$d redirects updated; %2$d chains left."
+msgstr ""
+
+#, php-format
+msgid "%d items queued (each one is a separate task with its own result)."
+msgstr ""
+
+msgid "Added to the content planner."
+msgstr ""
+
+msgid "Unknown item."
+msgstr ""
+
+msgid "This setting is not on the list of settings SEOlity may change."
+msgstr ""
+
+msgid "Setting saved."
+msgstr ""
+
+msgid "The setting could not be saved."
+msgstr ""
+
+#, php-format
+msgid "Confirmed on %1$s (%2$s)."
+msgstr ""
+
+#, php-format
+msgid "Saved, but %s does not show the effect yet."
+msgstr ""
+
+msgid "Nothing to roll back."
+msgstr ""
+
+msgid "Saved value confirmed."
+msgstr ""
+
+msgid "The saved value differs from the approved value."
+msgstr ""
+
+msgid "Rank Math does not hold the new value."
+msgstr ""
+
+msgid "Rank Math robots setting was not updated."
+msgstr ""
+
+msgid "Saved; the live page could not be checked right now."
+msgstr ""
+
+msgid "Confirmed on the live page."
+msgstr ""
+
+msgid "Saved, but the live page does not show it yet (a page cache may need clearing)."
+msgstr ""
+
+#, php-format
+msgid "The old URL answers %1$d → %2$s."
+msgstr ""
+
+#, php-format
+msgid "The old URL answers %1$d %2$s instead of the redirect."
+msgstr ""
+
+#, php-format
+msgid "The target itself redirects to %s (this would create a chain)."
+msgstr ""
+
+#, php-format
+msgid "The target answers HTTP %d."
+msgstr ""
+
+msgid "The target is live but set to noindex."
+msgstr ""
+
+msgid "The target is a live page."
+msgstr ""
+
 msgid "Plan item not found."
 msgstr ""
 
@@ -2275,7 +2883,105 @@ msgstr ""
 msgid "Error, will retry: %s"
 msgstr ""
 
+#, php-format
+msgid "Stopped: the worker gave no sign of life for %d minutes (PHP time limit, memory limit or a server restart). Use “Retry” to run it again."
+msgstr ""
+
+msgid "Interrupted (the server stopped the worker). Retrying automatically…"
+msgstr ""
+
+msgid "Task not found."
+msgstr ""
+
+msgid "Cancelling — the task stops at its next safe point…"
+msgstr ""
+
+msgid "Only failed, cancelled or timed-out tasks can be retried."
+msgstr ""
+
+msgid "The same task is already queued or running."
+msgstr ""
+
+msgid "This task is still active. Cancel it first."
+msgstr ""
+
 msgid "Every minute (SEOlity queue)"
+msgstr ""
+
+#, php-format
+msgid "Redirect the 404 URL %s"
+msgstr ""
+
+#, php-format
+msgid "Visitors or bots requested it %d times and got “page not found”."
+msgstr ""
+
+#, php-format
+msgid "Suggested target: %s"
+msgstr ""
+
+msgid "No good target was found yet — choose one or mark it as gone (410)."
+msgstr ""
+
+msgid "no SEO title"
+msgstr ""
+
+msgid "title too long"
+msgstr ""
+
+msgid "title too short"
+msgstr ""
+
+msgid "several <title> tags"
+msgstr ""
+
+msgid "title used on other pages too"
+msgstr ""
+
+msgid "no meta description"
+msgstr ""
+
+msgid "description length"
+msgstr ""
+
+msgid "description used on other pages too"
+msgstr ""
+
+msgid "no H1 heading"
+msgstr ""
+
+msgid "several H1 headings"
+msgstr ""
+
+msgid "heading levels skipped"
+msgstr ""
+
+msgid "several canonical tags"
+msgstr ""
+
+msgid "invalid canonical URL"
+msgstr ""
+
+msgid "canonical points to an error page"
+msgstr ""
+
+#, php-format
+msgid "Fix the SEO title / description of “%s”"
+msgstr ""
+
+#, php-format
+msgid "Fix the heading structure of “%s”"
+msgstr ""
+
+msgid "Fix the heading structure: exactly one H1 that states the topic, logical H2/H3 levels without skipped levels. Do not change the meaning of the text."
+msgstr ""
+
+#, php-format
+msgid "Fix the canonical tag of “%s”"
+msgstr ""
+
+#, php-format
+msgid "Found by the site audit: %s."
 msgstr ""
 
 #, php-format
@@ -2415,6 +3121,51 @@ msgstr ""
 msgid "Each extra hop slows users and crawlers; point old URLs straight to their final destination."
 msgstr ""
 
+msgid "404 errors"
+msgstr ""
+
+msgid "Site audit: titles, descriptions, headings"
+msgstr ""
+
+msgid "Content & CTR"
+msgstr ""
+
+msgid "Products & categories"
+msgstr ""
+
+msgid "Competitor gaps"
+msgstr ""
+
+msgid "Other"
+msgstr ""
+
+msgid "First: pages that should not be in Google waste crawl budget, and important pages that cannot be indexed earn nothing — everything else depends on this."
+msgstr ""
+
+msgid "Redirect loops/chains and server errors block crawlers and visitors; fix them before working on content."
+msgstr ""
+
+msgid "Broken URLs lose links and visitors; a correct 301 recovers them quickly and is low effort."
+msgstr ""
+
+msgid "Merge competing articles before polishing them — otherwise you optimize pages that will be redirected."
+msgstr ""
+
+msgid "Missing or duplicate titles, descriptions and headings: quick fixes with direct CTR impact."
+msgstr ""
+
+msgid "Internal links spread authority to the pages you just fixed."
+msgstr ""
+
+msgid "Content improvements based on Search Console data: highest upside once the basics are clean."
+msgstr ""
+
+msgid "Product and category pages: important for shops after the site-wide basics."
+msgstr ""
+
+msgid "New content for topics competitors win: a longer-term growth step."
+msgstr ""
+
 msgid "Higher CTR at the same rankings → more clicks within 2–4 weeks."
 msgstr ""
 
@@ -2452,9 +3203,6 @@ msgid "Invalid regular expression."
 msgstr ""
 
 msgid "Target URL is required."
-msgstr ""
-
-msgid "Source and target are the same."
 msgstr ""
 
 msgid "This redirect would create a loop."
@@ -3147,10 +3895,6 @@ msgstr ""
 msgid "Rule matched: %1$s (%2$s)"
 msgstr ""
 
-#, php-format
-msgid "%1$s: %2$s"
-msgstr ""
-
 msgid "Matched your automation rule."
 msgstr ""
 
@@ -3254,6 +3998,173 @@ msgid "Ready"
 msgstr ""
 
 msgid "The data repository must be private. Change its visibility on GitHub or choose another name."
+msgstr ""
+
+msgid "Checking post types, templates and attachments…"
+msgstr ""
+
+msgid "a plugin or the theme"
+msgstr ""
+
+#, php-format
+msgid "Rank Math: use custom robots for “%s”"
+msgstr ""
+
+#, php-format
+msgid "Rank Math: noindex all “%s”"
+msgstr ""
+
+#, php-format
+msgid "Rank Math: remove “%s” from the sitemap"
+msgstr ""
+
+#, php-format
+msgid "%1$s templates are public: %2$d URLs can be crawled and indexed."
+msgstr ""
+
+msgid "These are layout parts (headers, footers, popups, saved sections) for internal use. As separate URLs they are thin, duplicate fragments that waste crawl budget and can appear in Google."
+msgstr ""
+
+msgid "Set them to noindex and remove them from the XML sitemap. Do not block them in robots.txt — Google must be able to crawl them to see the noindex. Templates keep working inside your pages."
+msgstr ""
+
+msgid "noindex is set, but robots.txt blocks these URLs."
+msgstr ""
+
+msgid "A blocked URL is not crawled, so Google never sees its noindex. URLs Google already knows can stay in the index as “Indexed, though blocked by robots.txt”."
+msgstr ""
+
+msgid "Remove the robots.txt rule for these URLs (keep the noindex). After Google has recrawled them and dropped them, a robots.txt rule may be added back if crawl budget matters."
+msgstr ""
+
+msgid "Attachment pages"
+msgstr ""
+
+msgid "Every uploaded image has its own indexable page."
+msgstr ""
+
+msgid "Attachment pages contain only an image: thousands of thin pages that dilute crawl budget."
+msgstr ""
+
+msgid "Redirect attachment pages to the post they belong to (301). Image search keeps working (it uses the image file, not the attachment page)."
+msgstr ""
+
+msgid "Rank Math: redirect attachment pages to their parent post"
+msgstr ""
+
+msgid "Checking archives, internal search and feeds…"
+msgstr ""
+
+msgid "Author archives"
+msgstr ""
+
+msgid "Author archive"
+msgstr ""
+
+msgid "The site has one author, so the author archive duplicates the blog list."
+msgstr ""
+
+msgid "A second URL listing exactly the same posts competes with the blog / category pages."
+msgstr ""
+
+msgid "Disable the author archive (it redirects to the home page). With several authors, keep author pages indexable only if they have real biographies."
+msgstr ""
+
+msgid "Rank Math: disable author archives"
+msgstr ""
+
+msgid "Date archives"
+msgstr ""
+
+msgid "Year / month / day archives are indexable."
+msgstr ""
+
+msgid "Date archives repeat the same posts in many lists with no search demand."
+msgstr ""
+
+msgid "Disable date archives (they redirect to the home page)."
+msgstr ""
+
+msgid "Rank Math: disable date archives"
+msgstr ""
+
+msgid "Internal search results"
+msgstr ""
+
+msgid "Internal search result pages can be indexed."
+msgstr ""
+
+msgid "Anyone can create unlimited search URLs (spam keywords included) that Google may crawl and index."
+msgstr ""
+
+msgid "Set search result pages to noindex."
+msgstr ""
+
+msgid "Rank Math: noindex internal search results"
+msgstr ""
+
+#, php-format
+msgid "%1$d of %2$d tags have one post or none, and all are indexable."
+msgstr ""
+
+msgid "Tag pages with one post are near-duplicates of that post; many of them waste crawl budget."
+msgstr ""
+
+msgid "Noindex tag archives and remove them from the sitemap (categories stay indexable). Tags keep working for visitors."
+msgstr ""
+
+#, php-format
+msgid "Rank Math: noindex “%s” archives"
+msgstr ""
+
+msgid "Empty categories / tags"
+msgstr ""
+
+#, php-format
+msgid "%d categories / tags have no posts and are indexable."
+msgstr ""
+
+msgid "Empty archive pages are soft-404s for Google."
+msgstr ""
+
+msgid "Noindex empty categories and tags automatically."
+msgstr ""
+
+msgid "Rank Math: noindex empty taxonomies"
+msgstr ""
+
+msgid "URL with parameters"
+msgstr ""
+
+msgid "internal links / a plugin"
+msgstr ""
+
+msgid "A parameter URL is indexable and has no canonical to the clean URL."
+msgstr ""
+
+#, php-format
+msgid "Duplicate versions of the same page split signals. %d internal links point to it."
+msgstr ""
+
+msgid "Change the links that generate this URL, or make the page output a canonical to the clean URL. Blocking parameters in robots.txt is only right once no indexed version is left."
+msgstr ""
+
+msgid "RSS feed"
+msgstr ""
+
+msgid "Paginated archives"
+msgstr ""
+
+msgid "Paginated pages should normally stay indexable (Google uses them to find older posts)."
+msgstr ""
+
+msgid "Feeds are not shown as pages in Google; nothing to do."
+msgstr ""
+
+msgid "Run the audit first."
+msgstr ""
+
+msgid "Finding not found — run the audit again."
 msgstr ""
 
 msgid "robots.txt is empty or missing. That allows all crawling, but you lose the chance to block crawl waste and reference your sitemap."
@@ -3412,50 +4323,7 @@ msgstr ""
 msgid "%s redirect chains fixed."
 msgstr ""
 
-msgid "Added to the content planner."
-msgstr ""
-
 msgid "Open"
-msgstr ""
-
-msgid "Do it"
-msgstr ""
-
-msgid "Do it yourself — exactly where"
-msgstr ""
-
-msgid "Done when:"
-msgstr ""
-
-msgid "Let the AI do it"
-msgstr ""
-
-msgid "This is exactly what SEOlity will do on your site. Nothing changes until you approve. Every change is versioned — undo anytime in AI Center → AI Changes."
-msgstr ""
-
-msgid "Connect an AI provider first (Settings → AI)."
-msgstr ""
-
-msgid "This task needs your decision; follow the steps on the left."
-msgstr ""
-
-msgid "Approve & let the AI do it"
-msgstr ""
-
-msgid "The AI is working…"
-msgstr ""
-
-msgid "Stopped"
-msgstr ""
-
-msgid "Done"
-msgstr ""
-
-#, php-format
-msgid "AI route: %s"
-msgstr ""
-
-msgid "Review the changes"
 msgstr ""
 
 msgid "Impact"
@@ -3465,6 +4333,9 @@ msgid "Effort"
 msgstr ""
 
 msgid "Confidence"
+msgstr ""
+
+msgid "Do it"
 msgstr ""
 
 msgid "Why?"
@@ -3492,13 +4363,16 @@ msgstr ""
 msgid "Menu"
 msgstr ""
 
-msgid "AI engine"
-msgstr ""
-
 msgid "AI connected"
 msgstr ""
 
+msgid "Error"
+msgstr ""
+
 msgid "AI not configured"
+msgstr ""
+
+msgid "AI engine"
 msgstr ""
 
 msgid "Search Console not connected"
@@ -3884,9 +4758,6 @@ msgstr ""
 msgid "CTA ideas"
 msgstr ""
 
-msgid "Competitor gaps"
-msgstr ""
-
 msgid "Internal link ideas"
 msgstr ""
 
@@ -3990,13 +4861,16 @@ msgstr ""
 msgid "Chat"
 msgstr ""
 
-msgid "Change"
-msgstr ""
-
 msgid "Event"
 msgstr ""
 
+msgid "Queued"
+msgstr ""
+
 msgid "Waiting"
+msgstr ""
+
+msgid "Done"
 msgstr ""
 
 msgid "Info"
@@ -4005,7 +4879,34 @@ msgstr ""
 msgid "Cancelled"
 msgstr ""
 
+msgid "Timed out"
+msgstr ""
+
+msgid "Interrupted"
+msgstr ""
+
+msgid "Scheduled"
+msgstr ""
+
+msgid "Cancelling…"
+msgstr ""
+
+msgid "Interrupted — retrying"
+msgstr ""
+
 msgid "This server"
+msgstr ""
+
+msgid "Cancelled."
+msgstr ""
+
+msgid "Retry"
+msgstr ""
+
+msgid "Queued again."
+msgstr ""
+
+msgid "Select"
 msgstr ""
 
 #, php-format
@@ -4035,6 +4936,9 @@ msgid "What SEOlity is doing right now, and an exact timeline of everything it d
 msgstr ""
 
 msgid "Live activity"
+msgstr ""
+
+msgid "Task queue"
 msgstr ""
 
 msgid "Completed work"
@@ -4070,11 +4974,85 @@ msgstr ""
 msgid "Search…"
 msgstr ""
 
+msgid "Delete selected"
+msgstr ""
+
+msgid "Select entries first."
+msgstr ""
+
+#, php-format
+msgid "%s entries deleted."
+msgstr ""
+
+msgid "Delete entries older than 30 days"
+msgstr ""
+
+msgid "Delete finished entries older than 30 days? Running work is never deleted."
+msgstr ""
+
 #, php-format
 msgid "%s entries"
 msgstr ""
 
 msgid "Everything SEOlity does on your site will be listed here with the exact time."
+msgstr ""
+
+msgid "Check stuck tasks now"
+msgstr ""
+
+#, php-format
+msgid "%s tasks corrected."
+msgstr ""
+
+msgid "All task states are correct."
+msgstr ""
+
+msgid "Run queue now"
+msgstr ""
+
+#, php-format
+msgid "%s jobs processed."
+msgstr ""
+
+msgid "Delete all in this list"
+msgstr ""
+
+msgid "Delete these finished task records? This only removes history; nothing on your site changes."
+msgstr ""
+
+msgid "No tasks here"
+msgstr ""
+
+msgid "Nothing is queued or running. Background work appears here as soon as it is queued."
+msgstr ""
+
+msgid "No tasks in this state."
+msgstr ""
+
+msgid "Task"
+msgstr ""
+
+msgid "State"
+msgstr ""
+
+msgid "Attempts"
+msgstr ""
+
+#, php-format
+msgid "%s interruptions"
+msgstr ""
+
+msgid "Started"
+msgstr ""
+
+#, php-format
+msgid "at %s"
+msgstr ""
+
+msgid "Last sign of life"
+msgstr ""
+
+msgid "A task whose worker stops (PHP time limit, memory, server restart) is detected automatically, retried, and after repeated interruptions marked “Timed out” — it never stays “running” forever. Cancelling a running task stops it at its next safe point, never in the middle of a change."
 msgstr ""
 
 #, php-format
@@ -4260,13 +5238,6 @@ msgstr ""
 msgid "Done (3 days)"
 msgstr ""
 
-msgid "Run queue now"
-msgstr ""
-
-#, php-format
-msgid "%s jobs processed."
-msgstr ""
-
 msgid "Retry failed"
 msgstr ""
 
@@ -4277,12 +5248,6 @@ msgid "Tip: for busy or low-traffic sites, add a real system cron that runs “w
 msgstr ""
 
 msgid "Job"
-msgstr ""
-
-msgid "Attempts"
-msgstr ""
-
-msgid "Error"
 msgstr ""
 
 msgid "Created"
@@ -4500,14 +5465,13 @@ msgstr ""
 msgid "Save Custom API"
 msgstr ""
 
-msgid "Test connection"
+msgid "Test model"
 msgstr ""
 
-#, php-format
-msgid "Connection OK — model %s"
+msgid "The model works."
 msgstr ""
 
-msgid "Use as AI engine"
+msgid "Use for all AI features"
 msgstr ""
 
 msgid "AI engine switched."
@@ -4522,25 +5486,16 @@ msgstr ""
 msgid "DeepSeek, Groq, Mistral, Together, xAI, Perplexity, Azure OpenAI, Cloudflare Workers AI, LM Studio, vLLM, LiteLLM or any compatible gateway."
 msgstr ""
 
-msgid "configured"
-msgstr ""
-
-msgid "not configured"
-msgstr ""
-
-msgid "Test"
-msgstr ""
-
-msgid "Use your Claude or ChatGPT subscription instead of an API key"
-msgstr ""
-
-msgid "Step-by-step setup with GitHub (free) and an optional Cloudflare relay."
-msgstr ""
-
 msgid "Encryption"
 msgstr ""
 
 msgid "For maximum security define SEOLITY_ENCRYPTION_KEY in wp-config.php. You can also define any secret as a constant, e.g. SEOLITY_ANTHROPIC_API_KEY."
+msgstr ""
+
+msgid "AI writing settings"
+msgstr ""
+
+msgid "Apply to every AI connection."
 msgstr ""
 
 msgid "Keys & tokens"
@@ -4564,9 +5519,6 @@ msgstr ""
 msgid "Requests (30d)"
 msgstr ""
 
-msgid "Task"
-msgstr ""
-
 msgid "Requests"
 msgstr ""
 
@@ -4580,6 +5532,190 @@ msgid "SEO engine detected"
 msgstr ""
 
 msgid "when another SEO plugin is active, SEOlity writes titles/descriptions into it and does not duplicate head tags."
+msgstr ""
+
+msgid "Not connected"
+msgstr ""
+
+msgid "Key saved — not checked yet"
+msgstr ""
+
+msgid "Connected — key works"
+msgstr ""
+
+msgid "Model tested ✓"
+msgstr ""
+
+msgid "current setting — not in the list from your account"
+msgstr ""
+
+msgid "Default model"
+msgstr ""
+
+msgid "Not tested yet. “Test model” sends one short real request."
+msgstr ""
+
+#, php-format
+msgid "This model answered (%s)."
+msgstr ""
+
+#, php-format
+msgid "Answered by: %s"
+msgstr ""
+
+msgid "In use"
+msgstr ""
+
+msgid "Supported plans:"
+msgstr ""
+
+msgid "The test request is running on your GitHub runner; the result appears here (usually within a minute)."
+msgstr ""
+
+msgid "Open the full step-by-step setup (GitHub runner, token, Cloudflare)"
+msgstr ""
+
+msgid "Download Ollama"
+msgstr ""
+
+msgid "Create a GitHub token (Models: Read)"
+msgstr ""
+
+msgid "Official documentation"
+msgstr ""
+
+msgid "1. Ollama server address"
+msgstr ""
+
+msgid "1. API key"
+msgstr ""
+
+msgid "Load models again"
+msgstr ""
+
+msgid "Connect & load models"
+msgstr ""
+
+#, php-format
+msgid "Connected — %s models available to your account."
+msgstr ""
+
+msgid "Disconnect"
+msgstr ""
+
+#, php-format
+msgid "Remove the saved key of %s? AI features that use it stop working."
+msgstr ""
+
+msgid "SEOlity asks this server which models are installed."
+msgstr ""
+
+msgid "The key is stored encrypted on your server and never sent back to the browser. SEOlity then asks the provider which models this key can use."
+msgstr ""
+
+msgid "1. Where the official program runs"
+msgstr ""
+
+msgid "Your private GitHub runner"
+msgstr ""
+
+#, php-format
+msgid "Ready: %s"
+msgstr ""
+
+msgid "Not set up yet — use the step-by-step setup below (free, nothing to install on your host)."
+msgstr ""
+
+msgid "This server (official CLI, optional)"
+msgstr ""
+
+#, php-format
+msgid "Found: %s"
+msgstr ""
+
+msgid "Not installed. See Connections → Server & speed."
+msgstr ""
+
+msgid "Not possible on this host (PHP cannot start programs). Typical for shared hosting."
+msgstr ""
+
+msgid "This server when the CLI is installed, otherwise the GitHub runner (never GitHub when the route is “Direct”)."
+msgstr ""
+
+msgid "Used now:"
+msgstr ""
+
+msgid "this server (no GitHub)"
+msgstr ""
+
+msgid "GitHub runner"
+msgstr ""
+
+msgid "Claude token saved"
+msgstr ""
+
+msgid "ChatGPT login saved"
+msgstr ""
+
+msgid "Claude token missing"
+msgstr ""
+
+msgid "ChatGPT login missing"
+msgstr ""
+
+#, php-format
+msgid "Remove the saved login of %s?"
+msgstr ""
+
+msgid "2. Model"
+msgstr ""
+
+msgid "Press “Connect & load models” to load the models of your account."
+msgstr ""
+
+msgid "Connect first to see the models of your account."
+msgstr ""
+
+msgid "or a model id (optional)"
+msgstr ""
+
+msgid "Subscriptions have no official model list: these are the official aliases. A model only counts as available after a successful test."
+msgstr ""
+
+#, php-format
+msgid "%s models from your account’s model list (loaded %s). ✓ = tested successfully."
+msgstr ""
+
+msgid "Test sent to your GitHub runner…"
+msgstr ""
+
+#, php-format
+msgid "AI engine switched: %s"
+msgstr ""
+
+#, php-format
+msgid "%s models"
+msgstr ""
+
+msgid "AI engine in use:"
+msgstr ""
+
+msgid "Tested and working — every AI feature uses it."
+msgstr ""
+
+msgid "Configured but not tested yet. Open it and press “Test model”."
+msgstr ""
+
+msgid "AI with API"
+msgstr ""
+
+msgid "Pay per use with an API key from the provider. The most reliable option."
+msgstr ""
+
+msgid "Subscription"
+msgstr ""
+
+msgid "Use an AI plan you already pay for — only through the official methods each company allows."
 msgstr ""
 
 msgid "e.g. Why did my organic sales drop this month?"
@@ -4843,9 +5979,6 @@ msgstr ""
 msgid "Troubleshooting"
 msgstr ""
 
-msgid "Official documentation"
-msgstr ""
-
 msgid "Step-by-step instructions with direct links for every key and account SEOlity can use. Open a service, follow the numbered steps, paste the key where shown and press Test."
 msgstr ""
 
@@ -4977,9 +6110,6 @@ msgstr ""
 msgid "Window: %s days"
 msgstr ""
 
-msgid "Started"
-msgstr ""
-
 msgid "Revert"
 msgstr ""
 
@@ -5085,6 +6215,19 @@ msgstr ""
 msgid "With referrer"
 msgstr ""
 
+#, php-format
+msgid "%s selected"
+msgstr ""
+
+msgid "Redirect selected to their own targets"
+msgstr ""
+
+msgid "Every redirect was checked: the target must be a live page, no loop may be created and the old URL must really be gone. Untick anything you do not want, then approve."
+msgstr ""
+
+msgid "Select all"
+msgstr ""
+
 msgid "Redirected"
 msgstr ""
 
@@ -5103,10 +6246,17 @@ msgstr ""
 msgid "Suggested redirect"
 msgstr ""
 
-msgid "no good match"
+msgid "no good match — enter a target"
 msgstr ""
 
 msgid "pending"
+msgstr ""
+
+#, php-format
+msgid "match %s%"
+msgstr ""
+
+msgid "no good match"
 msgstr ""
 
 msgid "410 Gone"
@@ -5431,6 +6581,146 @@ msgstr ""
 msgid "Set up GitHub"
 msgstr ""
 
+msgid "Preparing"
+msgstr ""
+
+msgid "Waiting for your approval"
+msgstr ""
+
+msgid "Approved — applying"
+msgstr ""
+
+msgid "Applying"
+msgstr ""
+
+msgid "Done & verified"
+msgstr ""
+
+msgid "Partly applied"
+msgstr ""
+
+msgid "Rejected — nothing changed"
+msgstr ""
+
+msgid "Undone"
+msgstr ""
+
+msgid "Your instructions:"
+msgstr ""
+
+msgid "Apply this item"
+msgstr ""
+
+msgid "Not applied"
+msgstr ""
+
+#, php-format
+msgid "Risk: %s"
+msgstr ""
+
+msgid "Edit manually"
+msgstr ""
+
+msgid "Checked: the target is a live page and no loop is created."
+msgstr ""
+
+#, php-format
+msgid "Problem: %s"
+msgstr ""
+
+msgid "Verified:"
+msgstr ""
+
+msgid "Not confirmed:"
+msgstr ""
+
+msgid "Approve & apply selected"
+msgstr ""
+
+msgid "Approved — applying on the site…"
+msgstr ""
+
+msgid "Reject"
+msgstr ""
+
+msgid "Rejected — nothing was changed."
+msgstr ""
+
+msgid "Nothing has been changed on your site yet."
+msgstr ""
+
+msgid "Undo all of it"
+msgstr ""
+
+msgid "Undo every change of this operation (restore the previous versions, remove the redirects)?"
+msgstr ""
+
+msgid "Undone."
+msgstr ""
+
+msgid "Applied and verified on the site. The roadmap item is marked as completed."
+msgstr ""
+
+msgid "Every approved item was applied and verified on the site; the related roadmap items are completed."
+msgstr ""
+
+#, php-format
+msgid "Point %s redirect chains straight to their final URL"
+msgstr ""
+
+#, php-format
+msgid "Optimize %s items with AI in the background"
+msgstr ""
+
+msgid "Open its section"
+msgstr ""
+
+msgid "Do it yourself — exactly where"
+msgstr ""
+
+msgid "Done when:"
+msgstr ""
+
+msgid "Let the AI do it"
+msgstr ""
+
+msgid "The AI prepares the fix first and shows you every change before anything is written. You approve what should be applied; every change is verified on the site and can be undone."
+msgstr ""
+
+msgid "AI recommendation (plan)"
+msgstr ""
+
+msgid "Optional: your instructions for the AI (what to keep, what to emphasize, style, which page stays primary…)"
+msgstr ""
+
+msgid "Your instructions for the AI"
+msgstr ""
+
+msgid "Kept with this task and used on every new attempt until you change them."
+msgstr ""
+
+msgid "Connect an AI provider first (Settings → AI)."
+msgstr ""
+
+msgid "This task needs your decision; follow the steps on the left."
+msgstr ""
+
+msgid "Prepare the fix with AI"
+msgstr ""
+
+msgid "Prepare a new fix"
+msgstr ""
+
+msgid "The AI is working…"
+msgstr ""
+
+msgid "Stopped"
+msgstr ""
+
+#, php-format
+msgid "AI route: %s"
+msgstr ""
+
 msgid "This week"
 msgstr ""
 
@@ -5473,13 +6763,10 @@ msgstr ""
 msgid "Studying the SEO knowledge base and writing the roadmap"
 msgstr ""
 
-msgid "Other"
+msgid "Every problem on the site appears here once, in the order it should be fixed. Run a full analysis to update every section; each item can be done by AI (with a preview and your approval) or by hand, and gets a checkmark only after the result was verified on the site."
 msgstr ""
 
-msgid "SEO roadmap — what should I do today?"
-msgstr ""
-
-msgid "A step-by-step plan for this site. SEOlity analyzes only when you press “Analyze”: it reads Search Console, the site audit, your content and competitors, studies the SEO knowledge base and keeps the plan stable between analyses."
+msgid "AI diagnosis and plan"
 msgstr ""
 
 msgid "The last analysis failed:"
@@ -5628,6 +6915,73 @@ msgid "Not relevant"
 msgstr ""
 
 msgid "Working on it"
+msgstr ""
+
+msgid "To do"
+msgstr ""
+
+msgid "Resolved"
+msgstr ""
+
+msgid "Dismissed"
+msgstr ""
+
+msgid "Marked done by you (not verified)"
+msgstr ""
+
+msgid "Gone after the last check"
+msgstr ""
+
+msgid "Analysis running…"
+msgstr ""
+
+msgid "Run full-site analysis"
+msgstr ""
+
+#, php-format
+msgid "Last full analysis: %s"
+msgstr ""
+
+msgid "Crawl, Search Console, issues, indexability, duplicates, 404 targets and the AI plan — all sections updated in one run."
+msgstr ""
+
+#, php-format
+msgid "%s open"
+msgstr ""
+
+msgid "all clear"
+msgstr ""
+
+msgid "Open the section"
+msgstr ""
+
+#, php-format
+msgid "Step %s:"
+msgstr ""
+
+msgid "AI recommendation:"
+msgstr ""
+
+msgid "Result and verification"
+msgstr ""
+
+msgid "View the change"
+msgstr ""
+
+msgid "Open in its section"
+msgstr ""
+
+msgid "Reopen"
+msgstr ""
+
+#, php-format
+msgid "%s items"
+msgstr ""
+
+msgid "Nothing left to do here"
+msgstr ""
+
+msgid "Show more"
 msgstr ""
 
 msgid "Site Audit & SEO Doctor"
@@ -5889,12 +7243,6 @@ msgid "Sync queued."
 msgstr ""
 
 msgid "Change property"
-msgstr ""
-
-msgid "Select"
-msgstr ""
-
-msgid "Disconnect"
 msgstr ""
 
 msgid "Disconnect Google Search Console? Stored data stays until you change property."
@@ -6398,9 +7746,6 @@ msgstr ""
 msgid "%1$s images indexed · last scan %2$s"
 msgstr ""
 
-msgid "Select all"
-msgstr ""
-
 msgid "Generate ALT for selected"
 msgstr ""
 
@@ -6456,14 +7801,237 @@ msgstr ""
 msgid "Most linked pages"
 msgstr ""
 
+msgid "No response"
+msgstr ""
+
+msgid "Blocked in robots.txt"
+msgstr ""
+
+msgid "In sitemap"
+msgstr ""
+
+msgid "noindex, robots.txt and the sitemap do different jobs"
+msgstr ""
+
+msgid "noindex (meta robots or X-Robots-Tag): the page may be crawled but is kept out of Google. Use it for pages that must exist but should not rank."
+msgstr ""
+
+msgid "robots.txt Disallow: Google does not crawl the URL at all, so it never sees a noindex there. Use it only for crawl budget, after the URLs are already out of the index."
+msgstr ""
+
+msgid "XML sitemap: a list of pages you want indexed. Never list noindexed, redirected or blocked URLs."
+msgstr ""
+
+msgid "301 redirect: the page should not exist on its own (e.g. attachment pages) — visitors and Google go to the right page."
+msgstr ""
+
+msgid "Checks templates, attachments, archives, search, parameters, feeds and pagination: live status, robots meta, X-Robots-Tag, canonical, robots.txt, sitemap, internal links and Rank Math settings — intended vs. technical indexability."
+msgstr ""
+
+msgid "Run the audit"
+msgstr ""
+
+msgid "The audit is running — results refresh automatically."
+msgstr ""
+
+msgid "Run it to see what Google can index on this site."
+msgstr ""
+
+msgid "Findings"
+msgstr ""
+
+msgid "High severity"
+msgstr ""
+
+msgid "URL groups checked"
+msgstr ""
+
 #, php-format
-msgid "AI is answering through GitHub (%s)…"
+msgid "Last audit: %s"
+msgstr ""
+
+msgid "Connect Search Console to include Google’s own index status."
+msgstr ""
+
+msgid "Nothing to fix: every URL group is indexed (or kept out) the way it should be."
+msgstr ""
+
+#, php-format
+msgid "%s URLs"
+msgstr ""
+
+#, php-format
+msgid "Source: %s"
+msgstr ""
+
+msgid "Problem:"
+msgstr ""
+
+msgid "Why it matters:"
+msgstr ""
+
+msgid "Solution:"
+msgstr ""
+
+msgid "Fix it (preview first)"
+msgstr ""
+
+msgid "Fix manually"
+msgstr ""
+
+msgid "Everything that was checked"
+msgstr ""
+
+msgid "URL group"
+msgstr ""
+
+msgid "Count"
+msgstr ""
+
+msgid "Should be indexed"
 msgstr ""
 
 msgid "Yes"
 msgstr ""
 
 msgid "No"
+msgstr ""
+
+msgid "Live state"
+msgstr ""
+
+msgid "Sample URL"
+msgstr ""
+
+msgid "Duplicate"
+msgstr ""
+
+msgid "Near-duplicate"
+msgstr ""
+
+msgid "Same topic (cannibalization)"
+msgstr ""
+
+#, php-format
+msgid "%s articles"
+msgstr ""
+
+#, php-format
+msgid "%s clicks (90 days)"
+msgstr ""
+
+msgid "Keep this one (primary)"
+msgstr ""
+
+msgid "Primary"
+msgstr ""
+
+msgid "Keep"
+msgstr ""
+
+msgid "Merge into the primary article"
+msgstr ""
+
+#, php-format
+msgid "%s words"
+msgstr ""
+
+#, php-format
+msgid "%s clicks"
+msgstr ""
+
+#, php-format
+msgid "%s internal links"
+msgstr ""
+
+msgid "same content"
+msgstr ""
+
+msgid "similar titles"
+msgstr ""
+
+msgid "same H1"
+msgstr ""
+
+#, php-format
+msgid "both rank for: %s"
+msgstr ""
+
+msgid "Why they are grouped:"
+msgstr ""
+
+msgid "Keep the suggested primary and merge the others into it."
+msgstr ""
+
+msgid "Instructions for this merge (optional), e.g. “keep the price table from the second article”, “do not change the introduction”."
+msgstr ""
+
+msgid "Open the last operation"
+msgstr ""
+
+msgid "Fix cannibalization"
+msgstr ""
+
+msgid "The AI merges the articles first. You then see the full before/after of every step. Redirects and link updates run only after the merged article was saved and verified; nothing is deleted and every edit keeps a WordPress revision."
+msgstr ""
+
+msgid "Duplicate & near-duplicate articles"
+msgstr ""
+
+msgid "Finds articles that repeat each other or compete for the same topic (content overlap, titles, H1, shared Search Console queries) and merges them into the strongest one — preview first, then 301 redirects and internal links, all verified."
+msgstr ""
+
+msgid "Scan for duplicates"
+msgstr ""
+
+msgid "Scan started in the background."
+msgstr ""
+
+msgid "The scan is running — results refresh automatically."
+msgstr ""
+
+msgid "Rules for every merge, e.g. “keep our brand voice”, “never remove prices”, “keep FAQs at the end”."
+msgstr ""
+
+msgid "Your standing instructions for merges"
+msgstr ""
+
+msgid "Saved and added to every AI merge, together with the instructions of each group."
+msgstr ""
+
+msgid "Save instructions"
+msgstr ""
+
+msgid "No scan yet"
+msgstr ""
+
+msgid "Run it to find articles that repeat or compete with each other."
+msgstr ""
+
+msgid "Articles checked"
+msgstr ""
+
+msgid "Duplicate groups"
+msgstr ""
+
+msgid "Near-duplicate groups"
+msgstr ""
+
+msgid "Competing topics"
+msgstr ""
+
+#, php-format
+msgid "Last scan: %s"
+msgstr ""
+
+msgid "Connect Search Console to also find pages that compete for the same queries."
+msgstr ""
+
+msgid "No duplicate or competing articles found."
+msgstr ""
+
+#, php-format
+msgid "AI is answering through GitHub (%s)…"
 msgstr ""
 
 msgid "Close"
@@ -6500,9 +8068,6 @@ msgid "Generated by"
 msgstr ""
 
 msgid "Change rejected."
-msgstr ""
-
-msgid "Reject"
 msgstr ""
 
 msgid "Change applied. You can undo it anytime from version history."
@@ -6651,6 +8216,9 @@ msgstr ""
 msgid "Review & apply"
 msgstr ""
 
+msgid "AI is doing it"
+msgstr ""
+
 #, php-format
 msgid "Applied: %s"
 msgstr ""
@@ -6750,9 +8318,6 @@ msgid "Another page of your site wins these queries. Do not target them here; li
 msgstr ""
 
 msgid "No conflicts"
-msgstr ""
-
-msgid "Primary"
 msgstr ""
 
 msgid "Keywords copied to the set above. Press Apply to save."
@@ -7119,18 +8684,6 @@ msgstr ""
 msgid "Privacy & data"
 msgstr ""
 
-msgid "Anthropic API key"
-msgstr ""
-
-msgid "OpenAI API key"
-msgstr ""
-
-msgid "Google Gemini API key"
-msgstr ""
-
-msgid "OpenRouter API key"
-msgstr ""
-
 msgid "PageSpeed Insights API key (optional)"
 msgstr ""
 
@@ -7418,6 +8971,12 @@ msgstr ""
 
 msgid "onbackorder"
 msgstr ""
+
+#, php-format
+msgid "%d change prepared — review it and approve to apply it on the site."
+msgid_plural "%d changes prepared — review them and approve to apply them on the site."
+msgstr[0] ""
+msgstr[1] ""
 
 #, php-format
 msgid "%d search query you already get impressions for is not covered in the content."

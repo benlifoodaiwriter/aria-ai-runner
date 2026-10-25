@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: SEOlity 1.0.0\n"
-"POT-Creation-Date: 2026-10-19 11:27+0000\n"
+"POT-Creation-Date: 2026-10-25 22:42+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -9,9 +9,12 @@ msgstr ""
 "Language: fa_IR\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
+msgid "This provider does not offer a model list."
+msgstr ""
+
 #, php-format
-msgid "%1$s request failed: %2$s"
-msgstr "درخواست %1$s ناموفق بود: %2$s"
+msgid "%1$s could not be reached: %2$s"
+msgstr ""
 
 #, php-format
 msgid "%1$s API error (%2$d): %3$s"
@@ -19,6 +22,10 @@ msgstr "خطای API در %1$s (%2$d): %3$s"
 
 msgid "AI provider returned a non-JSON response."
 msgstr "ارائه‌دهنده هوش مصنوعی پاسخی غیر JSON برگرداند."
+
+#, php-format
+msgid "%1$s request failed: %2$s"
+msgstr "درخواست %1$s ناموفق بود: %2$s"
 
 msgid "Sending the request to the AI…"
 msgstr "در حال ارسال درخواست به هوش مصنوعی…"
@@ -123,6 +130,98 @@ msgstr "کد کوتاه [%s] در نسخه بهینه وجود ندارد."
 msgid "New figure \"%s\" not found in original — verify accuracy."
 msgstr "عدد جدید «%s» در متن اصلی نبود — صحت آن را بررسی کنید."
 
+msgid "Billed per use by Anthropic. A Claude Pro/Max subscription is not an API key — use the “Subscription” section for that."
+msgstr ""
+
+msgid "OpenAI API billing is separate from ChatGPT Plus/Pro: a ChatGPT subscription does not include API credit."
+msgstr ""
+
+msgid "Google AI Studio keys include a free tier with rate limits."
+msgstr ""
+
+msgid "One key for hundreds of models from many companies."
+msgstr ""
+
+msgid "DeepSeek, Groq, Mistral, xAI, Azure OpenAI, Cloudflare Workers AI or any OpenAI/Anthropic-compatible service."
+msgstr ""
+
+msgid "Models running on your own computer or server (no key)."
+msgstr ""
+
+msgid "Anthropic lets a Claude Pro/Max plan be used programmatically only through its official Claude Code program, signed in with a token from “claude setup-token”. SEOlity therefore runs Claude Code for you — on your private GitHub runner (nothing to install) or, optionally, on this server (VPS with Node.js). A direct connection from WordPress without Claude Code is not offered by Anthropic for subscriptions."
+msgstr ""
+
+msgid "OpenAI lets a ChatGPT plan be used programmatically only through its official Codex program (“Sign in with ChatGPT”, saved in auth.json). SEOlity runs Codex for you — on your private GitHub runner or, optionally, on this server. The OpenAI API does not accept ChatGPT logins."
+msgstr ""
+
+msgid "GitHub’s official AI model API, called directly from WordPress — no CLI, no runner. Every GitHub account gets free, rate-limited use; Copilot plans raise the limits. Create a fine-grained token with the permission “Models: Read”."
+msgstr ""
+
+msgid "Choose an AI connection in Settings → AI."
+msgstr ""
+
+#, php-format
+msgid "Missing: %s"
+msgstr ""
+
+msgid "No API key saved for the selected provider."
+msgstr ""
+
+msgid "No model selected yet — load the models and pick one."
+msgstr ""
+
+msgid "Unknown AI provider."
+msgstr ""
+
+msgid "Enter the API key first."
+msgstr ""
+
+#, php-format
+msgid "Connecting %s: loading the models of your account"
+msgstr ""
+
+msgid "Asking the provider for its model list…"
+msgstr ""
+
+#, php-format
+msgid "%d models available to this connection"
+msgstr ""
+
+#, php-format
+msgid "Connection test: %1$s · %2$s"
+msgstr ""
+
+msgid "default model"
+msgstr ""
+
+msgid "Sending a short test request…"
+msgstr ""
+
+#, php-format
+msgid "Model %1$s answered in %2$s ms"
+msgstr ""
+
+msgid "Choose a model first."
+msgstr ""
+
+msgid "The model test did not succeed."
+msgstr ""
+
+msgid "The key was rejected: check that it was copied completely, has not been revoked, and belongs to this provider — or create a new one."
+msgstr ""
+
+msgid "The key works but the account has no usable credit or quota. Add credit / a payment method in the provider’s console."
+msgstr ""
+
+msgid "This model is not available to your key. Pick another model from the list loaded from your account."
+msgstr ""
+
+msgid "The provider is limiting requests right now. Wait a minute and try again."
+msgstr ""
+
+msgid "This server could not reach the provider. Check Connections → Server & speed (servers in Iran need the Cloudflare or GitHub relay)."
+msgstr ""
+
 msgid "The model declined this request."
 msgstr "مدل این درخواست را رد کرد."
 
@@ -148,14 +247,136 @@ msgstr "فهرست مدل‌ها پاسخ HTTP %1$d داد: %2$s"
 msgid "Gemini blocked this response for safety reasons."
 msgstr "جمینای این پاسخ را به دلایل ایمنی مسدود کرد."
 
+msgid "GitHub Models (GitHub / Copilot account)"
+msgstr ""
+
+#, php-format
+msgid "rate limit: %s"
+msgstr ""
+
 msgid "Local LLM (Ollama)"
 msgstr "مدل زبانی محلی (Ollama)"
+
+#, php-format
+msgid "Ollama could not be reached at %1$s: %2$s"
+msgstr ""
+
+#, php-format
+msgid "Ollama answered HTTP %d."
+msgstr ""
+
+msgid "needs credits (your key is on the free tier)"
+msgstr ""
+
+msgid "free"
+msgstr ""
 
 msgid "Claude subscription (Pro/Max)"
 msgstr "اشتراک Claude (Pro/Max)"
 
+msgid "Sonnet (latest)"
+msgstr ""
+
+msgid "alias — included in Pro and Max"
+msgstr ""
+
+msgid "Opus (latest)"
+msgstr ""
+
+msgid "alias — availability depends on your plan"
+msgstr ""
+
+msgid "Haiku (latest)"
+msgstr ""
+
+msgid "alias"
+msgstr ""
+
 msgid "ChatGPT subscription (Plus/Pro)"
 msgstr "اشتراک ChatGPT (Plus/Pro)"
+
+msgid "Default model of your ChatGPT plan"
+msgstr ""
+
+msgid "recommended"
+msgstr ""
+
+msgid "PHP may start programs (proc_open)"
+msgstr ""
+
+msgid "Allowed"
+msgstr ""
+
+msgid "Disabled by the host"
+msgstr ""
+
+msgid "Most shared hosts disable this on purpose. Ask the host to allow proc_open, or use a VPS — otherwise use the GitHub or Cloudflare route."
+msgstr ""
+
+msgid "Operating system"
+msgstr ""
+
+msgid "The official CLIs ship for Linux and macOS on x64/arm64 only."
+msgstr ""
+
+#, php-format
+msgid "Node.js %d or newer"
+msgstr ""
+
+msgid "Not found"
+msgstr ""
+
+msgid "In cPanel open “Setup Node.js App” and create an app with the newest Node.js (this installs it for your account), or install Node.js on the server."
+msgstr ""
+
+msgid "npm comes with Node.js; reinstall Node.js with npm."
+msgstr ""
+
+#, php-format
+msgid "Free disk space: %1$d MB (package %2$d MB + npm cache)"
+msgstr ""
+
+msgid "Unknown (the host does not report it)"
+msgstr ""
+
+msgid "Free up space or ask for a larger plan; shared plans with 1–2 GB of total space usually cannot hold it."
+msgstr ""
+
+#, php-format
+msgid "Available memory: %d MB"
+msgstr ""
+
+msgid "Unknown"
+msgstr ""
+
+msgid "The CLI is a Node.js program; hosts that limit processes to a few hundred MB stop it while it answers."
+msgstr ""
+
+msgid "Install folder is writable"
+msgstr ""
+
+msgid "(inside the web root — protected with deny rules)"
+msgstr ""
+
+msgid "Make the folder writable for the PHP user."
+msgstr ""
+
+msgid "This server does not meet the requirements — see the checks."
+msgstr ""
+
+msgid "Installing the official CLI"
+msgstr ""
+
+#, php-format
+msgid "npm install %s …"
+msgstr ""
+
+#, php-format
+msgid "Installed and verified: %s"
+msgstr ""
+
+msgid "The installation did not finish — see the log."
+msgstr ""
 
 msgid "The official CLI is not installed on this server."
 msgstr "ابزار رسمی (CLI) روی این سرور نصب نیست."
@@ -187,11 +408,11 @@ msgstr "توکن گیت‌هاب"
 msgid "Run \"Set up GitHub runner\""
 msgstr "دکمه «راه‌اندازی اجراکننده گیت‌هاب» را بزنید"
 
-msgid "Direct connection is selected, so SEOlity will not use GitHub. A Claude subscription can only be used directly when the official Claude Code CLI is installed on this server (a VPS). Install it, use an API key instead, or choose the GitHub route under Server & speed."
-msgstr "اتصال «مستقیم» انتخاب شده، پس SEOlity از گیت‌هاب استفاده نمی‌کند. اشتراک Claude فقط وقتی مستقیم کار می‌کند که ابزار رسمی Claude Code روی همین سرور (VPS) نصب باشد. آن را نصب کنید، به‌جایش کلید API بگذارید یا در «سرور و سرعت» مسیر گیت‌هاب را انتخاب کنید."
+msgid "Your Claude subscription is set to run directly on this server, so SEOlity will not send it to GitHub — but the official Claude Code CLI is not installed here. Install it (VPS), choose the GitHub runner as the connection method, or use an API key."
+msgstr ""
 
-msgid "Direct connection is selected, so SEOlity will not use GitHub. A ChatGPT subscription can only be used directly when the official Codex CLI is installed on this server (a VPS). Install it, use an API key instead, or choose the GitHub route under Server & speed."
-msgstr "اتصال «مستقیم» انتخاب شده، پس SEOlity از گیت‌هاب استفاده نمی‌کند. اشتراک ChatGPT فقط وقتی مستقیم کار می‌کند که ابزار رسمی Codex روی همین سرور (VPS) نصب باشد. آن را نصب کنید، به‌جایش کلید API بگذارید یا در «سرور و سرعت» مسیر گیت‌هاب را انتخاب کنید."
+msgid "Your ChatGPT subscription is set to run directly on this server, so SEOlity will not send it to GitHub — but the official Codex CLI is not installed here. Install it (VPS), choose the GitHub runner as the connection method, or use an API key."
+msgstr ""
 
 msgid "The subscription runner did not answer in time. Check the \"SEOlity AI\" workflow runs on GitHub."
 msgstr "اجراکننده اشتراکی به‌موقع پاسخ نداد. اجراهای گردش‌کار «SEOlity AI» را در گیت‌هاب بررسی کنید."
@@ -363,8 +584,36 @@ msgstr "استفاده به‌عنوان موتور هوش مصنوعی"
 msgid "Another provider is active. Press “Use as AI engine” after the test."
 msgstr "ارائه‌دهنده دیگری فعال است. بعد از تست «استفاده به‌عنوان موتور هوش مصنوعی» را بزنید."
 
-msgid "Stopped without finishing (the server ended the request)."
-msgstr "بدون پایان متوقف شد (سرور درخواست را قطع کرد)."
+msgid "Finished"
+msgstr "تمام شد"
+
+msgid "Queued again"
+msgstr ""
+
+msgid "The background task no longer exists (it was removed or cleaned up)."
+msgstr ""
+
+msgid "Stopped without finishing: the server ended the request (PHP time limit or closed connection)."
+msgstr ""
+
+#, php-format
+msgid "No AI answer arrived within %d minutes."
+msgstr ""
+
+msgid "Not found."
+msgstr "پیدا نشد."
+
+msgid "This task has already finished."
+msgstr ""
+
+msgid "Cancelled by the user."
+msgstr ""
+
+msgid "Only failed, cancelled, interrupted or timed-out work can be retried."
+msgstr ""
+
+msgid "This entry cannot be repeated automatically; start it again from its page."
+msgstr ""
 
 msgid "Content optimization"
 msgstr "بهینه‌سازی محتوا"
@@ -398,6 +647,9 @@ msgstr "تحلیل رقبا"
 
 msgid "Cannibalization advice"
 msgstr "راهکار هم‌نوع‌خواری کلمات"
+
+msgid "Merge duplicate articles"
+msgstr ""
 
 msgid "Focus keyword plan"
 msgstr "برنامه کلمه کلیدی اصلی"
@@ -498,8 +750,35 @@ msgstr "بررسی سرعت صفحه"
 msgid "Route speed test"
 msgstr "آزمون سرعت مسیرها"
 
+msgid "Indexability & crawl budget audit"
+msgstr ""
+
+msgid "Merging duplicate articles"
+msgstr ""
+
+msgid "Full-site analysis"
+msgstr ""
+
+msgid "Duplicate & similar articles analysis"
+msgstr ""
+
 msgid "Clean-up"
 msgstr "پاک‌سازی"
+
+msgid "AI agent run"
+msgstr ""
+
+msgid "Site audit: crawling a batch of pages"
+msgstr ""
+
+msgid "Send AI requests to GitHub"
+msgstr ""
+
+msgid "Collect AI answers from GitHub"
+msgstr ""
+
+msgid "SEO operation"
+msgstr ""
 
 msgid "Content"
 msgstr "محتوا"
@@ -627,9 +906,6 @@ msgstr "امتیاز سئو %1$s ← %2$s"
 msgid "New title and description options are ready."
 msgstr "گزینه‌های جدید عنوان و توضیحات آماده است."
 
-msgid "Not found."
-msgstr "پیدا نشد."
-
 msgid "Dashboard"
 msgstr "داشبورد"
 
@@ -675,11 +951,17 @@ msgstr "آزمایش‌ها"
 msgid "AI Changes"
 msgstr "تغییرات هوش مصنوعی"
 
+msgid "Duplicate & similar articles"
+msgstr ""
+
 msgid "Redirects"
 msgstr "ریدایرکت‌ها"
 
 msgid "404 Monitor"
 msgstr "پایشگر ۴۰۴"
+
+msgid "Indexability & crawl budget"
+msgstr ""
 
 msgid "Schema"
 msgstr "اسکیما"
@@ -723,11 +1005,11 @@ msgstr "تنظیمات"
 msgid "AI Center"
 msgstr "مرکز هوش مصنوعی"
 
+msgid "Data collection"
+msgstr ""
+
 msgid "Keywords & links"
 msgstr "کلمات کلیدی و لینک‌ها"
-
-msgid "Analysis"
-msgstr "تحلیل"
 
 msgid "Technical SEO"
 msgstr "سئوی فنی"
@@ -917,14 +1199,17 @@ msgstr "این کار به تصمیم شما نیاز دارد؛ مراحل سم
 msgid "This task needs your decision; SEOlity cannot do it alone."
 msgstr "این کار به تصمیم شما نیاز دارد؛ SEOlity به‌تنهایی نمی‌تواند انجامش دهد."
 
-msgid "AI is doing it"
-msgstr "هوش مصنوعی در حال انجام"
+msgid "AI is preparing the fix"
+msgstr ""
 
-msgid "Done — every change is versioned (undo in AI Center → AI Changes)."
-msgstr "انجام شد — همه تغییرات نسخه‌دارند (برگرداندن در مرکز هوش مصنوعی ← تغییرات هوش مصنوعی)."
+msgid "Nothing to change was found."
+msgstr ""
 
-msgid "Finished"
-msgstr "تمام شد"
+msgid "Ready for your review"
+msgstr ""
+
+msgid "AI prepared the fix"
+msgstr ""
 
 msgid "No related page was found to link from. Publish a related article first, or add the link by hand."
 msgstr "صفحه مرتبطی برای لینک دادن پیدا نشد. اول یک مقاله مرتبط منتشر کنید یا لینک را دستی اضافه کنید."
@@ -946,8 +1231,8 @@ msgid "Add internal link \"%1$s\" → %2$s"
 msgstr "افزودن لینک داخلی «%1$s» ← %2$s"
 
 #, php-format
-msgid "Link “%1$s” written into “%2$s”"
-msgstr "لینک «%1$s» در «%2$s» نوشته شد"
+msgid "Link “%1$s” prepared in “%2$s”"
+msgstr ""
 
 msgid "The related pages are about different topics, so no natural link could be added."
 msgstr "صفحات مرتبط درباره موضوع‌های دیگری هستند، پس لینک طبیعی اضافه نشد."
@@ -956,12 +1241,12 @@ msgstr "صفحات مرتبط درباره موضوع‌های دیگری هست
 msgid "Reading the search queries of “%s”…"
 msgstr "خواندن جست‌وجوهای «%s»…"
 
-msgid "Saving the new SEO title and meta description…"
-msgstr "ذخیره عنوان سئو و توضیحات متای جدید…"
+msgid "Preparing the new SEO title and meta description for your review…"
+msgstr ""
 
 #, php-format
-msgid "%1$s updated on “%2$s”"
-msgstr "%1$s در «%2$s» به‌روز شد"
+msgid "New %1$s for “%2$s” prepared"
+msgstr ""
 
 #, php-format
 msgid "Analyzing “%s” and writing the improved version with AI…"
@@ -971,47 +1256,47 @@ msgid "The AI produced no usable change."
 msgstr "هوش مصنوعی تغییر قابل استفاده‌ای نداد."
 
 #, php-format
-msgid "SEO score %1$s → %2$s — updating the page…"
-msgstr "امتیاز سئو %1$s ← %2$s — در حال به‌روزرسانی صفحه…"
+msgid "SEO score %1$s → %2$s — preparing the new version for your review…"
+msgstr ""
 
 #, php-format
-msgid "“%1$s” rewritten (SEO score %2$s → %3$s)"
-msgstr "«%1$s» بازنویسی شد (امتیاز سئو %2$s ← %3$s)"
+msgid "New version of “%1$s” prepared (SEO score %2$s → %3$s)"
+msgstr ""
 
 #, php-format
 msgid "Optimizing the product “%s” with AI…"
 msgstr "بهینه‌سازی محصول «%s» با هوش مصنوعی…"
 
 #, php-format
-msgid "Saving %s…"
-msgstr "ذخیره %s…"
+msgid "Preparing %s…"
+msgstr ""
 
 #, php-format
-msgid "%s saved"
-msgstr "%s ذخیره شد"
+msgid "%s prepared"
+msgstr ""
 
 #, php-format
 msgid "Writing the FAQ for “%s”…"
 msgstr "نوشتن پرسش‌های متداول برای «%s»…"
 
 #, php-format
-msgid "FAQ added to “%s”"
-msgstr "پرسش‌های متداول به «%s» اضافه شد"
+msgid "FAQ for “%s” prepared"
+msgstr ""
 
 #, php-format
-msgid "%1$s changed on “%2$s”"
-msgstr "%1$s در «%2$s» تغییر کرد"
+msgid "Change of %1$s on “%2$s” prepared"
+msgstr ""
 
 msgid "No matching live page was found; choose the target yourself in Technical SEO → Redirects."
 msgstr "صفحه فعال مناسبی پیدا نشد؛ مقصد را خودتان در سئوی فنی ← ریدایرکت‌ها انتخاب کنید."
 
 #, php-format
-msgid "Creating the redirect %1$s → %2$s…"
-msgstr "ساخت ریدایرکت %1$s ← %2$s…"
+msgid "Checking the redirect %1$s → %2$s…"
+msgstr ""
 
 #, php-format
-msgid "301 redirect created: %1$s → %2$s"
-msgstr "ریدایرکت ۳۰۱ ساخته شد: %1$s ← %2$s"
+msgid "301 redirect prepared: %1$s → %2$s"
+msgstr ""
 
 #, php-format
 msgid "Finding pages across the site that should link to “%s”…"
@@ -1021,32 +1306,37 @@ msgstr "پیدا کردن صفحاتی از سایت که باید به «%s» �
 msgid "Adding the link “%1$s” in “%2$s”…"
 msgstr "افزودن لینک «%1$s» در «%2$s»…"
 
-#, php-format
-msgid "Link “%1$s” added in “%2$s”"
-msgstr "لینک «%1$s» در «%2$s» اضافه شد"
-
 msgid "The suggested anchors are no longer in the source pages."
 msgstr "متن‌های لینک پیشنهادی دیگر در صفحات مبدأ نیستند."
 
-msgid "Adding the link…"
-msgstr "افزودن لینک…"
+msgid "Preparing the link…"
+msgstr ""
 
-msgid "Link added"
-msgstr "لینک اضافه شد"
+msgid "Link prepared"
+msgstr ""
 
-msgid "Pointing redirect chains straight to their final URL…"
-msgstr "اصلاح زنجیره‌های ریدایرکت به آدرس نهایی…"
-
-#, php-format
-msgid "%d redirects fixed"
-msgstr "%d ریدایرکت اصلاح شد"
+msgid "Finding redirect chains…"
+msgstr ""
 
 #, php-format
-msgid "%d items queued — follow them in Live activity"
-msgstr "%d مورد در صف — در «فعالیت زنده» دنبالشان کنید"
+msgid "%d redirect chains will point straight to their final URL"
+msgstr ""
 
-msgid "Topic added to the content planner"
-msgstr "موضوع به برنامه محتوا اضافه شد"
+#, php-format
+msgid "%d items will be optimized one by one in the background"
+msgstr ""
+
+msgid "Reading the indexability finding and the matching SEO plugin settings…"
+msgstr ""
+
+msgid "This finding needs a manual change; see the suggested solution."
+msgstr ""
+
+msgid "Finding not found — run the indexability audit again."
+msgstr ""
+
+msgid "Topic will be added to the content planner"
+msgstr ""
 
 #, php-format
 msgid "Organic clicks dropped %1$s%% week over week"
@@ -1254,6 +1544,65 @@ msgstr "قالب محتوا در برابر هدف جستجوی «%s»."
 msgid "Several sentences are repeated — remove boilerplate to increase information gain."
 msgstr "چند جمله تکرار شده‌اند — متن‌های تکراری را حذف کنید تا ارزش اطلاعاتی افزایش یابد."
 
+msgid "Search Console data"
+msgstr ""
+
+msgid "Crawl of the whole site"
+msgstr ""
+
+msgid "Issues and opportunities"
+msgstr ""
+
+msgid "404 redirect targets"
+msgstr ""
+
+msgid "AI roadmap"
+msgstr ""
+
+msgid "Not connected — skipped."
+msgstr ""
+
+msgid "Last days updated."
+msgstr ""
+
+msgid "Crawling…"
+msgstr ""
+
+#, php-format
+msgid "%d pages checked so far…"
+msgstr ""
+
+#, php-format
+msgid "%d pages crawled"
+msgstr ""
+
+msgid "The crawl did not finish; the other sections use the latest available data."
+msgstr ""
+
+#, php-format
+msgid "%d findings"
+msgstr ""
+
+#, php-format
+msgid "%d groups"
+msgstr ""
+
+msgid "No AI engine — slug matching only."
+msgstr ""
+
+msgid "Running in the background."
+msgstr ""
+
+msgid "The AI is writing the roadmap in the background."
+msgstr ""
+
+#, php-format
+msgid "All sections updated. %d open items in the roadmap."
+msgstr ""
+
+msgid "Some sections could not be updated — see the details."
+msgstr ""
+
 msgid "Your AI subscription is working on this request on GitHub…"
 msgstr "اشتراک هوش مصنوعی شما در حال انجام این درخواست روی گیت‌هاب است…"
 
@@ -1262,6 +1611,15 @@ msgstr "خطای غیرمنتظره."
 
 msgid "Sorry, you are not allowed to do that."
 msgstr "متأسفیم، اجازهٔ انجام این کار را ندارید."
+
+msgid "Operation not found."
+msgstr ""
+
+msgid "Invalid status."
+msgstr ""
+
+msgid "You can only manage your own tasks."
+msgstr ""
 
 msgid "Change not found."
 msgstr "تغییر پیدا نشد."
@@ -1274,6 +1632,16 @@ msgstr "این پراپرتی برای حساب متصل در دسترس نیس�
 
 msgid "You are not allowed to edit this product."
 msgstr "شما اجازه ویرایش این محصول را ندارید."
+
+msgid "Select between 1 and 200 URLs."
+msgstr ""
+
+msgid "None of the selected URLs were found."
+msgstr ""
+
+#, php-format
+msgid "Redirect %d broken URLs to their suggested pages"
+msgstr ""
 
 msgid "Unknown secret."
 msgstr "کلید محرمانه ناشناخته."
@@ -1378,6 +1746,95 @@ msgstr "صفحه‌ای با ترافیک ارگانیک به زباله‌دا�
 msgid "It received %1$d clicks in the last 28 days and has %2$d internal links. Add a 301 redirect to the closest relevant page to keep its value."
 msgstr "این صفحه در ۲۸ روز گذشته %1$d کلیک گرفته و %2$d لینک داخلی دارد. برای حفظ ارزش آن، به نزدیک‌ترین صفحه مرتبط ریدایرکت ۳۰۱ بزنید."
 
+#, php-format
+msgid "Reading %d articles…"
+msgstr ""
+
+msgid "Comparing articles…"
+msgstr ""
+
+#, php-format
+msgid "Most Search Console clicks (%d in 90 days)."
+msgstr ""
+
+#, php-format
+msgid "Most internal links pointing to it (%d)."
+msgstr ""
+
+#, php-format
+msgid "Most complete article (%d words)."
+msgstr ""
+
+msgid "Duplicate articles"
+msgstr ""
+
+msgid "Near-duplicate articles"
+msgstr ""
+
+msgid "Articles competing for the same topic"
+msgstr ""
+
+#, php-format
+msgid "%1$s: %2$s"
+msgstr "%1$s: %2$s"
+
+msgid "Several articles answer the same question, so Google splits rankings, links and clicks between them. Merging them into the strongest one usually lifts it."
+msgstr ""
+
+msgid "This group was not found — run the scan again."
+msgstr ""
+
+msgid "The primary article must be one of the group."
+msgstr ""
+
+msgid "Choose at least one article to merge into the primary."
+msgstr ""
+
+msgid "Connect an AI engine first (Settings → AI)."
+msgstr ""
+
+#, php-format
+msgid "Merge into “%s”"
+msgstr ""
+
+msgid "Preparing the merge"
+msgstr ""
+
+msgid "The articles no longer exist."
+msgstr ""
+
+msgid "AI is merging the articles…"
+msgstr ""
+
+msgid "The AI returned a merged article much shorter than the primary one, so nothing was prepared. Try again or add instructions."
+msgstr ""
+
+msgid "Preparing the preview…"
+msgstr ""
+
+#, php-format
+msgid "Merged with %d competing article(s)."
+msgstr ""
+
+msgid "The merged article could not be prepared."
+msgstr ""
+
+msgid "Merged into the primary article: keep it out of the index and the sitemap (it is not deleted)."
+msgstr ""
+
+msgid "Internal link now points straight at the merged article."
+msgstr ""
+
+#, php-format
+msgid "From %1$s: %2$s"
+msgstr ""
+
+msgid "Left out:"
+msgstr ""
+
+msgid "Order: merged article first; the old articles get noindex, a 301 and updated internal links only after the merge was saved and verified. Nothing is deleted and every edit keeps a WordPress revision."
+msgstr ""
+
 msgid "FAQ must be valid JSON."
 msgstr "سؤالات متداول باید JSON معتبر باشد."
 
@@ -1398,6 +1855,9 @@ msgstr "صفحه عنوان خالی دارد، بنابراین H1 / تگ عن�
 
 msgid "SEOlity Client"
 msgstr "مشتری سئولیتی"
+
+msgid "Stopped without finishing (closed by the 1.9 update: this work was no longer running)."
+msgstr ""
 
 msgid "Pages returning 4xx errors"
 msgstr "صفحات با خطای 4xx"
@@ -2183,6 +2643,12 @@ msgstr "ورکر کلادفلر از این سرور در دسترس نیست."
 msgid "Cloudflare worker answered HTTP %d. Deploy it again."
 msgstr "ورکر کلادفلر پاسخ HTTP %d داد. دوباره مستقر کنید."
 
+msgid "Rank Math Redirections is not active."
+msgstr ""
+
+msgid "Rank Math did not accept this redirect."
+msgstr ""
+
 msgid "No Rank Math redirections table was found."
 msgstr "جدول ریدایرکت‌های رنک مث پیدا نشد."
 
@@ -2254,6 +2720,148 @@ msgstr "پیشنهاد پیدا نشد."
 msgid "The anchor text is no longer present in the source content."
 msgstr "انکر تکست دیگر در محتوای مبدأ وجود ندارد."
 
+msgid "No target URL."
+msgstr ""
+
+msgid "Source and target are the same."
+msgstr "مبدأ و مقصد یکسان هستند."
+
+#, php-format
+msgid "Replaces the existing redirect to %s."
+msgstr ""
+
+msgid "The old URL is a live page (HTTP 200): redirecting it would hide existing content."
+msgstr ""
+
+msgid "This operation is not waiting for approval."
+msgstr ""
+
+msgid "Select at least one item."
+msgstr ""
+
+msgid "Applying approved changes"
+msgstr ""
+
+msgid "This operation cannot be rejected any more."
+msgstr ""
+
+msgid "Rejected by the user — nothing was changed."
+msgstr ""
+
+#, php-format
+msgid "Skipped: it depends on “%s”, which was not applied and verified."
+msgstr ""
+
+msgid "Cancelled by the user. Items already applied stay applied (use Undo to roll them back)."
+msgstr ""
+
+msgid "Some items failed — see the details."
+msgstr ""
+
+msgid "Applied and verified on the site."
+msgstr ""
+
+msgid "Finished with errors — some items were not applied or could not be confirmed."
+msgstr ""
+
+#, php-format
+msgid "%1$s of “%2$s”"
+msgstr ""
+
+msgid "Change"
+msgstr "تغییر"
+
+#, php-format
+msgid "301 redirect %1$s → %2$s"
+msgstr ""
+
+msgid "Point redirect chains straight to their final URL"
+msgstr ""
+
+#, php-format
+msgid "Queue AI optimization for %d items"
+msgstr ""
+
+msgid "Add the topic to the content planner"
+msgstr ""
+
+#, php-format
+msgid "%1$d redirects updated; %2$d chains left."
+msgstr ""
+
+#, php-format
+msgid "%d items queued (each one is a separate task with its own result)."
+msgstr ""
+
+msgid "Added to the content planner."
+msgstr "به برنامه‌ریز محتوا اضافه شد."
+
+msgid "Unknown item."
+msgstr ""
+
+msgid "This setting is not on the list of settings SEOlity may change."
+msgstr ""
+
+msgid "Setting saved."
+msgstr ""
+
+msgid "The setting could not be saved."
+msgstr ""
+
+#, php-format
+msgid "Confirmed on %1$s (%2$s)."
+msgstr ""
+
+#, php-format
+msgid "Saved, but %s does not show the effect yet."
+msgstr ""
+
+msgid "Nothing to roll back."
+msgstr ""
+
+msgid "Saved value confirmed."
+msgstr ""
+
+msgid "The saved value differs from the approved value."
+msgstr ""
+
+msgid "Rank Math does not hold the new value."
+msgstr ""
+
+msgid "Rank Math robots setting was not updated."
+msgstr ""
+
+msgid "Saved; the live page could not be checked right now."
+msgstr ""
+
+msgid "Confirmed on the live page."
+msgstr ""
+
+msgid "Saved, but the live page does not show it yet (a page cache may need clearing)."
+msgstr ""
+
+#, php-format
+msgid "The old URL answers %1$d → %2$s."
+msgstr ""
+
+#, php-format
+msgid "The old URL answers %1$d %2$s instead of the redirect."
+msgstr ""
+
+#, php-format
+msgid "The target itself redirects to %s (this would create a chain)."
+msgstr ""
+
+#, php-format
+msgid "The target answers HTTP %d."
+msgstr ""
+
+msgid "The target is live but set to noindex."
+msgstr ""
+
+msgid "The target is a live page."
+msgstr ""
+
 msgid "Plan item not found."
 msgstr "مورد برنامه پیدا نشد."
 
@@ -2276,8 +2884,106 @@ msgstr "در انتظار پاسخ هوش مصنوعی از گیت‌هاب…"
 msgid "Error, will retry: %s"
 msgstr "خطا، دوباره تلاش می‌شود: %s"
 
+#, php-format
+msgid "Stopped: the worker gave no sign of life for %d minutes (PHP time limit, memory limit or a server restart). Use “Retry” to run it again."
+msgstr ""
+
+msgid "Interrupted (the server stopped the worker). Retrying automatically…"
+msgstr ""
+
+msgid "Task not found."
+msgstr ""
+
+msgid "Cancelling — the task stops at its next safe point…"
+msgstr ""
+
+msgid "Only failed, cancelled or timed-out tasks can be retried."
+msgstr ""
+
+msgid "The same task is already queued or running."
+msgstr ""
+
+msgid "This task is still active. Cancel it first."
+msgstr ""
+
 msgid "Every minute (SEOlity queue)"
 msgstr "هر دقیقه (صف سئولیتی)"
+
+#, php-format
+msgid "Redirect the 404 URL %s"
+msgstr ""
+
+#, php-format
+msgid "Visitors or bots requested it %d times and got “page not found”."
+msgstr ""
+
+#, php-format
+msgid "Suggested target: %s"
+msgstr ""
+
+msgid "No good target was found yet — choose one or mark it as gone (410)."
+msgstr ""
+
+msgid "no SEO title"
+msgstr ""
+
+msgid "title too long"
+msgstr ""
+
+msgid "title too short"
+msgstr ""
+
+msgid "several <title> tags"
+msgstr ""
+
+msgid "title used on other pages too"
+msgstr ""
+
+msgid "no meta description"
+msgstr ""
+
+msgid "description length"
+msgstr ""
+
+msgid "description used on other pages too"
+msgstr ""
+
+msgid "no H1 heading"
+msgstr ""
+
+msgid "several H1 headings"
+msgstr ""
+
+msgid "heading levels skipped"
+msgstr ""
+
+msgid "several canonical tags"
+msgstr ""
+
+msgid "invalid canonical URL"
+msgstr ""
+
+msgid "canonical points to an error page"
+msgstr ""
+
+#, php-format
+msgid "Fix the SEO title / description of “%s”"
+msgstr ""
+
+#, php-format
+msgid "Fix the heading structure of “%s”"
+msgstr ""
+
+msgid "Fix the heading structure: exactly one H1 that states the topic, logical H2/H3 levels without skipped levels. Do not change the meaning of the text."
+msgstr ""
+
+#, php-format
+msgid "Fix the canonical tag of “%s”"
+msgstr ""
+
+#, php-format
+msgid "Found by the site audit: %s."
+msgstr ""
 
 #, php-format
 msgid "Rewrite the title & meta description of \"%s\""
@@ -2416,6 +3122,51 @@ msgstr "صاف کردن %d زنجیره ریدایرکت"
 msgid "Each extra hop slows users and crawlers; point old URLs straight to their final destination."
 msgstr "هر پرش اضافه کاربران و خزنده‌ها را کند می‌کند؛ URLهای قدیمی را مستقیم به مقصد نهایی هدایت کنید."
 
+msgid "404 errors"
+msgstr ""
+
+msgid "Site audit: titles, descriptions, headings"
+msgstr ""
+
+msgid "Content & CTR"
+msgstr ""
+
+msgid "Products & categories"
+msgstr ""
+
+msgid "Competitor gaps"
+msgstr "شکاف‌ها نسبت به رقبا"
+
+msgid "Other"
+msgstr "سایر"
+
+msgid "First: pages that should not be in Google waste crawl budget, and important pages that cannot be indexed earn nothing — everything else depends on this."
+msgstr ""
+
+msgid "Redirect loops/chains and server errors block crawlers and visitors; fix them before working on content."
+msgstr ""
+
+msgid "Broken URLs lose links and visitors; a correct 301 recovers them quickly and is low effort."
+msgstr ""
+
+msgid "Merge competing articles before polishing them — otherwise you optimize pages that will be redirected."
+msgstr ""
+
+msgid "Missing or duplicate titles, descriptions and headings: quick fixes with direct CTR impact."
+msgstr ""
+
+msgid "Internal links spread authority to the pages you just fixed."
+msgstr ""
+
+msgid "Content improvements based on Search Console data: highest upside once the basics are clean."
+msgstr ""
+
+msgid "Product and category pages: important for shops after the site-wide basics."
+msgstr ""
+
+msgid "New content for topics competitors win: a longer-term growth step."
+msgstr ""
+
 msgid "Higher CTR at the same rankings → more clicks within 2–4 weeks."
 msgstr "CTR بالاتر با همان رتبه‌ها ← کلیک بیشتر طی ۲ تا ۴ هفته."
 
@@ -2454,9 +3205,6 @@ msgstr "عبارت باقاعده نامعتبر است."
 
 msgid "Target URL is required."
 msgstr "URL مقصد الزامی است."
-
-msgid "Source and target are the same."
-msgstr "مبدأ و مقصد یکسان هستند."
 
 msgid "This redirect would create a loop."
 msgstr "این ریدایرکت یک حلقه ایجاد می‌کند."
@@ -3148,10 +3896,6 @@ msgstr "حداقل یک اقدام اضافه کنید."
 msgid "Rule matched: %1$s (%2$s)"
 msgstr "قانون منطبق شد: %1$s (%2$s)"
 
-#, php-format
-msgid "%1$s: %2$s"
-msgstr "%1$s: %2$s"
-
 msgid "Matched your automation rule."
 msgstr "با قانون اتوماسیون شما منطبق شد."
 
@@ -3256,6 +4000,173 @@ msgstr "آماده"
 
 msgid "The data repository must be private. Change its visibility on GitHub or choose another name."
 msgstr "مخزن داده باید خصوصی باشد. حالت آن را در GitHub تغییر دهید یا نام دیگری انتخاب کنید."
+
+msgid "Checking post types, templates and attachments…"
+msgstr ""
+
+msgid "a plugin or the theme"
+msgstr ""
+
+#, php-format
+msgid "Rank Math: use custom robots for “%s”"
+msgstr ""
+
+#, php-format
+msgid "Rank Math: noindex all “%s”"
+msgstr ""
+
+#, php-format
+msgid "Rank Math: remove “%s” from the sitemap"
+msgstr ""
+
+#, php-format
+msgid "%1$s templates are public: %2$d URLs can be crawled and indexed."
+msgstr ""
+
+msgid "These are layout parts (headers, footers, popups, saved sections) for internal use. As separate URLs they are thin, duplicate fragments that waste crawl budget and can appear in Google."
+msgstr ""
+
+msgid "Set them to noindex and remove them from the XML sitemap. Do not block them in robots.txt — Google must be able to crawl them to see the noindex. Templates keep working inside your pages."
+msgstr ""
+
+msgid "noindex is set, but robots.txt blocks these URLs."
+msgstr ""
+
+msgid "A blocked URL is not crawled, so Google never sees its noindex. URLs Google already knows can stay in the index as “Indexed, though blocked by robots.txt”."
+msgstr ""
+
+msgid "Remove the robots.txt rule for these URLs (keep the noindex). After Google has recrawled them and dropped them, a robots.txt rule may be added back if crawl budget matters."
+msgstr ""
+
+msgid "Attachment pages"
+msgstr ""
+
+msgid "Every uploaded image has its own indexable page."
+msgstr ""
+
+msgid "Attachment pages contain only an image: thousands of thin pages that dilute crawl budget."
+msgstr ""
+
+msgid "Redirect attachment pages to the post they belong to (301). Image search keeps working (it uses the image file, not the attachment page)."
+msgstr ""
+
+msgid "Rank Math: redirect attachment pages to their parent post"
+msgstr ""
+
+msgid "Checking archives, internal search and feeds…"
+msgstr ""
+
+msgid "Author archives"
+msgstr ""
+
+msgid "Author archive"
+msgstr ""
+
+msgid "The site has one author, so the author archive duplicates the blog list."
+msgstr ""
+
+msgid "A second URL listing exactly the same posts competes with the blog / category pages."
+msgstr ""
+
+msgid "Disable the author archive (it redirects to the home page). With several authors, keep author pages indexable only if they have real biographies."
+msgstr ""
+
+msgid "Rank Math: disable author archives"
+msgstr ""
+
+msgid "Date archives"
+msgstr ""
+
+msgid "Year / month / day archives are indexable."
+msgstr ""
+
+msgid "Date archives repeat the same posts in many lists with no search demand."
+msgstr ""
+
+msgid "Disable date archives (they redirect to the home page)."
+msgstr ""
+
+msgid "Rank Math: disable date archives"
+msgstr ""
+
+msgid "Internal search results"
+msgstr ""
+
+msgid "Internal search result pages can be indexed."
+msgstr ""
+
+msgid "Anyone can create unlimited search URLs (spam keywords included) that Google may crawl and index."
+msgstr ""
+
+msgid "Set search result pages to noindex."
+msgstr ""
+
+msgid "Rank Math: noindex internal search results"
+msgstr ""
+
+#, php-format
+msgid "%1$d of %2$d tags have one post or none, and all are indexable."
+msgstr ""
+
+msgid "Tag pages with one post are near-duplicates of that post; many of them waste crawl budget."
+msgstr ""
+
+msgid "Noindex tag archives and remove them from the sitemap (categories stay indexable). Tags keep working for visitors."
+msgstr ""
+
+#, php-format
+msgid "Rank Math: noindex “%s” archives"
+msgstr ""
+
+msgid "Empty categories / tags"
+msgstr ""
+
+#, php-format
+msgid "%d categories / tags have no posts and are indexable."
+msgstr ""
+
+msgid "Empty archive pages are soft-404s for Google."
+msgstr ""
+
+msgid "Noindex empty categories and tags automatically."
+msgstr ""
+
+msgid "Rank Math: noindex empty taxonomies"
+msgstr ""
+
+msgid "URL with parameters"
+msgstr ""
+
+msgid "internal links / a plugin"
+msgstr ""
+
+msgid "A parameter URL is indexable and has no canonical to the clean URL."
+msgstr ""
+
+#, php-format
+msgid "Duplicate versions of the same page split signals. %d internal links point to it."
+msgstr ""
+
+msgid "Change the links that generate this URL, or make the page output a canonical to the clean URL. Blocking parameters in robots.txt is only right once no indexed version is left."
+msgstr ""
+
+msgid "RSS feed"
+msgstr ""
+
+msgid "Paginated archives"
+msgstr ""
+
+msgid "Paginated pages should normally stay indexable (Google uses them to find older posts)."
+msgstr ""
+
+msgid "Feeds are not shown as pages in Google; nothing to do."
+msgstr ""
+
+msgid "Run the audit first."
+msgstr ""
+
+msgid "Finding not found — run the audit again."
+msgstr ""
 
 msgid "robots.txt is empty or missing. That allows all crawling, but you lose the chance to block crawl waste and reference your sitemap."
 msgstr "robots.txt خالی یا ناموجود است. همه خزش‌ها مجازند، اما فرصت جلوگیری از هدررفت خزش و معرفی نقشه سایت را از دست می‌دهید."
@@ -3413,51 +4324,8 @@ msgstr "%s مورد برای پردازش هوش مصنوعی در پس‌زمی
 msgid "%s redirect chains fixed."
 msgstr "%s زنجیره ریدایرکت اصلاح شد."
 
-msgid "Added to the content planner."
-msgstr "به برنامه‌ریز محتوا اضافه شد."
-
 msgid "Open"
 msgstr "باز"
-
-msgid "Do it"
-msgstr "انجامش بده"
-
-msgid "Do it yourself — exactly where"
-msgstr "خودتان انجام دهید — دقیقاً کجا"
-
-msgid "Done when:"
-msgstr "تمام است وقتی:"
-
-msgid "Let the AI do it"
-msgstr "بگذارید هوش مصنوعی انجام دهد"
-
-msgid "This is exactly what SEOlity will do on your site. Nothing changes until you approve. Every change is versioned — undo anytime in AI Center → AI Changes."
-msgstr "SEOlity دقیقاً همین کارها را روی سایت شما انجام می‌دهد. تا تأیید نکنید چیزی تغییر نمی‌کند. همه تغییرات نسخه‌دارند — هر وقت خواستید در مرکز هوش مصنوعی ← تغییرات هوش مصنوعی برگردانید."
-
-msgid "Connect an AI provider first (Settings → AI)."
-msgstr "اول یک سرویس هوش مصنوعی وصل کنید (تنظیمات ← هوش مصنوعی)."
-
-msgid "This task needs your decision; follow the steps on the left."
-msgstr "این کار به تصمیم شما نیاز دارد؛ مراحل سمت چپ را دنبال کنید."
-
-msgid "Approve & let the AI do it"
-msgstr "تأیید و انجام توسط هوش مصنوعی"
-
-msgid "The AI is working…"
-msgstr "هوش مصنوعی در حال کار است…"
-
-msgid "Stopped"
-msgstr "متوقف شد"
-
-msgid "Done"
-msgstr "انجام شد"
-
-#, php-format
-msgid "AI route: %s"
-msgstr "مسیر هوش مصنوعی: %s"
-
-msgid "Review the changes"
-msgstr "بررسی تغییرات"
 
 msgid "Impact"
 msgstr "تأثیر"
@@ -3467,6 +4335,9 @@ msgstr "زحمت"
 
 msgid "Confidence"
 msgstr "اطمینان"
+
+msgid "Do it"
+msgstr "انجامش بده"
 
 msgid "Why?"
 msgstr "چرا؟"
@@ -3493,14 +4364,17 @@ msgstr "تغییر حالت تاریک"
 msgid "Menu"
 msgstr "منو"
 
-msgid "AI engine"
-msgstr "موتور هوش مصنوعی"
-
 msgid "AI connected"
 msgstr "هوش مصنوعی متصل است"
 
+msgid "Error"
+msgstr "خطا"
+
 msgid "AI not configured"
 msgstr "هوش مصنوعی تنظیم نشده"
+
+msgid "AI engine"
+msgstr "موتور هوش مصنوعی"
 
 msgid "Search Console not connected"
 msgstr "سرچ کنسول متصل نیست"
@@ -3885,9 +4759,6 @@ msgstr "برچسب‌های پیشنهادی"
 msgid "CTA ideas"
 msgstr "ایده‌های فراخوان به اقدام (CTA)"
 
-msgid "Competitor gaps"
-msgstr "شکاف‌ها نسبت به رقبا"
-
 msgid "Internal link ideas"
 msgstr "ایده‌های لینک داخلی"
 
@@ -3991,14 +4862,17 @@ msgstr "دستیار اجرایی هوش مصنوعی"
 msgid "Chat"
 msgstr "چت"
 
-msgid "Change"
-msgstr "تغییر"
-
 msgid "Event"
 msgstr "رویداد"
 
+msgid "Queued"
+msgstr ""
+
 msgid "Waiting"
 msgstr "در انتظار"
+
+msgid "Done"
+msgstr "انجام شد"
 
 msgid "Info"
 msgstr "اطلاعات"
@@ -4006,8 +4880,35 @@ msgstr "اطلاعات"
 msgid "Cancelled"
 msgstr "لغو شد"
 
+msgid "Timed out"
+msgstr ""
+
+msgid "Interrupted"
+msgstr ""
+
+msgid "Scheduled"
+msgstr ""
+
+msgid "Cancelling…"
+msgstr ""
+
+msgid "Interrupted — retrying"
+msgstr ""
+
 msgid "This server"
 msgstr "همین سرور"
+
+msgid "Cancelled."
+msgstr ""
+
+msgid "Retry"
+msgstr ""
+
+msgid "Queued again."
+msgstr ""
+
+msgid "Select"
+msgstr "انتخاب"
 
 #, php-format
 msgid "via %s"
@@ -4037,6 +4938,9 @@ msgstr "SEOlity همین الان چه می‌کند و خط زمانی دقیق
 
 msgid "Live activity"
 msgstr "فعالیت زنده"
+
+msgid "Task queue"
+msgstr ""
 
 msgid "Completed work"
 msgstr "کارهای انجام‌شده"
@@ -4071,12 +4975,86 @@ msgstr "همه نتیجه‌ها"
 msgid "Search…"
 msgstr "جستجو…"
 
+msgid "Delete selected"
+msgstr ""
+
+msgid "Select entries first."
+msgstr ""
+
+#, php-format
+msgid "%s entries deleted."
+msgstr ""
+
+msgid "Delete entries older than 30 days"
+msgstr ""
+
+msgid "Delete finished entries older than 30 days? Running work is never deleted."
+msgstr ""
+
 #, php-format
 msgid "%s entries"
 msgstr "%s مورد"
 
 msgid "Everything SEOlity does on your site will be listed here with the exact time."
 msgstr "هر کاری که SEOlity روی سایت شما انجام دهد با زمان دقیق اینجا فهرست می‌شود."
+
+msgid "Check stuck tasks now"
+msgstr ""
+
+#, php-format
+msgid "%s tasks corrected."
+msgstr ""
+
+msgid "All task states are correct."
+msgstr ""
+
+msgid "Run queue now"
+msgstr "اجرای صف همین حالا"
+
+#, php-format
+msgid "%s jobs processed."
+msgstr "%s کار پردازش شد."
+
+msgid "Delete all in this list"
+msgstr ""
+
+msgid "Delete these finished task records? This only removes history; nothing on your site changes."
+msgstr ""
+
+msgid "No tasks here"
+msgstr ""
+
+msgid "Nothing is queued or running. Background work appears here as soon as it is queued."
+msgstr ""
+
+msgid "No tasks in this state."
+msgstr ""
+
+msgid "Task"
+msgstr "وظیفه"
+
+msgid "State"
+msgstr ""
+
+msgid "Attempts"
+msgstr "تلاش‌ها"
+
+#, php-format
+msgid "%s interruptions"
+msgstr ""
+
+msgid "Started"
+msgstr "شروع"
+
+#, php-format
+msgid "at %s"
+msgstr ""
+
+msgid "Last sign of life"
+msgstr ""
+
+msgid "A task whose worker stops (PHP time limit, memory, server restart) is detected automatically, retried, and after repeated interruptions marked “Timed out” — it never stays “running” forever. Cancelling a running task stops it at its next safe point, never in the middle of a change."
+msgstr ""
 
 #, php-format
 msgid "%s running"
@@ -4261,13 +5239,6 @@ msgstr "در انتظار"
 msgid "Done (3 days)"
 msgstr "انجام‌شده (۳ روز)"
 
-msgid "Run queue now"
-msgstr "اجرای صف همین حالا"
-
-#, php-format
-msgid "%s jobs processed."
-msgstr "%s کار پردازش شد."
-
 msgid "Retry failed"
 msgstr "تلاش مجدد ناموفق‌ها"
 
@@ -4279,12 +5250,6 @@ msgstr "نکته: برای سایت‌های پرترافیک یا کم‌ترا
 
 msgid "Job"
 msgstr "کار"
-
-msgid "Attempts"
-msgstr "تلاش‌ها"
-
-msgid "Error"
-msgstr "خطا"
 
 msgid "Created"
 msgstr "ایجاد"
@@ -4501,15 +5466,14 @@ msgstr "برای مدل‌های استدلالی که آن را نمی‌پذی
 msgid "Save Custom API"
 msgstr "ذخیره API سفارشی"
 
-msgid "Test connection"
-msgstr "تست اتصال"
+msgid "Test model"
+msgstr ""
 
-#, php-format
-msgid "Connection OK — model %s"
-msgstr "اتصال برقرار است — مدل %s"
+msgid "The model works."
+msgstr ""
 
-msgid "Use as AI engine"
-msgstr "استفاده به‌عنوان موتور هوش مصنوعی"
+msgid "Use for all AI features"
+msgstr ""
 
 msgid "AI engine switched."
 msgstr "موتور هوش مصنوعی تغییر کرد."
@@ -4523,26 +5487,17 @@ msgstr "API سفارشی (هر ارائه‌دهنده)"
 msgid "DeepSeek, Groq, Mistral, Together, xAI, Perplexity, Azure OpenAI, Cloudflare Workers AI, LM Studio, vLLM, LiteLLM or any compatible gateway."
 msgstr "DeepSeek، Groq، Mistral، Together، xAI، Perplexity، Azure OpenAI، Cloudflare Workers AI، LM Studio، vLLM، LiteLLM یا هر درگاه سازگار."
 
-msgid "configured"
-msgstr "تنظیم‌شده"
-
-msgid "not configured"
-msgstr "تنظیم‌نشده"
-
-msgid "Test"
-msgstr "آزمایش"
-
-msgid "Use your Claude or ChatGPT subscription instead of an API key"
-msgstr "به‌جای کلید API از اشتراک Claude یا ChatGPT خود استفاده کنید"
-
-msgid "Step-by-step setup with GitHub (free) and an optional Cloudflare relay."
-msgstr "راه‌اندازی قدم‌به‌قدم با GitHub (رایگان) و رله اختیاری کلادفلر."
-
 msgid "Encryption"
 msgstr "رمزنگاری"
 
 msgid "For maximum security define SEOLITY_ENCRYPTION_KEY in wp-config.php. You can also define any secret as a constant, e.g. SEOLITY_ANTHROPIC_API_KEY."
 msgstr "برای بیشترین امنیت، SEOLITY_ENCRYPTION_KEY را در wp-config.php تعریف کنید. هر کلید محرمانه را هم می‌توانید به‌صورت ثابت تعریف کنید، مثلاً SEOLITY_ANTHROPIC_API_KEY."
+
+msgid "AI writing settings"
+msgstr ""
+
+msgid "Apply to every AI connection."
+msgstr ""
 
 msgid "Keys & tokens"
 msgstr "کلیدها و توکن‌ها"
@@ -4565,9 +5520,6 @@ msgstr "نامحدود"
 msgid "Requests (30d)"
 msgstr "درخواست‌ها (۳۰ روز)"
 
-msgid "Task"
-msgstr "وظیفه"
-
 msgid "Requests"
 msgstr "درخواست‌ها"
 
@@ -4582,6 +5534,190 @@ msgstr "موتور سئوی شناسایی‌شده"
 
 msgid "when another SEO plugin is active, SEOlity writes titles/descriptions into it and does not duplicate head tags."
 msgstr "وقتی افزونه سئوی دیگری فعال است، سئولیتی عنوان/توضیحات را در آن می‌نویسد و تگ‌های head را تکرار نمی‌کند."
+
+msgid "Not connected"
+msgstr ""
+
+msgid "Key saved — not checked yet"
+msgstr ""
+
+msgid "Connected — key works"
+msgstr ""
+
+msgid "Model tested ✓"
+msgstr ""
+
+msgid "current setting — not in the list from your account"
+msgstr ""
+
+msgid "Default model"
+msgstr ""
+
+msgid "Not tested yet. “Test model” sends one short real request."
+msgstr ""
+
+#, php-format
+msgid "This model answered (%s)."
+msgstr ""
+
+#, php-format
+msgid "Answered by: %s"
+msgstr ""
+
+msgid "In use"
+msgstr ""
+
+msgid "Supported plans:"
+msgstr ""
+
+msgid "The test request is running on your GitHub runner; the result appears here (usually within a minute)."
+msgstr ""
+
+msgid "Open the full step-by-step setup (GitHub runner, token, Cloudflare)"
+msgstr ""
+
+msgid "Download Ollama"
+msgstr ""
+
+msgid "Create a GitHub token (Models: Read)"
+msgstr ""
+
+msgid "Official documentation"
+msgstr "مستندات رسمی"
+
+msgid "1. Ollama server address"
+msgstr ""
+
+msgid "1. API key"
+msgstr ""
+
+msgid "Load models again"
+msgstr ""
+
+msgid "Connect & load models"
+msgstr ""
+
+#, php-format
+msgid "Connected — %s models available to your account."
+msgstr ""
+
+msgid "Disconnect"
+msgstr "قطع اتصال"
+
+#, php-format
+msgid "Remove the saved key of %s? AI features that use it stop working."
+msgstr ""
+
+msgid "SEOlity asks this server which models are installed."
+msgstr ""
+
+msgid "The key is stored encrypted on your server and never sent back to the browser. SEOlity then asks the provider which models this key can use."
+msgstr ""
+
+msgid "1. Where the official program runs"
+msgstr ""
+
+msgid "Your private GitHub runner"
+msgstr ""
+
+#, php-format
+msgid "Ready: %s"
+msgstr ""
+
+msgid "Not set up yet — use the step-by-step setup below (free, nothing to install on your host)."
+msgstr ""
+
+msgid "This server (official CLI, optional)"
+msgstr ""
+
+#, php-format
+msgid "Found: %s"
+msgstr ""
+
+msgid "Not installed. See Connections → Server & speed."
+msgstr ""
+
+msgid "Not possible on this host (PHP cannot start programs). Typical for shared hosting."
+msgstr ""
+
+msgid "This server when the CLI is installed, otherwise the GitHub runner (never GitHub when the route is “Direct”)."
+msgstr ""
+
+msgid "Used now:"
+msgstr ""
+
+msgid "this server (no GitHub)"
+msgstr ""
+
+msgid "GitHub runner"
+msgstr "اجراکننده گیت‌هاب"
+
+msgid "Claude token saved"
+msgstr ""
+
+msgid "ChatGPT login saved"
+msgstr ""
+
+msgid "Claude token missing"
+msgstr ""
+
+msgid "ChatGPT login missing"
+msgstr ""
+
+#, php-format
+msgid "Remove the saved login of %s?"
+msgstr ""
+
+msgid "2. Model"
+msgstr ""
+
+msgid "Press “Connect & load models” to load the models of your account."
+msgstr ""
+
+msgid "Connect first to see the models of your account."
+msgstr ""
+
+msgid "or a model id (optional)"
+msgstr ""
+
+msgid "Subscriptions have no official model list: these are the official aliases. A model only counts as available after a successful test."
+msgstr ""
+
+#, php-format
+msgid "%s models from your account’s model list (loaded %s). ✓ = tested successfully."
+msgstr ""
+
+msgid "Test sent to your GitHub runner…"
+msgstr ""
+
+#, php-format
+msgid "AI engine switched: %s"
+msgstr ""
+
+#, php-format
+msgid "%s models"
+msgstr ""
+
+msgid "AI engine in use:"
+msgstr ""
+
+msgid "Tested and working — every AI feature uses it."
+msgstr ""
+
+msgid "Configured but not tested yet. Open it and press “Test model”."
+msgstr ""
+
+msgid "AI with API"
+msgstr ""
+
+msgid "Pay per use with an API key from the provider. The most reliable option."
+msgstr ""
+
+msgid "Subscription"
+msgstr ""
+
+msgid "Use an AI plan you already pay for — only through the official methods each company allows."
+msgstr ""
 
 msgid "e.g. Why did my organic sales drop this month?"
 msgstr "مثلاً: چرا فروش ارگانیک من این ماه کم شده؟"
@@ -4844,9 +5980,6 @@ msgstr "پیش‌نیازها"
 msgid "Troubleshooting"
 msgstr "رفع مشکل"
 
-msgid "Official documentation"
-msgstr "مستندات رسمی"
-
 msgid "Step-by-step instructions with direct links for every key and account SEOlity can use. Open a service, follow the numbered steps, paste the key where shown and press Test."
 msgstr "راهنمای قدم‌به‌قدم با لینک مستقیم برای هر کلید و حسابی که SEOlity استفاده می‌کند. یک سرویس را باز کنید، مراحل شماره‌دار را انجام دهید، کلید را در جای گفته‌شده بچسبانید و تست بزنید."
 
@@ -4978,9 +6111,6 @@ msgstr "قبل ← بعد"
 msgid "Window: %s days"
 msgstr "بازه: %s روز"
 
-msgid "Started"
-msgstr "شروع"
-
 msgid "Revert"
 msgstr "بازگردانی"
 
@@ -5086,6 +6216,19 @@ msgstr "جدید (۲۴ ساعت)"
 msgid "With referrer"
 msgstr "دارای ارجاع‌دهنده"
 
+#, php-format
+msgid "%s selected"
+msgstr ""
+
+msgid "Redirect selected to their own targets"
+msgstr ""
+
+msgid "Every redirect was checked: the target must be a live page, no loop may be created and the old URL must really be gone. Untick anything you do not want, then approve."
+msgstr ""
+
+msgid "Select all"
+msgstr "انتخاب همه"
+
 msgid "Redirected"
 msgstr "ریدایرکت‌شده"
 
@@ -5104,11 +6247,18 @@ msgstr "آخرین مشاهده"
 msgid "Suggested redirect"
 msgstr "ریدایرکت پیشنهادی"
 
-msgid "no good match"
-msgstr "مورد مناسبی نیست"
+msgid "no good match — enter a target"
+msgstr ""
 
 msgid "pending"
 msgstr "در انتظار"
+
+#, php-format
+msgid "match %s%"
+msgstr ""
+
+msgid "no good match"
+msgstr "مورد مناسبی نیست"
 
 msgid "410 Gone"
 msgstr "۴۱۰ حذف‌شده"
@@ -5432,6 +6582,146 @@ msgstr "در گیت‌هاب بایگانی شد"
 msgid "Set up GitHub"
 msgstr "راه‌اندازی گیت‌هاب"
 
+msgid "Preparing"
+msgstr ""
+
+msgid "Waiting for your approval"
+msgstr ""
+
+msgid "Approved — applying"
+msgstr ""
+
+msgid "Applying"
+msgstr ""
+
+msgid "Done & verified"
+msgstr ""
+
+msgid "Partly applied"
+msgstr ""
+
+msgid "Rejected — nothing changed"
+msgstr ""
+
+msgid "Undone"
+msgstr ""
+
+msgid "Your instructions:"
+msgstr ""
+
+msgid "Apply this item"
+msgstr ""
+
+msgid "Not applied"
+msgstr ""
+
+#, php-format
+msgid "Risk: %s"
+msgstr ""
+
+msgid "Edit manually"
+msgstr ""
+
+msgid "Checked: the target is a live page and no loop is created."
+msgstr ""
+
+#, php-format
+msgid "Problem: %s"
+msgstr ""
+
+msgid "Verified:"
+msgstr ""
+
+msgid "Not confirmed:"
+msgstr ""
+
+msgid "Approve & apply selected"
+msgstr ""
+
+msgid "Approved — applying on the site…"
+msgstr ""
+
+msgid "Reject"
+msgstr "رد"
+
+msgid "Rejected — nothing was changed."
+msgstr ""
+
+msgid "Nothing has been changed on your site yet."
+msgstr ""
+
+msgid "Undo all of it"
+msgstr ""
+
+msgid "Undo every change of this operation (restore the previous versions, remove the redirects)?"
+msgstr ""
+
+msgid "Undone."
+msgstr ""
+
+msgid "Applied and verified on the site. The roadmap item is marked as completed."
+msgstr ""
+
+msgid "Every approved item was applied and verified on the site; the related roadmap items are completed."
+msgstr ""
+
+#, php-format
+msgid "Point %s redirect chains straight to their final URL"
+msgstr ""
+
+#, php-format
+msgid "Optimize %s items with AI in the background"
+msgstr ""
+
+msgid "Open its section"
+msgstr ""
+
+msgid "Do it yourself — exactly where"
+msgstr "خودتان انجام دهید — دقیقاً کجا"
+
+msgid "Done when:"
+msgstr "تمام است وقتی:"
+
+msgid "Let the AI do it"
+msgstr "بگذارید هوش مصنوعی انجام دهد"
+
+msgid "The AI prepares the fix first and shows you every change before anything is written. You approve what should be applied; every change is verified on the site and can be undone."
+msgstr ""
+
+msgid "AI recommendation (plan)"
+msgstr ""
+
+msgid "Optional: your instructions for the AI (what to keep, what to emphasize, style, which page stays primary…)"
+msgstr ""
+
+msgid "Your instructions for the AI"
+msgstr ""
+
+msgid "Kept with this task and used on every new attempt until you change them."
+msgstr ""
+
+msgid "Connect an AI provider first (Settings → AI)."
+msgstr "اول یک سرویس هوش مصنوعی وصل کنید (تنظیمات ← هوش مصنوعی)."
+
+msgid "This task needs your decision; follow the steps on the left."
+msgstr "این کار به تصمیم شما نیاز دارد؛ مراحل سمت چپ را دنبال کنید."
+
+msgid "Prepare the fix with AI"
+msgstr ""
+
+msgid "Prepare a new fix"
+msgstr ""
+
+msgid "The AI is working…"
+msgstr "هوش مصنوعی در حال کار است…"
+
+msgid "Stopped"
+msgstr "متوقف شد"
+
+#, php-format
+msgid "AI route: %s"
+msgstr "مسیر هوش مصنوعی: %s"
+
 msgid "This week"
 msgstr "این هفته"
 
@@ -5474,14 +6764,11 @@ msgstr "جمع‌آوری محتوای جدید، رقبا و روندها"
 msgid "Studying the SEO knowledge base and writing the roadmap"
 msgstr "مطالعه پایگاه دانش سئو و نوشتن نقشه راه"
 
-msgid "Other"
-msgstr "سایر"
+msgid "Every problem on the site appears here once, in the order it should be fixed. Run a full analysis to update every section; each item can be done by AI (with a preview and your approval) or by hand, and gets a checkmark only after the result was verified on the site."
+msgstr ""
 
-msgid "SEO roadmap — what should I do today?"
-msgstr "نقشه راه سئو — امروز چه کار کنم؟"
-
-msgid "A step-by-step plan for this site. SEOlity analyzes only when you press “Analyze”: it reads Search Console, the site audit, your content and competitors, studies the SEO knowledge base and keeps the plan stable between analyses."
-msgstr "برنامه قدم‌به‌قدم برای همین سایت. SEOlity فقط وقتی «تحلیل» را بزنید بررسی می‌کند: سرچ کنسول، ممیزی سایت، محتوا و رقبا را می‌خواند، پایگاه دانش سئو را مطالعه می‌کند و برنامه را بین تحلیل‌ها پایدار نگه می‌دارد."
+msgid "AI diagnosis and plan"
+msgstr ""
 
 msgid "The last analysis failed:"
 msgstr "آخرین تحلیل ناموفق بود:"
@@ -5630,6 +6917,73 @@ msgstr "مربوط نیست"
 
 msgid "Working on it"
 msgstr "در حال انجام"
+
+msgid "To do"
+msgstr ""
+
+msgid "Resolved"
+msgstr ""
+
+msgid "Dismissed"
+msgstr ""
+
+msgid "Marked done by you (not verified)"
+msgstr ""
+
+msgid "Gone after the last check"
+msgstr ""
+
+msgid "Analysis running…"
+msgstr ""
+
+msgid "Run full-site analysis"
+msgstr ""
+
+#, php-format
+msgid "Last full analysis: %s"
+msgstr ""
+
+msgid "Crawl, Search Console, issues, indexability, duplicates, 404 targets and the AI plan — all sections updated in one run."
+msgstr ""
+
+#, php-format
+msgid "%s open"
+msgstr ""
+
+msgid "all clear"
+msgstr ""
+
+msgid "Open the section"
+msgstr ""
+
+#, php-format
+msgid "Step %s:"
+msgstr ""
+
+msgid "AI recommendation:"
+msgstr ""
+
+msgid "Result and verification"
+msgstr ""
+
+msgid "View the change"
+msgstr ""
+
+msgid "Open in its section"
+msgstr ""
+
+msgid "Reopen"
+msgstr ""
+
+#, php-format
+msgid "%s items"
+msgstr ""
+
+msgid "Nothing left to do here"
+msgstr ""
+
+msgid "Show more"
+msgstr ""
 
 msgid "Site Audit & SEO Doctor"
 msgstr "ممیزی سایت و دکتر سئو"
@@ -5891,12 +7245,6 @@ msgstr "همگام‌سازی در صف قرار گرفت."
 
 msgid "Change property"
 msgstr "تغییر پراپرتی"
-
-msgid "Select"
-msgstr "انتخاب"
-
-msgid "Disconnect"
-msgstr "قطع اتصال"
 
 msgid "Disconnect Google Search Console? Stored data stays until you change property."
 msgstr "اتصال گوگل سرچ کنسول قطع شود؟ داده‌های ذخیره‌شده تا زمان تغییر پراپرتی باقی می‌مانند."
@@ -6399,9 +7747,6 @@ msgstr "پیشوند «تصویر…»"
 msgid "%1$s images indexed · last scan %2$s"
 msgstr "%1$s تصویر نمایه شد · آخرین اسکن %2$s"
 
-msgid "Select all"
-msgstr "انتخاب همه"
-
 msgid "Generate ALT for selected"
 msgstr "تولید ALT برای موارد انتخابی"
 
@@ -6457,15 +7802,238 @@ msgstr "یک ممیزی سایت اجرا کنید و سپس روی «یافتن
 msgid "Most linked pages"
 msgstr "پرلینک‌ترین صفحات"
 
+msgid "No response"
+msgstr ""
+
+msgid "Blocked in robots.txt"
+msgstr ""
+
+msgid "In sitemap"
+msgstr ""
+
+msgid "noindex, robots.txt and the sitemap do different jobs"
+msgstr ""
+
+msgid "noindex (meta robots or X-Robots-Tag): the page may be crawled but is kept out of Google. Use it for pages that must exist but should not rank."
+msgstr ""
+
+msgid "robots.txt Disallow: Google does not crawl the URL at all, so it never sees a noindex there. Use it only for crawl budget, after the URLs are already out of the index."
+msgstr ""
+
+msgid "XML sitemap: a list of pages you want indexed. Never list noindexed, redirected or blocked URLs."
+msgstr ""
+
+msgid "301 redirect: the page should not exist on its own (e.g. attachment pages) — visitors and Google go to the right page."
+msgstr ""
+
+msgid "Checks templates, attachments, archives, search, parameters, feeds and pagination: live status, robots meta, X-Robots-Tag, canonical, robots.txt, sitemap, internal links and Rank Math settings — intended vs. technical indexability."
+msgstr ""
+
+msgid "Run the audit"
+msgstr ""
+
+msgid "The audit is running — results refresh automatically."
+msgstr ""
+
+msgid "Run it to see what Google can index on this site."
+msgstr ""
+
+msgid "Findings"
+msgstr ""
+
+msgid "High severity"
+msgstr ""
+
+msgid "URL groups checked"
+msgstr ""
+
 #, php-format
-msgid "AI is answering through GitHub (%s)…"
-msgstr "هوش مصنوعی از طریق گیت‌هاب پاسخ می‌دهد (%s)…"
+msgid "Last audit: %s"
+msgstr ""
+
+msgid "Connect Search Console to include Google’s own index status."
+msgstr ""
+
+msgid "Nothing to fix: every URL group is indexed (or kept out) the way it should be."
+msgstr ""
+
+#, php-format
+msgid "%s URLs"
+msgstr ""
+
+#, php-format
+msgid "Source: %s"
+msgstr ""
+
+msgid "Problem:"
+msgstr ""
+
+msgid "Why it matters:"
+msgstr ""
+
+msgid "Solution:"
+msgstr ""
+
+msgid "Fix it (preview first)"
+msgstr ""
+
+msgid "Fix manually"
+msgstr ""
+
+msgid "Everything that was checked"
+msgstr ""
+
+msgid "URL group"
+msgstr ""
+
+msgid "Count"
+msgstr ""
+
+msgid "Should be indexed"
+msgstr ""
 
 msgid "Yes"
 msgstr "بله"
 
 msgid "No"
 msgstr "خیر"
+
+msgid "Live state"
+msgstr ""
+
+msgid "Sample URL"
+msgstr ""
+
+msgid "Duplicate"
+msgstr ""
+
+msgid "Near-duplicate"
+msgstr ""
+
+msgid "Same topic (cannibalization)"
+msgstr ""
+
+#, php-format
+msgid "%s articles"
+msgstr ""
+
+#, php-format
+msgid "%s clicks (90 days)"
+msgstr ""
+
+msgid "Keep this one (primary)"
+msgstr ""
+
+msgid "Primary"
+msgstr "اصلی"
+
+msgid "Keep"
+msgstr ""
+
+msgid "Merge into the primary article"
+msgstr ""
+
+#, php-format
+msgid "%s words"
+msgstr ""
+
+#, php-format
+msgid "%s clicks"
+msgstr ""
+
+#, php-format
+msgid "%s internal links"
+msgstr ""
+
+msgid "same content"
+msgstr ""
+
+msgid "similar titles"
+msgstr ""
+
+msgid "same H1"
+msgstr ""
+
+#, php-format
+msgid "both rank for: %s"
+msgstr ""
+
+msgid "Why they are grouped:"
+msgstr ""
+
+msgid "Keep the suggested primary and merge the others into it."
+msgstr ""
+
+msgid "Instructions for this merge (optional), e.g. “keep the price table from the second article”, “do not change the introduction”."
+msgstr ""
+
+msgid "Open the last operation"
+msgstr ""
+
+msgid "Fix cannibalization"
+msgstr ""
+
+msgid "The AI merges the articles first. You then see the full before/after of every step. Redirects and link updates run only after the merged article was saved and verified; nothing is deleted and every edit keeps a WordPress revision."
+msgstr ""
+
+msgid "Duplicate & near-duplicate articles"
+msgstr ""
+
+msgid "Finds articles that repeat each other or compete for the same topic (content overlap, titles, H1, shared Search Console queries) and merges them into the strongest one — preview first, then 301 redirects and internal links, all verified."
+msgstr ""
+
+msgid "Scan for duplicates"
+msgstr ""
+
+msgid "Scan started in the background."
+msgstr ""
+
+msgid "The scan is running — results refresh automatically."
+msgstr ""
+
+msgid "Rules for every merge, e.g. “keep our brand voice”, “never remove prices”, “keep FAQs at the end”."
+msgstr ""
+
+msgid "Your standing instructions for merges"
+msgstr ""
+
+msgid "Saved and added to every AI merge, together with the instructions of each group."
+msgstr ""
+
+msgid "Save instructions"
+msgstr ""
+
+msgid "No scan yet"
+msgstr ""
+
+msgid "Run it to find articles that repeat or compete with each other."
+msgstr ""
+
+msgid "Articles checked"
+msgstr ""
+
+msgid "Duplicate groups"
+msgstr ""
+
+msgid "Near-duplicate groups"
+msgstr ""
+
+msgid "Competing topics"
+msgstr ""
+
+#, php-format
+msgid "Last scan: %s"
+msgstr ""
+
+msgid "Connect Search Console to also find pages that compete for the same queries."
+msgstr ""
+
+msgid "No duplicate or competing articles found."
+msgstr ""
+
+#, php-format
+msgid "AI is answering through GitHub (%s)…"
+msgstr "هوش مصنوعی از طریق گیت‌هاب پاسخ می‌دهد (%s)…"
 
 msgid "Close"
 msgstr "بستن"
@@ -6502,9 +8070,6 @@ msgstr "تولیدشده توسط"
 
 msgid "Change rejected."
 msgstr "تغییر رد شد."
-
-msgid "Reject"
-msgstr "رد"
 
 msgid "Change applied. You can undo it anytime from version history."
 msgstr "تغییر اعمال شد. هر زمان بخواهید از تاریخچه نسخه‌ها می‌توانید آن را بازگردانید."
@@ -6652,6 +8217,9 @@ msgstr "باز کردن گزارش"
 msgid "Review & apply"
 msgstr "بررسی و اعمال"
 
+msgid "AI is doing it"
+msgstr "هوش مصنوعی در حال انجام"
+
 #, php-format
 msgid "Applied: %s"
 msgstr "اعمال شد: %s"
@@ -6752,9 +8320,6 @@ msgstr "صفحه دیگری از سایت شما این کوئری‌ها را �
 
 msgid "No conflicts"
 msgstr "تداخلی نیست"
-
-msgid "Primary"
-msgstr "اصلی"
 
 msgid "Keywords copied to the set above. Press Apply to save."
 msgstr "کلمات کلیدی در کادر بالا قرار گرفت. برای ذخیره «اعمال» را بزنید."
@@ -7120,18 +8685,6 @@ msgstr "اسکیما و موجودیت"
 msgid "Privacy & data"
 msgstr "حریم خصوصی و داده"
 
-msgid "Anthropic API key"
-msgstr "کلید API انتروپیک"
-
-msgid "OpenAI API key"
-msgstr "کلید API اوپن‌ای‌آی"
-
-msgid "Google Gemini API key"
-msgstr "کلید API گوگل جمینای"
-
-msgid "OpenRouter API key"
-msgstr "کلید API اوپن‌روتر"
-
 msgid "PageSpeed Insights API key (optional)"
 msgstr "کلید API پیج‌اسپید (اختیاری)"
 
@@ -7419,6 +8972,11 @@ msgstr "ناموجود"
 
 msgid "onbackorder"
 msgstr "پیش‌سفارش"
+
+#, php-format
+msgid "%d change prepared — review it and approve to apply it on the site."
+msgid_plural "%d changes prepared — review them and approve to apply them on the site."
+msgstr[0] ""
 
 #, php-format
 msgid "%d search query you already get impressions for is not covered in the content."
