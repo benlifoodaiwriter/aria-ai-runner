@@ -551,6 +551,9 @@ final class Activity {
 			'pagespeed_run'           => __( 'PageSpeed check', 'seolity' ),
 			'roadmap_build'           => __( 'SEO roadmap analysis', 'seolity' ),
 			'route_probe'             => __( 'Route speed test', 'seolity' ),
+			'indexability_scan'       => __( 'Indexability & crawl budget audit', 'seolity' ),
+			'full_analysis'           => __( 'Full-site analysis', 'seolity' ),
+			'duplicates_scan'         => __( 'Duplicate & similar articles analysis', 'seolity' ),
 			'cleanup'                 => __( 'Clean-up', 'seolity' ),
 		);
 		$l = apply_filters( 'seolity_activity_jobs', $l );

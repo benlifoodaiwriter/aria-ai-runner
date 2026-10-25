@@ -28,6 +28,7 @@ defined( 'ABSPATH' ) || exit;
  * @property-read AI\Remote\LocalCli         $localcli
  * @property-read AI\ProviderManager          $aiproviders
  * @property-read Operations\Operations        $operations
+ * @property-read Technical\Indexability       $indexability
  * @property-read Roadmap\Roadmap            $roadmap
  * @property-read Activity\Activity          $activity
  * @property-read Activity\AiJobs            $aijobs
@@ -170,6 +171,7 @@ final class Plugin {
 			'localcli'        => AI\Remote\LocalCli::class,
 			'aiproviders'     => AI\ProviderManager::class,
 			'operations'      => Operations\Operations::class,
+			'indexability'    => Technical\Indexability::class,
 			'roadmap'         => Roadmap\Roadmap::class,
 			'activity'        => Activity\Activity::class,
 			'aijobs'          => Activity\AiJobs::class,

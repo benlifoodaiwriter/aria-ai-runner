@@ -26,7 +26,7 @@ defined( 'ABSPATH' ) || exit;
 final class Agent {
 
 	/** Actions the agent can carry out alone. */
-	const RUNNABLE = array( 'optimize_meta', 'optimize_content', 'optimize_product', 'generate_faq', 'set_field', 'create_redirect', 'internal_links_to', 'apply_link', 'fix_redirect_chains', 'bulk', 'plan_content' );
+	const RUNNABLE = array( 'optimize_meta', 'optimize_content', 'optimize_product', 'generate_faq', 'set_field', 'create_redirect', 'internal_links_to', 'apply_link', 'fix_redirect_chains', 'bulk', 'plan_content', 'indexability_fix' );
 
 	/** @var Plugin */
 	private $plugin;
@@ -609,6 +609,21 @@ final class Agent {
 				/* translators: %d: items */
 				$done[] = sprintf( __( '%d items will be optimized one by one in the background', 'seolity' ), count( (array) $a['ids'] ) );
 				return $done;
+
+			case 'indexability_fix':
+				$step( __( 'Reading the indexability finding and the matching SEO plugin settings…', 'seolity' ), 30 );
+				$last = $this->plugin->indexability->last();
+				foreach ( $last ? $last['findings'] : array() as $f ) {
+					if ( $f['key'] === $a['finding'] ) {
+						foreach ( (array) $f['items'] as $i => $it ) {
+							$it['key'] = 's' . $i;
+							$this->stage( $it );
+							$done[] = $it['label'];
+						}
+						return $done ? $done : new \WP_Error( 'seolity_agent', __( 'This finding needs a manual change; see the suggested solution.', 'seolity' ) );
+					}
+				}
+				return new \WP_Error( 'seolity_agent', __( 'Finding not found — run the indexability audit again.', 'seolity' ) );
 
 			case 'plan_content':
 				$this->stage( array( 'kind' => 'plan', 'opportunity' => (array) $a['opportunity'] ) );

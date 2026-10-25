@@ -236,6 +236,19 @@ final class Router {
 		$this->route( 'POST', '/operations/(?P<id>\d+)/rollback', 'apply', function ( Req $r ) use ( $p ) {
 			return $p->operations->rollback( self::int( $r, 'id' ) );
 		} );
+		/* ---------------- Indexability & crawl budget ---------------- */
+		$this->route( 'GET', '/indexability', 'view', function () use ( $p ) {
+			$running = $p->queue->find_unique( 'indexability_scan', true );
+			return array( 'last' => $p->indexability->last(), 'running' => (bool) $running );
+		} );
+		$this->route( 'POST', '/indexability/scan', 'manage', function () use ( $p ) {
+			$job = $p->queue->push( 'indexability_scan', array( 'user_id' => get_current_user_id() ), array( 'unique' => true, 'priority' => 1, 'max_attempts' => 2 ) );
+			\SEOlity\Activity\AiJobs::run_after_response( $p );
+			return array( 'queued' => (bool) $job );
+		} );
+		$this->route( 'POST', '/indexability/fix', 'manage', function ( Req $r ) use ( $p ) {
+			return $p->indexability->prepare_fix( sanitize_text_field( (string) $r->get_param( 'key' ) ) );
+		} );
 		/* ---------------- Canonical issues (roadmap) ---------------- */
 		$this->route( 'GET', '/issues/board', 'view', function () use ( $p ) {
 			return array( 'categories' => $p->recommendations->board(), 'refreshed' => get_option( 'seolity_recommendations_refreshed' ) );

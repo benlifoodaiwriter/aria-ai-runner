@@ -19,6 +19,10 @@ final class Jobs {
 			$p->chat->answer( (int) $a['id'] ); // Errors are stored on the message itself.
 			return true;
 		} );
+		$q->handler( 'indexability_scan', static function () use ( $p ) {
+			$p->indexability->scan();
+			return true;
+		} );
 		$q->handler( 'operation_apply', static function ( $a ) use ( $p ) {
 			if ( ! empty( $a['user_id'] ) ) {
 				wp_set_current_user( (int) $a['user_id'] );

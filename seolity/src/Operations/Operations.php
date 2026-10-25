@@ -229,7 +229,10 @@ final class Operations {
 	/** Remove display-only fields before storing. */
 	private function strip( array $items ) {
 		foreach ( $items as &$it ) {
-			unset( $it['before'], $it['after'], $it['label'], $it['object'], $it['state'], $it['edit'] );
+			if ( 'change' === $it['kind'] ) {
+				// Display copies of the change row; the row itself stays the source of truth.
+				unset( $it['before'], $it['after'], $it['label'], $it['object'], $it['state'], $it['edit'] );
+			}
 		}
 		return $items;
 	}
