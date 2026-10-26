@@ -77,9 +77,10 @@ final class Duplicates {
 		$act   = $this->plugin->activity;
 		$db    = $this->plugin->db;
 		$pid   = $db->project_id();
-		$types = array_values( array_diff( get_post_types( array( 'public' => true ) ), array( 'attachment', 'elementor_library', 'e-landing-page' ) ) );
+		// Blog articles only: pages, products and builder templates are not compared (filterable).
+		$types = (array) apply_filters( 'seolity_duplicates_post_types', array( 'post' ) );
 		$ids   = get_posts( array( 'post_type' => $types, 'post_status' => 'publish', 'numberposts' => self::MAX_POSTS, 'fields' => 'ids', 'orderby' => 'date', 'order' => 'DESC' ) );
-		$act->step( 0, sprintf( /* translators: %d: posts */ __( 'Reading %d articles…', 'seolity' ), count( $ids ) ), 10 );
+		$act->step( 0, sprintf( /* translators: %d: posts */ __( 'Reading %d blog articles…', 'seolity' ), count( $ids ) ), 10 );
 
 		// Search Console clicks per page (90 days) and the crawl's H1 + inlinks.
 		$gsc = array();

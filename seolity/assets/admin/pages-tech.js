@@ -258,7 +258,7 @@
 	App.pages.duplicates = function ( v ) {
 		var body = h( 'div' );
 		var timer;
-		v.appendChild( App.header( t( 'Duplicate & near-duplicate articles' ), t( 'Finds articles that repeat each other or compete for the same topic (content overlap, titles, H1, shared Search Console queries) and merges them into the strongest one — preview first, then 301 redirects and internal links, all verified.' ), App.cap( 'manage' ) ? [ App.abtn( SL.il( 'pulse', t( 'Scan for duplicates' ), 15 ), function () {
+		v.appendChild( App.header( t( 'Duplicate & near-duplicate articles' ), t( 'Checks only your blog articles (not pages or products): finds articles that repeat each other or compete for the same topic (cannibalization — content overlap, titles, H1, shared Search Console queries) and suggests merging them into the strongest one. Nothing changes until you press “Fix cannibalization” and approve the preview.' ), App.cap( 'manage' ) ? [ App.abtn( SL.il( 'pulse', t( 'Scan for duplicates' ), 15 ), function () {
 			return SL.api( 'duplicates/scan', { method: 'POST' } ).then( function () {
 				SL.toast( t( 'Scan started in the background.' ) );
 				load();
@@ -297,7 +297,7 @@
 					n[ c.kind ] = ( n[ c.kind ] || 0 ) + 1;
 				} );
 				body.appendChild( h( 'div', { class: 'sl-kpis' },
-					App.kpi( t( 'Articles checked' ), SL.num( last.checked, 0 ) ),
+					App.kpi( t( 'Blog articles checked' ), SL.num( last.checked, 0 ) ),
 					App.kpi( t( 'Duplicate groups' ), SL.num( n.duplicate, 0 ) ),
 					App.kpi( t( 'Near-duplicate groups' ), SL.num( n.near_duplicate, 0 ) ),
 					App.kpi( t( 'Competing topics' ), SL.num( n.cannibalization, 0 ) )

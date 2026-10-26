@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: SEOlity 1.0.0\n"
-"POT-Creation-Date: 2026-10-25 22:47+0000\n"
+"POT-Creation-Date: 2026-10-26 14:37+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1747,8 +1747,8 @@ msgid "It received %1$d clicks in the last 28 days and has %2$d internal links. 
 msgstr "این صفحه در ۲۸ روز گذشته %1$d کلیک گرفته و %2$d لینک داخلی دارد. برای حفظ ارزش آن، به نزدیک‌ترین صفحه مرتبط ریدایرکت ۳۰۱ بزنید."
 
 #, php-format
-msgid "Reading %d articles…"
-msgstr "خواندن %d مقاله…"
+msgid "Reading %d blog articles…"
+msgstr "خواندن %d مقاله وبلاگ…"
 
 msgid "Comparing articles…"
 msgstr "مقایسه مقالات…"
@@ -2726,6 +2726,9 @@ msgstr "آدرس مقصد وجود ندارد."
 msgid "Source and target are the same."
 msgstr "مبدأ و مقصد یکسان هستند."
 
+msgid "Redirects are switched off: SEOlity redirects are disabled (Settings → Technical SEO → Enable redirects) and Rank Math Redirections is not active, so nothing would serve this redirect."
+msgstr "ریدایرکت‌ها خاموش‌اند: ریدایرکت SEOlity غیرفعال است (تنظیمات ← سئوی فنی ← فعال‌سازی ریدایرکت‌ها) و ماژول ریدایرکت Rank Math هم فعال نیست، پس هیچ چیز این ریدایرکت را اجرا نمی‌کند."
+
 #, php-format
 msgid "Replaces the existing redirect to %s."
 msgstr "جایگزین ریدایرکت فعلی به %s می‌شود."
@@ -2841,12 +2844,39 @@ msgid "Saved, but the live page does not show it yet (a page cache may need clea
 msgstr "ذخیره شد، اما صفحه زنده هنوز آن را نشان نمی‌دهد (شاید کش صفحه باید پاک شود)."
 
 #, php-format
-msgid "The old URL answers %1$d → %2$s."
-msgstr "آدرس قدیمی با %1$d ← %2$s پاسخ می‌دهد."
+msgid "(The old 404 was still cached; cleared in: %s.)"
+msgstr "(خطای ۴۰۴ قدیمی هنوز در کش بود؛ پاک شد در: %s.)"
+
+msgid "(Visitors may still get a cached 404 until your page cache or CDN expires — clear it there.)"
+msgstr "(تا وقتی کش صفحه یا CDN منقضی نشود، ممکن است بازدیدکنندگان هنوز ۴۰۴ قدیمی را ببینند — آن را همان‌جا پاک کنید.)"
 
 #, php-format
 msgid "The old URL answers %1$d %2$s instead of the redirect."
 msgstr "آدرس قدیمی به‌جای ریدایرکت با %1$d %2$s پاسخ می‌دهد."
+
+#, php-format
+msgid "The old URL answers %1$d → %2$s."
+msgstr "آدرس قدیمی با %1$d ← %2$s پاسخ می‌دهد."
+
+msgid "Rank Math has no active redirect that matches this URL — check Rank Math → Redirections (status, and that the source was saved exactly like this)."
+msgstr "Rank Math هیچ ریدایرکت فعالی ندارد که با این آدرس مطابقت کند — Rank Math ← ریدایرکت‌ها را بررسی کنید (وضعیت، و اینکه آدرس مبدأ دقیقاً همین‌طور ذخیره شده باشد)."
+
+msgid "SEOlity redirects are switched off (Settings → Technical SEO → Enable redirects), so the saved redirect is not served."
+msgstr "ریدایرکت‌های SEOlity خاموش‌اند (تنظیمات ← سئوی فنی ← فعال‌سازی ریدایرکت‌ها)، پس ریدایرکت ذخیره‌شده اجرا نمی‌شود."
+
+msgid "The saved redirect does not match this URL."
+msgstr "ریدایرکت ذخیره‌شده با این آدرس مطابقت ندارد."
+
+#, php-format
+msgid "%1$s holds the redirect, but a cache answered (%2$s: HIT). Clear the page cache / CDN for this URL; the redirect then works."
+msgstr "ریدایرکت در %1$s ثبت است، اما کش جواب داد (%2$s: HIT). کش صفحه / CDN را برای این آدرس پاک کنید؛ بعد ریدایرکت کار می‌کند."
+
+#, php-format
+msgid "%1$s holds a matching redirect, but something answers before it (a CDN or cache such as %2$s, a security plugin, or a server rule for this path). Clear the caches and check the server’s redirect rules."
+msgstr "ریدایرکت مطابق در %1$s ثبت است، اما چیز دیگری زودتر جواب می‌دهد (یک CDN یا کش مثل %2$s، افزونه امنیتی یا قاعده‌ای روی سرور برای این مسیر). کش‌ها را پاک کنید و قواعد ریدایرکت سرور را بررسی کنید."
+
+msgid "the server"
+msgstr "سرور"
 
 #, php-format
 msgid "The target itself redirects to %s (this would create a chain)."
@@ -7979,8 +8009,8 @@ msgstr "هوش مصنوعی اول مقالات را ادغام می‌کند. �
 msgid "Duplicate & near-duplicate articles"
 msgstr "مقالات تکراری و شبه تکراری"
 
-msgid "Finds articles that repeat each other or compete for the same topic (content overlap, titles, H1, shared Search Console queries) and merges them into the strongest one — preview first, then 301 redirects and internal links, all verified."
-msgstr "مقالاتی را که یکدیگر را تکرار می‌کنند یا برای یک موضوع رقابت می‌کنند (هم‌پوشانی محتوا، عنوان، H1، کوئری‌های مشترک سرچ کنسول) پیدا می‌کند و در قوی‌ترین مقاله ادغام می‌کند — اول پیش‌نمایش، سپس ریدایرکت ۳۰۱ و لینک‌های داخلی، همه تأییدشده."
+msgid "Checks only your blog articles (not pages or products): finds articles that repeat each other or compete for the same topic (cannibalization — content overlap, titles, H1, shared Search Console queries) and suggests merging them into the strongest one. Nothing changes until you press “Fix cannibalization” and approve the preview."
+msgstr "فقط مقالات وبلاگ شما بررسی می‌شود (نه برگه‌ها یا محصولات): مقالاتی که یکدیگر را تکرار می‌کنند یا برای یک موضوع رقابت می‌کنند (هم نوع خواری — هم‌پوشانی محتوا، عنوان، H1، کوئری‌های مشترک سرچ کنسول) پیدا می‌شوند و ادغام آن‌ها در قوی‌ترین مقاله پیشنهاد می‌شود. تا «رفع هم نوع خواری» را نزنید و پیش‌نمایش را تأیید نکنید، هیچ چیز تغییر نمی‌کند."
 
 msgid "Scan for duplicates"
 msgstr "بررسی مقالات تکراری"
@@ -8009,8 +8039,8 @@ msgstr "هنوز بررسی انجام نشده"
 msgid "Run it to find articles that repeat or compete with each other."
 msgstr "آن را اجرا کنید تا مقالاتی که تکرار یا با هم رقابت می‌کنند پیدا شوند."
 
-msgid "Articles checked"
-msgstr "مقالات بررسی‌شده"
+msgid "Blog articles checked"
+msgstr "مقالات وبلاگ بررسی‌شده"
 
 msgid "Duplicate groups"
 msgstr "گروه‌های تکراری"

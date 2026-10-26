@@ -530,3 +530,15 @@ SEO roadmap — what should I do today?	مسیر راه — امروز چه کا
 SEO roadmap analysis	تحلیل مسیر راه
 SEO roadmap built	مسیر راه ساخته شد
 Connection guide	راهنمایی
+Reading %d blog articles…	خواندن %d مقاله وبلاگ…
+Redirects are switched off: SEOlity redirects are disabled (Settings → Technical SEO → Enable redirects) and Rank Math Redirections is not active, so nothing would serve this redirect.	ریدایرکت‌ها خاموش‌اند: ریدایرکت SEOlity غیرفعال است (تنظیمات ← سئوی فنی ← فعال‌سازی ریدایرکت‌ها) و ماژول ریدایرکت Rank Math هم فعال نیست، پس هیچ چیز این ریدایرکت را اجرا نمی‌کند.
+(The old 404 was still cached; cleared in: %s.)	(خطای ۴۰۴ قدیمی هنوز در کش بود؛ پاک شد در: %s.)
+(Visitors may still get a cached 404 until your page cache or CDN expires — clear it there.)	(تا وقتی کش صفحه یا CDN منقضی نشود، ممکن است بازدیدکنندگان هنوز ۴۰۴ قدیمی را ببینند — آن را همان‌جا پاک کنید.)
+Rank Math has no active redirect that matches this URL — check Rank Math → Redirections (status, and that the source was saved exactly like this).	Rank Math هیچ ریدایرکت فعالی ندارد که با این آدرس مطابقت کند — Rank Math ← ریدایرکت‌ها را بررسی کنید (وضعیت، و اینکه آدرس مبدأ دقیقاً همین‌طور ذخیره شده باشد).
+SEOlity redirects are switched off (Settings → Technical SEO → Enable redirects), so the saved redirect is not served.	ریدایرکت‌های SEOlity خاموش‌اند (تنظیمات ← سئوی فنی ← فعال‌سازی ریدایرکت‌ها)، پس ریدایرکت ذخیره‌شده اجرا نمی‌شود.
+The saved redirect does not match this URL.	ریدایرکت ذخیره‌شده با این آدرس مطابقت ندارد.
+%1$s holds the redirect, but a cache answered (%2$s: HIT). Clear the page cache / CDN for this URL; the redirect then works.	ریدایرکت در %1$s ثبت است، اما کش جواب داد (%2$s: HIT). کش صفحه / CDN را برای این آدرس پاک کنید؛ بعد ریدایرکت کار می‌کند.
+%1$s holds a matching redirect, but something answers before it (a CDN or cache such as %2$s, a security plugin, or a server rule for this path). Clear the caches and check the server’s redirect rules.	ریدایرکت مطابق در %1$s ثبت است، اما چیز دیگری زودتر جواب می‌دهد (یک CDN یا کش مثل %2$s، افزونه امنیتی یا قاعده‌ای روی سرور برای این مسیر). کش‌ها را پاک کنید و قواعد ریدایرکت سرور را بررسی کنید.
+the server	سرور
+Checks only your blog articles (not pages or products): finds articles that repeat each other or compete for the same topic (cannibalization — content overlap, titles, H1, shared Search Console queries) and suggests merging them into the strongest one. Nothing changes until you press “Fix cannibalization” and approve the preview.	فقط مقالات وبلاگ شما بررسی می‌شود (نه برگه‌ها یا محصولات): مقالاتی که یکدیگر را تکرار می‌کنند یا برای یک موضوع رقابت می‌کنند (هم نوع خواری — هم‌پوشانی محتوا، عنوان، H1، کوئری‌های مشترک سرچ کنسول) پیدا می‌شوند و ادغام آن‌ها در قوی‌ترین مقاله پیشنهاد می‌شود. تا «رفع هم نوع خواری» را نزنید و پیش‌نمایش را تأیید نکنید، هیچ چیز تغییر نمی‌کند.
+Blog articles checked	مقالات وبلاگ بررسی‌شده

@@ -40,7 +40,7 @@ final class FullAnalysis {
 
 	/** Publishing or unpublishing changes which articles compete with each other. */
 	public function on_status( $new, $old, $post ) {
-		if ( $new === $old || ( 'publish' !== $new && 'publish' !== $old ) || wp_is_post_revision( $post ) || ! is_post_type_viewable( $post->post_type ) ) {
+		if ( $new === $old || ( 'publish' !== $new && 'publish' !== $old ) || wp_is_post_revision( $post ) || ! in_array( $post->post_type, (array) apply_filters( 'seolity_duplicates_post_types', array( 'post' ) ), true ) ) {
 			return;
 		}
 		if ( get_option( \SEOlity\Content\Duplicates::OPTION ) ) {

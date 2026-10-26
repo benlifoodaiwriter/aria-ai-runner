@@ -180,6 +180,10 @@ final class Operations {
 		} elseif ( ! empty( $t['noindex'] ) ) {
 			$out['problems'][] = $t['detail'];
 		}
+		if ( ! $this->plugin->rankmath->owns_redirects() && ! $this->plugin->settings->get( 'redirects_enabled' ) ) {
+			$out['ok']         = false;
+			$out['problems'][] = __( 'Redirects are switched off: SEOlity redirects are disabled (Settings → Technical SEO → Enable redirects) and Rank Math Redirections is not active, so nothing would serve this redirect.', 'seolity' );
+		}
 		$existing = $this->plugin->db->row( "SELECT target, status FROM {redirects} WHERE project_id = %d AND source_hash = %s AND status IN ('active','external') AND is_regex = 0", array( $this->plugin->db->project_id(), Database::hash( $src ) ) );
 		if ( $existing && untrailingslashit( $existing['target'] ) !== untrailingslashit( $target ) ) {
 			/* translators: %s: url */
@@ -390,10 +394,11 @@ final class Operations {
 					return array( 'ok' => false, 'detail' => $rid->get_error_message() );
 				}
 				$roll[] = array( 'kind' => 'redirect', 'id' => (int) $rid );
-				if ( ! empty( $it['not_found_id'] ) ) {
+				$v      = $this->verifier->redirect( $it['source'], $it['target'], isset( $it['type'] ) ? (int) $it['type'] : 301 );
+				if ( $v['ok'] && ! empty( $it['not_found_id'] ) ) {
+					// Only a redirect that really answers moves the URL out of the open 404 list.
 					$this->plugin->db->update( 'not_found', array( 'status' => 'redirected' ), array( 'id' => (int) $it['not_found_id'] ) );
 				}
-				$v = $this->verifier->redirect( $it['source'], $it['target'], isset( $it['type'] ) ? (int) $it['type'] : 301 );
 				if ( $v['ok'] ) {
 					// Every canonical issue about this broken URL is now resolved (404 section, audit, roadmap).
 					$this->plugin->recommendations->resolve_url( array( 'create_redirect', 'not_found' ), $it['source'], array( 'redirect' => $v, 'at' => gmdate( 'c' ) ) );

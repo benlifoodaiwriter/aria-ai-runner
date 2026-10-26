@@ -136,20 +136,122 @@ final class Verifier {
 	 * @return array{ok:bool,persisted:bool,effective:?bool,detail:string}
 	 */
 	public function redirect( $source, $target, $type = 301 ) {
-		$res = $this->fetch( home_url( Redirects::normalize_source( $source ) ), false );
+		$path = Redirects::normalize_source( $source );
+		$url  = home_url( $path );
+		$res  = $this->fetch( $url, false );
+		if ( ! is_wp_error( $res ) && $this->is_redirect_to( $res, $target, $type ) ) {
+			return $this->redirect_ok( $res );
+		}
+		// A page cache or CDN often still serves the old 404: clear this URL and look again past the cache.
+		$purged = $this->purge_url( $url );
+		usleep( 800000 );
+		$again = $this->fetch( $url, true );
+		if ( ! is_wp_error( $again ) && $this->is_redirect_to( $again, $target, $type ) ) {
+			$out = $this->redirect_ok( $again );
+			if ( $purged ) {
+				/* translators: %s: cache names */
+				$out['detail'] .= ' ' . sprintf( __( '(The old 404 was still cached; cleared in: %s.)', 'seolity' ), implode( ', ', $purged ) );
+			} else {
+				$out['detail'] .= ' ' . __( '(Visitors may still get a cached 404 until your page cache or CDN expires — clear it there.)', 'seolity' );
+			}
+			return $out;
+		}
+		$res = is_wp_error( $res ) ? $again : $res;
 		if ( is_wp_error( $res ) ) {
 			return array( 'ok' => false, 'persisted' => true, 'effective' => null, 'detail' => $res->get_error_message() );
 		}
-		$ok = (int) $res['status'] === (int) $type && self::norm_url( $res['location'] ) === self::norm_url( $target );
+		$why = $this->redirect_diagnosis( $path, $res );
 		return array(
-			'ok'        => $ok,
-			'persisted' => true,
-			'effective' => $ok,
+			'ok'        => false,
+			'persisted' => $why['persisted'],
+			'effective' => false,
 			'status'    => (int) $res['status'],
 			'location'  => $res['location'],
+			'cause'     => $why['cause'],
 			/* translators: 1 status 2 location */
-			'detail'    => $ok ? sprintf( __( 'The old URL answers %1$d → %2$s.', 'seolity' ), $res['status'], urldecode( $res['location'] ) ) : sprintf( __( 'The old URL answers %1$d %2$s instead of the redirect.', 'seolity' ), $res['status'], urldecode( (string) $res['location'] ) ),
+			'detail'    => sprintf( __( 'The old URL answers %1$d %2$s instead of the redirect.', 'seolity' ), $res['status'], urldecode( (string) $res['location'] ) ) . ' ' . $why['detail'],
 		);
+	}
+
+	private function is_redirect_to( array $res, $target, $type ) {
+		return (int) $res['status'] === (int) $type && self::norm_url( $res['location'] ) === self::norm_url( $target );
+	}
+
+	private function redirect_ok( array $res ) {
+		return array(
+			'ok'        => true,
+			'persisted' => true,
+			'effective' => true,
+			'status'    => (int) $res['status'],
+			'location'  => $res['location'],
+			'by'        => isset( $res['headers']['x-redirect-by'] ) ? ( is_array( $res['headers']['x-redirect-by'] ) ? end( $res['headers']['x-redirect-by'] ) : $res['headers']['x-redirect-by'] ) : '',
+			/* translators: 1 status 2 location */
+			'detail'    => sprintf( __( 'The old URL answers %1$d → %2$s.', 'seolity' ), $res['status'], urldecode( remove_query_arg( 'seolity_verify', $res['location'] ) ) ),
+		);
+	}
+
+	/** Clear one URL in the page caches SEOlity knows; returns the names of the caches cleared. */
+	public function purge_url( $url ) {
+		$done = array();
+		if ( has_action( 'litespeed_purge_url' ) || defined( 'LSCWP_V' ) ) {
+			do_action( 'litespeed_purge_url', $url );
+			$done[] = 'LiteSpeed Cache';
+		}
+		if ( function_exists( 'rocket_clean_files' ) ) {
+			rocket_clean_files( array( $url ) );
+			$done[] = 'WP Rocket';
+		}
+		if ( function_exists( 'w3tc_flush_url' ) ) {
+			w3tc_flush_url( $url );
+			$done[] = 'W3 Total Cache';
+		}
+		if ( function_exists( 'wpsc_delete_url_cache' ) ) {
+			wpsc_delete_url_cache( $url );
+			$done[] = 'WP Super Cache';
+		}
+		if ( function_exists( 'sg_cachepress_purge_cache' ) ) {
+			sg_cachepress_purge_cache( $url );
+			$done[] = 'SiteGround Optimizer';
+		}
+		do_action( 'seolity_purge_url', $url );
+		return $done;
+	}
+
+	/**
+	 * Why a saved redirect is not answered: does the redirect owner match this URL at all, is
+	 * the redirect module switched on, or does a cache / CDN / another plugin answer first?
+	 */
+	private function redirect_diagnosis( $path, array $res ) {
+		$p       = Plugin::instance();
+		$h       = $res['headers'];
+		$cache   = array();
+		foreach ( array( 'x-litespeed-cache', 'cf-cache-status', 'x-cache', 'x-cache-status', 'x-proxy-cache', 'x-sg-cache', 'x-srcache-fetch-status', 'ar-cache-status' ) as $k ) {
+			if ( isset( $h[ $k ] ) && false !== stripos( is_array( $h[ $k ] ) ? implode( ',', $h[ $k ] ) : $h[ $k ], 'hit' ) ) {
+				$cache[] = $k;
+			}
+		}
+		$server = isset( $h['server'] ) ? ( is_array( $h['server'] ) ? end( $h['server'] ) : $h['server'] ) : '';
+		if ( $p->rankmath->owns_redirects() ) {
+			$m = class_exists( '\\RankMath\\Redirections\\DB' ) ? \RankMath\Redirections\DB::match_redirections( trim( $path, '/' ) ) : false;
+			if ( ! $m ) {
+				return array( 'persisted' => false, 'cause' => 'not_matched', 'detail' => __( 'Rank Math has no active redirect that matches this URL — check Rank Math → Redirections (status, and that the source was saved exactly like this).', 'seolity' ) );
+			}
+			$owner = 'Rank Math';
+		} else {
+			if ( ! $p->settings->get( 'redirects_enabled' ) ) {
+				return array( 'persisted' => true, 'cause' => 'disabled', 'detail' => __( 'SEOlity redirects are switched off (Settings → Technical SEO → Enable redirects), so the saved redirect is not served.', 'seolity' ) );
+			}
+			if ( ! $p->redirects->match( $path ) ) {
+				return array( 'persisted' => false, 'cause' => 'not_matched', 'detail' => __( 'The saved redirect does not match this URL.', 'seolity' ) );
+			}
+			$owner = 'SEOlity';
+		}
+		if ( $cache ) {
+			/* translators: 1 owner 2 headers */
+			return array( 'persisted' => true, 'cause' => 'cache', 'detail' => sprintf( __( '%1$s holds the redirect, but a cache answered (%2$s: HIT). Clear the page cache / CDN for this URL; the redirect then works.', 'seolity' ), $owner, implode( ', ', $cache ) ) );
+		}
+		/* translators: 1 owner 2 server */
+		return array( 'persisted' => true, 'cause' => 'other', 'detail' => sprintf( __( '%1$s holds a matching redirect, but something answers before it (a CDN or cache such as %2$s, a security plugin, or a server rule for this path). Clear the caches and check the server’s redirect rules.', 'seolity' ), $owner, $server ? $server : __( 'the server', 'seolity' ) ) );
 	}
 
 	/** Is a redirect target a live, indexable page of this site (or an external URL)? */
