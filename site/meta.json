@@ -1,0 +1,16 @@
+{
+  "site": "https://benlifood.ir",
+  "crawled_at": "2026-10-24T08:45:40.803Z",
+  "source": "rest",
+  "counts": {
+    "posts": 0,
+    "products": 26,
+    "pages": 0,
+    "categories": 15,
+    "tags": 167
+  },
+  "notes": [
+    "/wp/v2/posts: HTTP 200",
+    "/wp/v2/pages: HTTP 200"
+  ]
+}
