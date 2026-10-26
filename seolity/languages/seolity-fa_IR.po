@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: SEOlity 1.0.0\n"
-"POT-Creation-Date: 2026-10-26 14:37+0000\n"
+"POT-Creation-Date: 2026-10-26 15:33+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -651,6 +651,9 @@ msgstr "راهکار هم‌نوع‌خواری کلمات"
 msgid "Merge duplicate articles"
 msgstr "ادغام مقالات تکراری"
 
+msgid "404 review (301 / 410 / keep)"
+msgstr "بررسی ۴۰۴ (۳۰۱ / ۴۱۰ / بماند)"
+
 msgid "Focus keyword plan"
 msgstr "برنامه کلمه کلیدی اصلی"
 
@@ -758,6 +761,9 @@ msgstr "در حال ادغام مقالات تکراری"
 
 msgid "Full-site analysis"
 msgstr "تحلیل کامل سایت"
+
+msgid "AI review of 404 errors"
+msgstr "بررسی هوشمند خطاهای ۴۰۴"
 
 msgid "Duplicate & similar articles analysis"
 msgstr "تحلیل مقالات تکراری و شبه تکراری"
@@ -2736,6 +2742,9 @@ msgstr "جایگزین ریدایرکت فعلی به %s می‌شود."
 msgid "The old URL is a live page (HTTP 200): redirecting it would hide existing content."
 msgstr "آدرس قدیمی یک صفحه زنده است (HTTP 200): ریدایرکت آن محتوای موجود را پنهان می‌کند."
 
+msgid "The URL is a live page (HTTP 200): marking it as gone would remove existing content."
+msgstr "این آدرس یک صفحه زنده است (HTTP 200): علامت «حذف‌شده» زدن محتوای موجود را از بین می‌برد."
+
 msgid "This operation is not waiting for approval."
 msgstr "این عملیات منتظر تأیید نیست."
 
@@ -2789,6 +2798,18 @@ msgid "Add the topic to the content planner"
 msgstr "افزودن موضوع به برنامه‌ریز محتوا"
 
 #, php-format
+msgid "410 Gone for %s"
+msgstr "۴۱۰ (حذف دائمی) برای %s"
+
+#, php-format
+msgid "Leave %s as 404 (mark as reviewed)"
+msgstr "%s به‌صورت ۴۰۴ بماند (بررسی‌شده علامت بخورد)"
+
+#, php-format
+msgid "Fix the internal link to %s by hand"
+msgstr "لینک داخلی به %s را دستی اصلاح کنید"
+
+#, php-format
 msgid "%1$d redirects updated; %2$d chains left."
 msgstr "%1$d ریدایرکت به‌روز شد؛ %2$d زنجیره باقی ماند."
 
@@ -2798,6 +2819,12 @@ msgstr "%d مورد در صف قرار گرفت (هر کدام یک وظیفه �
 
 msgid "Added to the content planner."
 msgstr "به برنامه‌ریز محتوا اضافه شد."
+
+msgid "Left as 404 and moved out of the open list (it is not a problem)."
+msgstr "به‌صورت ۴۰۴ ماند و از فهرست باز خارج شد (مشکلی نیست)."
+
+msgid "The 404 entry could not be updated."
+msgstr "مورد ۴۰۴ به‌روز نشد."
 
 msgid "Unknown item."
 msgstr "مورد ناشناخته."
@@ -2853,6 +2880,13 @@ msgstr "(تا وقتی کش صفحه یا CDN منقضی نشود، ممکن ا�
 #, php-format
 msgid "The old URL answers %1$d %2$s instead of the redirect."
 msgstr "آدرس قدیمی به‌جای ریدایرکت با %1$d %2$s پاسخ می‌دهد."
+
+msgid "The URL now answers 410 Gone."
+msgstr "این آدرس اکنون با ۴۱۰ (حذف دائمی) پاسخ می‌دهد."
+
+#, php-format
+msgid "The URL answers %d instead of 410."
+msgstr "این آدرس به‌جای ۴۱۰ با %d پاسخ می‌دهد."
 
 #, php-format
 msgid "The old URL answers %1$d → %2$s."
@@ -3244,6 +3278,42 @@ msgstr "ریدایرکت پیدا نشد."
 
 msgid "Entry not found."
 msgstr "مورد پیدا نشد."
+
+msgid "There are no open 404 URLs to review."
+msgstr "هیچ آدرس ۴۰۴ بازی برای بررسی نیست."
+
+msgid "AI review of 404 errors: 301, 410 or leave as 404"
+msgstr "بررسی هوشمند خطاهای ۴۰۴: ریدایرکت ۳۰۱، ۴۱۰ یا ۴۰۴ بماند"
+
+msgid "Reviewing 404 errors"
+msgstr "در حال بررسی خطاهای ۴۰۴"
+
+#, php-format
+msgid "Collecting evidence for %d URLs (Search Console, links, referrers, candidates)…"
+msgstr "جمع‌آوری شواهد برای %d آدرس (سرچ کنسول، لینک‌ها، ارجاع‌دهنده‌ها، صفحات جایگزین)…"
+
+#, php-format
+msgid "AI is judging the 404s (part %1$d of %2$d)…"
+msgstr "هوش مصنوعی در حال قضاوت درباره ۴۰۴هاست (بخش %1$d از %2$d)…"
+
+msgid "Checking every proposed target…"
+msgstr "بررسی همه مقصدهای پیشنهادی…"
+
+msgid "(The proposed target was not one of the checked candidates, so the URL is left as 404.)"
+msgstr "(مقصد پیشنهادی جزو صفحات جایگزینِ بررسی‌شده نبود، پس آدرس به‌صورت ۴۰۴ ماند.)"
+
+msgid "Crawl budget: these 404s do matter for this site."
+msgstr "بودجه خزش: این ۴۰۴ها برای این سایت مهم هستند."
+
+msgid "Crawl budget: these 404s are not a crawl-budget problem for this site."
+msgstr "بودجه خزش: این ۴۰۴ها برای این سایت مشکل بودجه خزش ایجاد نمی‌کنند."
+
+#, php-format
+msgid "Decisions: %1$d × 301 to an equivalent page, %2$d × 410 gone, %3$d × leave as 404, %4$d × fix the internal link."
+msgstr "تصمیم‌ها: %1$d × ریدایرکت ۳۰۱ به صفحه معادل، %2$d × ۴۱۰ حذف دائمی، %3$d × ۴۰۴ بماند، %4$d × اصلاح لینک داخلی."
+
+msgid "Nothing changes until you approve. Untick anything you disagree with; every 301 and 410 is checked on the live site afterwards."
+msgstr "تا تأیید نکنید چیزی تغییر نمی‌کند. تیک هر موردی را که قبول ندارید بردارید؛ هر ۳۰۱ و ۴۱۰ بعد از اعمال روی سایت زنده بررسی می‌شود."
 
 #, php-format
 msgid "%1$s %2$s SEO report %3$s – %4$s"
@@ -6228,6 +6298,18 @@ msgstr "هنوز ریدایرکتی وجود ندارد"
 msgid "Every 404 is logged with referrer and hits; SEOlity suggests the best redirect target (slug similarity + AI)."
 msgstr "هر خطای ۴۰۴ با ارجاع‌دهنده و تعداد بازدید ثبت می‌شود؛ سئولیتی بهترین مقصد ریدایرکت را پیشنهاد می‌دهد (شباهت نامک + هوش مصنوعی)."
 
+msgid "AI review: 301, 410 or leave?"
+msgstr "بررسی هوشمند: ۳۰۱، ۴۱۰ یا بماند؟"
+
+msgid "Optional instructions, e.g. “old product URLs go to their category”, “never redirect to the home page”."
+msgstr "دستورالعمل اختیاری، مثلاً «آدرس محصولات قدیمی به دسته خودشان بروند»، «هرگز به صفحه اصلی ریدایرکت نکن»."
+
+msgid "The AI judges every open 404 from real evidence — Search Console clicks and impressions, internal links still pointing to it, external referrers, human or Googlebot requests, deleted posts and how close each candidate page is — and decides: 301 to an equivalent page (to keep its rankings), 410 when it is gone for good, or leave it as 404 when it has no value. It also tells you honestly whether these 404s cost crawl budget on a site of your size. Nothing changes until you approve."
+msgstr "هوش مصنوعی هر ۴۰۴ باز را با شواهد واقعی می‌سنجد — کلیک و نمایش در سرچ کنسول، لینک‌های داخلی که هنوز به آن اشاره می‌کنند، ارجاع از سایت‌های دیگر، درخواست کاربر واقعی یا گوگل‌بات، نوشته‌های حذف‌شده و میزان شباهت هر صفحه جایگزین — و تصمیم می‌گیرد: ریدایرکت ۳۰۱ به صفحه معادل (تا رتبه‌اش حفظ شود)، ۴۱۰ اگر برای همیشه حذف شده، یا ۴۰۴ بماند اگر ارزشی ندارد. همچنین صادقانه می‌گوید که آیا این ۴۰۴ها با اندازه سایت شما بودجه خزش را هدر می‌دهند یا نه. تا تأیید نکنید چیزی تغییر نمی‌کند."
+
+msgid "Start the review"
+msgstr "شروع بررسی"
+
 msgid "Suggest targets"
 msgstr "پیشنهاد مقصد"
 
@@ -6652,18 +6734,48 @@ msgstr "ریسک: %s"
 msgid "Edit manually"
 msgstr "ویرایش دستی"
 
-msgid "Checked: the target is a live page and no loop is created."
-msgstr "بررسی شد: مقصد صفحه زنده است و حلقه‌ای ایجاد نمی‌شود."
+#, php-format
+msgid "Search Console: %1$s clicks, %2$s impressions"
+msgstr "سرچ کنسول: %1$s کلیک، %2$s نمایش"
+
+#, php-format
+msgid "%s internal links"
+msgstr "%s لینک داخلی"
+
+#, php-format
+msgid "%s hits"
+msgstr "%s بازدید"
+
+#, php-format
+msgid "referrer: %s"
+msgstr "ارجاع‌دهنده: %s"
+
+msgid "AI reasoning:"
+msgstr "استدلال هوش مصنوعی:"
+
+#, php-format
+msgid "confidence %s%"
+msgstr "اطمینان %s%"
+
+#, php-format
+msgid "Linked from: %s"
+msgstr "لینک‌شده از: %s"
 
 #, php-format
 msgid "Problem: %s"
 msgstr "مشکل: %s"
+
+msgid "Checked: the target is a live page and no loop is created."
+msgstr "بررسی شد: مقصد صفحه زنده است و حلقه‌ای ایجاد نمی‌شود."
 
 msgid "Verified:"
 msgstr "تأیید شد:"
 
 msgid "Not confirmed:"
 msgstr "تأیید نشد:"
+
+msgid "The AI is analyzing — the proposals appear here in a moment."
+msgstr "هوش مصنوعی در حال بررسی است — پیشنهادها تا لحظاتی دیگر اینجا نمایش داده می‌شوند."
 
 msgid "Approve & apply selected"
 msgstr "تأیید و اعمال موارد انتخاب‌شده"
@@ -6702,6 +6814,18 @@ msgstr "%s زنجیره ریدایرکت مستقیم به آدرس نهایی �
 #, php-format
 msgid "Optimize %s items with AI in the background"
 msgstr "بهینه‌سازی %s مورد با هوش مصنوعی در پس‌زمینه"
+
+#, php-format
+msgid "410 Gone: %s"
+msgstr "۴۱۰ حذف دائمی: %s"
+
+#, php-format
+msgid "Leave as 404: %s"
+msgstr "۴۰۴ بماند: %s"
+
+#, php-format
+msgid "Fix the internal link by hand: %s"
+msgstr "اصلاح دستی لینک داخلی: %s"
 
 msgid "Open its section"
 msgstr "باز کردن بخش مربوط"
@@ -7970,10 +8094,6 @@ msgstr "%s کلمه"
 #, php-format
 msgid "%s clicks"
 msgstr "%s کلیک"
-
-#, php-format
-msgid "%s internal links"
-msgstr "%s لینک داخلی"
 
 msgid "same content"
 msgstr "محتوای یکسان"

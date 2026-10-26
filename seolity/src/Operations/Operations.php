@@ -197,6 +197,21 @@ final class Operations {
 		return $out;
 	}
 
+	/** Validate a proposed 410 before anyone approves it: never for a live page. */
+	public function check_gone( $source ) {
+		$out  = array( 'ok' => true, 'problems' => array() );
+		$live = $this->verifier->fetch( home_url( \SEOlity\Redirects\Manager::normalize_source( $source ) ), false );
+		if ( ! is_wp_error( $live ) && 200 === (int) $live['status'] ) {
+			$out['ok']         = false;
+			$out['problems'][] = __( 'The URL is a live page (HTTP 200): marking it as gone would remove existing content.', 'seolity' );
+		}
+		if ( ! $this->plugin->rankmath->owns_redirects() && ! $this->plugin->settings->get( 'redirects_enabled' ) ) {
+			$out['ok']         = false;
+			$out['problems'][] = __( 'Redirects are switched off: SEOlity redirects are disabled (Settings → Technical SEO → Enable redirects) and Rank Math Redirections is not active, so nothing would serve this redirect.', 'seolity' );
+		}
+		return $out;
+	}
+
 	/* ------------------------------------------------------------------ approval */
 
 	/**
@@ -215,7 +230,8 @@ final class Operations {
 		}
 		$items = $op['preview'];
 		foreach ( $items as &$it ) {
-			$it['approved'] = null === $keys || in_array( $it['key'], (array) $keys, true );
+			// Notes (e.g. "fix this link by hand") are information only and never applied.
+			$it['approved'] = 'note' !== $it['kind'] && ( null === $keys || in_array( $it['key'], (array) $keys, true ) );
 		}
 		unset( $it );
 		if ( ! array_filter( wp_list_pluck( $items, 'approved' ) ) ) {
@@ -361,6 +377,15 @@ final class Operations {
 				return __( 'Add the topic to the content planner', 'seolity' );
 			case 'setting':
 				return (string) $it['label'];
+			case 'gone':
+				/* translators: %s: url */
+				return sprintf( __( '410 Gone for %s', 'seolity' ), urldecode( (string) $it['source'] ) );
+			case 'keep_404':
+				/* translators: %s: url */
+				return sprintf( __( 'Leave %s as 404 (mark as reviewed)', 'seolity' ), urldecode( (string) $it['source'] ) );
+			case 'note':
+				/* translators: %s: url */
+				return sprintf( __( 'Fix the internal link to %s by hand', 'seolity' ), urldecode( (string) $it['source'] ) );
 		}
 		return (string) $it['kind'];
 	}
@@ -393,7 +418,7 @@ final class Operations {
 				if ( is_wp_error( $rid ) ) {
 					return array( 'ok' => false, 'detail' => $rid->get_error_message() );
 				}
-				$roll[] = array( 'kind' => 'redirect', 'id' => (int) $rid );
+				$roll[] = array( 'kind' => 'redirect', 'id' => (int) $rid, 'not_found_id' => isset( $it['not_found_id'] ) ? (int) $it['not_found_id'] : 0 );
 				$v      = $this->verifier->redirect( $it['source'], $it['target'], isset( $it['type'] ) ? (int) $it['type'] : 301 );
 				if ( $v['ok'] && ! empty( $it['not_found_id'] ) ) {
 					// Only a redirect that really answers moves the URL out of the open 404 list.
@@ -424,6 +449,28 @@ final class Operations {
 				return is_wp_error( $res ) ? array( 'ok' => false, 'detail' => $res->get_error_message() ) : array( 'ok' => true, 'detail' => __( 'Added to the content planner.', 'seolity' ) );
 			case 'setting':
 				return $this->apply_setting( $it, $roll );
+		}
+		if ( 'gone' === $it['kind'] ) {
+			$rid = $this->plugin->redirects->create( $it['source'], '', 410, false, isset( $it['origin'] ) ? $it['origin'] : '404_ai' );
+			if ( is_wp_error( $rid ) ) {
+				return array( 'ok' => false, 'detail' => $rid->get_error_message() );
+			}
+			$roll[] = array( 'kind' => 'redirect', 'id' => (int) $rid, 'not_found_id' => isset( $it['not_found_id'] ) ? (int) $it['not_found_id'] : 0 );
+			$v      = $this->verifier->gone( $it['source'] );
+			if ( $v['ok'] && ! empty( $it['not_found_id'] ) ) {
+				$this->plugin->db->update( 'not_found', array( 'status' => 'redirected' ), array( 'id' => (int) $it['not_found_id'] ) );
+				$this->plugin->recommendations->resolve_url( array( 'create_redirect', 'not_found' ), $it['source'], array( 'gone' => $v, 'at' => gmdate( 'c' ) ) );
+			}
+			return array( 'ok' => $v['ok'], 'detail' => $v['detail'], 'verify' => $v, 'redirect_id' => (int) $rid );
+		}
+		if ( 'keep_404' === $it['kind'] ) {
+			$this->plugin->db->update( 'not_found', array( 'status' => 'ignored' ), array( 'id' => (int) $it['not_found_id'] ) );
+			$roll[] = array( 'kind' => 'nf_status', 'id' => (int) $it['not_found_id'], 'before' => 'open' );
+			$now    = $this->plugin->db->value( 'SELECT status FROM {not_found} WHERE id = %d', array( (int) $it['not_found_id'] ) );
+			if ( 'ignored' === $now ) {
+				$this->plugin->recommendations->resolve_url( array( 'not_found' ), $it['source'], array( 'reviewed' => 'keep_404', 'at' => gmdate( 'c' ) ) );
+			}
+			return array( 'ok' => 'ignored' === $now, 'detail' => 'ignored' === $now ? __( 'Left as 404 and moved out of the open list (it is not a problem).', 'seolity' ) : __( 'The 404 entry could not be updated.', 'seolity' ) );
 		}
 		return array( 'ok' => false, 'detail' => __( 'Unknown item.', 'seolity' ) );
 	}
@@ -483,6 +530,13 @@ final class Operations {
 				$res = $this->plugin->changes->revert( (int) $r['id'] );
 			} elseif ( 'redirect' === $r['kind'] ) {
 				$res = $this->plugin->redirects->delete( (int) $r['id'] );
+				if ( ! empty( $r['not_found_id'] ) ) {
+					// The URL is a 404 again: back to the open list.
+					$this->plugin->db->update( 'not_found', array( 'status' => 'open' ), array( 'id' => (int) $r['not_found_id'] ) );
+				}
+			} elseif ( 'nf_status' === $r['kind'] ) {
+				$this->plugin->db->update( 'not_found', array( 'status' => $r['before'] ), array( 'id' => (int) $r['id'] ) );
+				$res = true;
 			} elseif ( 'setting' === $r['kind'] ) {
 				$opt = get_option( $r['option'] );
 				if ( '' === (string) $r['path'] ) {

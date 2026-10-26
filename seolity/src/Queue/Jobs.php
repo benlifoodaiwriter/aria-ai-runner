@@ -26,6 +26,12 @@ final class Jobs {
 		$q->handler( 'cli_install', static function ( $a ) use ( $p ) {
 			return $p->clisetup->install( in_array( $a['engine'], array( 'claude', 'codex' ), true ) ? $a['engine'] : 'claude', (int) $a['activity_id'] );
 		} );
+		$q->handler( 'not_found_triage', static function ( $a ) use ( $p ) {
+			if ( ! empty( $a['user_id'] ) ) {
+				wp_set_current_user( (int) $a['user_id'] );
+			}
+			return $p->nf_triage->prepare( (int) $a['id'] );
+		} );
 		$q->handler( 'full_analysis', static function ( $a ) use ( $p ) {
 			return $p->analysis->step( (array) $a );
 		} );

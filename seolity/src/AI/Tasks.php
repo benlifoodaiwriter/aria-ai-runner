@@ -519,6 +519,47 @@ final class Tasks {
 					)
 				),
 			),
+			'not_found_triage'   => array(
+				'version'      => 'not_found_triage@1.0',
+				'max_tokens'   => 8000,
+				'topics'       => array( 'redirects', 'crawl-budget', 'indexing' ),
+				'cache'        => false,
+				'instructions' => 'You are a senior technical SEO auditing the 404 (not found) URLs of ONE website. Decide, URL by URL and only from the evidence given, what is best for rankings and crawling. Think it through before deciding; never guess facts that are not in the evidence.
+
+How Google actually behaves (apply this, do not contradict it):
+- 404 and 410 do not hurt the rankings of other pages. Both remove the URL from the index; 410 ("gone") is only a slightly faster, explicit signal. Leaving junk at 404 is fine.
+- Crawl budget is a real concern only for large sites (roughly 10,000+ URLs that change often, or 1,000,000+ URLs) or when a big share of Googlebot requests goes to dead URLs. For a small or medium site, a few hundred 404s do not waste meaningful crawl budget — say so honestly instead of inventing a problem.
+- A 301 passes the old URL\'s signals (links, ranking history) only when the target is a close equivalent: the same topic/product/intent. A redirect to an unrelated page or to the home page is treated as a soft 404 and passes nothing — it is worse than an honest 404/410.
+- URLs with real value are those with Search Console clicks/impressions, external backlinks (referrers from other domains), internal links still pointing to them, or repeated human visits. These deserve a 301 to the closest equivalent page if one exists.
+- Bot probes and junk (wp-login, .env, xmlrpc, random strings, spam keywords, foreign-language spam, old query parameters, image/file paths of deleted media without links) have no value: keep 404, or 410 if Googlebot keeps requesting them and the site is large enough for crawling to matter.
+
+Decision per URL (one of):
+- redirect_301: only when a candidate is a genuine equivalent AND the URL has value (rankings, backlinks, internal links or real visitors). target_url must be exactly one of the candidate URLs given for that URL.
+- gone_410: the content is permanently removed and has no equivalent, and an explicit "gone" helps (Googlebot keeps requesting it, or it used to be indexed).
+- keep_404: junk, probes, typos without value, or anything uncertain. This is the safe default.
+- fix_internal_link: the URL is linked from this site\'s own pages by mistake (a typo in a link) — the link should be corrected; a 301 may also be proposed separately.
+For each URL give confidence 0–100 and a short reason that cites the evidence (e.g. "38 impressions in Search Console, 2 internal links, candidate has the same topic"). Write reasons in the language of the site (Persian sites: Persian).
+
+Also give a site-level verdict: does this site have a crawl-budget problem from its 404s (true/false) with the numbers that justify it, and a 2–4 sentence summary of what to do.',
+				'schema'       => S::obj(
+					array(
+						'crawl_budget_matters' => S::bool(),
+						'crawl_budget_reason'  => S::str(),
+						'summary'              => S::str(),
+						'decisions'            => S::arr(
+							S::obj(
+								array(
+									'id'         => S::int(),
+									'decision'   => S::enum( array( 'redirect_301', 'gone_410', 'keep_404', 'fix_internal_link' ) ),
+									'target_url' => S::str(),
+									'confidence' => S::int(),
+									'reason'     => S::str(),
+								)
+							)
+						),
+					)
+				),
+			),
 			'experiment_verdict' => array(
 				'version'      => 'experiment_verdict@1.0',
 				'max_tokens'   => 1500,

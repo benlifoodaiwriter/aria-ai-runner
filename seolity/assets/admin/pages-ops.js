@@ -100,10 +100,10 @@
 			var list = h( 'div', { class: 'sl-op__items' } );
 			( o.preview || [] ).forEach( function ( it ) {
 				// Items that failed their checks start unticked: approving them is a deliberate choice.
-				chosen[ it.key ] = ! ( it.check && false === it.check.ok );
+				chosen[ it.key ] = 'note' !== it.kind && ! ( it.check && false === it.check.ok );
 				var res = it.result;
 				var head = h( 'div', { class: 'sl-op__head' },
-					awaiting ? h( 'input', { type: 'checkbox', checked: chosen[ it.key ], 'aria-label': t( 'Apply this item' ), onChange: function ( e ) {
+					awaiting && 'note' !== it.kind ? h( 'input', { type: 'checkbox', checked: chosen[ it.key ], 'aria-label': t( 'Apply this item' ), onChange: function ( e ) {
 						chosen[ it.key ] = e.target.checked;
 					} } ) : ( res ? SL.icon( res.ok ? 'check-circle' : 'x-circle', 18, res.ok ? 'is-good' : 'is-bad' ) : ( it.approved === false ? SL.badge( t( 'Not applied' ) ) : null ) ),
 					h( 'b', { dir: 'auto', text: itemTitle( it ) } ),
@@ -122,6 +122,32 @@
 						) );
 					}
 				}
+				if ( it.reason ) {
+					var ev = it.evidence || {};
+					var evb = [];
+					if ( ev.search_console && 'object' === typeof ev.search_console ) {
+						evb.push( t( 'Search Console: %1$s clicks, %2$s impressions', ev.search_console.clicks, ev.search_console.impressions ) );
+					}
+					if ( ev.internal_links ) {
+						evb.push( t( '%s internal links', ev.internal_links ) );
+					}
+					if ( ev.hits ) {
+						evb.push( t( '%s hits', ev.hits ) );
+					}
+					if ( ev.referrer && 'none' !== ev.referrer ) {
+						evb.push( t( 'referrer: %s', ev.referrer ) );
+					}
+					body.appendChild( h( 'p', { class: 'sl-small' }, h( 'b', { text: t( 'AI reasoning:' ) + ' ' } ), h( 'span', { dir: 'auto', text: it.reason } ), undefined !== it.confidence ? h( 'span', { class: 'sl-muted', text: ' · ' + t( 'confidence %s%', it.confidence ) } ) : null ) );
+					if ( evb.length ) {
+						body.appendChild( h( 'p', { class: 'sl-small sl-muted', dir: 'auto', text: evb.join( ' · ' ) } ) );
+					}
+					if ( 'note' === it.kind && it.posts && it.posts.length ) {
+						body.appendChild( h( 'p', { class: 'sl-small', dir: 'auto', text: t( 'Linked from: %s', it.posts.join( '، ' ) ) } ) );
+					}
+				}
+				if ( 'gone' === it.kind && it.check && ! it.check.ok ) {
+					body.appendChild( h( 'p', { class: 'sl-small sl-text-bad', dir: 'auto', text: t( 'Problem: %s', ( it.check.problems || [] ).join( ' · ' ) ) } ) );
+				}
 				if ( 'redirect' === it.kind && it.check ) {
 					body.appendChild( h( 'p', { class: 'sl-small ' + ( it.check.ok ? 'sl-muted' : 'sl-text-bad' ), dir: 'auto', text: it.check.ok ? t( 'Checked: the target is a live page and no loop is created.' ) : t( 'Problem: %s', ( it.check.problems || [] ).join( ' · ' ) ) } ) );
 					if ( it.check.ok && it.check.problems && it.check.problems.length ) {
@@ -134,7 +160,8 @@
 				list.appendChild( h( 'div', { class: 'sl-op__item' + ( res ? ( res.ok ? ' is-ok' : ' is-bad' ) : '' ) }, head, body ) );
 			} );
 			if ( ! ( o.preview || [] ).length ) {
-				list.appendChild( h( 'p', { class: 'sl-muted', text: o.error || t( 'Nothing to change was found.' ) } ) );
+				// While the AI is still working there is simply nothing to show yet.
+				list.appendChild( 'preparing' === o.status ? h( 'div', { class: 'sl-row sl-muted' }, SL.spinner(), h( 'span', { text: t( 'The AI is analyzing — the proposals appear here in a moment.' ) } ) ) : h( 'p', { class: 'sl-muted', text: o.error || t( 'Nothing to change was found.' ) } ) );
 			}
 			box.appendChild( list );
 			if ( o.error && 'cancelled' !== o.status ) {
@@ -213,6 +240,12 @@
 					return t( 'Add the topic to the content planner' );
 				case 'setting':
 					return it.label;
+				case 'gone':
+					return t( '410 Gone: %s', decodeURI( SL.path( it.source ) ) );
+				case 'keep_404':
+					return t( 'Leave as 404: %s', decodeURI( SL.path( it.source ) ) );
+				case 'note':
+					return t( 'Fix the internal link by hand: %s', decodeURI( SL.path( it.source ) ) );
 			}
 			return it.kind;
 		}

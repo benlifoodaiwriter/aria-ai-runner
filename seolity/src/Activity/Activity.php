@@ -507,6 +507,7 @@ final class Activity {
 			'competitor_summary' => __( 'Competitor analysis', 'seolity' ),
 			'cannibalization'    => __( 'Cannibalization advice', 'seolity' ),
 			'consolidate'        => __( 'Merge duplicate articles', 'seolity' ),
+			'not_found_triage'   => __( '404 review (301 / 410 / keep)', 'seolity' ),
 			'keyword_plan'       => __( 'Focus keyword plan', 'seolity' ),
 			'internal_links'     => __( 'Internal link suggestions', 'seolity' ),
 			'faq_generate'       => __( 'FAQ generation', 'seolity' ),
@@ -556,6 +557,7 @@ final class Activity {
 			'consolidate_prepare'     => __( 'Merging duplicate articles', 'seolity' ),
 			'full_analysis'           => __( 'Full-site analysis', 'seolity' ),
 			'cli_install'             => __( 'Installing the official CLI', 'seolity' ),
+			'not_found_triage'        => __( 'AI review of 404 errors', 'seolity' ),
 			'duplicates_scan'         => __( 'Duplicate & similar articles analysis', 'seolity' ),
 			'cleanup'                 => __( 'Clean-up', 'seolity' ),
 		);

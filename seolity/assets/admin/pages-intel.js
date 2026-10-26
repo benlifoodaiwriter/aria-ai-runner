@@ -295,7 +295,21 @@
 
 	/* ================================================================ 404 Monitor */
 	App.pages[ '404' ] = function ( v ) {
-		v.appendChild( App.header( t( '404 Monitor' ), t( 'Every 404 is logged with referrer and hits; SEOlity suggests the best redirect target (slug similarity + AI).' ), App.cap( 'ai' ) ? [ App.abtn( t( 'Suggest targets' ), function () {
+		v.appendChild( App.header( t( '404 Monitor' ), t( 'Every 404 is logged with referrer and hits; SEOlity suggests the best redirect target (slug similarity + AI).' ), App.cap( 'ai' ) ? [ App.abtn( SL.il( 'wand', t( 'AI review: 301, 410 or leave?' ), 15 ), function () {
+			var m = SL.modal( { title: t( 'AI review of 404 errors' ), wide: true, onClose: load } );
+			var instr = h( 'textarea', { class: 'sl-input', rows: 2, dir: 'auto', placeholder: t( 'Optional instructions, e.g. “old product URLs go to their category”, “never redirect to the home page”.' ) } );
+			var box = h( 'div' );
+			m.body.appendChild( h( 'p', { class: 'sl-muted', text: t( 'The AI judges every open 404 from real evidence — Search Console clicks and impressions, internal links still pointing to it, external referrers, human or Googlebot requests, deleted posts and how close each candidate page is — and decides: 301 to an equivalent page (to keep its rankings), 410 when it is gone for good, or leave it as 404 when it has no value. It also tells you honestly whether these 404s cost crawl budget on a site of your size. Nothing changes until you approve.' ) } ) );
+			m.body.appendChild( instr );
+			m.body.appendChild( box );
+			box.appendChild( h( 'div', { class: 'sl-row' }, App.abtn( t( 'Start the review' ), function () {
+				return SL.api( '404/triage', { body: { instructions: instr.value } } ).then( function ( op ) {
+					instr.remove();
+					App.operationView( box, op, load );
+				} );
+			}, 'primary' ) ) );
+			return Promise.resolve();
+		}, 'primary' ), App.abtn( t( 'Suggest targets' ), function () {
 			return SL.api( '404/suggest', { method: 'POST' } ).then( function () {
 				SL.toast( t( 'Computing suggestions in the background.' ) );
 			} );

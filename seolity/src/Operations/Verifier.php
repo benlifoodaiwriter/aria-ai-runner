@@ -173,6 +173,29 @@ final class Verifier {
 		);
 	}
 
+	/** Does the URL now answer 410 Gone? (Cache cleared and checked again when needed.) */
+	public function gone( $source ) {
+		$url = home_url( Redirects::normalize_source( $source ) );
+		$res = $this->fetch( $url, false );
+		if ( is_wp_error( $res ) || 410 !== (int) $res['status'] ) {
+			$this->purge_url( $url );
+			usleep( 800000 );
+			$res = $this->fetch( $url, true );
+		}
+		if ( is_wp_error( $res ) ) {
+			return array( 'ok' => false, 'persisted' => true, 'effective' => null, 'detail' => $res->get_error_message() );
+		}
+		$ok = 410 === (int) $res['status'];
+		return array(
+			'ok'        => $ok,
+			'persisted' => true,
+			'effective' => $ok,
+			'status'    => (int) $res['status'],
+			/* translators: %d: status */
+			'detail'    => $ok ? __( 'The URL now answers 410 Gone.', 'seolity' ) : sprintf( __( 'The URL answers %d instead of 410.', 'seolity' ), $res['status'] ) . ' ' . $this->redirect_diagnosis( Redirects::normalize_source( $source ), $res )['detail'],
+		);
+	}
+
 	private function is_redirect_to( array $res, $target, $type ) {
 		return (int) $res['status'] === (int) $type && self::norm_url( $res['location'] ) === self::norm_url( $target );
 	}

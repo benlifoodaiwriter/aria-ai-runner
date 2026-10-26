@@ -4,7 +4,7 @@ Tags: seo, ai, search console, woocommerce, schema
 Requires at least: 6.2
 Tested up to: 6.6
 Requires PHP: 7.4
-Stable tag: 1.9.2
+Stable tag: 1.10.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -72,6 +72,11 @@ Yes. The interface is fully translated and RTL-native, text analysis understands
 Enable "Delete all data on uninstall" in Settings → Privacy, then delete the plugin.
 
 == Changelog ==
+
+= 1.10.0 =
+* New: AI review of 404 errors (404 Monitor → "AI review: 301, 410 or leave?"). For every open 404 SEOlity collects the evidence — Search Console clicks/impressions/position of that exact URL, internal links still pointing to it, external referrers, human vs. Googlebot requests, deleted posts at that address and how close each candidate page is — and the AI decides per URL: 301 to a genuine equivalent (to keep its rankings and move crawling to the new URL), 410 when it is gone for good, leave it as 404 when it has no value, or fix a mistyped internal link. It also says honestly whether the 404s cost crawl budget on a site of your size. The AI may only pick targets SEOlity checked; nothing changes until you approve; every 301 and 410 is verified on the live site and the whole review can be undone.
+* Undo of a redirect or 410 puts the URL back into the open 404 list.
+* The operation window shows a progress message while the AI is still working instead of "Nothing to change was found".
 
 = 1.9.2 =
 * Fixed: the indexability audit failed with “Object of class WP_Error could not be converted to string” on sites with a public taxonomy that has no front-end address (common with WooCommerce attributes and filter plugins). Such taxonomies are now skipped instead of stopping the audit.

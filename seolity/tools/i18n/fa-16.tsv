@@ -542,3 +542,38 @@ The saved redirect does not match this URL.	ریدایرکت ذخیره‌شده
 the server	سرور
 Checks only your blog articles (not pages or products): finds articles that repeat each other or compete for the same topic (cannibalization — content overlap, titles, H1, shared Search Console queries) and suggests merging them into the strongest one. Nothing changes until you press “Fix cannibalization” and approve the preview.	فقط مقالات وبلاگ شما بررسی می‌شود (نه برگه‌ها یا محصولات): مقالاتی که یکدیگر را تکرار می‌کنند یا برای یک موضوع رقابت می‌کنند (هم نوع خواری — هم‌پوشانی محتوا، عنوان، H1، کوئری‌های مشترک سرچ کنسول) پیدا می‌شوند و ادغام آن‌ها در قوی‌ترین مقاله پیشنهاد می‌شود. تا «رفع هم نوع خواری» را نزنید و پیش‌نمایش را تأیید نکنید، هیچ چیز تغییر نمی‌کند.
 Blog articles checked	مقالات وبلاگ بررسی‌شده
+404 review (301 / 410 / keep)	بررسی ۴۰۴ (۳۰۱ / ۴۱۰ / بماند)
+AI review of 404 errors	بررسی هوشمند خطاهای ۴۰۴
+The URL is a live page (HTTP 200): marking it as gone would remove existing content.	این آدرس یک صفحه زنده است (HTTP 200): علامت «حذف‌شده» زدن محتوای موجود را از بین می‌برد.
+410 Gone for %s	۴۱۰ (حذف دائمی) برای %s
+Leave %s as 404 (mark as reviewed)	%s به‌صورت ۴۰۴ بماند (بررسی‌شده علامت بخورد)
+Fix the internal link to %s by hand	لینک داخلی به %s را دستی اصلاح کنید
+Left as 404 and moved out of the open list (it is not a problem).	به‌صورت ۴۰۴ ماند و از فهرست باز خارج شد (مشکلی نیست).
+The 404 entry could not be updated.	مورد ۴۰۴ به‌روز نشد.
+The URL now answers 410 Gone.	این آدرس اکنون با ۴۱۰ (حذف دائمی) پاسخ می‌دهد.
+The URL answers %d instead of 410.	این آدرس به‌جای ۴۱۰ با %d پاسخ می‌دهد.
+There are no open 404 URLs to review.	هیچ آدرس ۴۰۴ بازی برای بررسی نیست.
+AI review of 404 errors: 301, 410 or leave as 404	بررسی هوشمند خطاهای ۴۰۴: ریدایرکت ۳۰۱، ۴۱۰ یا ۴۰۴ بماند
+Reviewing 404 errors	در حال بررسی خطاهای ۴۰۴
+Collecting evidence for %d URLs (Search Console, links, referrers, candidates)…	جمع‌آوری شواهد برای %d آدرس (سرچ کنسول، لینک‌ها، ارجاع‌دهنده‌ها، صفحات جایگزین)…
+AI is judging the 404s (part %1$d of %2$d)…	هوش مصنوعی در حال قضاوت درباره ۴۰۴هاست (بخش %1$d از %2$d)…
+Checking every proposed target…	بررسی همه مقصدهای پیشنهادی…
+(The proposed target was not one of the checked candidates, so the URL is left as 404.)	(مقصد پیشنهادی جزو صفحات جایگزینِ بررسی‌شده نبود، پس آدرس به‌صورت ۴۰۴ ماند.)
+Crawl budget: these 404s do matter for this site.	بودجه خزش: این ۴۰۴ها برای این سایت مهم هستند.
+Crawl budget: these 404s are not a crawl-budget problem for this site.	بودجه خزش: این ۴۰۴ها برای این سایت مشکل بودجه خزش ایجاد نمی‌کنند.
+Decisions: %1$d × 301 to an equivalent page, %2$d × 410 gone, %3$d × leave as 404, %4$d × fix the internal link.	تصمیم‌ها: %1$d × ریدایرکت ۳۰۱ به صفحه معادل، %2$d × ۴۱۰ حذف دائمی، %3$d × ۴۰۴ بماند، %4$d × اصلاح لینک داخلی.
+Nothing changes until you approve. Untick anything you disagree with; every 301 and 410 is checked on the live site afterwards.	تا تأیید نکنید چیزی تغییر نمی‌کند. تیک هر موردی را که قبول ندارید بردارید؛ هر ۳۰۱ و ۴۱۰ بعد از اعمال روی سایت زنده بررسی می‌شود.
+AI review: 301, 410 or leave?	بررسی هوشمند: ۳۰۱، ۴۱۰ یا بماند؟
+Optional instructions, e.g. “old product URLs go to their category”, “never redirect to the home page”.	دستورالعمل اختیاری، مثلاً «آدرس محصولات قدیمی به دسته خودشان بروند»، «هرگز به صفحه اصلی ریدایرکت نکن».
+The AI judges every open 404 from real evidence — Search Console clicks and impressions, internal links still pointing to it, external referrers, human or Googlebot requests, deleted posts and how close each candidate page is — and decides: 301 to an equivalent page (to keep its rankings), 410 when it is gone for good, or leave it as 404 when it has no value. It also tells you honestly whether these 404s cost crawl budget on a site of your size. Nothing changes until you approve.	هوش مصنوعی هر ۴۰۴ باز را با شواهد واقعی می‌سنجد — کلیک و نمایش در سرچ کنسول، لینک‌های داخلی که هنوز به آن اشاره می‌کنند، ارجاع از سایت‌های دیگر، درخواست کاربر واقعی یا گوگل‌بات، نوشته‌های حذف‌شده و میزان شباهت هر صفحه جایگزین — و تصمیم می‌گیرد: ریدایرکت ۳۰۱ به صفحه معادل (تا رتبه‌اش حفظ شود)، ۴۱۰ اگر برای همیشه حذف شده، یا ۴۰۴ بماند اگر ارزشی ندارد. همچنین صادقانه می‌گوید که آیا این ۴۰۴ها با اندازه سایت شما بودجه خزش را هدر می‌دهند یا نه. تا تأیید نکنید چیزی تغییر نمی‌کند.
+Start the review	شروع بررسی
+Search Console: %1$s clicks, %2$s impressions	سرچ کنسول: %1$s کلیک، %2$s نمایش
+%s hits	%s بازدید
+referrer: %s	ارجاع‌دهنده: %s
+AI reasoning:	استدلال هوش مصنوعی:
+confidence %s%	اطمینان %s%
+Linked from: %s	لینک‌شده از: %s
+The AI is analyzing — the proposals appear here in a moment.	هوش مصنوعی در حال بررسی است — پیشنهادها تا لحظاتی دیگر اینجا نمایش داده می‌شوند.
+410 Gone: %s	۴۱۰ حذف دائمی: %s
+Leave as 404: %s	۴۰۴ بماند: %s
+Fix the internal link by hand: %s	اصلاح دستی لینک داخلی: %s

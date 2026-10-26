@@ -140,6 +140,7 @@ final class Plugin {
 			'recommendations' => Recommendations\Engine::class,
 			'redirects'       => Redirects\Manager::class,
 			'not_found'       => Redirects\NotFoundMonitor::class,
+			'nf_triage'       => Redirects\NotFoundTriage::class,
 			'schema'          => Schema\SchemaService::class,
 			'images'          => Images\ImageSeo::class,
 			'links'           => Links\InternalLinker::class,

@@ -851,6 +851,9 @@ final class Router {
 		$this->route( 'POST', '/404/(?P<id>\d+)/status', 'manage', function ( Req $r ) use ( $p ) {
 			return array( 'ok' => $p->not_found->set_status( self::int( $r, 'id' ), self::key( $r, 'status' ) ) );
 		} );
+		$this->route( 'POST', '/404/triage', 'ai', function ( Req $r ) use ( $p ) {
+			return $p->nf_triage->start( (string) $r->get_param( 'instructions' ) );
+		} );
 		$this->route( 'POST', '/404/suggest', 'ai', function () use ( $p ) {
 			$p->queue->push( 'not_found_suggest', array(), array( 'unique' => true, 'priority' => 2 ) );
 			Scheduler::kick();
