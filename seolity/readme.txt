@@ -4,7 +4,7 @@ Tags: seo, ai, search console, woocommerce, schema
 Requires at least: 6.2
 Tested up to: 6.6
 Requires PHP: 7.4
-Stable tag: 1.9.1
+Stable tag: 1.9.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -72,6 +72,9 @@ Yes. The interface is fully translated and RTL-native, text analysis understands
 Enable "Delete all data on uninstall" in Settings → Privacy, then delete the plugin.
 
 == Changelog ==
+
+= 1.9.2 =
+* Fixed: the indexability audit failed with “Object of class WP_Error could not be converted to string” on sites with a public taxonomy that has no front-end address (common with WooCommerce attributes and filter plugins). Such taxonomies are now skipped instead of stopping the audit.
 
 = 1.9.1 =
 * Redirect check: when the old URL still answers 404, SEOlity now clears it in the page cache (LiteSpeed, WP Rocket, W3 Total Cache, WP Super Cache, SiteGround), checks again past the cache, and otherwise says exactly why: Rank Math has no matching redirect, redirects are switched off, a cache answered (HIT), or a CDN / security plugin / server rule answers first. A 404 leaves the open list only after the redirect really answers.

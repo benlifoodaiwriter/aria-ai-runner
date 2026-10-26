@@ -165,6 +165,9 @@ final class Indexability {
 			$utility = isset( self::UTILITY_TYPES[ $pt->name ] );
 			$source  = $utility ? self::UTILITY_TYPES[ $pt->name ] : ( ! empty( $pt->_builtin ) ? 'WordPress' : ( 'product' === $pt->name ? 'WooCommerce' : __( 'a plugin or the theme', 'seolity' ) ) );
 			$url     = (string) get_permalink( $ids[0] );
+			if ( '' === $url ) {
+				continue;
+			}
 			$state   = $this->probe( $url, $sitemap, $utility );
 			$inventory[] = array( 'group' => 'post_type', 'name' => $pt->name, 'label' => $pt->labels->name, 'source' => $source, 'count' => $cnt, 'url' => $url, 'intended' => ! $utility, 'state' => $state );
 			if ( $utility && ( $state['indexable'] || $state['in_sitemap'] ) ) {
@@ -314,7 +317,8 @@ final class Indexability {
 			if ( in_array( $tax->name, array( 'post_format', 'product_shipping_class' ), true ) ) {
 				continue;
 			}
-			$total = (int) wp_count_terms( array( 'taxonomy' => $tax->name, 'hide_empty' => false ) );
+			$total = wp_count_terms( array( 'taxonomy' => $tax->name, 'hide_empty' => false ) );
+			$total = is_wp_error( $total ) ? 0 : (int) $total;
 			if ( ! $total ) {
 				continue;
 			}
@@ -323,7 +327,12 @@ final class Indexability {
 			if ( ! $terms || is_wp_error( $terms ) ) {
 				continue;
 			}
-			$url   = (string) get_term_link( $terms[0] );
+			// Taxonomies registered as public without a front-end address return a WP_Error here.
+			$link = get_term_link( $terms[0] );
+			if ( is_wp_error( $link ) || ! $link ) {
+				continue;
+			}
+			$url   = (string) $link;
 			$state = $this->probe( $url, $sitemap );
 			$inventory[] = array( 'group' => 'taxonomy', 'name' => $tax->name, 'label' => $tax->labels->name, 'source' => ! empty( $tax->_builtin ) ? 'WordPress' : __( 'a plugin or the theme', 'seolity' ), 'count' => $total, 'url' => $url, 'intended' => 'post_tag' !== $tax->name && 'product_tag' !== $tax->name, 'state' => $state, 'thin' => $thin );
 			$tagish = in_array( $tax->name, array( 'post_tag', 'product_tag' ), true );
