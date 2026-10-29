@@ -345,6 +345,18 @@ A chain of short queue steps: Search Console → crawl (awaited by re-queuing ev
 
 Indexability probes one sample URL per group live and compares technical with intended indexability; fixes are operation items (Rank Math options with a live `check_url`). Duplicates uses 3-word shingles with an inverted index (boilerplate shingles skipped), title/H1 tokens and Search Console query overlap, clusters pairs with union-find and suggests the primary (clicks → internal links → length → age). Consolidation stages: merged content + meta of the primary, noindex of each secondary, 301 (with `merge` flag, allowed although the source is live), and internal-link changes in other posts — all previewed, ordered by `requires`, verified and undoable.
 
+### Search Console detail for the AI (`GSC\Insights`) — 1.11
+
+`for_question()` matches the queries a question is about (quoted phrases first, otherwise word coverage against stored queries) and returns per query: weekly series, the leading page per week and page swaps, the sharpest 4-week drop, edits (SEOlity changes and WordPress revisions) within ±21 days, evaluated experiment outcomes for those pages, and 28-day windows based on the latest page × query date. Chat, the per-query competitor analysis and other tasks use it.
+
+### Competitor intelligence (`Competitors\Intel`)
+
+`serp_snapshots` / `serp_results` hold every SERP API check (20 results, features, PAA, related) with competitor/own flags; `track()` runs weekly and on demand within `serp_monthly_limit`. `overview()` and `estimate()` derive positions vs ours, trends and estimated clicks (position CTR × volume measured from our own page-1 impressions). `compare()` stores evidence + AI result in `serp_analyses` and adds a `competitor_query_gap` issue to the roadmap.
+
+### Reasoning effort (`AI\Effort`)
+
+`ai_effort_<connection>` levels mapped to each provider's parameter (Anthropic output_config.effort, OpenAI reasoning_effort for reasoning models, OpenRouter reasoning.effort, Gemini thinkingBudget/thinkingLevel, Ollama think, Claude Code MAX_THINKING_TOKENS, Codex model_reasoning_effort); "auto" sends nothing; rejected parameters are retried without.
+
 ### AI provider manager (`AI\ProviderManager`)
 
 Per-provider connection state in `seolity_ai_connections`: key → `discover()` (the provider's own model list) → `verify()` (one real request) → `activate()`. Errors are classified (auth, credit, model, rate, network) with a fix. Subscriptions use only the official CLIs (`AI\Remote\SubscriptionRunner` on GitHub, `LocalCli` on the host). `AI\Remote\CliSetup` diagnoses the host and installs the official package with a fixed argv (no shell, no user input).

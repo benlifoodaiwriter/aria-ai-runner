@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: SEOlity 1.0.0\n"
-"POT-Creation-Date: 2026-10-26 15:33+0000\n"
+"POT-Creation-Date: 2026-10-29 13:47+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -24,6 +24,33 @@ msgstr ""
 
 #, php-format
 msgid "%1$s request failed: %2$s"
+msgstr ""
+
+msgid "Sent as Anthropic “effort” (Claude 4.6 and newer). Higher = deeper reasoning, slower and more tokens. xhigh/max only on models that support them."
+msgstr ""
+
+msgid "Sent as “reasoning_effort” to reasoning models (o-series, GPT-5). Other models ignore it."
+msgstr ""
+
+msgid "Sent as “reasoning_effort” to reasoning models."
+msgstr ""
+
+msgid "Sent as OpenRouter “reasoning.effort”; OpenRouter translates it for every model that can reason."
+msgstr ""
+
+msgid "Sent as Gemini thinking: a thinking budget for Gemini 2.5, the thinking level for Gemini 3."
+msgstr ""
+
+msgid "Sent as Ollama “think” for thinking models (gpt-oss uses low / medium / high)."
+msgstr ""
+
+msgid "Sent as reasoning_effort (OpenAI format) or effort (Anthropic format). Use “auto” if your provider rejects it."
+msgstr ""
+
+msgid "Sets Claude Code’s extended-thinking budget (MAX_THINKING_TOKENS) on the runner / this server."
+msgstr ""
+
+msgid "Sets Codex “model_reasoning_effort”."
 msgstr ""
 
 msgid "Sending the request to the AI…"
@@ -759,6 +786,9 @@ msgid "Merging duplicate articles"
 msgstr ""
 
 msgid "Full-site analysis"
+msgstr ""
+
+msgid "Measuring past edits"
 msgstr ""
 
 msgid "AI review of 404 errors"
@@ -1654,6 +1684,9 @@ msgstr ""
 msgid "auth.json must be valid JSON (copy the whole file from ~/.codex/auth.json)."
 msgstr ""
 
+msgid "This level is not available for this AI."
+msgstr ""
+
 msgid "This host does not allow PHP to start programs (proc_open is disabled). Subscriptions can only run through GitHub here."
 msgstr ""
 
@@ -1725,6 +1758,35 @@ msgstr ""
 msgid "Competitor not found."
 msgstr ""
 
+msgid "Estimate, not their real data: their position in live Google results × the click-through rate of that position × the monthly searches of the query (measured from your own impressions when you rank on page 1; otherwise a lower bound). Track more queries to widen the picture."
+msgstr ""
+
+msgid "Connect an AI engine first (Settings → AI)."
+msgstr ""
+
+msgid "Competitor analysis for a query"
+msgstr ""
+
+msgid "Reading the stored Google results and history…"
+msgstr ""
+
+msgid "Fetching both pages live and comparing them…"
+msgstr ""
+
+msgid "AI is analyzing why they rank where they do…"
+msgstr ""
+
+#, php-format
+msgid "Beat %1$s for “%2$s”"
+msgstr ""
+
+#, php-format
+msgid "Analysis ready for “%s”"
+msgstr ""
+
+msgid "Crawl the competitor first (Analyze), then discover its queries."
+msgstr ""
+
 msgid "This field cannot be changed by SEOlity."
 msgstr ""
 
@@ -1793,9 +1855,6 @@ msgid "The primary article must be one of the group."
 msgstr ""
 
 msgid "Choose at least one article to merge into the primary."
-msgstr ""
-
-msgid "Connect an AI engine first (Settings → AI)."
 msgstr ""
 
 #, php-format
@@ -2456,6 +2515,10 @@ msgid "Likely ranking/CTR impact."
 msgstr ""
 
 msgid "Incremental quality improvement."
+msgstr ""
+
+#, php-format
+msgid "%1$s — edited in WordPress (%2$s)"
 msgstr ""
 
 msgid "Not enough search impressions to judge the effect."
@@ -5502,7 +5565,7 @@ msgstr ""
 msgid "%s models found. Pick one in the model field."
 msgstr ""
 
-msgid "Use any AI service with exactly the settings its documentation gives: choose a ready-made service or fill in the base URL, API format, how the key is sent, extra headers and the model. SEOlity shows the exact request it will send."
+msgid "Use any AI service with exactly the settings its documentation gives: choose a ready-made service or fill in the base URL, API format, how the key is sent and extra headers. SEOlity shows the exact request it will send. After saving, load the models of the endpoint and pick, test and activate one in “2. Model” above — the only place where models are chosen."
 msgstr ""
 
 msgid "Service"
@@ -5524,12 +5587,6 @@ msgid "Most services are OpenAI-compatible. Choose Anthropic only for Claude-sty
 msgstr ""
 
 msgid "How the key is sent"
-msgstr ""
-
-msgid "Model"
-msgstr ""
-
-msgid "Exact model id from the service (use “Fetch models” to list them)."
 msgstr ""
 
 msgid "Structured output"
@@ -5563,18 +5620,6 @@ msgid "Leave empty for reasoning models that reject it."
 msgstr ""
 
 msgid "Save Custom API"
-msgstr ""
-
-msgid "Test model"
-msgstr ""
-
-msgid "The model works."
-msgstr ""
-
-msgid "Use for all AI features"
-msgstr ""
-
-msgid "AI engine switched."
 msgstr ""
 
 msgid "Custom (fill in by hand)"
@@ -5786,11 +5831,53 @@ msgstr ""
 msgid "%s models from your account’s model list (loaded %s). ✓ = tested successfully."
 msgstr ""
 
+msgid "Test model"
+msgstr ""
+
 msgid "Test sent to your GitHub runner…"
+msgstr ""
+
+msgid "The model works."
+msgstr ""
+
+msgid "Use for all AI features"
 msgstr ""
 
 #, php-format
 msgid "AI engine switched: %s"
+msgstr ""
+
+msgid "Auto (the provider’s default)"
+msgstr ""
+
+msgid "Minimal"
+msgstr ""
+
+msgid "Low — fastest"
+msgstr ""
+
+msgid "High — deeper analysis"
+msgstr ""
+
+msgid "Extra high"
+msgstr ""
+
+msgid "Maximum — strongest, slowest"
+msgstr ""
+
+msgid "Thinking off"
+msgstr ""
+
+msgid "Thinking on"
+msgstr ""
+
+msgid "Saved"
+msgstr ""
+
+msgid "3. AI power (reasoning effort)"
+msgstr ""
+
+msgid "Higher levels give the most thorough analyses but take longer and use more tokens / plan quota."
 msgstr ""
 
 #, php-format
@@ -5907,6 +5994,216 @@ msgid "%s messages"
 msgstr ""
 
 msgid "Delete this conversation?"
+msgstr ""
+
+#, php-format
+msgid "Previous check: %s"
+msgstr ""
+
+msgid "SEOlity searches your tracked queries in Google through the SERP API — location-specific and not personalized, like an incognito search — and stores every result page. All competitor panels are built from this database; each new check adds history."
+msgstr ""
+
+msgid "Add a SerpApi key in Settings → Crawler & audits to search Google. Scraping Google directly from your server is against Google’s terms and is blocked with CAPTCHAs; a SERP API is the reliable, permitted way."
+msgstr ""
+
+msgid "Tracked queries"
+msgstr ""
+
+msgid "Searches this month"
+msgstr ""
+
+msgid "Last check"
+msgstr ""
+
+msgid "Add queries to track, separated by commas"
+msgstr ""
+
+msgid "Add"
+msgstr ""
+
+msgid "Checking Google…"
+msgstr ""
+
+msgid "Check Google now"
+msgstr ""
+
+msgid "Google is being checked for the tracked queries in the background."
+msgstr ""
+
+#, php-format
+msgid "Tracked queries (%s)"
+msgstr ""
+
+msgid "Your own queries plus your most important Search Console queries. Each query uses one search per check (at most once a day)."
+msgstr ""
+
+msgid "Who you meet most in Google"
+msgstr ""
+
+msgid "Domain"
+msgstr ""
+
+msgid "Appears in"
+msgstr ""
+
+#, php-format
+msgid "%1$s of %2$s queries"
+msgstr ""
+
+msgid "Add as competitor"
+msgstr ""
+
+msgid "Competitor added. First analysis is running in the background."
+msgstr ""
+
+msgid "Google results database"
+msgstr ""
+
+msgid "The AI is comparing the pages — this tab updates by itself."
+msgstr ""
+
+msgid "Can be overtaken"
+msgstr ""
+
+msgid "Hard to overtake — match them first"
+msgstr ""
+
+#, php-format
+msgid "Confidence %s%"
+msgstr ""
+
+msgid "Their page"
+msgstr ""
+
+msgid "Our page Google shows"
+msgstr ""
+
+msgid "Our page that should rank"
+msgstr ""
+
+msgid "Why Google shows this page of ours:"
+msgstr ""
+
+msgid "Why they rank where they do"
+msgstr ""
+
+msgid "Factor"
+msgstr ""
+
+msgid "Them"
+msgstr ""
+
+msgid "Us"
+msgstr ""
+
+msgid "Basis"
+msgstr ""
+
+msgid "Measured"
+msgstr ""
+
+msgid "Hypothesis"
+msgstr ""
+
+msgid "What to do, step by step"
+msgstr ""
+
+#, php-format
+msgid "Effort: %s"
+msgstr ""
+
+msgid "These steps are also in the SEO roadmap (Competitor gaps)."
+msgstr ""
+
+msgid "Open the roadmap"
+msgstr ""
+
+msgid "All competitors"
+msgstr ""
+
+msgid "Discover their queries"
+msgstr ""
+
+msgid "Queries where they appear"
+msgstr ""
+
+msgid "Above us"
+msgstr ""
+
+msgid "Below us"
+msgstr ""
+
+msgid "Only them (we are not in top 20)"
+msgstr ""
+
+msgid "Their estimated clicks / month"
+msgstr ""
+
+msgid "Queries"
+msgstr ""
+
+msgid "Estimated Search Console"
+msgstr ""
+
+msgid "Their pages"
+msgstr ""
+
+msgid "No Google data for this competitor yet"
+msgstr ""
+
+msgid "Press “Check Google now”. The competitor appears here for every tracked query where it is in the top 20."
+msgstr ""
+
+msgid "Add a SerpApi key in Settings → Crawler & audits to search Google."
+msgstr ""
+
+msgid "not in top 20"
+msgstr ""
+
+#, php-format
+msgid "Search Console: %s"
+msgstr ""
+
+msgid "Their est. clicks"
+msgstr ""
+
+msgid "no volume data"
+msgstr ""
+
+msgid "Open analysis"
+msgstr ""
+
+msgid "Why? Analyze"
+msgstr ""
+
+msgid "Queries their pages probably target (AI)"
+msgstr ""
+
+msgid "Track selected and check Google"
+msgstr ""
+
+msgid "Estimated clicks / month"
+msgstr ""
+
+msgid "Queries found"
+msgstr ""
+
+msgid "With measured volume"
+msgstr ""
+
+msgid "Est. impressions"
+msgstr ""
+
+msgid "Est. clicks"
+msgstr ""
+
+msgid "Updated"
+msgstr ""
+
+msgid "No pages crawled yet"
+msgstr ""
+
+msgid "Use “Analyze now” on the competitors page to read their sitemap and pages."
 msgstr ""
 
 msgid "Connected"
@@ -6103,12 +6400,6 @@ msgstr ""
 msgid "Monthly"
 msgstr ""
 
-msgid "Add"
-msgstr ""
-
-msgid "Competitor added. First analysis is running in the background."
-msgstr ""
-
 msgid "Add 2–5 real SEO competitors (sites that rank for your keywords)."
 msgstr ""
 
@@ -6141,6 +6432,9 @@ msgid "AI summary will appear after the analysis finishes (requires an AI provid
 msgstr ""
 
 msgid "Content sections"
+msgstr ""
+
+msgid "Open panel"
 msgstr ""
 
 msgid "Content gap"
@@ -6179,7 +6473,13 @@ msgstr ""
 msgid "SEO Experiments"
 msgstr ""
 
-msgid "Every applied change becomes an experiment: equal before/after windows, adjusted by the site-wide trend (control), judged Positive / Negative / Neutral / Inconclusive."
+msgid "Every edit becomes an experiment — SEOlity’s own changes and edits made in WordPress or a page builder: equal before/after windows, adjusted by the site-wide trend (control), judged Positive / Negative / Neutral / Inconclusive, down to each query."
+msgstr ""
+
+msgid "Analyze the edit history"
+msgstr ""
+
+msgid "Past edits (WordPress revisions) within your Search Console period are being measured in the background."
 msgstr ""
 
 msgid "Evaluate now"
@@ -6203,11 +6503,21 @@ msgstr ""
 msgid "After a few experiments are evaluated, SEOlity learns which changes work best on your site and uses it in every AI suggestion."
 msgstr ""
 
+msgid "Edited in WordPress"
+msgstr ""
+
+msgid "Past edit"
+msgstr ""
+
 msgid "Before → After"
 msgstr ""
 
 #, php-format
 msgid "Window: %s days"
+msgstr ""
+
+#, php-format
+msgid "Per query (%s)"
 msgstr ""
 
 msgid "Revert"
@@ -6609,9 +6919,6 @@ msgid "No alerts"
 msgstr ""
 
 msgid "SEOlity checks for important changes every hour."
-msgstr ""
-
-msgid "Saved"
 msgstr ""
 
 msgid "Not tested"
@@ -7442,9 +7749,6 @@ msgid "Ranking Distribution"
 msgstr ""
 
 msgid "Countries & Devices"
-msgstr ""
-
-msgid "Queries"
 msgstr ""
 
 msgid "Click change"
@@ -8305,6 +8609,9 @@ msgid "Original"
 msgstr ""
 
 msgid "Edit HTML"
+msgstr ""
+
+msgid "Model"
 msgstr ""
 
 msgid "Knowledge"

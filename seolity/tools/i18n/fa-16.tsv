@@ -577,3 +577,106 @@ The AI is analyzing — the proposals appear here in a moment.	هوش مصنوع
 410 Gone: %s	۴۱۰ حذف دائمی: %s
 Leave as 404: %s	۴۰۴ بماند: %s
 Fix the internal link by hand: %s	اصلاح دستی لینک داخلی: %s
+Sent as Anthropic “effort” (Claude 4.6 and newer). Higher = deeper reasoning, slower and more tokens. xhigh/max only on models that support them.	به‌صورت «effort» شرکت Anthropic ارسال می‌شود (Claude 4.6 و جدیدتر). بالاتر = استدلال عمیق‌تر، کندتر و توکن بیشتر. xhigh و max فقط روی مدل‌هایی که پشتیبانی می‌کنند.
+Sent as “reasoning_effort” to reasoning models (o-series, GPT-5). Other models ignore it.	به‌صورت «reasoning_effort» به مدل‌های استدلالی (سری o و GPT-5) ارسال می‌شود. مدل‌های دیگر آن را نادیده می‌گیرند.
+Sent as “reasoning_effort” to reasoning models.	به‌صورت «reasoning_effort» به مدل‌های استدلالی ارسال می‌شود.
+Sent as OpenRouter “reasoning.effort”; OpenRouter translates it for every model that can reason.	به‌صورت «reasoning.effort» در OpenRouter ارسال می‌شود؛ OpenRouter آن را برای هر مدلی که استدلال می‌کند ترجمه می‌کند.
+Sent as Gemini thinking: a thinking budget for Gemini 2.5, the thinking level for Gemini 3.	به‌صورت تفکر Gemini ارسال می‌شود: بودجه تفکر برای Gemini 2.5 و سطح تفکر برای Gemini 3.
+Sent as Ollama “think” for thinking models (gpt-oss uses low / medium / high).	به‌صورت «think» در Ollama برای مدل‌های تفکری ارسال می‌شود (gpt-oss از low / medium / high استفاده می‌کند).
+Sent as reasoning_effort (OpenAI format) or effort (Anthropic format). Use “auto” if your provider rejects it.	به‌صورت reasoning_effort (قالب OpenAI) یا effort (قالب Anthropic) ارسال می‌شود. اگر سرویس شما آن را نمی‌پذیرد «خودکار» را انتخاب کنید.
+Sets Claude Code’s extended-thinking budget (MAX_THINKING_TOKENS) on the runner / this server.	بودجه تفکر گسترده Claude Code (MAX_THINKING_TOKENS) را روی اجراکننده / همین سرور تنظیم می‌کند.
+Sets Codex “model_reasoning_effort”.	«model_reasoning_effort» در Codex را تنظیم می‌کند.
+Measuring past edits	اندازه‌گیری ویرایش‌های گذشته
+This level is not available for this AI.	این سطح برای این هوش مصنوعی در دسترس نیست.
+Estimate, not their real data: their position in live Google results × the click-through rate of that position × the monthly searches of the query (measured from your own impressions when you rank on page 1; otherwise a lower bound). Track more queries to widen the picture.	تخمین است، نه داده واقعی آن‌ها: جایگاه آن‌ها در نتایج زنده گوگل × نرخ کلیک آن جایگاه × جستجوی ماهانه کوئری (از نمایش‌های خود شما وقتی در صفحه اول هستید اندازه‌گیری می‌شود؛ در غیر این صورت حداقل است). برای تصویر کامل‌تر کوئری‌های بیشتری را پایش کنید.
+Competitor analysis for a query	تحلیل رقیب برای یک کوئری
+Reading the stored Google results and history…	خواندن نتایج ذخیره‌شده گوگل و سابقه…
+Fetching both pages live and comparing them…	دریافت زنده هر دو صفحه و مقایسه آن‌ها…
+AI is analyzing why they rank where they do…	هوش مصنوعی در حال تحلیل علت جایگاه آن‌هاست…
+Beat %1$s for “%2$s”	پیشی گرفتن از %1$s در «%2$s»
+Analysis ready for “%s”	تحلیل «%s» آماده است
+Crawl the competitor first (Analyze), then discover its queries.	اول رقیب را بخزید (تحلیل)، سپس کوئری‌هایش را کشف کنید.
+%1$s — edited in WordPress (%2$s)	%1$s — ویرایش در وردپرس (%2$s)
+Use any AI service with exactly the settings its documentation gives: choose a ready-made service or fill in the base URL, API format, how the key is sent and extra headers. SEOlity shows the exact request it will send. After saving, load the models of the endpoint and pick, test and activate one in “2. Model” above — the only place where models are chosen.	هر سرویس هوش مصنوعی را دقیقاً با تنظیماتی که مستنداتش می‌گوید استفاده کنید: یک سرویس آماده انتخاب کنید یا آدرس پایه، قالب API، نحوه ارسال کلید و هدرهای اضافه را وارد کنید. SEOlity درخواست دقیقی را که می‌فرستد نشان می‌دهد. بعد از ذخیره، مدل‌های آن سرویس را بارگیری کنید و در «۲. مدل» بالا یکی را آزمایش و فعال کنید — تنها جایی که مدل انتخاب می‌شود.
+Auto (the provider’s default)	خودکار (پیش‌فرض سرویس)
+Minimal	حداقل
+Low — fastest	کم — سریع‌ترین
+High — deeper analysis	بالا — تحلیل عمیق‌تر
+Extra high	بسیار بالا
+Maximum — strongest, slowest	حداکثر — قوی‌ترین، کندترین
+Thinking off	تفکر خاموش
+Thinking on	تفکر روشن
+3. AI power (reasoning effort)	۳. توان هوش مصنوعی (سطح استدلال)
+Higher levels give the most thorough analyses but take longer and use more tokens / plan quota.	سطح‌های بالاتر دقیق‌ترین تحلیل‌ها را می‌دهند اما زمان بیشتری می‌برند و توکن / سهمیه پلن بیشتری مصرف می‌کنند.
+Previous check: %s	بررسی قبلی: %s
+SEOlity searches your tracked queries in Google through the SERP API — location-specific and not personalized, like an incognito search — and stores every result page. All competitor panels are built from this database; each new check adds history.	SEOlity کوئری‌های پایش‌شده شما را از طریق SERP API در گوگل جستجو می‌کند — مخصوص کشور و بدون شخصی‌سازی، مثل جستجوی ناشناس — و هر صفحه نتایج را ذخیره می‌کند. همه پنل‌های رقبا از همین پایگاه داده ساخته می‌شوند و هر بررسی جدید به سابقه اضافه می‌شود.
+Add a SerpApi key in Settings → Crawler & audits to search Google. Scraping Google directly from your server is against Google’s terms and is blocked with CAPTCHAs; a SERP API is the reliable, permitted way.	برای جستجو در گوگل در «تنظیمات ← خزنده و ممیزی» کلید SerpApi را وارد کنید. جستجوی مستقیم گوگل از سرور شما خلاف قوانین گوگل است و با کپچا مسدود می‌شود؛ SERP API راه مطمئن و مجاز است.
+Tracked queries	کوئری‌های پایش‌شده
+Searches this month	جستجوهای این ماه
+Last check	آخرین بررسی
+Add queries to track, separated by commas	کوئری‌هایی برای پایش اضافه کنید (با ویرگول جدا کنید)
+Checking Google…	در حال بررسی گوگل…
+Check Google now	بررسی گوگل همین حالا
+Google is being checked for the tracked queries in the background.	گوگل برای کوئری‌های پایش‌شده در پس‌زمینه بررسی می‌شود.
+Tracked queries (%s)	کوئری‌های پایش‌شده (%s)
+Your own queries plus your most important Search Console queries. Each query uses one search per check (at most once a day).	کوئری‌های خود شما به‌علاوه مهم‌ترین کوئری‌های سرچ کنسول. هر کوئری در هر بررسی یک جستجو مصرف می‌کند (حداکثر روزی یک بار).
+Who you meet most in Google	بیشتر با چه کسانی در گوگل روبه‌رو می‌شوید
+Domain	دامنه
+Appears in	حضور در
+%1$s of %2$s queries	%1$s از %2$s کوئری
+Add as competitor	افزودن به‌عنوان رقیب
+Google results database	پایگاه داده نتایج گوگل
+The AI is comparing the pages — this tab updates by itself.	هوش مصنوعی در حال مقایسه صفحات است — این زبانه خودکار به‌روز می‌شود.
+Can be overtaken	می‌توان از آن‌ها جلو زد
+Hard to overtake — match them first	جلو زدن سخت است — اول هم‌سطح آن‌ها شوید
+Confidence %s%	اطمینان %s%
+Their page	صفحه آن‌ها
+Our page Google shows	صفحه ما که گوگل نشان می‌دهد
+Our page that should rank	صفحه ما که باید رتبه بگیرد
+Why Google shows this page of ours:	چرا گوگل این صفحه ما را نشان می‌دهد:
+Why they rank where they do	چرا آن‌ها در این جایگاه هستند
+Factor	عامل
+Them	آن‌ها
+Us	ما
+Basis	مبنا
+Measured	اندازه‌گیری‌شده
+Hypothesis	فرضیه
+What to do, step by step	چه باید کرد، قدم به قدم
+Effort: %s	زحمت: %s
+These steps are also in the SEO roadmap (Competitor gaps).	این قدم‌ها در مسیر راه (شکاف‌ها نسبت به رقبا) هم آمده‌اند.
+Open the roadmap	باز کردن مسیر راه
+All competitors	همه رقبا
+Discover their queries	کشف کوئری‌های آن‌ها
+Queries where they appear	کوئری‌هایی که در آن‌ها حضور دارند
+Above us	بالاتر از ما
+Below us	پایین‌تر از ما
+Only them (we are not in top 20)	فقط آن‌ها (ما در ۲۰ نتیجه اول نیستیم)
+Their estimated clicks / month	کلیک تخمینی ماهانه آن‌ها
+Estimated Search Console	سرچ کنسول تخمینی
+Their pages	صفحات آن‌ها
+No Google data for this competitor yet	هنوز داده‌ای از گوگل برای این رقیب نیست
+Press “Check Google now”. The competitor appears here for every tracked query where it is in the top 20.	«بررسی گوگل همین حالا» را بزنید. رقیب برای هر کوئری پایش‌شده‌ای که در ۲۰ نتیجه اول باشد اینجا نمایش داده می‌شود.
+Add a SerpApi key in Settings → Crawler & audits to search Google.	برای جستجو در گوگل در «تنظیمات ← خزنده و ممیزی» کلید SerpApi را وارد کنید.
+not in top 20	در ۲۰ نتیجه اول نیست
+Search Console: %s	سرچ کنسول: %s
+Their est. clicks	کلیک تخمینی آن‌ها
+no volume data	داده حجم جستجو نیست
+Open analysis	باز کردن تحلیل
+Why? Analyze	چرا؟ تحلیل کن
+Queries their pages probably target (AI)	کوئری‌هایی که صفحات آن‌ها احتمالاً هدف گرفته‌اند (هوش مصنوعی)
+Track selected and check Google	پایش موارد انتخاب‌شده و بررسی گوگل
+Estimated clicks / month	کلیک تخمینی ماهانه
+Queries found	کوئری‌های پیداشده
+With measured volume	با حجم اندازه‌گیری‌شده
+Est. impressions	نمایش تخمینی
+Est. clicks	کلیک تخمینی
+Updated	به‌روزرسانی
+No pages crawled yet	هنوز صفحه‌ای خزیده نشده
+Use “Analyze now” on the competitors page to read their sitemap and pages.	در صفحه رقبا «تحلیل همین حالا» را بزنید تا نقشه سایت و صفحات آن‌ها خوانده شود.
+Open panel	باز کردن پنل
+Every edit becomes an experiment — SEOlity’s own changes and edits made in WordPress or a page builder: equal before/after windows, adjusted by the site-wide trend (control), judged Positive / Negative / Neutral / Inconclusive, down to each query.	هر ویرایش یک آزمایش است — تغییرات خود SEOlity و ویرایش‌هایی که در وردپرس یا صفحه‌ساز انجام می‌شود: بازه‌های برابر قبل و بعد، تعدیل‌شده با روند کل سایت (گروه کنترل)، با نتیجه مثبت / منفی / خنثی / نامشخص، تا سطح هر کوئری.
+Analyze the edit history	تحلیل سابقه ویرایش‌ها
+Past edits (WordPress revisions) within your Search Console period are being measured in the background.	ویرایش‌های گذشته (نسخه‌های بازبینی وردپرس) در بازه سرچ کنسول شما در پس‌زمینه اندازه‌گیری می‌شوند.
+Edited in WordPress	ویرایش در وردپرس
+Past edit	ویرایش گذشته
+Per query (%s)	به تفکیک کوئری (%s)

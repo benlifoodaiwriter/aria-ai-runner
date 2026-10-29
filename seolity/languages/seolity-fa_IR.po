@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: SEOlity 1.0.0\n"
-"POT-Creation-Date: 2026-10-26 15:33+0000\n"
+"POT-Creation-Date: 2026-10-29 13:47+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -26,6 +26,33 @@ msgstr "ارائه‌دهنده هوش مصنوعی پاسخی غیر JSON بر�
 #, php-format
 msgid "%1$s request failed: %2$s"
 msgstr "درخواست %1$s ناموفق بود: %2$s"
+
+msgid "Sent as Anthropic “effort” (Claude 4.6 and newer). Higher = deeper reasoning, slower and more tokens. xhigh/max only on models that support them."
+msgstr "به‌صورت «effort» شرکت Anthropic ارسال می‌شود (Claude 4.6 و جدیدتر). بالاتر = استدلال عمیق‌تر، کندتر و توکن بیشتر. xhigh و max فقط روی مدل‌هایی که پشتیبانی می‌کنند."
+
+msgid "Sent as “reasoning_effort” to reasoning models (o-series, GPT-5). Other models ignore it."
+msgstr "به‌صورت «reasoning_effort» به مدل‌های استدلالی (سری o و GPT-5) ارسال می‌شود. مدل‌های دیگر آن را نادیده می‌گیرند."
+
+msgid "Sent as “reasoning_effort” to reasoning models."
+msgstr "به‌صورت «reasoning_effort» به مدل‌های استدلالی ارسال می‌شود."
+
+msgid "Sent as OpenRouter “reasoning.effort”; OpenRouter translates it for every model that can reason."
+msgstr "به‌صورت «reasoning.effort» در OpenRouter ارسال می‌شود؛ OpenRouter آن را برای هر مدلی که استدلال می‌کند ترجمه می‌کند."
+
+msgid "Sent as Gemini thinking: a thinking budget for Gemini 2.5, the thinking level for Gemini 3."
+msgstr "به‌صورت تفکر Gemini ارسال می‌شود: بودجه تفکر برای Gemini 2.5 و سطح تفکر برای Gemini 3."
+
+msgid "Sent as Ollama “think” for thinking models (gpt-oss uses low / medium / high)."
+msgstr "به‌صورت «think» در Ollama برای مدل‌های تفکری ارسال می‌شود (gpt-oss از low / medium / high استفاده می‌کند)."
+
+msgid "Sent as reasoning_effort (OpenAI format) or effort (Anthropic format). Use “auto” if your provider rejects it."
+msgstr "به‌صورت reasoning_effort (قالب OpenAI) یا effort (قالب Anthropic) ارسال می‌شود. اگر سرویس شما آن را نمی‌پذیرد «خودکار» را انتخاب کنید."
+
+msgid "Sets Claude Code’s extended-thinking budget (MAX_THINKING_TOKENS) on the runner / this server."
+msgstr "بودجه تفکر گسترده Claude Code (MAX_THINKING_TOKENS) را روی اجراکننده / همین سرور تنظیم می‌کند."
+
+msgid "Sets Codex “model_reasoning_effort”."
+msgstr "«model_reasoning_effort» در Codex را تنظیم می‌کند."
 
 msgid "Sending the request to the AI…"
 msgstr "در حال ارسال درخواست به هوش مصنوعی…"
@@ -761,6 +788,9 @@ msgstr "در حال ادغام مقالات تکراری"
 
 msgid "Full-site analysis"
 msgstr "تحلیل کامل سایت"
+
+msgid "Measuring past edits"
+msgstr "اندازه‌گیری ویرایش‌های گذشته"
 
 msgid "AI review of 404 errors"
 msgstr "بررسی هوشمند خطاهای ۴۰۴"
@@ -1655,6 +1685,9 @@ msgstr "کلید محرمانه ناشناخته."
 msgid "auth.json must be valid JSON (copy the whole file from ~/.codex/auth.json)."
 msgstr "auth.json باید JSON معتبر باشد (کل فایل ~/.codex/auth.json را کپی کنید)."
 
+msgid "This level is not available for this AI."
+msgstr "این سطح برای این هوش مصنوعی در دسترس نیست."
+
 msgid "This host does not allow PHP to start programs (proc_open is disabled). Subscriptions can only run through GitHub here."
 msgstr "این هاست اجازه اجرای برنامه به PHP نمی‌دهد (proc_open غیرفعال است). اینجا اشتراک فقط از طریق گیت‌هاب کار می‌کند."
 
@@ -1726,6 +1759,35 @@ msgstr "این دامنه به یک آدرس عمومی اشاره نمی‌کن
 msgid "Competitor not found."
 msgstr "رقیب پیدا نشد."
 
+msgid "Estimate, not their real data: their position in live Google results × the click-through rate of that position × the monthly searches of the query (measured from your own impressions when you rank on page 1; otherwise a lower bound). Track more queries to widen the picture."
+msgstr "تخمین است، نه داده واقعی آن‌ها: جایگاه آن‌ها در نتایج زنده گوگل × نرخ کلیک آن جایگاه × جستجوی ماهانه کوئری (از نمایش‌های خود شما وقتی در صفحه اول هستید اندازه‌گیری می‌شود؛ در غیر این صورت حداقل است). برای تصویر کامل‌تر کوئری‌های بیشتری را پایش کنید."
+
+msgid "Connect an AI engine first (Settings → AI)."
+msgstr "اول یک موتور هوش مصنوعی وصل کنید (تنظیمات ← هوش مصنوعی)."
+
+msgid "Competitor analysis for a query"
+msgstr "تحلیل رقیب برای یک کوئری"
+
+msgid "Reading the stored Google results and history…"
+msgstr "خواندن نتایج ذخیره‌شده گوگل و سابقه…"
+
+msgid "Fetching both pages live and comparing them…"
+msgstr "دریافت زنده هر دو صفحه و مقایسه آن‌ها…"
+
+msgid "AI is analyzing why they rank where they do…"
+msgstr "هوش مصنوعی در حال تحلیل علت جایگاه آن‌هاست…"
+
+#, php-format
+msgid "Beat %1$s for “%2$s”"
+msgstr "پیشی گرفتن از %1$s در «%2$s»"
+
+#, php-format
+msgid "Analysis ready for “%s”"
+msgstr "تحلیل «%s» آماده است"
+
+msgid "Crawl the competitor first (Analyze), then discover its queries."
+msgstr "اول رقیب را بخزید (تحلیل)، سپس کوئری‌هایش را کشف کنید."
+
 msgid "This field cannot be changed by SEOlity."
 msgstr "این فیلد توسط سئولیتی قابل تغییر نیست."
 
@@ -1795,9 +1857,6 @@ msgstr "مقاله اصلی باید یکی از اعضای گروه باشد."
 
 msgid "Choose at least one article to merge into the primary."
 msgstr "حداقل یک مقاله برای ادغام در مقاله اصلی انتخاب کنید."
-
-msgid "Connect an AI engine first (Settings → AI)."
-msgstr "اول یک موتور هوش مصنوعی وصل کنید (تنظیمات ← هوش مصنوعی)."
 
 #, php-format
 msgid "Merge into “%s”"
@@ -2458,6 +2517,10 @@ msgstr "احتمالاً بر رتبه/CTR تأثیر دارد."
 
 msgid "Incremental quality improvement."
 msgstr "بهبود تدریجی کیفیت."
+
+#, php-format
+msgid "%1$s — edited in WordPress (%2$s)"
+msgstr "%1$s — ویرایش در وردپرس (%2$s)"
 
 msgid "Not enough search impressions to judge the effect."
 msgstr "نمایش جستجوی کافی برای قضاوت درباره اثر وجود ندارد."
@@ -5503,8 +5566,8 @@ msgstr "دریافت فهرست مدل‌ها"
 msgid "%s models found. Pick one in the model field."
 msgstr "%s مدل پیدا شد. یکی را در فیلد مدل انتخاب کنید."
 
-msgid "Use any AI service with exactly the settings its documentation gives: choose a ready-made service or fill in the base URL, API format, how the key is sent, extra headers and the model. SEOlity shows the exact request it will send."
-msgstr "هر سرویس هوش مصنوعی را دقیقاً با تنظیماتی که مستنداتش می‌گوید وصل کنید: یک سرویس آماده انتخاب کنید یا Base URL، قالب API، روش ارسال کلید، هدرهای اضافه و مدل را وارد کنید. SEOlity درخواست دقیقی را که می‌فرستد نشان می‌دهد."
+msgid "Use any AI service with exactly the settings its documentation gives: choose a ready-made service or fill in the base URL, API format, how the key is sent and extra headers. SEOlity shows the exact request it will send. After saving, load the models of the endpoint and pick, test and activate one in “2. Model” above — the only place where models are chosen."
+msgstr "هر سرویس هوش مصنوعی را دقیقاً با تنظیماتی که مستنداتش می‌گوید استفاده کنید: یک سرویس آماده انتخاب کنید یا آدرس پایه، قالب API، نحوه ارسال کلید و هدرهای اضافه را وارد کنید. SEOlity درخواست دقیقی را که می‌فرستد نشان می‌دهد. بعد از ذخیره، مدل‌های آن سرویس را بارگیری کنید و در «۲. مدل» بالا یکی را آزمایش و فعال کنید — تنها جایی که مدل انتخاب می‌شود."
 
 msgid "Service"
 msgstr "سرویس"
@@ -5526,12 +5589,6 @@ msgstr "بیشتر سرویس‌ها سازگار با OpenAI هستند. Anthro
 
 msgid "How the key is sent"
 msgstr "روش ارسال کلید"
-
-msgid "Model"
-msgstr "مدل"
-
-msgid "Exact model id from the service (use “Fetch models” to list them)."
-msgstr "شناسه دقیق مدل در سرویس (با «دریافت فهرست مدل‌ها» آن‌ها را ببینید)."
 
 msgid "Structured output"
 msgstr "خروجی ساختاریافته"
@@ -5565,18 +5622,6 @@ msgstr "برای مدل‌های استدلالی که آن را نمی‌پذی
 
 msgid "Save Custom API"
 msgstr "ذخیره API سفارشی"
-
-msgid "Test model"
-msgstr "آزمایش مدل"
-
-msgid "The model works."
-msgstr "مدل کار می‌کند."
-
-msgid "Use for all AI features"
-msgstr "استفاده برای همه قابلیت‌های هوش مصنوعی"
-
-msgid "AI engine switched."
-msgstr "موتور هوش مصنوعی تغییر کرد."
 
 msgid "Custom (fill in by hand)"
 msgstr "سفارشی (دستی پر کنید)"
@@ -5787,12 +5832,54 @@ msgstr "اشتراک‌ها فهرست رسمی مدل ندارند: این‌ه
 msgid "%s models from your account’s model list (loaded %s). ✓ = tested successfully."
 msgstr "%s مدل از فهرست مدل‌های حساب شما (بارگیری %s). ✓ = آزمایش موفق."
 
+msgid "Test model"
+msgstr "آزمایش مدل"
+
 msgid "Test sent to your GitHub runner…"
 msgstr "آزمایش به اجراکننده GitHub شما فرستاده شد…"
+
+msgid "The model works."
+msgstr "مدل کار می‌کند."
+
+msgid "Use for all AI features"
+msgstr "استفاده برای همه قابلیت‌های هوش مصنوعی"
 
 #, php-format
 msgid "AI engine switched: %s"
 msgstr "موتور هوش مصنوعی تغییر کرد: %s"
+
+msgid "Auto (the provider’s default)"
+msgstr "خودکار (پیش‌فرض سرویس)"
+
+msgid "Minimal"
+msgstr "حداقل"
+
+msgid "Low — fastest"
+msgstr "کم — سریع‌ترین"
+
+msgid "High — deeper analysis"
+msgstr "بالا — تحلیل عمیق‌تر"
+
+msgid "Extra high"
+msgstr "بسیار بالا"
+
+msgid "Maximum — strongest, slowest"
+msgstr "حداکثر — قوی‌ترین، کندترین"
+
+msgid "Thinking off"
+msgstr "تفکر خاموش"
+
+msgid "Thinking on"
+msgstr "تفکر روشن"
+
+msgid "Saved"
+msgstr "ذخیره شد"
+
+msgid "3. AI power (reasoning effort)"
+msgstr "۳. توان هوش مصنوعی (سطح استدلال)"
+
+msgid "Higher levels give the most thorough analyses but take longer and use more tokens / plan quota."
+msgstr "سطح‌های بالاتر دقیق‌ترین تحلیل‌ها را می‌دهند اما زمان بیشتری می‌برند و توکن / سهمیه پلن بیشتری مصرف می‌کنند."
 
 #, php-format
 msgid "%s models"
@@ -5909,6 +5996,216 @@ msgstr "%s پیام"
 
 msgid "Delete this conversation?"
 msgstr "این گفتگو حذف شود؟"
+
+#, php-format
+msgid "Previous check: %s"
+msgstr "بررسی قبلی: %s"
+
+msgid "SEOlity searches your tracked queries in Google through the SERP API — location-specific and not personalized, like an incognito search — and stores every result page. All competitor panels are built from this database; each new check adds history."
+msgstr "SEOlity کوئری‌های پایش‌شده شما را از طریق SERP API در گوگل جستجو می‌کند — مخصوص کشور و بدون شخصی‌سازی، مثل جستجوی ناشناس — و هر صفحه نتایج را ذخیره می‌کند. همه پنل‌های رقبا از همین پایگاه داده ساخته می‌شوند و هر بررسی جدید به سابقه اضافه می‌شود."
+
+msgid "Add a SerpApi key in Settings → Crawler & audits to search Google. Scraping Google directly from your server is against Google’s terms and is blocked with CAPTCHAs; a SERP API is the reliable, permitted way."
+msgstr "برای جستجو در گوگل در «تنظیمات ← خزنده و ممیزی» کلید SerpApi را وارد کنید. جستجوی مستقیم گوگل از سرور شما خلاف قوانین گوگل است و با کپچا مسدود می‌شود؛ SERP API راه مطمئن و مجاز است."
+
+msgid "Tracked queries"
+msgstr "کوئری‌های پایش‌شده"
+
+msgid "Searches this month"
+msgstr "جستجوهای این ماه"
+
+msgid "Last check"
+msgstr "آخرین بررسی"
+
+msgid "Add queries to track, separated by commas"
+msgstr "کوئری‌هایی برای پایش اضافه کنید (با ویرگول جدا کنید)"
+
+msgid "Add"
+msgstr "افزودن"
+
+msgid "Checking Google…"
+msgstr "در حال بررسی گوگل…"
+
+msgid "Check Google now"
+msgstr "بررسی گوگل همین حالا"
+
+msgid "Google is being checked for the tracked queries in the background."
+msgstr "گوگل برای کوئری‌های پایش‌شده در پس‌زمینه بررسی می‌شود."
+
+#, php-format
+msgid "Tracked queries (%s)"
+msgstr "کوئری‌های پایش‌شده (%s)"
+
+msgid "Your own queries plus your most important Search Console queries. Each query uses one search per check (at most once a day)."
+msgstr "کوئری‌های خود شما به‌علاوه مهم‌ترین کوئری‌های سرچ کنسول. هر کوئری در هر بررسی یک جستجو مصرف می‌کند (حداکثر روزی یک بار)."
+
+msgid "Who you meet most in Google"
+msgstr "بیشتر با چه کسانی در گوگل روبه‌رو می‌شوید"
+
+msgid "Domain"
+msgstr "دامنه"
+
+msgid "Appears in"
+msgstr "حضور در"
+
+#, php-format
+msgid "%1$s of %2$s queries"
+msgstr "%1$s از %2$s کوئری"
+
+msgid "Add as competitor"
+msgstr "افزودن به‌عنوان رقیب"
+
+msgid "Competitor added. First analysis is running in the background."
+msgstr "رقیب اضافه شد. اولین تحلیل در پس‌زمینه در حال اجراست."
+
+msgid "Google results database"
+msgstr "پایگاه داده نتایج گوگل"
+
+msgid "The AI is comparing the pages — this tab updates by itself."
+msgstr "هوش مصنوعی در حال مقایسه صفحات است — این زبانه خودکار به‌روز می‌شود."
+
+msgid "Can be overtaken"
+msgstr "می‌توان از آن‌ها جلو زد"
+
+msgid "Hard to overtake — match them first"
+msgstr "جلو زدن سخت است — اول هم‌سطح آن‌ها شوید"
+
+#, php-format
+msgid "Confidence %s%"
+msgstr "اطمینان %s%"
+
+msgid "Their page"
+msgstr "صفحه آن‌ها"
+
+msgid "Our page Google shows"
+msgstr "صفحه ما که گوگل نشان می‌دهد"
+
+msgid "Our page that should rank"
+msgstr "صفحه ما که باید رتبه بگیرد"
+
+msgid "Why Google shows this page of ours:"
+msgstr "چرا گوگل این صفحه ما را نشان می‌دهد:"
+
+msgid "Why they rank where they do"
+msgstr "چرا آن‌ها در این جایگاه هستند"
+
+msgid "Factor"
+msgstr "عامل"
+
+msgid "Them"
+msgstr "آن‌ها"
+
+msgid "Us"
+msgstr "ما"
+
+msgid "Basis"
+msgstr "مبنا"
+
+msgid "Measured"
+msgstr "اندازه‌گیری‌شده"
+
+msgid "Hypothesis"
+msgstr "فرضیه"
+
+msgid "What to do, step by step"
+msgstr "چه باید کرد، قدم به قدم"
+
+#, php-format
+msgid "Effort: %s"
+msgstr "زحمت: %s"
+
+msgid "These steps are also in the SEO roadmap (Competitor gaps)."
+msgstr "این قدم‌ها در مسیر راه (شکاف‌ها نسبت به رقبا) هم آمده‌اند."
+
+msgid "Open the roadmap"
+msgstr "باز کردن مسیر راه"
+
+msgid "All competitors"
+msgstr "همه رقبا"
+
+msgid "Discover their queries"
+msgstr "کشف کوئری‌های آن‌ها"
+
+msgid "Queries where they appear"
+msgstr "کوئری‌هایی که در آن‌ها حضور دارند"
+
+msgid "Above us"
+msgstr "بالاتر از ما"
+
+msgid "Below us"
+msgstr "پایین‌تر از ما"
+
+msgid "Only them (we are not in top 20)"
+msgstr "فقط آن‌ها (ما در ۲۰ نتیجه اول نیستیم)"
+
+msgid "Their estimated clicks / month"
+msgstr "کلیک تخمینی ماهانه آن‌ها"
+
+msgid "Queries"
+msgstr "کوئری‌ها"
+
+msgid "Estimated Search Console"
+msgstr "سرچ کنسول تخمینی"
+
+msgid "Their pages"
+msgstr "صفحات آن‌ها"
+
+msgid "No Google data for this competitor yet"
+msgstr "هنوز داده‌ای از گوگل برای این رقیب نیست"
+
+msgid "Press “Check Google now”. The competitor appears here for every tracked query where it is in the top 20."
+msgstr "«بررسی گوگل همین حالا» را بزنید. رقیب برای هر کوئری پایش‌شده‌ای که در ۲۰ نتیجه اول باشد اینجا نمایش داده می‌شود."
+
+msgid "Add a SerpApi key in Settings → Crawler & audits to search Google."
+msgstr "برای جستجو در گوگل در «تنظیمات ← خزنده و ممیزی» کلید SerpApi را وارد کنید."
+
+msgid "not in top 20"
+msgstr "در ۲۰ نتیجه اول نیست"
+
+#, php-format
+msgid "Search Console: %s"
+msgstr "سرچ کنسول: %s"
+
+msgid "Their est. clicks"
+msgstr "کلیک تخمینی آن‌ها"
+
+msgid "no volume data"
+msgstr "داده حجم جستجو نیست"
+
+msgid "Open analysis"
+msgstr "باز کردن تحلیل"
+
+msgid "Why? Analyze"
+msgstr "چرا؟ تحلیل کن"
+
+msgid "Queries their pages probably target (AI)"
+msgstr "کوئری‌هایی که صفحات آن‌ها احتمالاً هدف گرفته‌اند (هوش مصنوعی)"
+
+msgid "Track selected and check Google"
+msgstr "پایش موارد انتخاب‌شده و بررسی گوگل"
+
+msgid "Estimated clicks / month"
+msgstr "کلیک تخمینی ماهانه"
+
+msgid "Queries found"
+msgstr "کوئری‌های پیداشده"
+
+msgid "With measured volume"
+msgstr "با حجم اندازه‌گیری‌شده"
+
+msgid "Est. impressions"
+msgstr "نمایش تخمینی"
+
+msgid "Est. clicks"
+msgstr "کلیک تخمینی"
+
+msgid "Updated"
+msgstr "به‌روزرسانی"
+
+msgid "No pages crawled yet"
+msgstr "هنوز صفحه‌ای خزیده نشده"
+
+msgid "Use “Analyze now” on the competitors page to read their sitemap and pages."
+msgstr "در صفحه رقبا «تحلیل همین حالا» را بزنید تا نقشه سایت و صفحات آن‌ها خوانده شود."
 
 msgid "Connected"
 msgstr "متصل"
@@ -6104,12 +6401,6 @@ msgstr "هفتگی"
 msgid "Monthly"
 msgstr "ماهانه"
 
-msgid "Add"
-msgstr "افزودن"
-
-msgid "Competitor added. First analysis is running in the background."
-msgstr "رقیب اضافه شد. اولین تحلیل در پس‌زمینه در حال اجراست."
-
 msgid "Add 2–5 real SEO competitors (sites that rank for your keywords)."
 msgstr "۲ تا ۵ رقیب واقعی سئو (سایت‌هایی که برای کلمات کلیدی شما رتبه دارند) اضافه کنید."
 
@@ -6143,6 +6434,9 @@ msgstr "خلاصه هوش مصنوعی پس از پایان تحلیل نمای�
 
 msgid "Content sections"
 msgstr "بخش‌های محتوایی"
+
+msgid "Open panel"
+msgstr "باز کردن پنل"
 
 msgid "Content gap"
 msgstr "شکاف محتوایی"
@@ -6180,8 +6474,14 @@ msgstr "اولین مشاهده"
 msgid "SEO Experiments"
 msgstr "آزمایش‌های سئو"
 
-msgid "Every applied change becomes an experiment: equal before/after windows, adjusted by the site-wide trend (control), judged Positive / Negative / Neutral / Inconclusive."
-msgstr "هر تغییر اعمال‌شده به یک آزمایش تبدیل می‌شود: بازه‌های برابر قبل/بعد، تعدیل‌شده با روند کل سایت (گروه کنترل)، با نتیجه مثبت / منفی / خنثی / نامشخص."
+msgid "Every edit becomes an experiment — SEOlity’s own changes and edits made in WordPress or a page builder: equal before/after windows, adjusted by the site-wide trend (control), judged Positive / Negative / Neutral / Inconclusive, down to each query."
+msgstr "هر ویرایش یک آزمایش است — تغییرات خود SEOlity و ویرایش‌هایی که در وردپرس یا صفحه‌ساز انجام می‌شود: بازه‌های برابر قبل و بعد، تعدیل‌شده با روند کل سایت (گروه کنترل)، با نتیجه مثبت / منفی / خنثی / نامشخص، تا سطح هر کوئری."
+
+msgid "Analyze the edit history"
+msgstr "تحلیل سابقه ویرایش‌ها"
+
+msgid "Past edits (WordPress revisions) within your Search Console period are being measured in the background."
+msgstr "ویرایش‌های گذشته (نسخه‌های بازبینی وردپرس) در بازه سرچ کنسول شما در پس‌زمینه اندازه‌گیری می‌شوند."
 
 msgid "Evaluate now"
 msgstr "همین حالا ارزیابی کن"
@@ -6204,12 +6504,22 @@ msgstr "در حال یادگیری"
 msgid "After a few experiments are evaluated, SEOlity learns which changes work best on your site and uses it in every AI suggestion."
 msgstr "پس از ارزیابی چند آزمایش، سئولیتی یاد می‌گیرد کدام تغییرات روی سایت شما بهتر جواب می‌دهد و از آن در همه پیشنهادهای هوش مصنوعی استفاده می‌کند."
 
+msgid "Edited in WordPress"
+msgstr "ویرایش در وردپرس"
+
+msgid "Past edit"
+msgstr "ویرایش گذشته"
+
 msgid "Before → After"
 msgstr "قبل ← بعد"
 
 #, php-format
 msgid "Window: %s days"
 msgstr "بازه: %s روز"
+
+#, php-format
+msgid "Per query (%s)"
+msgstr "به تفکیک کوئری (%s)"
 
 msgid "Revert"
 msgstr "بازگردانی"
@@ -6611,9 +6921,6 @@ msgstr "هشداری نیست"
 
 msgid "SEOlity checks for important changes every hour."
 msgstr "سئولیتی هر ساعت تغییرات مهم را بررسی می‌کند."
-
-msgid "Saved"
-msgstr "ذخیره شد"
 
 msgid "Not tested"
 msgstr "آزمون نشده"
@@ -7444,9 +7751,6 @@ msgstr "توزیع رتبه‌ها"
 
 msgid "Countries & Devices"
 msgstr "کشورها و دستگاه‌ها"
-
-msgid "Queries"
-msgstr "کوئری‌ها"
 
 msgid "Click change"
 msgstr "تغییر کلیک"
@@ -8307,6 +8611,9 @@ msgstr "اصلی"
 
 msgid "Edit HTML"
 msgstr "ویرایش HTML"
+
+msgid "Model"
+msgstr "مدل"
 
 msgid "Knowledge"
 msgstr "دانش"

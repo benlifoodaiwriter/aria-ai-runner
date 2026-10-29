@@ -4,7 +4,7 @@ Tags: seo, ai, search console, woocommerce, schema
 Requires at least: 6.2
 Tested up to: 6.6
 Requires PHP: 7.4
-Stable tag: 1.10.0
+Stable tag: 1.11.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -72,6 +72,13 @@ Yes. The interface is fully translated and RTL-native, text analysis understands
 Enable "Delete all data on uninstall" in Settings → Privacy, then delete the plugin.
 
 == Changelog ==
+
+= 1.11.0 =
+* The AI now sees every detail of Search Console: for any query or page named in a question (or matched from your stored queries) it gets the weekly clicks, impressions and position for the whole stored period, which of your pages Google showed in which week (page swaps — e.g. "why does the category page rank instead of the home page"), the sharpest drop with the edits made around it, the measured results of past edits and the home page's own numbers. Answers like "only site totals are available" no longer happen when the data exists.
+* Edit history: edits made in WordPress or a page builder are measured like SEOlity's own changes, and "Analyze the edit history" measures past edits from WordPress revisions inside your Search Console period — each with a before/after verdict (positive, negative, neutral) and the position change of every main query.
+* New competitor workspace: SEOlity searches your tracked queries in Google through the SERP API (location-specific, not personalized — the incognito view; scraping Google directly is against its terms and blocked) and stores every result page as history. Each competitor has its own panel: every query where it is above or below you with its page and trend, its estimated Search Console (queries, pages, clicks — clearly marked as an estimate and how it is calculated), its crawled pages, AI discovery of the queries its pages target, and a tab per analyzed query in which the AI compares their page with yours from the live results, both pages, People Also Ask and your Search Console history, explains why they rank where they do (measured vs. hypothesis), why Google shows the page of yours it shows, and gives ordered steps — which also go to the SEO roadmap. Domains you meet most in Google are suggested as competitors. A monthly search budget prevents surprise costs.
+* AI power level per connection (Settings → AI → each provider → "3. AI power"): sent in each provider's real parameter — Anthropic effort, OpenAI reasoning_effort (reasoning models), OpenRouter reasoning.effort, Gemini thinking budget / level, Ollama think, Claude Code MAX_THINKING_TOKENS and Codex model_reasoning_effort; a model that rejects it is asked again without it.
+* Models are chosen in one place only: Settings → AI (the subscription wizard and the custom API form no longer have their own model fields); the list always comes from the provider.
 
 = 1.10.0 =
 * New: AI review of 404 errors (404 Monitor → "AI review: 301, 410 or leave?"). For every open 404 SEOlity collects the evidence — Search Console clicks/impressions/position of that exact URL, internal links still pointing to it, external referrers, human vs. Googlebot requests, deleted posts at that address and how close each candidate page is — and the AI decides per URL: 301 to a genuine equivalent (to keep its rankings and move crawling to the new URL), 410 when it is gone for good, leave it as 404 when it has no value, or fix a mistyped internal link. It also says honestly whether the 404s cost crawl budget on a site of your size. The AI may only pick targets SEOlity checked; nothing changes until you approve; every 301 and 410 is verified on the live site and the whole review can be undone.
