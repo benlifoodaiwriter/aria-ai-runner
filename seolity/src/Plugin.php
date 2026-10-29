@@ -152,6 +152,7 @@ final class Plugin {
 			'githubhub'       => Storage\GitHubHub::class,
 			'competitors'     => Competitors\CompetitorService::class,
 			'intel'           => Competitors\Intel::class,
+			'ai_visibility'   => Serp\AiVisibility::class,
 			'experiments'     => Experiments\ExperimentService::class,
 			'learning'        => Experiments\Learning::class,
 			'health'          => Health\HealthScore::class,

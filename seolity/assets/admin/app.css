@@ -657,3 +657,7 @@ button.sl-segcard { cursor: pointer; }
 .sl-tabs { overflow-x: auto; }
 .sl-chip__x { border: 0; background: none; cursor: pointer; padding: 0 0 0 4px; color: var(--sl-muted); font-size: 14px; line-height: 1; }
 .sl-exp-q ul { margin: 4px 0; padding-inline-start: 18px; }
+.sl-srcs { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 10px; }
+.sl-src { display: flex; flex-direction: column; gap: 6px; padding: 12px; border: 1px solid var(--sl-border); border-radius: 12px; background: var(--sl-surface); cursor: pointer; }
+.sl-src.is-on { border-color: var(--sl-brand); }
+.sl-src p { margin: 0; }

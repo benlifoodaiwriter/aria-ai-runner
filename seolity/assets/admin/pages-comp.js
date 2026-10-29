@@ -34,10 +34,23 @@
 		App.load( box, SL.api( 'serp/tracking' ), function ( r ) {
 			var b = r.budget;
 			var body = h( 'div', { class: 'sl-stack' } );
+			var sourceLabel = h( 'b', { text: '…' } );
+			SL.api( 'serp/sources' ).then( function ( src ) {
+				var c = src.sources[ src.source ] || {};
+				sourceLabel.textContent = c.label || src.source;
+				if ( 'manual' === src.source ) {
+					body.appendChild( bookmarklet() );
+				}
+			} ).catch( function () {} );
 			body.appendChild( h( 'p', { class: 'sl-muted', text: t( 'SEOlity searches your tracked queries in Google through the SERP API — location-specific and not personalized, like an incognito search — and stores every result page. All competitor panels are built from this database; each new check adds history.' ) } ) );
 			if ( ! b.available ) {
-				body.appendChild( h( 'div', { class: 'sl-alert sl-alert--warn', text: t( 'Add a SerpApi key in Settings → Crawler & audits to search Google. Scraping Google directly from your server is against Google’s terms and is blocked with CAPTCHAs; a SERP API is the reliable, permitted way.' ) } ) );
+				body.appendChild( h( 'div', { class: 'sl-alert sl-alert--info', text: t( 'Automatic Google checks need a results source. Choose one with “Change source” — several are free, and “Your own browser” needs no key or account at all.' ) } ) );
 			}
+			body.appendChild( h( 'div', { class: 'sl-row' }, h( 'span', { class: 'sl-muted', text: t( 'Source of Google results:' ) } ), sourceLabel, App.cap( 'manage' ) ? App.btn( t( 'Change source' ), function () {
+				App.serpSources( function () {
+					App.serpCard( box, onChange );
+				} );
+			}, 'sm' ) : null ) );
 			body.appendChild( h( 'div', { class: 'sl-kpis' },
 				App.kpi( t( 'Tracked queries' ), SL.num( r.queries.length, 0 ) ),
 				App.kpi( t( 'Searches this month' ), SL.num( b.used, 0 ) + ( b.limit ? ' / ' + SL.num( b.limit, 0 ) : '' ) ),
@@ -92,7 +105,184 @@
 				], r.suggestions ) );
 			}
 			box.appendChild( App.card( t( 'Google results database' ), body, { icon: 'search' } ) );
+			var aiBox = h( 'div' );
+			box.appendChild( aiBox );
+			App.aiVisibilityCard( aiBox );
 		} );
+	};
+
+	/** Bookmarklet: sends the Google results page the user opened to this site (no key, no account). */
+	function bookmarklet() {
+		var target = location.origin + location.pathname + '?page=seolity';
+		var code = "javascript:(()=>{const S=" + JSON.stringify( target ) + ";const q=new URLSearchParams(location.search).get('q')||(document.querySelector('[name=q]')||{}).value||'';const seen=new Set(),res=[];document.querySelectorAll('a h3').forEach(h=>{const a=h.closest('a');if(!a)return;let u=a.href;try{const x=new URL(u);if(x.pathname==='/url')u=x.searchParams.get('q')||x.searchParams.get('url')||u;if(/(^|\.)google\./.test(new URL(u).hostname))return;}catch(e){return}if(!/^https?:/.test(u)||seen.has(u))return;seen.add(u);const b=a.closest('[data-hveid]')||a.parentElement;res.push({title:h.innerText,url:u,snippet:b?(b.innerText||'').replace(h.innerText,'').trim().slice(0,300):''})});const qs=[...document.querySelectorAll('[data-q]')].map(e=>e.getAttribute('data-q')).slice(0,10);if(!res.length){alert('SEOlity: no results found on this page.');return}window.open(S+'#/serp-import?d='+encodeURIComponent(JSON.stringify({query:q,results:res.slice(0,50),questions:qs})),'_blank')})()";
+		return h( 'div', { class: 'sl-alert sl-alert--info sl-stack' },
+			h( 'b', { text: t( 'No-key source: your own browser' ) } ),
+			h( 'ol', { class: 'sl-small' },
+				h( 'li', { text: t( 'Drag this button to your browser’s bookmarks bar:' ) } ),
+				h( 'li', { text: t( 'Open google.com in an incognito window and search a query (set the country/language you target).' ) } ),
+				h( 'li', { text: t( 'Click the bookmark on the results page: the results open here and are saved with one click.' ) } )
+			),
+			h( 'div', {}, h( 'a', { class: 'sl-btn sl-btn--primary', href: code, onClick: function ( e ) {
+				e.preventDefault();
+				SL.toast( t( 'Drag the button to the bookmarks bar, then use it on a Google results page.' ) );
+			}, text: t( 'SEOlity: send Google results' ) } ) )
+		);
+	}
+
+	/** Choose where Google results come from (free and paid options, with what signing up needs). */
+	App.serpSources = function ( onSaved ) {
+		var m = SL.modal( { title: t( 'Source of Google results' ), wide: true } );
+		App.load( m.body, SL.api( 'serp/sources' ), function ( r ) {
+			var chosen = r.source;
+			var inputs = {};
+			var list = h( 'div', { class: 'sl-srcs' } );
+			Object.keys( r.sources ).forEach( function ( id ) {
+				var c = r.sources[ id ];
+				var fields = h( 'div', { class: 'sl-form' } );
+				c.fields.forEach( function ( f ) {
+					var secret = /key|password/.test( f );
+					inputs[ id + ':' + f ] = h( 'input', { class: 'sl-input', dir: 'ltr', type: secret ? 'password' : 'text', autocomplete: 'off', placeholder: c.values[ f ] ? t( 'saved — enter a new one to replace' ) : f } );
+					if ( ! secret ) {
+						inputs[ id + ':' + f ].value = c.values[ f ] || '';
+					}
+					fields.appendChild( App.field( f, inputs[ id + ':' + f ] ) );
+				} );
+				var radio = h( 'input', { type: 'radio', name: 'sl-src', checked: id === chosen, onChange: function () {
+					chosen = id;
+				} } );
+				list.appendChild( h( 'label', { class: 'sl-src' + ( id === chosen ? ' is-on' : '' ) },
+					h( 'div', { class: 'sl-row' }, radio, h( 'b', { text: c.label } ), c.ready ? SL.badge( t( 'Ready' ), 'good' ) : null ),
+					h( 'div', { class: 'sl-chips' }, SL.badge( c.cost, 'brand' ), SL.badge( c.signup, '' ) ),
+					h( 'p', { class: 'sl-small sl-muted', text: c.note } ),
+					c.url ? h( 'a', { class: 'sl-small', href: c.url, target: '_blank', rel: 'noopener', text: t( 'Get the key' ) + ' ↗' } ) : null,
+					fields
+				) );
+			} );
+			m.body.appendChild( h( 'p', { class: 'sl-muted', text: t( 'Google forbids scraping its result pages from servers (and blocks it with CAPTCHAs), so SEOlity uses official or commercial results APIs — or your own browser, which needs nothing at all.' ) } ) );
+			m.body.appendChild( list );
+			m.body.appendChild( h( 'div', { class: 'sl-row' }, App.abtn( t( 'Save' ), function () {
+				var values = {};
+				Object.keys( inputs ).forEach( function ( k ) {
+					var p2 = k.split( ':' );
+					if ( p2[ 0 ] === chosen && inputs[ k ].value.trim() ) {
+						values[ p2[ 1 ] ] = inputs[ k ].value.trim();
+					}
+				} );
+				return SL.api( 'serp/sources', { body: { source: chosen, values: values } } ).then( function ( res ) {
+					SL.toast( res.ready ? t( 'Saved — the source is ready.' ) : t( 'Saved, but the source still needs its key.' ), res.ready ? 'success' : 'warn' );
+					m.close();
+					if ( onSaved ) {
+						onSaved();
+					}
+				} );
+			}, 'primary' ) ) );
+		} );
+	};
+
+	/** AI search visibility: are we cited by Gemini / Claude / ChatGPT / Perplexity for our queries? */
+	App.aiVisibilityCard = function ( box ) {
+		var timer;
+		function load() {
+			clearTimeout( timer );
+			Promise.all( [ SL.api( 'serp/ai-visibility' ), SL.api( 'serp/sources' ) ] ).then( function ( res ) {
+				var r = res[ 0 ];
+				var src = res[ 1 ];
+				SL.clear( box );
+				var body = h( 'div', { class: 'sl-stack' } );
+				body.appendChild( h( 'p', { class: 'sl-muted', text: t( 'AI answer engines search the web and cite sources. SEOlity asks them your tracked queries and records whether your site is cited, in which place, and which competitors are cited instead. Uses the keys already saved for your AI connections.' ) } ) );
+				var on = {};
+				var engines = h( 'div', { class: 'sl-srcs' } );
+				var pkey = h( 'input', { class: 'sl-input', dir: 'ltr', type: 'password', placeholder: 'pplx-…' } );
+				Object.keys( src.ai_engines ).forEach( function ( id ) {
+					var e = src.ai_engines[ id ];
+					on[ id ] = src.ai_enabled.indexOf( id ) >= 0;
+					engines.appendChild( h( 'label', { class: 'sl-src' },
+						h( 'div', { class: 'sl-row' }, h( 'input', { type: 'checkbox', checked: on[ id ], onChange: function ( ev ) {
+							on[ id ] = ev.target.checked;
+						} } ), h( 'b', { text: e.label } ), e.has_key ? SL.badge( t( 'Key saved' ), 'good' ) : SL.badge( t( 'No key yet' ), 'warn' ) ),
+						h( 'p', { class: 'sl-small sl-muted', text: e.cost } ),
+						'perplexity' === id && ! e.has_key ? pkey : null
+					) );
+				} );
+				body.appendChild( engines );
+				body.appendChild( h( 'div', { class: 'sl-row' },
+					App.cap( 'manage' ) ? App.abtn( t( 'Save engines' ), function () {
+						var list = Object.keys( on ).filter( function ( k ) {
+							return on[ k ];
+						} );
+						return SL.api( 'serp/sources', { body: { source: src.source, values: {}, ai_engines: list, perplexity_api_key: pkey.value.trim() } } ).then( load );
+					} ) : null,
+					App.cap( 'ai' ) ? App.abtn( SL.il( 'sparkles', r.running ? t( 'Checking AI search…' ) : t( 'Check AI search now' ), 14 ), function () {
+						return SL.api( 'serp/ai-visibility/check', { method: 'POST' } ).then( load );
+					}, 'primary', { disabled: r.running } ) : null
+				) );
+				if ( r.last && r.last.errors && Object.keys( r.last.errors ).length ) {
+					body.appendChild( h( 'div', { class: 'sl-alert sl-alert--error', text: Object.keys( r.last.errors ).map( function ( k ) {
+						return r.last.errors[ k ];
+					} ).join( ' · ' ) } ) );
+				}
+				if ( r.items.length ) {
+					var names = {};
+					Object.keys( src.ai_engines ).forEach( function ( id ) {
+						names[ id ] = src.ai_engines[ id ].label;
+					} );
+					var cols = [ { label: t( 'Query' ), render: function ( x ) {
+						return h( 'b', { dir: 'auto', text: x.query } );
+					} } ];
+					Object.keys( src.ai_engines ).forEach( function ( id ) {
+						cols.push( { label: names[ id ], render: function ( x ) {
+							var e = x.engines[ id ];
+							if ( ! e ) {
+								return '—';
+							}
+							return h( 'div', { title: e.answer }, e.cited_at ? SL.badge( t( 'Cited #%s', e.cited_at ), 'good' ) : SL.badge( t( 'Not cited' ), 'bad' ), e.competitors.length ? h( 'div', { class: 'sl-small sl-muted', dir: 'ltr', text: e.competitors.map( function ( c ) {
+								return c.domain + ' #' + c.position;
+							} ).join( ', ' ) } ) : null );
+						} } );
+					} );
+					body.appendChild( App.table( cols, r.items ) );
+				}
+				box.appendChild( App.card( t( 'Visibility in AI search' ), body, { icon: 'sparkles' } ) );
+				if ( r.running ) {
+					timer = setTimeout( function () {
+						if ( d.body.contains( box ) ) {
+							load();
+						}
+					}, 6000 );
+				}
+			} ).catch( SL.fail );
+		}
+		load();
+	};
+
+	/** Receives the results the bookmarklet read from a Google results page. */
+	App.pages[ 'serp-import' ] = function ( v, q ) {
+		var data = null;
+		try {
+			data = JSON.parse( q.d || '' );
+		} catch ( e ) {
+			data = null;
+		}
+		v.appendChild( App.header( t( 'Import Google results' ), t( 'Results read by the SEOlity bookmark from the Google page you opened.' ) ) );
+		if ( ! data || ! data.results || ! data.results.length ) {
+			v.appendChild( SL.empty( t( 'Nothing to import' ), t( 'Open a Google results page and click the SEOlity bookmark.' ) ) );
+			return;
+		}
+		v.appendChild( h( 'p', null, h( 'b', { text: t( 'Query:' ) + ' ' } ), h( 'span', { dir: 'auto', text: data.query } ) ) );
+		v.appendChild( App.table( [
+			{ label: '#', render: function ( x, i ) {
+				return String( data.results.indexOf( x ) + 1 );
+			} },
+			{ label: t( 'Result' ), render: function ( x ) {
+				return h( 'div', null, h( 'b', { dir: 'auto', text: x.title } ), link( x.url ) );
+			} },
+		], data.results ) );
+		v.appendChild( h( 'div', { class: 'sl-row' }, App.abtn( t( 'Save to the Google results database' ), function () {
+			return SL.api( 'serp/import', { body: data } ).then( function ( r ) {
+				SL.toast( t( '%s results saved.', r.results ), 'success' );
+				location.hash = '#/competitors';
+			} );
+		}, 'primary' ) ) );
 	};
 
 	function analysisView( a ) {

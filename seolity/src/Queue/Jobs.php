@@ -37,6 +37,9 @@ final class Jobs {
 			$p->experiments->evaluate_due();
 			return true;
 		} );
+		$q->handler( 'ai_visibility_check', static function ( $a ) use ( $p ) {
+			return $p->ai_visibility->check( isset( $a['queries'] ) ? (array) $a['queries'] : array() );
+		} );
 		$q->handler( 'serp_track', static function ( $a ) use ( $p ) {
 			return $p->intel->track( isset( $a['queries'] ) ? (array) $a['queries'] : array() );
 		} );
@@ -228,6 +231,10 @@ final class Jobs {
 		$lt = get_option( 'seolity_serp_last_track' );
 		if ( $p->serp->available() && ( ! is_array( $lt ) || strtotime( $lt['at'] ) < time() - 6 * DAY_IN_SECONDS ) ) {
 			$q->push( 'serp_track', array(), array( 'unique' => true, 'priority' => 20, 'max_attempts' => 1, 'timeout' => 1800 ) );
+		}
+		$lv = get_option( 'seolity_ai_visibility_last' );
+		if ( $p->ai_visibility->enabled() && ( ! is_array( $lv ) || strtotime( $lv['at'] ) < time() - 6 * DAY_IN_SECONDS ) ) {
+			$q->push( 'ai_visibility_check', array(), array( 'unique' => true, 'priority' => 21, 'max_attempts' => 1, 'timeout' => 1800 ) );
 		}
 		foreach ( $p->competitors->due_ids() as $cid ) {
 			$q->push( 'competitor_analyze', array( 'id' => $cid ), array( 'unique' => true, 'priority' => 25 ) );

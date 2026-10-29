@@ -854,6 +854,9 @@ final class Database {
 				project_id bigint(20) unsigned NOT NULL DEFAULT 1,
 				query varchar(500) NOT NULL,
 				query_hash char(40) NOT NULL,
+				engine varchar(30) NOT NULL DEFAULT 'google',
+				source varchar(20) NOT NULL DEFAULT 'api',
+				answer longtext NULL,
 				gl varchar(10) NOT NULL DEFAULT '',
 				hl varchar(10) NOT NULL DEFAULT '',
 				features text NULL,
@@ -864,6 +867,7 @@ final class Database {
 				checked_at datetime NOT NULL,
 				PRIMARY KEY  (id),
 				KEY query (project_id,query_hash,checked_at),
+				KEY engine (project_id,engine,query_hash),
 				KEY checked (project_id,checked_at)
 			) $c;",
 			"CREATE TABLE {$t('serp_results')} (

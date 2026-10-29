@@ -44,8 +44,13 @@ final class SerpService {
 		$this->plugin = $plugin;
 	}
 
+	public function source() {
+		return (string) $this->plugin->settings->get( 'serp_source', 'serpapi' );
+	}
+
+	/** Automatic searches possible (a configured API source; the browser source is manual). */
 	public function available() {
-		return (bool) $this->plugin->settings->secret( 'serp_api_key' );
+		return 'manual' !== $this->source() && Sources::ready( $this->plugin, $this->source() );
 	}
 
 	/** A SERP fetched earlier for this keyword (default market), without calling the API. */
@@ -81,9 +86,8 @@ final class SerpService {
 		if ( '' === $keyword ) {
 			return new \WP_Error( 'seolity_serp_keyword', __( 'Enter a keyword.', 'seolity' ), array( 'status' => 400 ) );
 		}
-		$key = $this->plugin->settings->secret( 'serp_api_key' );
-		if ( ! $key ) {
-			return new \WP_Error( 'seolity_serp_key', __( 'Add a SERP API key (SerpApi) in Settings → Crawler & audits to analyze live search results.', 'seolity' ), array( 'status' => 400 ) );
+		if ( ! $this->available() ) {
+			return new \WP_Error( 'seolity_serp_key', __( 'Choose and set up a Google results source in Settings → Crawler & audits (several free options, one needs no key at all).', 'seolity' ), array( 'status' => 400 ) );
 		}
 		list( $gl, $hl ) = $this->locale( $market );
 		$cache_key       = 'seolity_serp_' . md5( $keyword . '|' . $gl . '|' . $hl . ( 10 === $num ? '' : '|' . $num ) );
@@ -91,27 +95,11 @@ final class SerpService {
 		if ( is_array( $cached ) ) {
 			return $cached;
 		}
-		$url = add_query_arg(
-			array(
-				'engine'  => 'google',
-				'q'       => rawurlencode( $keyword ),
-				'gl'      => $gl,
-				'hl'      => $hl,
-				'num'     => $num,
-				'api_key' => rawurlencode( (string) $key ),
-			),
-			self::ENDPOINT
-		);
-		$res = Http::json( 'GET', $url, null, array(), 45 );
-		if ( is_wp_error( $res ) ) {
-			return $res;
+		$data = Sources::search( $this->plugin, $this->source(), $keyword, $gl, $hl, $num );
+		if ( is_wp_error( $data ) ) {
+			return $data;
 		}
-		if ( 200 !== $res['status'] || ! is_array( $res['body'] ) || ! empty( $res['body']['error'] ) ) {
-			$msg = is_array( $res['body'] ) && ! empty( $res['body']['error'] ) ? (string) $res['body']['error'] : 'HTTP ' . $res['status'];
-			/* translators: %s: error from the SERP API */
-			return new \WP_Error( 'seolity_serp_api', sprintf( __( 'SERP API error: %s', 'seolity' ), $msg ), array( 'status' => 502 ) );
-		}
-		$data = self::normalize( $res['body'], $keyword, $gl, $num );
+		$data = array_merge( array( 'keyword' => $keyword, 'market' => $gl, 'fetched' => gmdate( 'c' ), 'source' => $this->source() ), $data );
 		set_transient( $cache_key, $data, self::CACHE_TTL );
 		return $data;
 	}

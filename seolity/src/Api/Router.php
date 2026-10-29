@@ -800,6 +800,79 @@ final class Router {
 			}
 			return array( 'queries' => $p->intel->add_queries( $q ) );
 		} );
+		$this->route( 'GET', '/serp/sources', 'manage', function () use ( $p ) {
+			$cat = \SEOlity\Serp\Sources::catalog();
+			foreach ( $cat as $id => &$c ) {
+				$c['ready']  = \SEOlity\Serp\Sources::ready( $p, $id );
+				$c['values'] = array();
+				foreach ( $c['fields'] as $f ) {
+					// Secrets are never sent back; only whether one is saved.
+					$c['values'][ $f ] = in_array( $f, \SEOlity\Core\Settings::SECRET_FIELDS, true ) ? ( $p->settings->secret( $f ) ? '••••' : '' ) : (string) $p->settings->get( $f );
+				}
+			}
+			unset( $c );
+			$ai = \SEOlity\Serp\AiVisibility::catalog();
+			foreach ( $ai as $id => &$e ) {
+				$e['has_key'] = (bool) $p->settings->secret( $e['key'] );
+			}
+			unset( $e );
+			return array( 'source' => $p->serp->source(), 'sources' => $cat, 'ai_engines' => $ai, 'ai_enabled' => array_filter( array_map( 'trim', explode( ',', (string) $p->settings->get( 'ai_visibility_engines' ) ) ) ) );
+		} );
+		$this->route( 'POST', '/serp/sources', 'manage', function ( Req $r ) use ( $p ) {
+			$src = self::key( $r, 'source' );
+			if ( ! isset( \SEOlity\Serp\Sources::catalog()[ $src ] ) ) {
+				return new \WP_Error( 'seolity_serp', __( 'Unknown source.', 'seolity' ), array( 'status' => 400 ) );
+			}
+			$set = array( 'serp_source' => $src );
+			foreach ( (array) $r->get_param( 'values' ) as $f => $v ) {
+				$v = trim( (string) $v );
+				if ( ! in_array( $f, \SEOlity\Serp\Sources::catalog()[ $src ]['fields'], true ) || '••••' === $v ) {
+					continue;
+				}
+				if ( in_array( $f, \SEOlity\Core\Settings::SECRET_FIELDS, true ) ) {
+					if ( '' !== $v ) {
+						$p->settings->set_secret( $f, $v );
+					}
+				} else {
+					$set[ $f ] = sanitize_text_field( $v );
+				}
+			}
+			if ( $r->get_param( 'ai_engines' ) !== null ) {
+				$set['ai_visibility_engines'] = implode( ',', array_intersect( array_map( 'sanitize_key', (array) $r->get_param( 'ai_engines' ) ), array_keys( \SEOlity\Serp\AiVisibility::catalog() ) ) );
+			}
+			if ( $r->get_param( 'perplexity_api_key' ) ) {
+				$p->settings->set_secret( 'perplexity_api_key', (string) $r->get_param( 'perplexity_api_key' ) );
+			}
+			$p->settings->update( $set );
+			return array( 'ok' => true, 'ready' => \SEOlity\Serp\Sources::ready( $p, $src ) );
+		} );
+		$this->route( 'POST', '/serp/import', 'manage', function ( Req $r ) use ( $p ) {
+			$q    = trim( sanitize_text_field( (string) $r->get_param( 'query' ) ) );
+			$rows = array();
+			foreach ( array_slice( (array) $r->get_param( 'results' ), 0, 100 ) as $i => $x ) {
+				$u = esc_url_raw( isset( $x['url'] ) ? (string) $x['url'] : '' );
+				if ( $u && preg_match( '#^https?://#', $u ) ) {
+					$rows[] = array( 'position' => count( $rows ) + 1, 'title' => sanitize_text_field( isset( $x['title'] ) ? $x['title'] : '' ), 'url' => $u, 'domain' => preg_replace( '/^www\./', '', strtolower( (string) wp_parse_url( $u, PHP_URL_HOST ) ) ), 'snippet' => sanitize_text_field( isset( $x['snippet'] ) ? $x['snippet'] : '' ) );
+				}
+			}
+			if ( '' === $q || ! $rows ) {
+				return new \WP_Error( 'seolity_serp', __( 'No search results were found on that page.', 'seolity' ), array( 'status' => 400 ) );
+			}
+			$sid = $p->intel->snapshot( $q, array( 'results' => $rows, 'questions' => array_map( 'sanitize_text_field', (array) $r->get_param( 'questions' ) ), 'related' => array_map( 'sanitize_text_field', (array) $r->get_param( 'related' ) ), 'features' => array() ), 'manual' );
+			$p->intel->add_queries( array( $q ) );
+			return array( 'snapshot_id' => $sid, 'results' => count( $rows ) );
+		} );
+		$this->route( 'GET', '/serp/ai-visibility', 'view', function () use ( $p ) {
+			return array( 'items' => $p->ai_visibility->overview(), 'enabled' => $p->ai_visibility->enabled(), 'last' => get_option( 'seolity_ai_visibility_last' ), 'running' => (bool) $p->queue->find_unique( 'ai_visibility_check', true ) );
+		} );
+		$this->route( 'POST', '/serp/ai-visibility/check', 'ai', function () use ( $p ) {
+			if ( ! $p->ai_visibility->enabled() ) {
+				return new \WP_Error( 'seolity_aiv', __( 'Choose at least one AI search engine whose key is saved.', 'seolity' ), array( 'status' => 400 ) );
+			}
+			$job = $p->queue->push( 'ai_visibility_check', array(), array( 'unique' => true, 'priority' => 2, 'max_attempts' => 1, 'timeout' => 1800 ) );
+			\SEOlity\Activity\AiJobs::run_after_response( $p );
+			return array( 'queued' => (bool) $job );
+		} );
 		$this->route( 'POST', '/serp/track', 'manage', function ( Req $r ) use ( $p ) {
 			$q   = array_values( array_filter( array_map( 'sanitize_text_field', (array) $r->get_param( 'queries' ) ) ) );
 			$job = $p->queue->push( 'serp_track', array( 'queries' => $q ), array( 'unique' => true, 'priority' => 2, 'max_attempts' => 1, 'timeout' => 1800 ) );

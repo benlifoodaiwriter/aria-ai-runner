@@ -55,7 +55,7 @@ final class Intel {
 
 	/** SERP API searches used this calendar month (each snapshot = one search). */
 	public function usage_month() {
-		return (int) $this->plugin->db->value( 'SELECT COUNT(*) FROM {serp_snapshots} WHERE project_id = %d AND checked_at >= %s', array( $this->pid(), gmdate( 'Y-m-01 00:00:00' ) ) );
+		return (int) $this->plugin->db->value( "SELECT COUNT(*) FROM {serp_snapshots} WHERE project_id = %d AND engine = 'google' AND source = 'api' AND checked_at >= %s", array( $this->pid(), gmdate( 'Y-m-01 00:00:00' ) ) );
 	}
 
 	public function budget() {
@@ -92,11 +92,14 @@ final class Intel {
 	}
 
 	/** Search one query now and store the result page. */
-	public function snapshot( $query ) {
-		$serp = $this->plugin->serp->fetch( $query, '', 20, true );
-		if ( is_wp_error( $serp ) ) {
-			return $serp;
+	public function snapshot( $query, array $serp = null, $source = 'api', $engine = 'google', $answer = null ) {
+		if ( null === $serp ) {
+			$serp = $this->plugin->serp->fetch( $query, '', 20, true );
+			if ( is_wp_error( $serp ) ) {
+				return $serp;
+			}
 		}
+		$serp += array( 'features' => array(), 'questions' => array(), 'related' => array(), 'results' => array() );
 		$db    = $this->plugin->db;
 		$own   = self::host( home_url() );
 		$comps = $this->competitor_map();
@@ -115,6 +118,9 @@ final class Intel {
 				'project_id'   => $this->pid(),
 				'query'        => mb_substr( $query, 0, 500 ),
 				'query_hash'   => Database::hash( $query ),
+				'engine'       => $engine,
+				'source'       => $source,
+				'answer'       => $answer,
 				'gl'           => $gl,
 				'hl'           => $hl,
 				'features'     => wp_json_encode( $serp['features'] ),
@@ -157,7 +163,7 @@ final class Intel {
 			}
 			$this->plugin->queue->checkpoint();
 			// Re-search a query at most once a day.
-			$recent = $this->plugin->db->value( 'SELECT id FROM {serp_snapshots} WHERE project_id = %d AND query_hash = %s AND checked_at >= %s', array( $this->pid(), Database::hash( $q ), gmdate( 'Y-m-d H:i:s', time() - 20 * HOUR_IN_SECONDS ) ) );
+			$recent = $this->plugin->db->value( "SELECT id FROM {serp_snapshots} WHERE project_id = %d AND engine = 'google' AND query_hash = %s AND checked_at >= %s", array( $this->pid(), Database::hash( $q ), gmdate( 'Y-m-d H:i:s', time() - 20 * HOUR_IN_SECONDS ) ) );
 			if ( $recent ) {
 				continue;
 			}
@@ -177,7 +183,7 @@ final class Intel {
 
 	/** Latest snapshot id per query (optionally only queries checked since a date). */
 	private function latest_snapshots() {
-		return $this->plugin->db->rows( 'SELECT s.* FROM {serp_snapshots} s JOIN (SELECT query_hash, MAX(id) id FROM {serp_snapshots} WHERE project_id = %d GROUP BY query_hash) l ON l.id = s.id ORDER BY s.query', array( $this->pid() ) );
+		return $this->plugin->db->rows( "SELECT s.* FROM {serp_snapshots} s JOIN (SELECT query_hash, MAX(id) id FROM {serp_snapshots} WHERE project_id = %d AND engine = 'google' GROUP BY query_hash) l ON l.id = s.id ORDER BY s.query", array( $this->pid() ) );
 	}
 
 	/** Domains that appear most often in our tracked results — candidates to add as competitors. */
@@ -240,7 +246,7 @@ final class Intel {
 			if ( ! $them ) {
 				continue;
 			}
-			$prev     = $db->row( 'SELECT r.position FROM {serp_snapshots} s JOIN {serp_results} r ON r.snapshot_id = s.id AND r.competitor_id = %d WHERE s.project_id = %d AND s.query_hash = %s AND s.id < %d ORDER BY s.id DESC, r.position ASC LIMIT 1', array( (int) $cid, $this->pid(), $s['query_hash'], (int) $s['id'] ) );
+			$prev     = $db->row( "SELECT r.position FROM {serp_snapshots} s JOIN {serp_results} r ON r.snapshot_id = s.id AND r.competitor_id = %d WHERE s.project_id = %d AND s.engine = 'google' AND s.query_hash = %s AND s.id < %d ORDER BY s.id DESC, r.position ASC LIMIT 1", array( (int) $cid, $this->pid(), $s['query_hash'], (int) $s['id'] ) );
 			$gsc      = $this->our_gsc( $s['query'] );
 			$our_pos  = null !== $s['own_position'] ? (int) $s['own_position'] : null;
 			$vol      = $this->volume( $gsc );
@@ -385,7 +391,7 @@ final class Intel {
 		$cid   = (int) $an['competitor_id'];
 		$comp  = $db->row( 'SELECT name, domain FROM {competitors} WHERE id = %d', array( $cid ) );
 		$act->step( (int) $aid, __( 'Reading the stored Google results and history…', 'seolity' ), 10 );
-		$snaps = $db->rows( 'SELECT * FROM {serp_snapshots} WHERE project_id = %d AND query_hash = %s ORDER BY id DESC LIMIT 6', array( $this->pid(), Database::hash( $query ) ) );
+		$snaps = $db->rows( "SELECT * FROM {serp_snapshots} WHERE project_id = %d AND engine = 'google' AND query_hash = %s ORDER BY id DESC LIMIT 6", array( $this->pid(), Database::hash( $query ) ) );
 		if ( ! $snaps ) {
 			$sid = $this->snapshot( $query );
 			if ( is_wp_error( $sid ) ) {

@@ -24,6 +24,7 @@ final class Settings {
 		'openai_api_key', 'anthropic_api_key', 'gemini_api_key', 'openrouter_api_key', 'custom_api_key',
 		'gsc_client_secret', 'gsc_tokens', 'github_token', 'pagespeed_api_key', 'serp_api_key',
 		'claude_oauth_token', 'codex_auth_json', 'sub_shared_secret', 'cloudflare_api_token', 'github_models_api_key',
+		'serper_api_key', 'searchapi_api_key', 'dataforseo_password', 'google_cse_key', 'perplexity_api_key',
 	);
 
 	/** @var Plugin|null */
@@ -129,6 +130,10 @@ final class Settings {
 			'thin_content_words'   => array( 'int', 300, array( 50, 2000 ) ),
 			// Competitors.
 			'competitor_max_pages' => array( 'int', 200, array( 10, 5000 ) ),
+			'serp_source'          => array( 'enum', 'serpapi', array( 'manual', 'serper', 'searchapi', 'serpapi', 'dataforseo', 'google_cse' ) ),
+			'dataforseo_login'     => array( 'string', '' ),
+			'google_cse_cx'        => array( 'string', '' ),
+			'ai_visibility_engines' => array( 'string', '' ),
 			'serp_monthly_limit'   => array( 'int', 100, array( 0, 100000 ) ),
 			'serp_track_queries'   => array( 'int', 25, array( 1, 1000 ) ),
 			// Alerts & reports.
