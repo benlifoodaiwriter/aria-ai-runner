@@ -555,6 +555,7 @@ final class Activity {
 			'route_probe'             => __( 'Route speed test', 'seolity' ),
 			'indexability_scan'       => __( 'Indexability & crawl budget audit', 'seolity' ),
 			'consolidate_prepare'     => __( 'Merging duplicate articles', 'seolity' ),
+			'differentiate_prepare'   => __( 'Retargeting a competing article', 'seolity' ),
 			'full_analysis'           => __( 'Full-site analysis', 'seolity' ),
 			'cli_install'             => __( 'Installing the official CLI', 'seolity' ),
 			'ai_visibility_check'     => __( 'AI search visibility check', 'seolity' ),

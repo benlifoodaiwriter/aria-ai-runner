@@ -266,6 +266,12 @@ final class Router {
 		$this->route( 'POST', '/duplicates/instructions', 'manage', function ( Req $r ) use ( $p ) {
 			return array( 'instructions' => $p->duplicates->save_instructions( (string) $r->get_param( 'instructions' ) ) );
 		} );
+		$this->route( 'POST', '/duplicates/differentiate', 'apply', function ( Req $r ) use ( $p ) {
+			return $p->duplicates->start_differentiate( sanitize_text_field( (string) $r->get_param( 'key' ) ), (int) $r->get_param( 'post' ), (string) $r->get_param( 'instructions' ) );
+		} );
+		$this->route( 'POST', '/duplicates/canonical', 'apply', function ( Req $r ) use ( $p ) {
+			return $p->duplicates->start_canonical( sanitize_text_field( (string) $r->get_param( 'key' ) ), (int) $r->get_param( 'post' ), (int) $r->get_param( 'primary' ) );
+		} );
 		$this->route( 'POST', '/duplicates/consolidate', 'apply', function ( Req $r ) use ( $p ) {
 			return $p->duplicates->start( sanitize_text_field( (string) $r->get_param( 'key' ) ), (int) $r->get_param( 'primary' ), array_map( 'intval', (array) $r->get_param( 'secondaries' ) ), (string) $r->get_param( 'instructions' ) );
 		} );

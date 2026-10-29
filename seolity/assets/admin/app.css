@@ -670,3 +670,8 @@ button.sl-segcard { cursor: pointer; }
 .sl-area__pct { font-weight: 800; }
 .sl-area__bar { height: 8px; border-radius: 4px; background: var(--sl-surface-2); overflow: hidden; }
 .sl-area__bar span { display: block; height: 100%; background: linear-gradient(90deg, var(--sl-warn, #f59e0b), var(--sl-bad, #dc2626)); border-radius: 4px; }
+.sl-dup__sev { position: relative; height: 22px; border-radius: 6px; background: var(--sl-surface-2); overflow: hidden; }
+.sl-dup__sev span { position: absolute; inset-block: 0; inset-inline-start: 0; background: linear-gradient(90deg, #f59e0b, #dc2626); opacity: .35; }
+.sl-dup__sev b { position: relative; padding-inline: 8px; font-size: 12px; line-height: 22px; }
+.sl-dup__strat { border: 1px dashed var(--sl-border); border-radius: 10px; padding: 8px 12px; }
+.sl-dup__strat p { margin: 4px 0 0; }

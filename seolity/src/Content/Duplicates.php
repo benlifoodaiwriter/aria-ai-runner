@@ -98,6 +98,8 @@ final class Duplicates {
 		$inv_sh = array();
 		$inv_tt = array();
 		$by_url = array();
+		$tf     = array();
+		$df     = array();
 		foreach ( $ids as $id ) {
 			// Merged (or deliberately hidden) articles are out of the index: not a competitor any more.
 			if ( '1' === (string) $this->plugin->meta->get_post( $id, 'noindex' ) ) {
@@ -122,7 +124,12 @@ final class Duplicates {
 				'impressions' => isset( $gsc[ $n ] ) ? $gsc[ $n ][1] : 0,
 				'inlinks'     => isset( $crawl[ $n ] ) ? (int) $crawl[ $n ]['inlinks'] : 0,
 				'edit'        => admin_url( 'post.php?post=' . (int) $id . '&action=edit' ),
+				'intent'      => self::intent( get_the_title( $id ) . ' ' . $h1 ),
 			);
+			$tf[ $id ] = array_slice( Text::term_frequencies( $text ), 0, 80, true );
+			foreach ( $tf[ $id ] as $term => $_ ) {
+				$df[ $term ] = isset( $df[ $term ] ) ? $df[ $term ] + 1 : 1;
+			}
 			$by_url[ $n ] = (int) $id;
 			$sh[ $id ]    = self::shingles( $words );
 			$tt[ $id ]    = self::title_tokens( $posts[ $id ]['title'] . ( $h1 && $h1 !== $posts[ $id ]['title'] ? ' ' . $h1 : '' ) );
@@ -164,26 +171,48 @@ final class Duplicates {
 				}
 			}
 		}
-		// Queries several of our pages rank for (Search Console).
-		$qpairs = array();
-		if ( $this->plugin->gsc_oauth->is_connected() ) {
-			foreach ( $this->plugin->keywords->cannibalization( 28, 200 ) as $q ) {
-				$pp = array();
-				foreach ( $q['pages'] as $pg ) {
-					$n = self::norm( $pg['page'] );
-					if ( isset( $by_url[ $n ] ) ) {
-						$pp[] = $by_url[ $n ];
-					}
-				}
-				$pp = array_values( array_unique( $pp ) );
-				$c  = count( $pp );
-				for ( $i = 0; $i < $c; $i++ ) {
-					for ( $j = $i + 1; $j < $c; $j++ ) {
-						$k              = min( $pp[ $i ], $pp[ $j ] ) . ':' . max( $pp[ $i ], $pp[ $j ] );
-						$qpairs[ $k ][] = $q['query'];
-					}
+		// Topic similarity: TF-IDF vectors, candidates share important terms.
+		$vec   = array();
+		$inv_t = array();
+		foreach ( $tf as $id => $terms ) {
+			$v = array();
+			foreach ( $terms as $term => $f ) {
+				$v[ $term ] = $f * log( ( $total + 1 ) / ( $df[ $term ] + 0.5 ) );
+			}
+			arsort( $v );
+			$v    = array_slice( $v, 0, 40, true );
+			$norm = sqrt( array_sum( array_map( static function ( $x ) {
+				return $x * $x;
+			}, $v ) ) );
+			$vec[ $id ] = array( $v, $norm ? $norm : 1 );
+			foreach ( array_slice( array_keys( $v ), 0, 12 ) as $term ) {
+				$inv_t[ $term ][] = (int) $id;
+			}
+		}
+		$tcount = array();
+		foreach ( $inv_t as $list ) {
+			$c = count( $list );
+			if ( $c < 2 || $c > max( 12, (int) ( $total * 0.15 ) ) ) {
+				continue;
+			}
+			for ( $i = 0; $i < $c; $i++ ) {
+				for ( $j = $i + 1; $j < $c; $j++ ) {
+					$k = min( $list[ $i ], $list[ $j ] ) . ':' . max( $list[ $i ], $list[ $j ] );
+					$tcount[ $k ] = isset( $tcount[ $k ] ) ? $tcount[ $k ] + 1 : 1;
 				}
 			}
+		}
+		$tcount = array_filter(
+			$tcount,
+			static function ( $n ) {
+				return $n >= 3;
+			}
+		);
+		list( $qover, $flips ) = $this->query_overlap( $by_url );
+		// Queries several of our pages rank for (Search Console).
+		$qpairs = array();
+		foreach ( $qover as $k => $o ) {
+			$qpairs[ $k ] = $o['queries'];
 		}
 
 		$pairs  = array();
@@ -195,7 +224,7 @@ final class Duplicates {
 			}
 			return $x;
 		};
-		foreach ( array_unique( array_merge( array_keys( $shared ), array_keys( $tshared ), array_keys( $qpairs ) ) ) as $k ) {
+		foreach ( array_unique( array_merge( array_keys( $shared ), array_keys( $tshared ), array_keys( $qpairs ), array_keys( $tcount ) ) ) as $k ) {
 			list( $a, $b ) = array_map( 'intval', explode( ':', $k ) );
 			$min     = min( count( $sh[ $a ] ), count( $sh[ $b ] ) );
 			$content = $min >= 20 && isset( $shared[ $k ] ) ? $shared[ $k ] / $min : 0;
@@ -203,16 +232,23 @@ final class Duplicates {
 			$title   = $union && isset( $tshared[ $k ] ) ? $tshared[ $k ] / $union : 0;
 			$queries = isset( $qpairs[ $k ] ) ? array_slice( $qpairs[ $k ], 0, 5 ) : array();
 			$h1_same = '' !== $posts[ $a ]['h1'] && mb_strtolower( $posts[ $a ]['h1'] ) === mb_strtolower( $posts[ $b ]['h1'] );
+			$topic   = isset( $vec[ $a ], $vec[ $b ] ) ? self::cosine( $vec[ $a ], $vec[ $b ] ) : 0;
+			$over    = isset( $qover[ $k ] ) ? $qover[ $k ] : null;
+			$flip    = isset( $flips[ $k ] ) ? $flips[ $k ] : 0;
+			$same_in = $posts[ $a ]['intent'] === $posts[ $b ]['intent'] && 'unknown' !== $posts[ $a ]['intent'];
+			// How much of the smaller page's search demand is fought over by both.
+			$split   = $over ? $over['shared'] / max( 1, min( $over['imp_a'], $over['imp_b'] ) ) : 0;
 			if ( $content >= 0.8 ) {
 				$kind = 'duplicate';
-			} elseif ( $content >= 0.4 ) {
+			} elseif ( $content >= 0.4 || $topic >= 0.8 ) {
 				$kind = 'near_duplicate';
-			} elseif ( $title >= 0.6 || $h1_same || ( $queries && ( $title >= 0.3 || $content >= 0.15 ) ) || count( $queries ) >= 3 ) {
+			} elseif ( $title >= 0.6 || $h1_same || $flip >= 1 || ( $queries && ( $title >= 0.3 || $content >= 0.15 || $topic >= 0.4 || $split >= 0.3 ) ) || count( $queries ) >= 3 || ( $topic >= 0.6 && $same_in ) ) {
 				$kind = 'cannibalization';
 			} else {
 				continue;
 			}
-			$pairs[] = array( 'a' => $a, 'b' => $b, 'kind' => $kind, 'content' => round( $content * 100 ), 'title' => round( $title * 100 ), 'h1' => $h1_same, 'queries' => $queries );
+			$severity = (int) round( min( 100, 35 * max( $content, $topic ) + 20 * $title + 25 * min( 1, $split ) + 10 * min( 1, $flip / 3 ) + ( $same_in ? 10 : 0 ) + ( $h1_same ? 5 : 0 ) ) );
+			$pairs[] = array( 'a' => $a, 'b' => $b, 'kind' => $kind, 'content' => round( $content * 100 ), 'topic' => round( $topic * 100 ), 'title' => round( $title * 100 ), 'h1' => $h1_same, 'queries' => $queries, 'shared_impressions' => $over ? (int) $over['shared'] : 0, 'split' => (int) round( 100 * min( 1, $split ) ), 'flips' => $flip, 'same_intent' => $same_in, 'severity' => $severity );
 			$ra      = $find( $a );
 			$rb      = $find( $b );
 			$parent += array( $ra => $ra, $rb => $rb );
@@ -244,20 +280,23 @@ final class Duplicates {
 			$primary = $this->suggest_primary( $members );
 			$ids_s   = array_keys( $ids_in );
 			sort( $ids_s );
-			$clusters[] = array(
-				'key'     => 'dup:' . implode( '-', $ids_s ),
-				'kind'    => $kind,
-				'posts'   => $members,
-				'pairs'   => $gp,
-				'primary' => $primary['id'],
-				'why'     => $primary['why'],
-				'clicks'  => array_sum( wp_list_pluck( $members, 'clicks' ) ),
+			$cluster = array(
+				'key'      => 'dup:' . implode( '-', $ids_s ),
+				'kind'     => $kind,
+				'posts'    => $members,
+				'pairs'    => $gp,
+				'primary'  => $primary['id'],
+				'why'      => $primary['why'],
+				'clicks'   => array_sum( wp_list_pluck( $members, 'clicks' ) ),
+				'severity' => max( wp_list_pluck( $gp, 'severity' ) ),
 			);
+			$cluster['strategy'] = self::strategy( $cluster );
+			$clusters[]          = $cluster;
 		}
 		usort(
 			$clusters,
 			static function ( $x, $y ) use ( $rank ) {
-				return array( $rank[ $y['kind'] ], $y['clicks'], count( $y['posts'] ) ) <=> array( $rank[ $x['kind'] ], $x['clicks'], count( $x['posts'] ) );
+				return array( $y['severity'], $rank[ $y['kind'] ], $y['clicks'] ) <=> array( $x['severity'], $rank[ $x['kind'] ], $x['clicks'] );
 			}
 		);
 		$out = array( 'at' => gmdate( 'c' ), 'checked' => count( $posts ), 'gsc' => $this->plugin->gsc_oauth->is_connected(), 'clusters' => $clusters );
@@ -265,6 +304,142 @@ final class Duplicates {
 		$this->sync_issues( $clusters );
 		$this->plugin->audit_log->log( 'duplicates.scanned', 'site', null, array( 'clusters' => count( $clusters ) ) );
 		return $out;
+	}
+
+	/** Search intent from the title / H1 (commercial vs informational). */
+	private static function intent( $text ) {
+		$t = mb_strtolower( (string) $text );
+		if ( preg_match( '/خرید|قیمت|فروش|ارزان|تخفیف|سفارش|بهترین|مقایسه|برند|buy|price|cheap|deal|best|vs\b|review|order/u', $t ) ) {
+			return 'commercial';
+		}
+		if ( preg_match( '/چیست|چیه|چگونه|چطور|طرز|آموزش|راهنما|روش|نکات|فواید|خواص|معرفی|what|how|guide|tips|tutorial|why/u', $t ) ) {
+			return 'informational';
+		}
+		return 'unknown';
+	}
+
+	private static function cosine( array $a, array $b ) {
+		$dot = 0;
+		foreach ( $a[0] as $term => $w ) {
+			if ( isset( $b[0][ $term ] ) ) {
+				$dot += $w * $b[0][ $term ];
+			}
+		}
+		return $dot / ( $a[1] * $b[1] );
+	}
+
+	/**
+	 * Real cannibalization seen in Google (90 days): for page pairs, the queries both get
+	 * impressions for, how many impressions they fight over, and how often Google swapped which
+	 * of the two it showed first (week by week).
+	 */
+	private function query_overlap( array $by_url ) {
+		$db    = $this->plugin->db;
+		$since = gmdate( 'Y-m-d', time() - 90 * DAY_IN_SECONDS );
+		$rows  = $db->rows( 'SELECT query_hash, MAX(query) query, page, SUM(impressions) imp FROM {gsc_page_query} WHERE project_id = %d AND date >= %s GROUP BY query_hash, page_hash, page HAVING imp >= 3 ORDER BY imp DESC LIMIT 20000', array( $db->project_id(), $since ) );
+		$byq   = array();
+		foreach ( $rows as $r ) {
+			$n = self::norm( $r['page'] );
+			if ( isset( $by_url[ $n ] ) ) {
+				$byq[ $r['query_hash'] ]['query']                  = $r['query'];
+				$byq[ $r['query_hash'] ]['pages'][ $by_url[ $n ] ] = (int) $r['imp'];
+			}
+		}
+		$over = array();
+		$hot  = array();
+		foreach ( $byq as $qh => $q ) {
+			if ( count( $q['pages'] ) < 2 ) {
+				continue;
+			}
+			$ids = array_keys( $q['pages'] );
+			$c   = count( $ids );
+			for ( $i = 0; $i < $c; $i++ ) {
+				for ( $j = $i + 1; $j < $c; $j++ ) {
+					$a = min( $ids[ $i ], $ids[ $j ] );
+					$b = max( $ids[ $i ], $ids[ $j ] );
+					$k = $a . ':' . $b;
+					if ( ! isset( $over[ $k ] ) ) {
+						$over[ $k ] = array( 'queries' => array(), 'shared' => 0, 'imp_a' => 0, 'imp_b' => 0 );
+					}
+					$over[ $k ]['queries'][] = $q['query'];
+					$over[ $k ]['shared']   += min( $q['pages'][ $a ], $q['pages'][ $b ] );
+					$over[ $k ]['imp_a']    += $q['pages'][ $a ];
+					$over[ $k ]['imp_b']    += $q['pages'][ $b ];
+					$hot[ $qh ]              = true;
+				}
+			}
+		}
+		foreach ( $over as &$o ) {
+			$o['queries'] = array_slice( $o['queries'], 0, 8 );
+		}
+		unset( $o );
+		// Week-by-week leader per fought-over query → flips between the two pages.
+		$flips = array();
+		$hot   = array_slice( array_keys( $hot ), 0, 300 );
+		if ( $hot ) {
+			$in    = implode( ',', array_fill( 0, count( $hot ), '%s' ) );
+			$weeks = $db->rows( "SELECT query_hash, YEARWEEK(date, 3) w, page, SUM(impressions) imp FROM {gsc_page_query} WHERE project_id = %d AND date >= %s AND query_hash IN ($in) GROUP BY query_hash, w, page_hash, page ORDER BY query_hash, w, imp DESC", array_merge( array( $db->project_id(), $since ), $hot ) ); // phpcs:ignore WordPress.DB
+			$lead  = array();
+			foreach ( $weeks as $r ) {
+				$n = self::norm( $r['page'] );
+				if ( isset( $by_url[ $n ] ) && ! isset( $lead[ $r['query_hash'] ][ $r['w'] ] ) ) {
+					$lead[ $r['query_hash'] ][ $r['w'] ] = $by_url[ $n ];
+				}
+			}
+			foreach ( $lead as $seq ) {
+				$prev = null;
+				foreach ( $seq as $pid ) {
+					if ( null !== $prev && $prev !== $pid ) {
+						$k           = min( $prev, $pid ) . ':' . max( $prev, $pid );
+						$flips[ $k ] = isset( $flips[ $k ] ) ? $flips[ $k ] + 1 : 1;
+					}
+					$prev = $pid;
+				}
+			}
+		}
+		return array( $over, $flips );
+	}
+
+	/**
+	 * The right fix for a group, with the alternatives and why:
+	 * merge (same content / same need), differentiate (both earn their own traffic or serve
+	 * different intents — retarget one), canonical (near-identical pages that must both exist),
+	 * strengthen the primary with internal links (Google keeps swapping, one page is clearly better).
+	 */
+	private static function strategy( array $c ) {
+		$clicks = array_sum( wp_list_pluck( $c['posts'], 'clicks' ) );
+		$strong = 0;
+		foreach ( $c['posts'] as $p ) {
+			$strong += $clicks && $p['clicks'] / $clicks >= 0.25 ? 1 : 0;
+		}
+		$topic  = max( wp_list_pluck( $c['pairs'], 'topic' ) );
+		$flips  = array_sum( wp_list_pluck( $c['pairs'], 'flips' ) );
+		$intent = count( array_unique( wp_list_pluck( $c['posts'], 'intent' ) ) ) > 1;
+		$why    = array(
+			'merge'         => __( 'The articles answer the same need: one stronger article ranks better than several weak ones, and the old URLs pass their signals with a 301.', 'seolity' ),
+			'differentiate' => __( 'Each article earns its own traffic or serves a different intent: keep both, but retarget one to a different query (title, H1, focus keyword) so they stop competing.', 'seolity' ),
+			'canonical'     => __( 'Near-identical pages that must both stay online: point the copy’s canonical to the primary so Google consolidates them.', 'seolity' ),
+			'internal_link' => __( 'Google keeps switching between them but one is clearly better: link from the others to the primary with the query as anchor text and remove the query from the weaker one’s title.', 'seolity' ),
+		);
+		if ( 'duplicate' === $c['kind'] ) {
+			$best = 'merge';
+			$alt  = array( 'canonical' );
+		} elseif ( 'near_duplicate' === $c['kind'] ) {
+			$best = $strong >= 2 ? 'differentiate' : 'merge';
+			$alt  = array( 'merge' === $best ? 'differentiate' : 'merge', 'canonical' );
+		} elseif ( $intent || ( $strong >= 2 && $topic < 60 ) ) {
+			$best = 'differentiate';
+			$alt  = array( 'merge', 'internal_link' );
+		} elseif ( $flips >= 2 && $topic >= 50 ) {
+			$best = 'merge';
+			$alt  = array( 'differentiate', 'internal_link' );
+		} else {
+			$best = 'internal_link';
+			$alt  = array( 'differentiate', 'merge' );
+		}
+		return array( 'best' => $best, 'why' => $why[ $best ], 'alternatives' => array_map( static function ( $a ) use ( $why ) {
+			return array( 'id' => $a, 'why' => $why[ $a ] );
+		}, $alt ) );
 	}
 
 	/** The article that should survive: most clicks, then most internal links, then longest, then oldest. */
@@ -384,6 +559,92 @@ final class Duplicates {
 		}
 		\SEOlity\Activity\AiJobs::run_after_response( $this->plugin );
 		return $this->plugin->operations->get( $id );
+	}
+
+	/** Point a copy's canonical at the primary (prepared; applied after approval). */
+	public function start_canonical( $key, $post_id, $primary ) {
+		$c = $this->cluster( $key );
+		if ( ! $c || ! in_array( (int) $post_id, array_map( 'intval', wp_list_pluck( $c['posts'], 'id' ) ), true ) ) {
+			return new \WP_Error( 'seolity_dup', __( 'This group was not found — run the scan again.', 'seolity' ), array( 'status' => 404 ) );
+		}
+		$target = (string) get_permalink( (int) $primary );
+		/* translators: %s: title */
+		$id  = $this->plugin->operations->create( 'canonical', array( 'issue_id' => $this->issue_id( $key ), 'title' => sprintf( __( 'Canonical of “%s” to the primary article', 'seolity' ), get_the_title( (int) $post_id ) ) ) );
+		$cid = $this->plugin->changes->propose( array( 'object_type' => 'post', 'object_id' => (int) $post_id, 'field' => 'canonical', 'after' => $target, 'source' => 'cannibalization', 'reason' => __( 'Consolidates a near-identical copy into the primary article.', 'seolity' ) ) );
+		if ( is_wp_error( $cid ) ) {
+			return $cid;
+		}
+		return $this->plugin->operations->staged( $id, array( array( 'kind' => 'change', 'id' => (int) $cid, 'key' => 'canonical' ) ), array( __( 'The copy stays online for visitors; Google is asked to rank the primary article instead.', 'seolity' ) ) );
+	}
+
+	/** Retarget one article to a different query so both can rank (AI prepares, owner approves). */
+	public function start_differentiate( $key, $post_id, $instructions = '' ) {
+		$c = $this->cluster( $key );
+		if ( ! $c || ! in_array( (int) $post_id, array_map( 'intval', wp_list_pluck( $c['posts'], 'id' ) ), true ) ) {
+			return new \WP_Error( 'seolity_dup', __( 'This group was not found — run the scan again.', 'seolity' ), array( 'status' => 404 ) );
+		}
+		if ( ! $this->plugin->ai->is_ready() ) {
+			return new \WP_Error( 'seolity_ai', __( 'Connect an AI engine first (Settings → AI).', 'seolity' ), array( 'status' => 400 ) );
+		}
+		/* translators: %s: title */
+		$title = sprintf( __( 'Retarget “%s” to its own query', 'seolity' ), get_the_title( (int) $post_id ) );
+		$id    = $this->plugin->operations->create( 'differentiate', array( 'issue_id' => $this->issue_id( $key ), 'title' => $title, 'instructions' => trim( $this->instructions() . "\n" . sanitize_textarea_field( (string) $instructions ) ), 'input' => array( 'cluster' => $key, 'post' => (int) $post_id ) ) );
+		$aid   = $this->plugin->activity->start( 'agent', __( 'Preparing the retargeting', 'seolity' ), array( 'detail' => $title, 'dock' => true, 'status' => 'queued', 'meta' => array( 'type' => 'operation', 'operation_id' => (int) $id ) ) );
+		$this->plugin->operations->update( $id, array( 'activity_id' => $aid ) );
+		$job = $this->plugin->queue->push( 'differentiate_prepare', array( 'id' => (int) $id, 'user_id' => get_current_user_id() ), array( 'unique' => 'dif_' . (int) $id, 'priority' => 0, 'max_attempts' => 1 ) );
+		$this->plugin->activity->attach_job( $aid, $job );
+		\SEOlity\Activity\AiJobs::run_after_response( $this->plugin );
+		return $this->plugin->operations->get( $id );
+	}
+
+	public function prepare_differentiate( $op_id ) {
+		$ops = $this->plugin->operations;
+		$op  = $ops->get( $op_id );
+		if ( ! $op || 'preparing' !== $op['status'] ) {
+			return true;
+		}
+		$aid  = (int) $op['activity_id'];
+		$c    = $this->cluster( $op['input']['cluster'] );
+		$pid  = (int) $op['input']['post'];
+		$meta = $this->plugin->meta;
+		$page = function ( $id ) use ( $meta ) {
+			$r = $this->plugin->gsc_insights->page_report( (string) get_permalink( $id ) );
+			return array( 'url' => get_permalink( $id ), 'title' => get_the_title( $id ), 'meta_title' => $meta->get_post( $id, 'meta_title' ), 'meta_description' => $meta->get_post( $id, 'meta_description' ), 'focus_keyword' => $meta->get_post( $id, 'focus_keyword' ), 'queries' => $r ? array_slice( $r['queries'], 0, 15 ) : array(), 'excerpt' => mb_substr( wp_strip_all_tags( (string) get_post_field( 'post_content', $id ) ), 0, 1500 ) );
+		};
+		$others = array();
+		foreach ( $c ? $c['posts'] : array() as $p ) {
+			if ( (int) $p['id'] !== $pid ) {
+				$others[] = $page( (int) $p['id'] );
+			}
+		}
+		$shared = array();
+		foreach ( $c ? $c['pairs'] : array() as $pr ) {
+			$shared = array_merge( $shared, (array) $pr['queries'] );
+		}
+		$this->plugin->activity->step( $aid, __( 'AI is choosing a distinct query for this article…', 'seolity' ), 30 );
+		$prev = \SEOlity\AI\Engine::with_instructions( (string) $op['instructions'] );
+		$res  = $this->plugin->ai->run( 'differentiate_page', array( 'this_page' => $page( $pid ), 'competing_pages' => $others, 'queries_fought_over' => array_values( array_unique( $shared ) ) ) );
+		\SEOlity\AI\Engine::with_instructions( $prev );
+		if ( is_wp_error( $res ) ) {
+			$ops->update( $op_id, array( 'status' => 'failed', 'error' => $res->get_error_message() ) );
+			$this->plugin->activity->finish( $aid, 'failed', $res->get_error_message() );
+			return true;
+		}
+		$d     = $res['data'];
+		$items = array();
+		foreach ( array( 'post_title' => $d['title'], 'meta_title' => $d['meta_title'], 'meta_description' => $d['meta_description'], 'focus_keyword' => $d['new_focus_query'] ) as $field => $value ) {
+			if ( '' === trim( (string) $value ) ) {
+				continue;
+			}
+			$cid = $this->plugin->changes->propose( array( 'object_type' => 'post', 'object_id' => $pid, 'field' => $field, 'after' => $value, 'source' => 'cannibalization', 'reason' => $d['reason'], 'ai' => $res['meta'] ) );
+			if ( ! is_wp_error( $cid ) ) {
+				$items[] = array( 'kind' => 'change', 'id' => (int) $cid, 'key' => 'd_' . $field );
+			}
+		}
+		/* translators: %s: query */
+		$ops->staged( $op_id, $items, array( sprintf( __( 'New target query: %s', 'seolity' ), $d['new_focus_query'] ), $d['reason'] ) );
+		$this->plugin->activity->finish( $aid, 'done', __( 'Ready for your review', 'seolity' ), array( 'summary' => __( 'Ready for your review', 'seolity' ), 'result' => array( 'operation_id' => (int) $op_id ) ) );
+		return true;
 	}
 
 	/** Every URL form a link to this post can take inside content. */

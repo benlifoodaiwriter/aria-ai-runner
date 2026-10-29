@@ -562,6 +562,22 @@ Also give a site-level verdict: does this site have a crawl-budget problem from 
 					)
 				),
 			),
+			'differentiate_page' => array(
+				'version'      => 'differentiate_page@1.0',
+				'max_tokens'   => 3000,
+				'topics'       => array( 'cannibalization', 'keywords', 'on-page' ),
+				'cache'        => false,
+				'instructions' => 'Two articles of this site compete for the same searches. Retarget THIS page to a different, related search query so both can rank: pick the query from its own queries in the data (ones the competing page does not own) or a natural sub-topic / different intent it already covers. Then write the new post title (H1), SEO title (max 60 characters), meta description (max 155) and focus keyword for that query. Do not promise content the page does not have. Explain in one or two sentences why this split ends the competition. Write in the site\'s language.',
+				'schema'       => S::obj(
+					array(
+						'new_focus_query'  => S::str(),
+						'title'            => S::str(),
+						'meta_title'       => S::str(),
+						'meta_description' => S::str(),
+						'reason'           => S::str(),
+					)
+				),
+			),
 			'chat_plan'          => array(
 				'version'      => 'chat_plan@1.0',
 				'max_tokens'   => 800,

@@ -174,6 +174,10 @@
 		var issue = c.issue || {};
 		var st = ISSUE_STATE[ issue.status ] || null;
 		var card = h( 'div', { class: 'sl-card sl-finding sl-dup' } );
+		var INTENT = { commercial: t( 'Commercial intent' ), informational: t( 'Informational intent' ), unknown: '' };
+		if ( undefined !== c.severity ) {
+			card.appendChild( h( 'div', { class: 'sl-dup__sev', title: t( 'Severity' ) }, h( 'span', { style: 'width:' + Math.max( 3, c.severity ) + '%' } ), h( 'b', { text: t( 'Severity %s/100', c.severity ) } ) ) );
+		}
 		card.appendChild( h( 'div', { class: 'sl-row' }, SL.badge( k[ 0 ], k[ 1 ] ), st ? SL.badge( ( 'done' === issue.status && issue.verified_at ? '✓ ' : '' ) + st[ 0 ], st[ 1 ] ) : null, h( 'span', { class: 'sl-muted sl-small', text: t( '%s articles', c.posts.length ) } ), c.clicks ? h( 'span', { class: 'sl-muted sl-small', text: t( '%s clicks (90 days)', SL.num( c.clicks, 0 ) ) } ) : null ) );
 		var primary = c.primary;
 		var merge = {};
@@ -199,7 +203,7 @@
 					isP ? h( 'span', { class: 'sl-small sl-muted', text: '—' } ) : h( 'label', { class: 'sl-dup__pick', title: t( 'Merge into the primary article' ) }, h( 'input', { type: 'checkbox', checked: !! merge[ p.id ], onChange: function ( e ) {
 						merge[ p.id ] = e.target.checked;
 					} } ), h( 'span', { text: t( 'Merge' ) } ) ),
-					h( 'div', { class: 'sl-dup__meta' }, h( 'a', { href: p.url, target: '_blank', rel: 'noopener', dir: 'auto', text: p.title || p.url } ), h( 'div', { class: 'sl-muted sl-small' }, h( 'span', { dir: 'ltr', text: decodeURI( p.url ) } ), ' · ', t( '%s words', SL.num( p.words, 0 ) ), ' · ', t( '%s clicks', SL.num( p.clicks, 0 ) ), ' · ', t( '%s internal links', SL.num( p.inlinks, 0 ) ) ) ),
+					h( 'div', { class: 'sl-dup__meta' }, h( 'a', { href: p.url, target: '_blank', rel: 'noopener', dir: 'auto', text: p.title || p.url } ), h( 'div', { class: 'sl-muted sl-small' }, h( 'span', { dir: 'ltr', text: decodeURI( p.url ) } ), ' · ', t( '%s words', SL.num( p.words, 0 ) ), ' · ', t( '%s clicks', SL.num( p.clicks, 0 ) ), ' · ', t( '%s internal links', SL.num( p.inlinks, 0 ) ) ), INTENT[ p.intent ] ? SL.badge( INTENT[ p.intent ], 'commercial' === p.intent ? 'warn' : 'brand' ) : null ),
 					h( 'a', { class: 'sl-btn sl-btn--ghost sl-btn--sm', href: p.edit, text: t( 'Edit' ) } )
 				) );
 			} );
@@ -217,13 +221,33 @@
 			if ( pr.h1 ) {
 				bits.push( t( 'same H1' ) );
 			}
+			if ( pr.topic ) {
+				bits.push( pr.topic + '% ' + t( 'same topic' ) );
+			}
 			if ( pr.queries && pr.queries.length ) {
 				bits.push( t( 'both rank for: %s', pr.queries.join( '، ' ) ) );
+			}
+			if ( pr.split ) {
+				bits.push( t( '%s% of the smaller page’s impressions are fought over', pr.split ) );
+			}
+			if ( pr.flips ) {
+				bits.push( t( 'Google swapped them %s times', pr.flips ) );
+			}
+			if ( pr.same_intent ) {
+				bits.push( t( 'same search intent' ) );
 			}
 			return bits.join( ' · ' );
 		} ).filter( Boolean );
 		card.appendChild( h( 'p', { class: 'sl-small' }, h( 'b', { text: t( 'Why they are grouped:' ) + ' ' } ), h( 'span', { text: why.join( ' | ' ) } ) ) );
-		card.appendChild( h( 'p', { class: 'sl-small' }, h( 'b', { text: t( 'AI recommendation:' ) + ' ' } ), h( 'span', { text: t( 'Keep the suggested primary and merge the others into it.' ) + ' ' + c.why } ) ) );
+		var STRAT = { merge: t( 'Merge into the primary' ), differentiate: t( 'Differentiate (retarget one)' ), canonical: t( 'Canonical to the primary' ), internal_link: t( 'Strengthen the primary with internal links' ) };
+		var sg = c.strategy || { best: 'merge', why: '', alternatives: [] };
+		card.appendChild( h( 'div', { class: 'sl-dup__strat' },
+			h( 'div', null, h( 'b', { text: t( 'Recommended:' ) + ' ' } ), SL.badge( STRAT[ sg.best ] || sg.best, 'good' ), h( 'p', { class: 'sl-small', text: sg.why } ) ),
+			sg.alternatives && sg.alternatives.length ? h( 'details', { class: 'sl-small' }, h( 'summary', { text: t( 'Other options' ) } ), h( 'ul', null, sg.alternatives.map( function ( a ) {
+				return h( 'li', null, h( 'b', { text: ( STRAT[ a.id ] || a.id ) + ': ' } ), a.why );
+			} ) ) ) : null,
+			h( 'p', { class: 'sl-small sl-muted', text: t( 'Primary suggestion:' ) + ' ' + c.why } )
+		) );
 		var instr = h( 'textarea', { class: 'sl-input', rows: 2, dir: 'auto', placeholder: t( 'Instructions for this merge (optional), e.g. “keep the price table from the second article”, “do not change the introduction”.' ) } );
 		instr.value = issue.instructions || '';
 		card.appendChild( instr );
@@ -249,7 +273,31 @@
 					m.body.appendChild( box );
 					App.operationView( box, op, reload );
 				} );
-			}, 'primary' ) );
+			}, 'merge' === sg.best ? 'primary' : '' ) );
+			var others = function () {
+				return c.posts.filter( function ( p ) {
+					return p.id !== primary;
+				} );
+			};
+			acts.appendChild( App.abtn( t( 'Differentiate' ), function () {
+				var target = others()[ 0 ];
+				return SL.api( 'duplicates/differentiate', { body: { key: c.key, post: target.id, instructions: instr.value } } ).then( function ( op ) {
+					var m = SL.modal( { title: op.title, wide: true, onClose: reload } );
+					m.body.appendChild( h( 'p', { class: 'sl-muted', text: t( 'The AI retargets “%s” to a different query (title, SEO title, description, focus keyword) so both articles can rank. Review and approve.', target.title ) } ) );
+					var box = h( 'div' );
+					m.body.appendChild( box );
+					App.operationView( box, op, reload );
+				} );
+			}, 'differentiate' === sg.best ? 'primary' : '' ) );
+			acts.appendChild( App.abtn( t( 'Set canonical' ), function () {
+				var target = others()[ 0 ];
+				return SL.api( 'duplicates/canonical', { body: { key: c.key, post: target.id, primary: primary } } ).then( function ( op ) {
+					var m = SL.modal( { title: op.title, wide: true, onClose: reload } );
+					var box = h( 'div' );
+					m.body.appendChild( box );
+					App.operationView( box, op, reload );
+				} );
+			}, 'canonical' === sg.best ? 'primary' : '' ) );
 		}
 		card.appendChild( acts );
 		return card;

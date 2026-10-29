@@ -56,6 +56,12 @@ final class Jobs {
 			$p->duplicates->scan();
 			return true;
 		} );
+		$q->handler( 'differentiate_prepare', static function ( $a ) use ( $p ) {
+			if ( ! empty( $a['user_id'] ) ) {
+				wp_set_current_user( (int) $a['user_id'] );
+			}
+			return $p->duplicates->prepare_differentiate( (int) $a['id'] );
+		} );
 		$q->handler( 'consolidate_prepare', static function ( $a ) use ( $p ) {
 			if ( ! empty( $a['user_id'] ) ) {
 				wp_set_current_user( (int) $a['user_id'] );
