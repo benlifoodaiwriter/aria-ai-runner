@@ -557,6 +557,7 @@ final class Activity {
 			'consolidate_prepare'     => __( 'Merging duplicate articles', 'seolity' ),
 			'full_analysis'           => __( 'Full-site analysis', 'seolity' ),
 			'cli_install'             => __( 'Installing the official CLI', 'seolity' ),
+			'experiments_history'     => __( 'Measuring past edits', 'seolity' ),
 			'not_found_triage'        => __( 'AI review of 404 errors', 'seolity' ),
 			'duplicates_scan'         => __( 'Duplicate & similar articles analysis', 'seolity' ),
 			'cleanup'                 => __( 'Clean-up', 'seolity' ),

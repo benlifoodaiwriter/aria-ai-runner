@@ -32,6 +32,11 @@ final class Jobs {
 			}
 			return $p->nf_triage->prepare( (int) $a['id'] );
 		} );
+		$q->handler( 'experiments_history', static function () use ( $p ) {
+			$made = $p->experiments->backfill_history();
+			$p->experiments->evaluate_due();
+			return true;
+		} );
 		$q->handler( 'full_analysis', static function ( $a ) use ( $p ) {
 			return $p->analysis->step( (array) $a );
 		} );

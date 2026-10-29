@@ -70,13 +70,84 @@ final class ExperimentService {
 		);
 	}
 
+	/**
+	 * An edit made outside SEOlity (WordPress / page-builder editor) becomes an experiment too, so
+	 * every edit's effect is measured — not only SEOlity's own.
+	 *
+	 * @param int    $post_id Post.
+	 * @param string $what    What changed (title, content, …).
+	 * @param string $when    GMT datetime (default now; past dates for the history backfill).
+	 */
+	public function start_for_editor( $post_id, $what, $when = null ) {
+		$url = get_permalink( (int) $post_id );
+		if ( ! $url ) {
+			return null;
+		}
+		$db    = $this->plugin->db;
+		$hash  = Database::url_hash( $url );
+		$when  = $when ? $when : Database::now();
+		$day   = substr( $when, 0, 10 );
+		$exist = $db->value( 'SELECT id FROM {experiments} WHERE project_id = %d AND page_hash = %s AND DATE(started_at) = %s', array( $db->project_id(), $hash, $day ) );
+		if ( $exist ) {
+			return (int) $exist;
+		}
+		if ( $when >= gmdate( 'Y-m-d H:i:s', time() - DAY_IN_SECONDS ) ) {
+			$db->query( "UPDATE {experiments} SET status = 'superseded', reason = 'Another change was applied to this page before the window ended.' WHERE project_id = %d AND page_hash = %s AND status = 'running'", array( $db->project_id(), $hash ) );
+		}
+		return $db->insert(
+			'experiments',
+			array(
+				'project_id'  => $db->project_id(),
+				/* translators: 1 page 2 what changed */
+				'name'        => sprintf( __( '%1$s — edited in WordPress (%2$s)', 'seolity' ), get_the_title( (int) $post_id ), $what ),
+				'object_type' => get_post_type( (int) $post_id ),
+				'object_id'   => (int) $post_id,
+				'url'         => $url,
+				'page_hash'   => $hash,
+				'change_type' => 'editor:' . sanitize_key( $what ),
+				'change_ids'  => '',
+				'status'      => 'running',
+				'window_days' => (int) $this->plugin->settings->get( 'experiment_window' ),
+				'started_at'  => $when,
+			)
+		);
+	}
+
+	/**
+	 * Edit history: every past edit (WordPress revisions) inside the Search Console period becomes
+	 * an experiment and is evaluated with the same before/after method — so the effect of edits
+	 * made before SEOlity was installed is known too.
+	 */
+	public function backfill_history( $limit = 400 ) {
+		global $wpdb;
+		$cov = $this->plugin->gsc_insights->coverage();
+		if ( ! $cov || ! $cov['first_date'] ) {
+			return 0;
+		}
+		$w     = (int) $this->plugin->settings->get( 'experiment_window' );
+		$from  = gmdate( 'Y-m-d', strtotime( $cov['first_date'] . " +$w days" ) );
+		$to    = gmdate( 'Y-m-d', strtotime( $cov['last_date'] . " -$w days" ) );
+		$types = array_values( array_diff( get_post_types( array( 'public' => true ) ), array( 'attachment', 'elementor_library' ) ) );
+		$in    = implode( ',', array_fill( 0, count( $types ), '%s' ) );
+		// One entry per page and day: the last revision of that day.
+		$rows = $wpdb->get_results( $wpdb->prepare( "SELECT r.post_parent pid, DATE(r.post_modified_gmt) d, MAX(r.post_modified_gmt) t, COUNT(*) n FROM {$wpdb->posts} r JOIN {$wpdb->posts} p ON p.ID = r.post_parent WHERE r.post_type = 'revision' AND p.post_status = 'publish' AND p.post_type IN ($in) AND r.post_modified_gmt BETWEEN %s AND %s GROUP BY r.post_parent, DATE(r.post_modified_gmt) ORDER BY t DESC LIMIT %d", array_merge( $types, array( $from . ' 00:00:00', $to . ' 23:59:59', (int) $limit ) ) ), ARRAY_A ); // phpcs:ignore WordPress.DB
+		$made = 0;
+		foreach ( $rows as $r ) {
+			if ( $this->start_for_editor( (int) $r['pid'], 'history', $r['t'] ) ) {
+				$made++;
+			}
+		}
+		return $made;
+	}
+
 	private function name( array $change, array $fields ) {
 		return Objects::label( $change['object_type'], $change['object_id'] ) . ' — ' . implode( ' + ', $fields );
 	}
 
 	/** Evaluate experiments whose after-window has complete GSC data. */
 	public function evaluate_due() {
-		if ( ! $this->plugin->gsc_oauth->is_connected() ) {
+		// Stored Search Console data is what the evaluation needs (also after a disconnect).
+		if ( ! $this->plugin->gsc_analytics->has_data() ) {
 			return 0;
 		}
 		$latest = $this->plugin->gsc_analytics->latest_date();
@@ -149,11 +220,12 @@ final class ExperimentService {
 			/* translators: 1 clicks 2 ctr 3 position 4 site */
 			$reason = sprintf( __( 'Clicks %1$s%%, CTR %2$s%%, position %3$s vs. before; site-wide clicks changed %4$s%% in the same period (control).', 'seolity' ), self::signed( $deltas['clicks'] ), self::signed( $deltas['ctr'] ), self::signed( $deltas['position'] ), self::signed( $control['clicks'] ) );
 		}
+		$queries  = $this->query_deltas( $e['url'], $b_start, $b_end, $a_start, $a_end );
 		$learning = '';
-		if ( 'inconclusive' !== $outcome && $this->plugin->ai->is_ready() ) {
+		if ( 'inconclusive' !== $outcome && $this->plugin->ai->is_ready() && 'editor:history' !== $e['change_type'] ) {
 			$res = $this->plugin->ai->run(
 				'experiment_verdict',
-				array( 'change' => $e['change_type'], 'page_type' => $e['object_type'], 'before' => $before, 'after' => $after, 'site_before' => $site_b, 'site_after' => $site_a, 'rule_based_outcome' => $outcome ),
+				array( 'change' => $e['change_type'], 'page_type' => $e['object_type'], 'before' => $before, 'after' => $after, 'site_before' => $site_b, 'site_after' => $site_a, 'queries' => $queries, 'rule_based_outcome' => $outcome ),
 				array( 'max_tokens' => 1500 )
 			);
 			if ( ! is_wp_error( $res ) ) {
@@ -168,7 +240,7 @@ final class ExperimentService {
 			array(
 				'status'         => 'evaluated',
 				'metrics_before' => array( 'page' => $before, 'site' => $site_b ),
-				'metrics_after'  => array( 'page' => $after, 'site' => $site_a, 'deltas' => $deltas, 'control' => $control, 'adjusted' => $adjusted, 'learning' => $learning ),
+				'metrics_after'  => array( 'page' => $after, 'site' => $site_a, 'deltas' => $deltas, 'control' => $control, 'adjusted' => $adjusted, 'learning' => $learning, 'queries' => $queries ),
 				'outcome'        => $outcome,
 				'confidence'     => $confidence,
 				'reason'         => $reason,
@@ -192,6 +264,22 @@ final class ExperimentService {
 		}
 		do_action( 'seolity_experiment_evaluated', (int) $e['id'], $outcome );
 		return $outcome;
+	}
+
+	/** Position of the page's main queries before vs. after (+ = improved). */
+	private function query_deltas( $url, $b_start, $b_end, $a_start, $a_end ) {
+		$rows = $this->plugin->db->rows(
+			'SELECT query, SUM(IF(date BETWEEN %s AND %s, impressions, 0)) ib, SUM(IF(date BETWEEN %s AND %s, position*impressions, 0)) pb, SUM(IF(date BETWEEN %s AND %s, impressions, 0)) ia, SUM(IF(date BETWEEN %s AND %s, position*impressions, 0)) pa, SUM(IF(date BETWEEN %s AND %s, clicks, 0)) cb, SUM(IF(date BETWEEN %s AND %s, clicks, 0)) ca FROM {gsc_page_query} WHERE project_id = %d AND page_hash = %s AND date BETWEEN %s AND %s GROUP BY query_hash, query HAVING ib > 0 ORDER BY ib DESC LIMIT 12',
+			array( $b_start, $b_end, $b_start, $b_end, $a_start, $a_end, $a_start, $a_end, $b_start, $b_end, $a_start, $a_end, $this->plugin->db->project_id(), Database::url_hash( $url ), $b_start, $a_end )
+		);
+		return array_map(
+			static function ( $r ) {
+				$pb = round( $r['pb'] / $r['ib'], 1 );
+				$pa = (int) $r['ia'] ? round( $r['pa'] / $r['ia'], 1 ) : null;
+				return array( 'query' => $r['query'], 'position_before' => $pb, 'position_after' => $pa, 'change' => null === $pa ? null : round( $pb - $pa, 1 ), 'clicks_before' => (int) $r['cb'], 'clicks_after' => (int) $r['ca'] );
+			},
+			$rows
+		);
 	}
 
 	private static function signed( $v ) {

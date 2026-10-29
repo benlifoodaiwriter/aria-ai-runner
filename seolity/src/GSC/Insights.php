@@ -170,6 +170,7 @@ final class Insights {
 			'home_page'        => $home_rank ? $home_rank : 'the home page has no impressions for this query',
 			'sharpest_drop'    => $drop,
 			'edits_near_drop'  => $drop ? $this->edits_near( wp_list_pluck( $pages, 'page' ), $drop['from_week'] ) : array(),
+			'edit_outcomes'    => $this->edit_outcomes( wp_list_pluck( $pages, 'page' ), $query ),
 			'last_28_days'     => $this->window( $qh, 28, 0 ),
 			'previous_28_days' => $this->window( $qh, 56, 28 ),
 		);
@@ -230,6 +231,28 @@ final class Insights {
 					}
 				}
 			}
+		}
+		return $out;
+	}
+
+	/** Measured effect of past edits on these pages (and on this query when it was among the page's main queries). */
+	public function edit_outcomes( array $urls, $query = '' ) {
+		if ( ! $urls ) {
+			return array();
+		}
+		$hashes = array_map( array( Database::class, 'url_hash' ), $urls );
+		$in     = implode( ',', array_fill( 0, count( $hashes ), '%s' ) );
+		$rows   = $this->plugin->db->rows( "SELECT name, url, change_type, started_at, outcome, confidence, reason, metrics_after FROM {experiments} WHERE project_id = %d AND status = 'evaluated' AND page_hash IN ($in) ORDER BY started_at DESC LIMIT 15", array_merge( array( $this->pid() ), $hashes ) ); // phpcs:ignore WordPress.DB
+		$out    = array();
+		foreach ( $rows as $r ) {
+			$m    = json_decode( (string) $r['metrics_after'], true );
+			$this_query = null;
+			foreach ( isset( $m['queries'] ) ? (array) $m['queries'] : array() as $q ) {
+				if ( $query && $q['query'] === $query ) {
+					$this_query = $q;
+				}
+			}
+			$out[] = array( 'edit' => $r['name'], 'page' => $r['url'], 'what' => $r['change_type'], 'date' => $r['started_at'], 'outcome' => $r['outcome'], 'confidence' => (int) $r['confidence'], 'why' => $r['reason'], 'this_query' => $this_query );
 		}
 		return $out;
 	}

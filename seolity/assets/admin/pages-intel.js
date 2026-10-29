@@ -138,7 +138,11 @@
 
 	/* ================================================================ Experiments */
 	App.pages.experiments = function ( v ) {
-		v.appendChild( App.header( t( 'SEO Experiments' ), t( 'Every applied change becomes an experiment: equal before/after windows, adjusted by the site-wide trend (control), judged Positive / Negative / Neutral / Inconclusive.' ), App.cap( 'manage' ) ? [ App.abtn( t( 'Evaluate now' ), function () {
+		v.appendChild( App.header( t( 'SEO Experiments' ), t( 'Every edit becomes an experiment — SEOlity’s own changes and edits made in WordPress or a page builder: equal before/after windows, adjusted by the site-wide trend (control), judged Positive / Negative / Neutral / Inconclusive, down to each query.' ), App.cap( 'manage' ) ? [ App.abtn( SL.il( 'clock', t( 'Analyze the edit history' ), 15 ), function () {
+			return SL.api( 'experiments/history', { method: 'POST' } ).then( function () {
+				SL.toast( t( 'Past edits (WordPress revisions) within your Search Console period are being measured in the background.' ) );
+			} );
+		}, 'primary' ), App.abtn( t( 'Evaluate now' ), function () {
 			return SL.api( 'experiments/evaluate', { method: 'POST' } ).then( function () {
 				SL.toast( t( 'Evaluation queued.' ) );
 			} );
@@ -155,10 +159,12 @@
 				} ) ) : SL.empty( t( 'Learning in progress' ), t( 'After a few experiments are evaluated, SEOlity learns which changes work best on your site and uses it in every AI suggestion.' ) ) ) );
 				body.appendChild( App.table( [
 					{ label: t( 'Experiment' ), render: function ( e ) {
-						return h( 'div', null, h( 'strong', { text: '#' + e.id + ' ' + e.name } ), h( 'div', { class: 'sl-muted sl-small' }, e.url ? App.ext( e.url ) : '' ) );
+						return h( 'div', null, h( 'strong', { text: '#' + e.id + ' ' + e.name } ), ' ', SL.badge( 0 === String( e.change_type ).indexOf( 'editor:' ) ? t( 'Edited in WordPress' ) : 'SEOlity', '' ), h( 'div', { class: 'sl-muted sl-small' }, e.url ? App.ext( e.url ) : '' ) );
 					} },
 					{ label: t( 'Change' ), render: function ( e ) {
-						return SL.chips( e.change_type.split( '+' ).map( SL.fieldLabel ) );
+						return SL.chips( String( e.change_type ).replace( /^editor:/, '' ).split( '+' ).map( function ( f ) {
+							return 'history' === f ? t( 'Past edit' ) : SL.fieldLabel( f );
+						} ) );
 					} },
 					{ label: t( 'Before → After' ), render: function ( e ) {
 						var b = e.metrics_before && e.metrics_before.page;
@@ -167,7 +173,13 @@
 							return h( 'span', { class: 'sl-muted', text: t( 'Window: %s days', e.window_days ) } );
 						}
 						var dl = e.metrics_after.deltas;
+						var qs = ( e.metrics_after.queries || [] ).filter( function ( q ) {
+							return null !== q.change;
+						} ).slice( 0, 6 );
 						return h( 'div', { class: 'sl-small' },
+							qs.length ? h( 'details', { class: 'sl-exp-q' }, h( 'summary', { text: t( 'Per query (%s)', qs.length ) } ), h( 'ul', null, qs.map( function ( q ) {
+								return h( 'li', { dir: 'auto' }, q.query + ': ' + SL.num( q.position_before ) + ' → ' + SL.num( q.position_after ) + ' ', h( 'span', { class: q.change >= 0 ? 'is-up' : 'is-down', text: ( q.change > 0 ? '▲' : q.change < 0 ? '▼' : '' ) + Math.abs( q.change ) } ) );
+							} ) ) ) : null,
 							h( 'div', null, t( 'Position' ) + ': ' + SL.num( b.position ) + ' → ' + SL.num( a.position ) ),
 							h( 'div', null, t( 'CTR' ) + ': ', h( 'span', { class: dl.ctr >= 0 ? 'is-up' : 'is-down', text: SL.pct( dl.ctr ) } ) ),
 							h( 'div', null, t( 'Clicks' ) + ': ', h( 'span', { class: dl.clicks >= 0 ? 'is-up' : 'is-down', text: SL.pct( dl.clicks ) } ) ),

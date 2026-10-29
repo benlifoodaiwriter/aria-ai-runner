@@ -790,6 +790,11 @@ final class Router {
 		$this->route( 'POST', '/experiments/(?P<id>\d+)/revert', 'apply', function ( Req $r ) use ( $p ) {
 			return $p->experiments->revert( self::int( $r, 'id' ) );
 		} );
+		$this->route( 'POST', '/experiments/history', 'manage', function () use ( $p ) {
+			$job = $p->queue->push( 'experiments_history', array( 'user_id' => get_current_user_id() ), array( 'unique' => true, 'priority' => 3, 'max_attempts' => 2 ) );
+			\SEOlity\Activity\AiJobs::run_after_response( $p );
+			return array( 'queued' => (bool) $job );
+		} );
 		$this->route( 'POST', '/experiments/evaluate', 'manage', function () use ( $p ) {
 			$p->queue->push( 'experiments_evaluate', array(), array( 'unique' => true, 'priority' => 2 ) );
 			Scheduler::kick();

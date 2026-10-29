@@ -65,6 +65,20 @@ final class ContentEvents {
 		if ( ! $this->is_trackable( $after ) || 'publish' !== $before->post_status || 'publish' !== $after->post_status ) {
 			return;
 		}
+		// An edit made in WordPress itself (not applied by SEOlity a moment ago) is measured as an experiment.
+		$what = array();
+		if ( $before->post_title !== $after->post_title ) {
+			$what[] = 'title';
+		}
+		if ( $before->post_content !== $after->post_content ) {
+			$what[] = 'content';
+		}
+		if ( $what ) {
+			$own = $this->plugin->db->value( "SELECT id FROM {changes} WHERE object_type = 'post' AND object_id = %d AND applied_at >= %s LIMIT 1", array( (int) $post_id, gmdate( 'Y-m-d H:i:s', time() - 120 ) ) );
+			if ( ! $own ) {
+				$this->plugin->experiments->start_for_editor( (int) $post_id, implode( '+', $what ) );
+			}
+		}
 		if ( $before->post_name === $after->post_name || 'seolity' !== $this->plugin->meta->engine() || ! $this->plugin->settings->get( 'redirects_enabled' ) ) {
 			return;
 		}
