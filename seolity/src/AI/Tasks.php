@@ -560,6 +560,40 @@ Also give a site-level verdict: does this site have a crawl-budget problem from 
 					)
 				),
 			),
+			'competitor_query_compare' => array(
+				'version'      => 'competitor_query_compare@1.0',
+				'max_tokens'   => 8000,
+				'topics'       => array( 'competitor-analysis', 'on-page', 'serp', 'ranking-factors' ),
+				'cache'        => false,
+				'instructions' => 'You are a senior SEO analyst. For ONE search query, compare the competitor\'s ranking page with ours using only the evidence: the live Google results (positions, titles, snippets, SERP features, People Also Ask), both pages\' on-page data (title, meta description, H1, headings, word count, schema, FAQ, internal links, freshness), our Search Console history for this query (weekly position, which of our pages Google showed in which week, page swaps, the sharpest drop and edits around it, measured results of past edits), and how the competitor\'s position moved between snapshots.
+
+Explain precisely WHY the competitor is above (or below) us for this query: name each factor, show their value vs ours, and rate its likely impact. Distinguish what is evidenced from what is a hypothesis (e.g. backlinks and brand demand are not in the data — say so instead of inventing numbers). If Google shows a different page of ours than the one that should rank (e.g. a category page instead of the home page, or the home page not appearing at all), explain why from the evidence (relevance of title/H1/content to the query, internal links, cannibalization between our pages) and say which of our pages should be the target.
+
+Then give concrete, ordered steps to overtake them (or to match them where we cannot beat them): exactly what to change on which page (title, H1, sections to add with their topics, FAQs from People Also Ask, schema, internal links from which pages with which anchor, consolidating competing pages, freshness), each with why, effort and priority. Write in the site\'s language.',
+				'schema'       => S::obj(
+					array(
+						'verdict'      => S::str( 'One or two sentences: who ranks higher and the main reason.' ),
+						'target_page'  => S::str( 'Which of our URLs should rank for this query.' ),
+						'page_choice'  => S::str( 'Why Google shows the page it shows (or not the home page), from the evidence.' ),
+						'factors'      => S::arr( S::obj( array( 'factor' => S::str(), 'them' => S::str(), 'us' => S::str(), 'impact' => S::enum( array( 'high', 'medium', 'low' ) ), 'evidence' => S::enum( array( 'measured', 'hypothesis' ) ) ) ) ),
+						'steps'        => S::arr( S::obj( array( 'step' => S::str(), 'page' => S::str(), 'why' => S::str(), 'effort' => S::enum( array( 'low', 'medium', 'high' ) ), 'priority' => S::enum( array( 'critical', 'high', 'medium', 'low' ) ) ) ) ),
+						'can_overtake' => S::bool(),
+						'confidence'   => S::int(),
+					)
+				),
+			),
+			'competitor_query_discovery' => array(
+				'version'      => 'competitor_query_discovery@1.0',
+				'max_tokens'   => 6000,
+				'topics'       => array( 'competitor-analysis', 'keywords' ),
+				'cache'        => true,
+				'instructions' => 'For each competitor page given (URL, title, H1, headings), list the 1–4 search queries that page most likely ranks for in Google, exactly as users of this market type them (the site\'s language), most important first. Prefer real commercial / informational phrasings over the literal title. Do not invent pages.',
+				'schema'       => S::obj(
+					array(
+						'pages' => S::arr( S::obj( array( 'url' => S::str(), 'queries' => S::strings() ) ) ),
+					)
+				),
+			),
 			'experiment_verdict' => array(
 				'version'      => 'experiment_verdict@1.0',
 				'max_tokens'   => 1500,

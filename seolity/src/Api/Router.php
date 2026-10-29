@@ -759,7 +759,52 @@ final class Router {
 			return $p->competitors->query();
 		} );
 		$this->route( 'POST', '/competitors', 'manage', function ( Req $r ) use ( $p ) {
-			return $p->competitors->create( self::str( $r, 'name' ), self::str( $r, 'domain' ), self::key( $r, 'frequency', 'weekly' ), self::url( $r, 'sitemap' ) );
+			$res = $p->competitors->create( self::str( $r, 'name' ), self::str( $r, 'domain' ), self::key( $r, 'frequency', 'weekly' ), self::url( $r, 'sitemap' ) );
+			if ( ! is_wp_error( $res ) && is_numeric( $res ) ) {
+				$p->intel->link_domain( (int) $res, self::str( $r, 'domain' ) );
+			}
+			return $res;
+		} );
+		$this->route( 'GET', '/competitors/(?P<id>\d+)/intel', 'view', function ( Req $r ) use ( $p ) {
+			$id = self::int( $r, 'id' );
+			return array(
+				'competitor' => $p->competitors->get( $id ),
+				'overview'   => $p->intel->overview( $id ),
+				'analyses'   => $p->intel->analyses( $id ),
+				'candidates' => (array) get_option( 'seolity_comp_candidates_' . $id, array() ),
+				'budget'     => $p->intel->budget(),
+				'last_track' => get_option( 'seolity_serp_last_track' ),
+				'tracking'   => (bool) $p->queue->find_unique( 'serp_track', true ),
+			);
+		} );
+		$this->route( 'GET', '/competitors/(?P<id>\d+)/estimate', 'view', function ( Req $r ) use ( $p ) {
+			return $p->intel->estimate( self::int( $r, 'id' ) );
+		} );
+		$this->route( 'POST', '/competitors/(?P<id>\d+)/compare', 'ai', function ( Req $r ) use ( $p ) {
+			return $p->intel->start_compare( self::int( $r, 'id' ), self::str( $r, 'query' ) );
+		} );
+		$this->route( 'GET', '/competitors/analysis/(?P<id>\d+)', 'view', function ( Req $r ) use ( $p ) {
+			return $p->intel->analysis( self::int( $r, 'id' ) );
+		} );
+		$this->route( 'POST', '/competitors/(?P<id>\d+)/discover', 'ai', function ( Req $r ) use ( $p ) {
+			return array( 'candidates' => $p->intel->discover( self::int( $r, 'id' ) ) );
+		} );
+		$this->route( 'GET', '/serp/tracking', 'view', function () use ( $p ) {
+			return array( 'queries' => $p->intel->tracked_queries(), 'own' => (array) get_option( \SEOlity\Competitors\Intel::QUERIES, array() ), 'budget' => $p->intel->budget(), 'suggestions' => $p->intel->suggestions(), 'last_track' => get_option( 'seolity_serp_last_track' ), 'tracking' => (bool) $p->queue->find_unique( 'serp_track', true ) );
+		} );
+		$this->route( 'POST', '/serp/queries', 'manage', function ( Req $r ) use ( $p ) {
+			$q = (array) $r->get_param( 'queries' );
+			if ( $r->get_param( 'remove' ) ) {
+				$p->intel->remove_query( self::str( $r, 'remove' ) );
+				return array( 'ok' => true );
+			}
+			return array( 'queries' => $p->intel->add_queries( $q ) );
+		} );
+		$this->route( 'POST', '/serp/track', 'manage', function ( Req $r ) use ( $p ) {
+			$q   = array_values( array_filter( array_map( 'sanitize_text_field', (array) $r->get_param( 'queries' ) ) ) );
+			$job = $p->queue->push( 'serp_track', array( 'queries' => $q ), array( 'unique' => true, 'priority' => 2, 'max_attempts' => 1, 'timeout' => 1800 ) );
+			\SEOlity\Activity\AiJobs::run_after_response( $p );
+			return array( 'queued' => (bool) $job );
 		} );
 		$this->route( 'DELETE', '/competitors/(?P<id>\d+)', 'manage', function ( Req $r ) use ( $p ) {
 			return array( 'ok' => $p->competitors->delete( self::int( $r, 'id' ) ) );

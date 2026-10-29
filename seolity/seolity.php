@@ -20,7 +20,7 @@
 defined( 'ABSPATH' ) || exit;
 
 define( 'SEOLITY_VERSION', '1.10.0' );
-define( 'SEOLITY_DB_VERSION', '1.5.0' );
+define( 'SEOLITY_DB_VERSION', '1.6.0' );
 define( 'SEOLITY_FILE', __FILE__ );
 define( 'SEOLITY_DIR', plugin_dir_path( __FILE__ ) );
 define( 'SEOLITY_URL', plugin_dir_url( __FILE__ ) );

@@ -120,6 +120,8 @@ final class Settings {
 			'thin_content_words'   => array( 'int', 300, array( 50, 2000 ) ),
 			// Competitors.
 			'competitor_max_pages' => array( 'int', 200, array( 10, 5000 ) ),
+			'serp_monthly_limit'   => array( 'int', 100, array( 0, 100000 ) ),
+			'serp_track_queries'   => array( 'int', 25, array( 1, 1000 ) ),
 			// Alerts & reports.
 			'alert_email'          => array( 'email', '' ),
 			'alert_email_enabled'  => array( 'bool', false ),

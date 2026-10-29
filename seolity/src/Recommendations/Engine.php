@@ -64,6 +64,7 @@ final class Engine {
 		'optimize_product'    => array( 'products', '#/products' ),
 		'strengthen_category' => array( 'products', '#/products' ),
 		'content_gap'         => array( 'competitors', '#/competitors' ),
+		'competitor_query_gap' => array( 'competitors', '#/competitors' ),
 	);
 
 	/** Types measured with search data: a fixed one only re-opens after a full new measuring window. */

@@ -60,7 +60,7 @@ final class SerpService {
 	}
 
 	/** Google country + interface language for a market code. */
-	private function locale( $market ) {
+	public function locale( $market ) {
 		$market = strtolower( (string) $market );
 		if ( '' === $market ) {
 			$lang   = (string) $this->plugin->settings->get( 'ai_content_language' );
@@ -75,7 +75,8 @@ final class SerpService {
 	 *
 	 * @return array|\WP_Error {keyword, market, results[], questions[], related[], features[]}
 	 */
-	public function fetch( $keyword, $market = '' ) {
+	public function fetch( $keyword, $market = '', $num = 10, $fresh = false ) {
+		$num = max( 10, min( 100, (int) $num ) );
 		$keyword = trim( sanitize_text_field( $keyword ) );
 		if ( '' === $keyword ) {
 			return new \WP_Error( 'seolity_serp_keyword', __( 'Enter a keyword.', 'seolity' ), array( 'status' => 400 ) );
@@ -85,8 +86,8 @@ final class SerpService {
 			return new \WP_Error( 'seolity_serp_key', __( 'Add a SERP API key (SerpApi) in Settings → Crawler & audits to analyze live search results.', 'seolity' ), array( 'status' => 400 ) );
 		}
 		list( $gl, $hl ) = $this->locale( $market );
-		$cache_key       = 'seolity_serp_' . md5( $keyword . '|' . $gl . '|' . $hl );
-		$cached          = get_transient( $cache_key );
+		$cache_key       = 'seolity_serp_' . md5( $keyword . '|' . $gl . '|' . $hl . ( 10 === $num ? '' : '|' . $num ) );
+		$cached          = $fresh ? false : get_transient( $cache_key );
 		if ( is_array( $cached ) ) {
 			return $cached;
 		}
@@ -96,7 +97,7 @@ final class SerpService {
 				'q'       => rawurlencode( $keyword ),
 				'gl'      => $gl,
 				'hl'      => $hl,
-				'num'     => 10,
+				'num'     => $num,
 				'api_key' => rawurlencode( (string) $key ),
 			),
 			self::ENDPOINT
@@ -110,15 +111,15 @@ final class SerpService {
 			/* translators: %s: error from the SERP API */
 			return new \WP_Error( 'seolity_serp_api', sprintf( __( 'SERP API error: %s', 'seolity' ), $msg ), array( 'status' => 502 ) );
 		}
-		$data = self::normalize( $res['body'], $keyword, $gl );
+		$data = self::normalize( $res['body'], $keyword, $gl, $num );
 		set_transient( $cache_key, $data, self::CACHE_TTL );
 		return $data;
 	}
 
 	/** Reduce a SerpApi response to what the analysis needs. */
-	public static function normalize( array $body, $keyword, $market ) {
+	public static function normalize( array $body, $keyword, $market, $num = 10 ) {
 		$results = array();
-		foreach ( array_slice( isset( $body['organic_results'] ) ? (array) $body['organic_results'] : array(), 0, 10 ) as $r ) {
+		foreach ( array_slice( isset( $body['organic_results'] ) ? (array) $body['organic_results'] : array(), 0, $num ) as $r ) {
 			if ( empty( $r['link'] ) ) {
 				continue;
 			}

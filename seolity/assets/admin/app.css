@@ -648,3 +648,12 @@ button.sl-segcard { cursor: pointer; }
 .sl-rm-item__title { flex: 1; min-width: 0; }
 .sl-checks__fix { color: var(--sl-warn, #b45309); }
 .sl-pre { white-space: pre-wrap; overflow-wrap: anywhere; max-height: 220px; overflow: auto; font-size: 12px; margin: 0; }
+.sl-cq__verdict { font-size: 15px; font-weight: 700; margin: 0 0 8px; line-height: 1.8; }
+.sl-cq__pages { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 8px; margin: 10px 0; }
+.sl-cq__pages small { display: block; color: var(--sl-muted); }
+.sl-cq__steps { margin: 0; padding-inline-start: 22px; display: grid; gap: 10px; }
+.sl-cq__steps p { margin: 4px 0 0; }
+.sl-cq__tab { display: inline-flex; gap: 6px; align-items: center; }
+.sl-tabs { overflow-x: auto; }
+.sl-chip__x { border: 0; background: none; cursor: pointer; padding: 0 0 0 4px; color: var(--sl-muted); font-size: 14px; line-height: 1; }
+.sl-exp-q ul { margin: 4px 0; padding-inline-start: 18px; }

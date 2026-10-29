@@ -151,6 +151,7 @@ final class Plugin {
 			'cloudflare'      => Integrations\Cloudflare::class,
 			'githubhub'       => Storage\GitHubHub::class,
 			'competitors'     => Competitors\CompetitorService::class,
+			'intel'           => Competitors\Intel::class,
 			'experiments'     => Experiments\ExperimentService::class,
 			'learning'        => Experiments\Learning::class,
 			'health'          => Health\HealthScore::class,

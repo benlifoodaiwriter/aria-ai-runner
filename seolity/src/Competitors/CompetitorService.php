@@ -81,7 +81,7 @@ final class CompetitorService {
 		return $out;
 	}
 
-	private function get( $id ) {
+	public function get( $id ) {
 		return Database::decode( $this->plugin->db->row( 'SELECT * FROM {competitors} WHERE id = %d', array( (int) $id ) ), array( 'summary' ) );
 	}
 

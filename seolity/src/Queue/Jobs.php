@@ -37,6 +37,15 @@ final class Jobs {
 			$p->experiments->evaluate_due();
 			return true;
 		} );
+		$q->handler( 'serp_track', static function ( $a ) use ( $p ) {
+			return $p->intel->track( isset( $a['queries'] ) ? (array) $a['queries'] : array() );
+		} );
+		$q->handler( 'competitor_compare', static function ( $a ) use ( $p ) {
+			if ( ! empty( $a['user_id'] ) ) {
+				wp_set_current_user( (int) $a['user_id'] );
+			}
+			return $p->intel->compare( (int) $a['id'], isset( $a['activity_id'] ) ? (int) $a['activity_id'] : 0 );
+		} );
 		$q->handler( 'full_analysis', static function ( $a ) use ( $p ) {
 			return $p->analysis->step( (array) $a );
 		} );
@@ -214,6 +223,11 @@ final class Jobs {
 			$q->push( 'crawl_start', array( 'type' => 'full' ), array( 'unique' => true, 'priority' => 5 ) );
 		} else {
 			$q->push( 'crawl_start', array( 'type' => 'incremental' ), array( 'unique' => true, 'priority' => 5 ) );
+		}
+		// Weekly Google check of the tracked queries (within the monthly SERP budget).
+		$lt = get_option( 'seolity_serp_last_track' );
+		if ( $p->serp->available() && ( ! is_array( $lt ) || strtotime( $lt['at'] ) < time() - 6 * DAY_IN_SECONDS ) ) {
+			$q->push( 'serp_track', array(), array( 'unique' => true, 'priority' => 20, 'max_attempts' => 1, 'timeout' => 1800 ) );
 		}
 		foreach ( $p->competitors->due_ids() as $cid ) {
 			$q->push( 'competitor_analyze', array( 'id' => $cid ), array( 'unique' => true, 'priority' => 25 ) );

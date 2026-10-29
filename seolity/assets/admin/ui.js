@@ -506,7 +506,7 @@
 			return h( 'span', { class: 'sl-chip' + ( kind ? ' sl-chip--' + kind : '' ) }, x );
 		} ) );
 	};
-	SL.tabs = function ( tabs, onChange ) {
+	SL.tabs = function ( tabs, onChange, initial ) {
 		var wrap = h( 'div', { class: 'sl-tabs', role: 'tablist' } );
 		var panel = h( 'div', { class: 'sl-tabpanel', role: 'tabpanel' } );
 		function select( i ) {
@@ -527,7 +527,7 @@
 			} }, tab.label ) );
 		} );
 		setTimeout( function () {
-			select( 0 );
+			select( initial && tabs[ initial ] ? initial : 0 );
 		}, 0 );
 		return h( 'div', null, wrap, panel );
 	};

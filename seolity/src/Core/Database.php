@@ -22,7 +22,7 @@ final class Database {
 		'keywords', 'competitors', 'competitor_pages', 'changes', 'experiments', 'learnings',
 		'redirects', 'not_found', 'recommendations', 'content_analysis', 'images', 'internal_links',
 		'alerts', 'reports', 'jobs', 'audit_log', 'ai_requests', 'ai_cache', 'rules', 'chat',
-		'knowledge', 'content_plan', 'clusters', 'remote_jobs', 'roadmaps', 'activity', 'operations',
+		'knowledge', 'content_plan', 'clusters', 'remote_jobs', 'roadmaps', 'activity', 'operations', 'serp_snapshots', 'serp_results', 'serp_analyses',
 	);
 
 	/** @var \wpdb */
@@ -848,6 +848,56 @@ final class Database {
 				KEY status (project_id,status,id),
 				KEY issue (issue_id),
 				KEY type (project_id,type,status)
+			) $c;",
+			"CREATE TABLE {$t('serp_snapshots')} (
+				id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+				project_id bigint(20) unsigned NOT NULL DEFAULT 1,
+				query varchar(500) NOT NULL,
+				query_hash char(40) NOT NULL,
+				gl varchar(10) NOT NULL DEFAULT '',
+				hl varchar(10) NOT NULL DEFAULT '',
+				features text NULL,
+				questions text NULL,
+				related text NULL,
+				own_position smallint(5) unsigned NULL,
+				own_url text NULL,
+				checked_at datetime NOT NULL,
+				PRIMARY KEY  (id),
+				KEY query (project_id,query_hash,checked_at),
+				KEY checked (project_id,checked_at)
+			) $c;",
+			"CREATE TABLE {$t('serp_results')} (
+				id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+				snapshot_id bigint(20) unsigned NOT NULL,
+				position smallint(5) unsigned NOT NULL,
+				url text NOT NULL,
+				url_hash char(40) NOT NULL,
+				domain varchar(190) NOT NULL,
+				title text NULL,
+				snippet text NULL,
+				competitor_id bigint(20) unsigned NULL,
+				is_own tinyint(1) NOT NULL DEFAULT 0,
+				PRIMARY KEY  (id),
+				KEY snapshot (snapshot_id,position),
+				KEY domain (domain),
+				KEY competitor (competitor_id)
+			) $c;",
+			"CREATE TABLE {$t('serp_analyses')} (
+				id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+				project_id bigint(20) unsigned NOT NULL DEFAULT 1,
+				competitor_id bigint(20) unsigned NOT NULL,
+				query varchar(500) NOT NULL,
+				query_hash char(40) NOT NULL,
+				snapshot_id bigint(20) unsigned NULL,
+				their_url text NULL,
+				our_url text NULL,
+				evidence longtext NULL,
+				result longtext NULL,
+				status varchar(20) NOT NULL DEFAULT 'running',
+				error text NULL,
+				created_at datetime NOT NULL,
+				PRIMARY KEY  (id),
+				KEY comp_query (competitor_id,query_hash,id)
 			) $c;",
 		);
 	}

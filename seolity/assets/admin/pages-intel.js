@@ -13,6 +13,11 @@
 	/* ================================================================ Competitors */
 	App.pages.competitors = function ( v ) {
 		v.appendChild( App.header( t( 'Competitor Intelligence' ), t( 'SEOlity monitors competitor sitemaps and pages (politely, respecting robots.txt), tracks new content and finds content gaps.' ) ) );
+		var serpBox = h( 'div' );
+		v.appendChild( serpBox );
+		App.serpCard( serpBox, function () {
+			App.pages.competitors( SL.clear( v ) );
+		} );
 		if ( App.cap( 'manage' ) ) {
 			var name = h( 'input', { class: 'sl-input', placeholder: t( 'Name' ) } );
 			var domain = h( 'input', { class: 'sl-input', placeholder: 'competitor.com', dir: 'ltr' } );
@@ -60,6 +65,7 @@
 				);
 				list.appendChild( App.card( c.name + ' · ' + c.domain, body, { actions: [
 					h( 'span', { class: 'sl-muted sl-small', text: t( 'Last analyzed' ) + ': ' + SL.date( c.last_analyzed ) } ),
+					h( 'a', { class: 'sl-btn sl-btn--primary sl-btn--sm', href: '#/competitor?id=' + c.id, text: t( 'Open panel' ) } ),
 					App.btn( t( 'Pages' ), function () {
 						pagesModal( c );
 					}, 'sm' ),
