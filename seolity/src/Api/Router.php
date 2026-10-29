@@ -274,7 +274,7 @@ final class Router {
 		} );
 		/* ---------------- Canonical issues (roadmap) ---------------- */
 		$this->route( 'GET', '/issues/board', 'view', function () use ( $p ) {
-			return array( 'categories' => $p->recommendations->board(), 'refreshed' => get_option( 'seolity_recommendations_refreshed' ), 'analysis' => $p->analysis->state() );
+			return array( 'categories' => $p->recommendations->board(), 'refreshed' => get_option( 'seolity_recommendations_refreshed' ), 'analysis' => $p->analysis->state(), 'areas' => $p->problem_areas->compute() );
 		} );
 		$this->route( 'POST', '/analysis/full', 'manage', function () use ( $p ) {
 			return $p->analysis->start();

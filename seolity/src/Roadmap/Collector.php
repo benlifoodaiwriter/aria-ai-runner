@@ -115,6 +115,12 @@ final class Collector {
 		};
 		$health = $p->health->cached();
 		$out    = array(
+			'problem_areas' => array_map(
+				static function ( $x ) {
+					return array_intersect_key( $x, array_flip( array( 'id', 'label', 'score', 'share', 'issues', 'critical', 'affected_urls', 'affected_share', 'top', 'note' ) ) );
+				},
+				$p->problem_areas->compute()
+			),
 			'site'    => array(
 				'name'       => get_bloginfo( 'name' ),
 				'url'        => home_url( '/' ),

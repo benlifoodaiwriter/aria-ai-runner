@@ -186,7 +186,7 @@ final class Tasks {
 				),
 			),
 			'seo_roadmap'        => array(
-				'version'      => 'seo_roadmap@1.0',
+				'version'      => 'seo_roadmap@1.1',
 				'max_tokens'   => 16000,
 				'topics'       => array( 'content', 'on-page', 'site-architecture', 'internal-linking', 'ctr', 'eeat', 'technical', 'indexing', 'content-strategy', 'topic-clusters', 'competitors', 'ecommerce' ),
 				'cache'        => false,
@@ -194,6 +194,7 @@ final class Tasks {
 					'1) diagnosis: an expert, specific analysis of the site’s current SEO situation (6–10 sentences): what drives or limits traffic, the biggest risks and the biggest opportunities — cite real numbers from the facts. strengths / risks: short bullet lists. focus: the 3 things to do first this week, in plain words.' . "\n" .
 					'2) items: return EVERY candidate (same key) plus at most 6 strategic tasks of your own (key "ai:" + short-slug, only when the data clearly supports them, e.g. a topic cluster, E-E-A-T pages, a content refresh plan). For each item: a clear title, priority (critical = blocks indexing/traffic now; high = big measurable gain; medium; low), phase (now = this week, week = next 2 weeks, month = this month, later), why (specific to this site, with numbers), expected_result, 3–6 concrete steps for THIS site (each with where = the exact WordPress / SEOlity menu path, e.g. "SEOLITY → Keywords & links → Internal Links" or "Posts → All Posts → Edit → Rank Math box"), done_when, impact and effort 1–100.' . "\n" .
 					'3) Stability: "previous_roadmap" is what the owner already follows. Keep each existing item’s priority and phase unless the facts changed materially (then set changed=true and explain in change_reason). Do not reword titles without reason. Items the owner marked done stay done unless the data shows the problem again. changes_note: one short paragraph on what changed since the previous roadmap (or "first roadmap").' . "\n" .
+					'4) problem_areas: facts.problem_areas scores every area of SEO (technical & indexing, on-page, internal links, content & cannibalization, speed, products, off-site) from the open issues. Rank the areas from where the site\'s problems mainly are to the least, and for each give a verdict of 1–2 sentences with the evidence (counts, affected URLs, the top problems) and what fixing it would bring. Off-site (backlinks, brand) is not measured — say what the competitor data suggests, marked as a hypothesis.' . "\n" .
 					'Rules: white-hat only; never invent data, URLs or numbers that are not in the input; prefer fixing indexing and technical blockers before content; write in the site’s language.',
 				'schema'       => S::obj(
 					array(
@@ -201,6 +202,7 @@ final class Tasks {
 						'strengths'     => S::arr( S::str() ),
 						'risks'         => S::arr( S::str() ),
 						'focus'         => S::arr( S::str() ),
+						'problem_areas' => S::arr( S::obj( array( 'area' => S::str(), 'rank' => S::int(), 'verdict' => S::str() ) ) ),
 						'items'         => S::arr(
 							S::obj(
 								array(

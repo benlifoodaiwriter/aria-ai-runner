@@ -661,3 +661,12 @@ button.sl-segcard { cursor: pointer; }
 .sl-src { display: flex; flex-direction: column; gap: 6px; padding: 12px; border: 1px solid var(--sl-border); border-radius: 12px; background: var(--sl-surface); cursor: pointer; }
 .sl-src.is-on { border-color: var(--sl-brand); }
 .sl-src p { margin: 0; }
+.sl-areas { display: grid; gap: 10px; }
+.sl-area { display: grid; gap: 4px; padding: 10px 12px; border: 1px solid var(--sl-border); border-radius: 12px; text-decoration: none; color: inherit; }
+.sl-area:hover { border-color: var(--sl-brand); }
+.sl-area__head { display: flex; gap: 8px; align-items: center; }
+.sl-area__head b { flex: 1; }
+.sl-area__rank { display: inline-grid; place-items: center; min-width: 22px; height: 22px; border-radius: 11px; background: var(--sl-surface-2); font-size: 12px; font-weight: 700; }
+.sl-area__pct { font-weight: 800; }
+.sl-area__bar { height: 8px; border-radius: 4px; background: var(--sl-surface-2); overflow: hidden; }
+.sl-area__bar span { display: block; height: 100%; background: linear-gradient(90deg, var(--sl-warn, #f59e0b), var(--sl-bad, #dc2626)); border-radius: 4px; }

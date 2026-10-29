@@ -158,6 +158,11 @@
 			};
 			var body = h( 'div', { class: 'sl-stack' },
 				h( 'div', { class: 'sl-rm-diag' }, SL.markdown( s.diagnosis || '' ) ),
+				s.problem_areas && s.problem_areas.length ? h( 'div', { class: 'sl-rm-focus' }, h( 'h4', null, SL.icon( 'layers', 16 ), h( 'span', { text: t( 'Where the problems are (AI ranking)' ) } ) ), h( 'ol', null, s.problem_areas.slice().sort( function ( a, b ) {
+					return a.rank - b.rank;
+				} ).map( function ( x ) {
+					return h( 'li', null, h( 'b', { dir: 'auto', text: x.area + ': ' } ), h( 'span', { dir: 'auto', text: x.verdict } ) );
+				} ) ) ) : null,
 				s.focus && s.focus.length ? h( 'div', { class: 'sl-rm-focus' }, h( 'h4', null, SL.icon( 'target', 16 ), h( 'span', { text: t( 'Focus this week' ) } ) ), h( 'ol', null, s.focus.map( function ( x ) {
 					return h( 'li', { text: x } );
 				} ) ) ) : null,
@@ -384,9 +389,11 @@
 		var f = { category: '', status: 'active', page: 1 };
 		var timer;
 		var anBox = h( 'div' );
+		var areaBox = h( 'div' );
 		var catBox = h( 'div', { class: 'sl-rm-cats' } );
 		var listBox = h( 'div', { class: 'sl-stack' } );
 		ov.appendChild( anBox );
+		ov.appendChild( areaBox );
 		ov.appendChild( catBox );
 		ov.appendChild( listBox );
 
@@ -405,6 +412,29 @@
 				} ) ) );
 			}
 			anBox.appendChild( card );
+		}
+
+		function areas( list ) {
+			SL.clear( areaBox );
+			var shown = list.filter( function ( a ) {
+				return a.score > 0;
+			} );
+			if ( ! shown.length ) {
+				return;
+			}
+			var body = h( 'div', { class: 'sl-areas' } );
+			shown.forEach( function ( a, i ) {
+				body.appendChild( h( 'a', { class: 'sl-area', href: a.route },
+					h( 'div', { class: 'sl-area__head' }, h( 'span', { class: 'sl-area__rank', text: SL.num( i + 1, 0 ) } ), h( 'b', { text: a.label } ), h( 'span', { class: 'sl-area__pct', text: SL.num( a.share, 0 ) + '%' } ) ),
+					h( 'div', { class: 'sl-area__bar' }, h( 'span', { style: 'width:' + Math.max( 2, a.share ) + '%' } ) ),
+					h( 'div', { class: 'sl-muted sl-small', text: t( '%1$s problems · %2$s critical · %3$s URLs affected', SL.num( a.issues, 0 ), SL.num( a.critical, 0 ), SL.num( a.affected_urls, 0 ) ) } ),
+					a.top && a.top.length ? h( 'div', { class: 'sl-small', dir: 'auto', text: a.top.map( function ( x ) {
+						return x.title + ' (' + x.count + ')';
+					} ).join( ' · ' ) } ) : null,
+					a.note ? h( 'div', { class: 'sl-small sl-muted', text: a.note } ) : null
+				) );
+			} );
+			areaBox.appendChild( App.card( t( 'Where the site’s problems are' ), body, { icon: 'layers', sub: t( 'Share of all open problems by area, weighted by severity.' ) } ) );
 		}
 
 		function cats( list ) {
@@ -520,6 +550,7 @@
 			}
 			SL.api( 'issues/board' ).then( function ( b ) {
 				analysis( b.analysis );
+				areas( b.areas || [] );
 				cats( b.categories );
 				list();
 				if ( b.analysis && 'running' === b.analysis.status ) {
