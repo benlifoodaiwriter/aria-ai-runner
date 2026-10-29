@@ -675,3 +675,30 @@ button.sl-segcard { cursor: pointer; }
 .sl-dup__sev b { position: relative; padding-inline: 8px; font-size: 12px; line-height: 22px; }
 .sl-dup__strat { border: 1px dashed var(--sl-border); border-radius: 10px; padding: 8px 12px; }
 .sl-dup__strat p { margin: 4px 0 0; }
+.sl-map__tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 8px; margin: 10px 0; }
+.sl-map__tile { display: grid; gap: 2px; text-align: start; padding: 10px 12px; border: 1px solid var(--sl-border); border-inline-start: 6px solid var(--c); border-radius: 12px; background: var(--sl-surface); color: inherit; cursor: pointer; font: inherit; }
+.sl-map__tile b { font-size: 20px; }
+.sl-map__tile span { font-size: 12px; color: var(--sl-muted); }
+.sl-map__tile.is-on { box-shadow: 0 0 0 2px var(--c); }
+.sl-map__flags .sl-chip { cursor: pointer; border: 1px solid var(--sl-border); background: var(--sl-surface); font: inherit; font-size: 12px; }
+.sl-map__flags .sl-chip.is-on { border-color: var(--sl-brand); color: var(--sl-brand); }
+.sl-map__canvaswrap { position: relative; overflow: hidden; padding: 2px; border: 1px solid var(--sl-border); border-radius: 12px; background: var(--sl-surface); }
+.sl-map__canvas { display: block; cursor: pointer; direction: ltr; }
+.sl-map__tip { position: absolute; z-index: 5; max-width: 320px; padding: 6px 10px; border-radius: 8px; background: rgba(15, 23, 42, .92); color: #fff; font-size: 12px; pointer-events: none; direction: ltr; overflow-wrap: anywhere; }
+.sl-map__dot { display: inline-block; width: 12px; height: 12px; border-radius: 3px; flex: 0 0 auto; }
+.sl-map__badge { color: #fff; padding: 3px 10px; border-radius: 999px; font-weight: 700; font-size: 12px; }
+.sl-map__crumbs { display: flex; flex-wrap: wrap; gap: 4px; align-items: center; margin-bottom: 8px; }
+.sl-map__folder { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 10px; width: 100%; text-align: start; padding: 10px 12px; margin-bottom: 6px; border: 1px solid var(--sl-border); border-radius: 10px; background: var(--sl-surface); color: inherit; cursor: pointer; font: inherit; }
+.sl-map__folder:hover { border-color: var(--sl-brand); }
+.sl-map__fname { font-weight: 700; overflow-wrap: anywhere; }
+.sl-map__stack { grid-column: 1 / -1; display: flex; height: 8px; border-radius: 4px; overflow: hidden; background: var(--sl-surface-2); }
+.sl-map__stack span { display: block; height: 100%; }
+.sl-map__url { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; width: 100%; text-align: start; padding: 6px 8px; border: 0; border-bottom: 1px solid var(--sl-border); background: none; color: inherit; cursor: pointer; font: inherit; }
+.sl-map__url:hover { background: var(--sl-surface-2); }
+.sl-map__urltext { font-size: 13px; overflow-wrap: anywhere; }
+.sl-map__trend { display: flex; align-items: flex-end; gap: 3px; height: 180px; padding: 8px; border: 1px solid var(--sl-border); border-radius: 12px; direction: ltr; overflow-x: auto; }
+.sl-map__tcol { display: flex; flex-direction: column-reverse; width: 14px; min-width: 14px; height: 100%; }
+.sl-map__tcol span { display: block; width: 100%; }
+.sl-map__actions { flex-wrap: wrap; margin-top: 12px; }
+/* Phones: the task dock floats over the bottom of the screen — leave room so the end of every page stays reachable. */
+@media (max-width: 600px) { .sl-view { padding-bottom: 300px; } }

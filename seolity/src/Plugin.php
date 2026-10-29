@@ -155,6 +155,7 @@ final class Plugin {
 			'ai_visibility'   => Serp\AiVisibility::class,
 			'chat_tools'      => Chat\Toolbox::class,
 			'problem_areas'   => Analysis\ProblemAreas::class,
+			'sitemap_map'     => Technical\SiteMap::class,
 			'experiments'     => Experiments\ExperimentService::class,
 			'learning'        => Experiments\Learning::class,
 			'health'          => Health\HealthScore::class,

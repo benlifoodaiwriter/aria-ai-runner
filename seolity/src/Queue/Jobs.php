@@ -40,6 +40,9 @@ final class Jobs {
 		$q->handler( 'ai_visibility_check', static function ( $a ) use ( $p ) {
 			return $p->ai_visibility->check( isset( $a['queries'] ) ? (array) $a['queries'] : array() );
 		} );
+		$q->handler( 'sitemap_map_refresh', static function () use ( $p ) {
+			return $p->sitemap_map->refresh();
+		} );
 		$q->handler( 'serp_track', static function ( $a ) use ( $p ) {
 			return $p->intel->track( isset( $a['queries'] ) ? (array) $a['queries'] : array() );
 		} );
@@ -233,6 +236,8 @@ final class Jobs {
 		} else {
 			$q->push( 'crawl_start', array( 'type' => 'incremental' ), array( 'unique' => true, 'priority' => 5 ) );
 		}
+		// The site map explorer is rebuilt every day.
+		$q->push( 'sitemap_map_refresh', array(), array( 'unique' => 'daily', 'priority' => 15, 'max_attempts' => 2, 'timeout' => 900 ) );
 		// Weekly Google check of the tracked queries (within the monthly SERP budget).
 		$lt = get_option( 'seolity_serp_last_track' );
 		if ( $p->serp->available() && ( ! is_array( $lt ) || strtotime( $lt['at'] ) < time() - 6 * DAY_IN_SECONDS ) ) {

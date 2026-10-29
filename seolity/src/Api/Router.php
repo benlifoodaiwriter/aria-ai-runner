@@ -806,6 +806,27 @@ final class Router {
 			}
 			return array( 'queries' => $p->intel->add_queries( $q ) );
 		} );
+		$this->route( 'GET', '/sitemap/map', 'view', function ( Req $r ) use ( $p ) {
+			$v                 = $p->sitemap_map->view( array( 'status' => self::key( $r, 'status' ), 'flag' => self::key( $r, 'flag' ), 'q' => self::str( $r, 'q' ), 'folder' => (string) $r->get_param( 'folder' ), 'sort' => self::key( $r, 'sort' ), 'all' => (bool) $r->get_param( 'all' ), 'page' => self::int( $r, 'page', 1 ), 'per_page' => self::int( $r, 'per_page', 200 ) ) );
+			$v['history']      = (array) get_option( \SEOlity\Technical\SiteMap::HISTORY, array() );
+			$v['last_refresh'] = get_option( 'seolity_sitemap_map_last' );
+			$v['refreshing']   = (bool) $p->queue->find_unique( 'sitemap_map_refresh', true );
+			return $v;
+		} );
+		$this->route( 'GET', '/sitemap/map/pixels', 'view', function () use ( $p ) {
+			return $p->sitemap_map->pixels();
+		} );
+		$this->route( 'GET', '/sitemap/map/url', 'view', function ( Req $r ) use ( $p ) {
+			return $p->sitemap_map->url( esc_url_raw( (string) $r->get_param( 'url' ) ) );
+		} );
+		$this->route( 'POST', '/sitemap/map/refresh', 'manage', function () use ( $p ) {
+			$job = $p->queue->push( 'sitemap_map_refresh', array(), array( 'unique' => true, 'priority' => 1, 'max_attempts' => 1, 'timeout' => 900 ) );
+			\SEOlity\Activity\AiJobs::run_after_response( $p );
+			return array( 'queued' => (bool) $job );
+		} );
+		$this->route( 'POST', '/sitemap/map/check', 'manage', function ( Req $r ) use ( $p ) {
+			return $p->sitemap_map->check( esc_url_raw( (string) $r->get_param( 'url' ) ) );
+		} );
 		$this->route( 'GET', '/serp/sources', 'manage', function () use ( $p ) {
 			$cat = \SEOlity\Serp\Sources::catalog();
 			foreach ( $cat as $id => &$c ) {

@@ -489,10 +489,10 @@
 	};
 
 	/* ================================================================ Sitemap */
-	App.pages.sitemap = function ( v ) {
+	App.sitemapHealth = function ( v ) {
 		v.appendChild( App.header( t( 'Sitemap Intelligence' ), t( 'Checks every sitemap URL against crawl data: 404s, redirects, noindex and canonicalized URLs, missing important pages and lastmod quality.' ), [ App.abtn( t( 'Re-check' ), function () {
 			return SL.api( 'sitemap', { query: { fresh: 1 } } ).then( function () {
-				App.pages.sitemap( SL.clear( v ) );
+				App.sitemapHealth( SL.clear( v ) );
 			} );
 		} ) ] ) );
 		var body = h( 'div' );

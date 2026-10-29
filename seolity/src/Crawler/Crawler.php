@@ -555,6 +555,7 @@ final class Crawler {
 			'avg_response_ms' => (int) $db->value( "SELECT AVG(response_ms) FROM {urls} WHERE project_id = %d AND crawl_status = 'done' AND status_code = 200", array( $pid ) ),
 		);
 		$db->update( 'audits', array( 'status' => 'completed', 'summary' => $summary, 'finished_at' => Database::now(), 'urls_done' => $summary['crawled'] ), array( 'id' => (int) $audit_id ) );
+		delete_transient( \SEOlity\Technical\SiteMap::CACHE );
 		if ( 'full' === $audit['type'] ) {
 			update_option( 'seolity_last_full_crawl', time(), false );
 		}
