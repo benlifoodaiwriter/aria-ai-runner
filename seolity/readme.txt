@@ -4,7 +4,7 @@ Tags: seo, ai, search console, woocommerce, schema
 Requires at least: 6.2
 Tested up to: 6.6
 Requires PHP: 7.4
-Stable tag: 1.11.0
+Stable tag: 1.12.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -72,6 +72,15 @@ Yes. The interface is fully translated and RTL-native, text analysis understands
 Enable "Delete all data on uninstall" in Settings → Privacy, then delete the plugin.
 
 == Changelog ==
+
+= 1.12.0 =
+* Google results from your choice of source, with what each costs and needs: Serper.dev (2,500 free searches, email only), SearchApi.io, SerpApi, DataForSEO, Google Programmable Search (official) — or "your own browser": no key, account, phone or card; search in an incognito window and one bookmark click sends the results page to SEOlity.
+* Visibility in AI search: SEOlity asks Gemini (with Google Search — free tier), Claude with web search, ChatGPT web search or Perplexity your tracked queries and records whether your site is cited, in which place and which competitors are cited instead; checked weekly.
+* The AI chat can see everything: a snapshot of the whole site and plugin, every setting (never secrets) and connection, and 19 data tools (Search Console per query/page, page audit, roadmap, issues, audit, indexability, duplicates, 404s, competitors, Google and AI results, experiments, site map, activity) chosen by a short planning step for each question; answers link straight to the right page and tab and never claim to have no access.
+* "Where the site's problems are": a weighted breakdown by area — technical & indexing, on-page, internal links, content & cannibalization, speed, products, off-site — with the share, affected URLs and top problems; the AI diagnosis ranks the areas.
+* Much stronger cannibalization detection: topic similarity (TF-IDF), the queries two pages split in Search Console and how often Google swapped them week by week, search intent, a severity score, and the right strategy with alternatives — merge, differentiate (AI retargets one article to its own query), canonical, or strengthen with internal links — each previewed and verified.
+* New site map explorer: every URL of the site (crawl, XML sitemap, WordPress, Search Console) coloured by what Google can do with it — indexable, noindex, blocked by robots.txt, redirect, error, canonicalized, not crawled — with flags (orphan, not in sitemap, sitemap problem, deep, thin, slow, traffic, Google-only), a pixel map of the whole site, folder tree, sortable list with CSV export, daily trend and a detail panel per URL (live re-check, Search Console inspection, rich results and PageSpeed links). Rebuilt every day.
+* Phones: the end of every page stays reachable above the task dock.
 
 = 1.11.0 =
 * The AI now sees every detail of Search Console: for any query or page named in a question (or matched from your stored queries) it gets the weekly clicks, impressions and position for the whole stored period, which of your pages Google showed in which week (page swaps — e.g. "why does the category page rank instead of the home page"), the sharpest drop with the edits made around it, the measured results of past edits and the home page's own numbers. Answers like "only site totals are available" no longer happen when the data exists.

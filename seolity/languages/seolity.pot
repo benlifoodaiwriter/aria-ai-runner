@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: SEOlity 1.0.0\n"
-"POT-Creation-Date: 2026-10-29 13:47+0000\n"
+"POT-Creation-Date: 2026-10-29 20:36+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -785,7 +785,22 @@ msgstr ""
 msgid "Merging duplicate articles"
 msgstr ""
 
+msgid "Retargeting a competing article"
+msgstr ""
+
 msgid "Full-site analysis"
+msgstr ""
+
+msgid "Site map refresh"
+msgstr ""
+
+msgid "AI search visibility check"
+msgstr ""
+
+msgid "Google results check"
+msgstr ""
+
+msgid "Competitor analysis for a query"
 msgstr ""
 
 msgid "Measuring past edits"
@@ -1638,6 +1653,27 @@ msgstr ""
 msgid "Some sections could not be updated — see the details."
 msgstr ""
 
+msgid "Technical SEO & indexing"
+msgstr ""
+
+msgid "On-page SEO (titles, descriptions, headings, schema, images)"
+msgstr ""
+
+msgid "Content & cannibalization"
+msgstr ""
+
+msgid "Speed & Core Web Vitals"
+msgstr ""
+
+msgid "Product pages"
+msgstr ""
+
+msgid "Off-site & competition (backlinks, brand)"
+msgstr ""
+
+msgid "Backlinks and brand demand cannot be measured from your site; this area only counts competitor gaps. Judge it with the competitor analyses."
+msgstr ""
+
 msgid "Your AI subscription is working on this request on GitHub…"
 msgstr ""
 
@@ -1666,6 +1702,15 @@ msgid "This property is not available for the connected account."
 msgstr ""
 
 msgid "You are not allowed to edit this product."
+msgstr ""
+
+msgid "Unknown source."
+msgstr ""
+
+msgid "No search results were found on that page."
+msgstr ""
+
+msgid "Choose at least one AI search engine whose key is saved."
 msgstr ""
 
 msgid "Select between 1 and 200 URLs."
@@ -1764,9 +1809,6 @@ msgstr ""
 msgid "Connect an AI engine first (Settings → AI)."
 msgstr ""
 
-msgid "Competitor analysis for a query"
-msgstr ""
-
 msgid "Reading the stored Google results and history…"
 msgstr ""
 
@@ -1820,6 +1862,18 @@ msgstr ""
 msgid "Comparing articles…"
 msgstr ""
 
+msgid "The articles answer the same need: one stronger article ranks better than several weak ones, and the old URLs pass their signals with a 301."
+msgstr ""
+
+msgid "Each article earns its own traffic or serves a different intent: keep both, but retarget one to a different query (title, H1, focus keyword) so they stop competing."
+msgstr ""
+
+msgid "Near-identical pages that must both stay online: point the copy’s canonical to the primary so Google consolidates them."
+msgstr ""
+
+msgid "Google keeps switching between them but one is clearly better: link from the others to the primary with the query as anchor text and remove the query from the weaker one’s title."
+msgstr ""
+
 #, php-format
 msgid "Most Search Console clicks (%d in 90 days)."
 msgstr ""
@@ -1862,6 +1916,30 @@ msgid "Merge into “%s”"
 msgstr ""
 
 msgid "Preparing the merge"
+msgstr ""
+
+#, php-format
+msgid "Canonical of “%s” to the primary article"
+msgstr ""
+
+msgid "Consolidates a near-identical copy into the primary article."
+msgstr ""
+
+msgid "The copy stays online for visitors; Google is asked to rank the primary article instead."
+msgstr ""
+
+#, php-format
+msgid "Retarget “%s” to its own query"
+msgstr ""
+
+msgid "Preparing the retargeting"
+msgstr ""
+
+msgid "AI is choosing a distinct query for this article…"
+msgstr ""
+
+#, php-format
+msgid "New target query: %s"
 msgstr ""
 
 msgid "The articles no longer exist."
@@ -4097,14 +4175,101 @@ msgstr ""
 msgid "Homepage has no Organization/LocalBusiness entity — important for the Knowledge Panel and E-E-A-T."
 msgstr ""
 
+msgid "Google Gemini with Google Search"
+msgstr ""
+
+msgid "Free tier with a daily limit (Google AI Studio key — Google account only, no phone or card)"
+msgstr ""
+
+msgid "Claude with web search"
+msgstr ""
+
+msgid "Paid per search ($10 per 1,000) plus tokens"
+msgstr ""
+
+msgid "ChatGPT web search (OpenAI API)"
+msgstr ""
+
+msgid "Paid per search plus tokens"
+msgstr ""
+
+msgid "Paid (a few dollars per 1,000 requests)"
+msgstr ""
+
+msgid "Unknown AI search engine."
+msgstr ""
+
 msgid "Enter a keyword."
 msgstr ""
 
-msgid "Add a SERP API key (SerpApi) in Settings → Crawler & audits to analyze live search results."
+msgid "Choose and set up a Google results source in Settings → Crawler & audits (several free options, one needs no key at all)."
+msgstr ""
+
+msgid "Your own browser (no key)"
+msgstr ""
+
+msgid "Free"
+msgstr ""
+
+msgid "Nothing — no account, key, phone or card"
+msgstr ""
+
+msgid "Search the query in Google yourself (ideally in an incognito window), then click the SEOlity bookmark: the results on that page are sent to SEOlity. Not automatic, but free and exact."
+msgstr ""
+
+msgid "2,500 free searches, then from about $1 per 1,000"
+msgstr ""
+
+msgid "Email or Google account only — no phone, no card for the free searches"
+msgstr ""
+
+msgid "Fast and cheap Google results API. Recommended."
+msgstr ""
+
+msgid "100 free searches, then paid plans"
+msgstr ""
+
+msgid "Email only"
+msgstr ""
+
+msgid "Google results including AI Overview data."
+msgstr ""
+
+msgid "100–250 free searches a month, then paid plans"
+msgstr ""
+
+msgid "Email; the free plan may ask to verify a phone number"
+msgstr ""
+
+msgid "The best-known Google results API, very complete."
+msgstr ""
+
+msgid "Pay as you go (about $0.6–2 per 1,000 results), small first deposit"
+msgstr ""
+
+msgid "Email; payment needed after the trial credit"
+msgstr ""
+
+msgid "Cheapest at large volumes; uses login + API password."
+msgstr ""
+
+msgid "Google Programmable Search (official)"
+msgstr ""
+
+msgid "100 free searches a day, then $5 per 1,000"
+msgstr ""
+
+msgid "Google account + a Google Cloud API key and a search engine ID"
+msgstr ""
+
+msgid "Google’s own API. Its order is close to, but not identical with, google.com."
+msgstr ""
+
+msgid "The “your own browser” source is not automatic: search the query in Google and click the SEOlity bookmark on the results page."
 msgstr ""
 
 #, php-format
-msgid "SERP API error: %s"
+msgid "%1$s error: %2$s"
 msgstr ""
 
 msgid "GitHub storage is not configured."
@@ -6003,7 +6168,13 @@ msgstr ""
 msgid "SEOlity searches your tracked queries in Google through the SERP API — location-specific and not personalized, like an incognito search — and stores every result page. All competitor panels are built from this database; each new check adds history."
 msgstr ""
 
-msgid "Add a SerpApi key in Settings → Crawler & audits to search Google. Scraping Google directly from your server is against Google’s terms and is blocked with CAPTCHAs; a SERP API is the reliable, permitted way."
+msgid "Automatic Google checks need a results source. Choose one with “Change source” — several are free, and “Your own browser” needs no key or account at all."
+msgstr ""
+
+msgid "Source of Google results:"
+msgstr ""
+
+msgid "Change source"
 msgstr ""
 
 msgid "Tracked queries"
@@ -6057,6 +6228,95 @@ msgid "Competitor added. First analysis is running in the background."
 msgstr ""
 
 msgid "Google results database"
+msgstr ""
+
+msgid "No-key source: your own browser"
+msgstr ""
+
+msgid "Drag this button to your browser’s bookmarks bar:"
+msgstr ""
+
+msgid "Open google.com in an incognito window and search a query (set the country/language you target)."
+msgstr ""
+
+msgid "Click the bookmark on the results page: the results open here and are saved with one click."
+msgstr ""
+
+msgid "Drag the button to the bookmarks bar, then use it on a Google results page."
+msgstr ""
+
+msgid "SEOlity: send Google results"
+msgstr ""
+
+msgid "Source of Google results"
+msgstr ""
+
+msgid "saved — enter a new one to replace"
+msgstr ""
+
+msgid "Get the key"
+msgstr ""
+
+msgid "Google forbids scraping its result pages from servers (and blocks it with CAPTCHAs), so SEOlity uses official or commercial results APIs — or your own browser, which needs nothing at all."
+msgstr ""
+
+msgid "Saved — the source is ready."
+msgstr ""
+
+msgid "Saved, but the source still needs its key."
+msgstr ""
+
+msgid "AI answer engines search the web and cite sources. SEOlity asks them your tracked queries and records whether your site is cited, in which place, and which competitors are cited instead. Uses the keys already saved for your AI connections."
+msgstr ""
+
+msgid "Key saved"
+msgstr ""
+
+msgid "No key yet"
+msgstr ""
+
+msgid "Save engines"
+msgstr ""
+
+msgid "Checking AI search…"
+msgstr ""
+
+msgid "Check AI search now"
+msgstr ""
+
+#, php-format
+msgid "Cited #%s"
+msgstr ""
+
+msgid "Not cited"
+msgstr ""
+
+msgid "Visibility in AI search"
+msgstr ""
+
+msgid "Import Google results"
+msgstr ""
+
+msgid "Results read by the SEOlity bookmark from the Google page you opened."
+msgstr ""
+
+msgid "Nothing to import"
+msgstr ""
+
+msgid "Open a Google results page and click the SEOlity bookmark."
+msgstr ""
+
+msgid "Query:"
+msgstr ""
+
+msgid "Result"
+msgstr ""
+
+msgid "Save to the Google results database"
+msgstr ""
+
+#, php-format
+msgid "%s results saved."
 msgstr ""
 
 msgid "The AI is comparing the pages — this tab updates by itself."
@@ -6216,9 +6476,6 @@ msgid "Focus keywords chosen from the queries Google already shows each page for
 msgstr ""
 
 msgid "Rank Math"
-msgstr ""
-
-msgid "Free"
 msgstr ""
 
 msgid "Average Rank Math score"
@@ -6921,6 +7178,255 @@ msgstr ""
 msgid "SEOlity checks for important changes every hour."
 msgstr ""
 
+msgid "Indexable"
+msgstr ""
+
+msgid "Google can crawl and index this page."
+msgstr ""
+
+msgid "noindex"
+msgstr ""
+
+msgid "Google can crawl it but is told not to index it."
+msgstr ""
+
+msgid "Blocked by robots.txt"
+msgstr ""
+
+msgid "Google is not allowed to crawl it, so it cannot see its content."
+msgstr ""
+
+msgid "The URL forwards to another address; Google indexes the target."
+msgstr ""
+
+msgid "Error (4xx/5xx)"
+msgstr ""
+
+msgid "The page does not load; Google drops it from the index."
+msgstr ""
+
+msgid "Canonical elsewhere"
+msgstr ""
+
+msgid "The page says another URL is the original; Google usually indexes that one."
+msgstr ""
+
+msgid "Not crawled yet"
+msgstr ""
+
+msgid "Known from the sitemap, WordPress or Search Console but not checked yet."
+msgstr ""
+
+msgid "Orphan (no internal links)"
+msgstr ""
+
+msgid "Indexable but not in the sitemap"
+msgstr ""
+
+msgid "In the sitemap but not indexable"
+msgstr ""
+
+msgid "Deep (more than 3 clicks)"
+msgstr ""
+
+msgid "Thin (under 300 words)"
+msgstr ""
+
+msgid "Slow (over 1.5 s)"
+msgstr ""
+
+msgid "Gets search clicks"
+msgstr ""
+
+msgid "Only known from Google"
+msgstr ""
+
+msgid "In the sitemap"
+msgstr ""
+
+msgid "HTTP status"
+msgstr ""
+
+msgid "Clicks (90 days)"
+msgstr ""
+
+msgid "Internal links in"
+msgstr ""
+
+msgid "Click depth"
+msgstr ""
+
+msgid "Check"
+msgstr ""
+
+msgid "Value"
+msgstr ""
+
+msgid "robots.txt"
+msgstr ""
+
+msgid "Crawling allowed"
+msgstr ""
+
+msgid "Crawling blocked"
+msgstr ""
+
+msgid "Meta robots"
+msgstr ""
+
+msgid "Canonical"
+msgstr ""
+
+msgid "self / none"
+msgstr ""
+
+msgid "Redirects to"
+msgstr ""
+
+msgid "Response time"
+msgstr ""
+
+msgid "In XML sitemap"
+msgstr ""
+
+msgid "Yes"
+msgstr ""
+
+msgid "No"
+msgstr ""
+
+msgid "Found via"
+msgstr ""
+
+msgid "Last checked"
+msgstr ""
+
+msgid "Open problems"
+msgstr ""
+
+msgid "Search queries (last 28 days)"
+msgstr ""
+
+msgid "Open page"
+msgstr ""
+
+msgid "Inspect in Search Console"
+msgstr ""
+
+msgid "Rich results test"
+msgstr ""
+
+msgid "PageSpeed"
+msgstr ""
+
+msgid "Check again now"
+msgstr ""
+
+msgid "No URLs match"
+msgstr ""
+
+#, php-format
+msgid "%s URLs, one square each, sorted by address (folders sit together). Brighter border = gets search clicks. Click a square for details."
+msgstr ""
+
+#, php-format
+msgid "%s clicks"
+msgstr ""
+
+msgid "Site root"
+msgstr ""
+
+#, php-format
+msgid "%s URLs"
+msgstr ""
+
+msgid "Pages in this folder"
+msgstr ""
+
+msgid "Sort: address"
+msgstr ""
+
+msgid "Sort: clicks"
+msgstr ""
+
+msgid "Sort: impressions"
+msgstr ""
+
+msgid "Sort: internal links"
+msgstr ""
+
+msgid "Sort: click depth"
+msgstr ""
+
+msgid "Sort: words"
+msgstr ""
+
+msgid "Sort: response time"
+msgstr ""
+
+msgid "Flags"
+msgstr ""
+
+msgid "Links in"
+msgstr ""
+
+msgid "Depth"
+msgstr ""
+
+msgid "Show more"
+msgstr ""
+
+msgid "The daily history starts with the first refresh"
+msgstr ""
+
+msgid "The map is rebuilt every day; each day adds one bar here."
+msgstr ""
+
+#, php-format
+msgid "Since %1$s: indexable %2$s → %3$s, not indexable / problems %4$s → %5$s."
+msgstr ""
+
+msgid "Site map"
+msgstr ""
+
+msgid "Every URL of your site in one picture — from the crawl, the XML sitemap, WordPress and Search Console — coloured by what Google can do with it. Rebuilt every day."
+msgstr ""
+
+msgid "Rebuild now"
+msgstr ""
+
+msgid "The site map is being rebuilt in the background."
+msgstr ""
+
+msgid "Rebuilding the site map…"
+msgstr ""
+
+#, php-format
+msgid "%1$s URLs · updated %2$s"
+msgstr ""
+
+#, php-format
+msgid "last daily refresh %s"
+msgstr ""
+
+msgid "Search address or title…"
+msgstr ""
+
+msgid "Clear filters"
+msgstr ""
+
+msgid "Folders"
+msgstr ""
+
+msgid "List"
+msgstr ""
+
+msgid "Daily trend"
+msgstr ""
+
+msgid "XML sitemap health"
+msgstr ""
+
 msgid "Not tested"
 msgstr ""
 
@@ -7279,6 +7785,9 @@ msgstr ""
 msgid "No important changes since the previous analysis — the plan stays the same."
 msgstr ""
 
+msgid "Where the problems are (AI ranking)"
+msgstr ""
+
 msgid "Focus this week"
 msgstr ""
 
@@ -7339,9 +7848,6 @@ msgid "In progress"
 msgstr ""
 
 msgid "Priority changed"
-msgstr ""
-
-msgid "Inspect in Search Console"
 msgstr ""
 
 msgid "Do it with AI"
@@ -7407,6 +7913,16 @@ msgid "Crawl, Search Console, issues, indexability, duplicates, 404 targets and 
 msgstr ""
 
 #, php-format
+msgid "%1$s problems · %2$s critical · %3$s URLs affected"
+msgstr ""
+
+msgid "Where the site’s problems are"
+msgstr ""
+
+msgid "Share of all open problems by area, weighted by severity."
+msgstr ""
+
+#, php-format
 msgid "%s open"
 msgstr ""
 
@@ -7440,9 +7956,6 @@ msgid "%s items"
 msgstr ""
 
 msgid "Nothing left to do here"
-msgstr ""
-
-msgid "Show more"
 msgstr ""
 
 msgid "Site Audit & SEO Doctor"
@@ -7568,12 +8081,6 @@ msgid "Deepest"
 msgstr ""
 
 msgid "Status code"
-msgstr ""
-
-msgid "Indexable"
-msgstr ""
-
-msgid "Depth"
 msgstr ""
 
 msgid "Response"
@@ -8315,10 +8822,6 @@ msgid "Nothing to fix: every URL group is indexed (or kept out) the way it shoul
 msgstr ""
 
 #, php-format
-msgid "%s URLs"
-msgstr ""
-
-#, php-format
 msgid "Source: %s"
 msgstr ""
 
@@ -8349,12 +8852,6 @@ msgstr ""
 msgid "Should be indexed"
 msgstr ""
 
-msgid "Yes"
-msgstr ""
-
-msgid "No"
-msgstr ""
-
 msgid "Live state"
 msgstr ""
 
@@ -8368,6 +8865,16 @@ msgid "Near-duplicate"
 msgstr ""
 
 msgid "Same topic (cannibalization)"
+msgstr ""
+
+msgid "Commercial intent"
+msgstr ""
+
+msgid "Informational intent"
+msgstr ""
+
+#, php-format
+msgid "Severity %s/100"
 msgstr ""
 
 #, php-format
@@ -8394,10 +8901,6 @@ msgstr ""
 msgid "%s words"
 msgstr ""
 
-#, php-format
-msgid "%s clicks"
-msgstr ""
-
 msgid "same content"
 msgstr ""
 
@@ -8407,14 +8910,46 @@ msgstr ""
 msgid "same H1"
 msgstr ""
 
+msgid "same topic"
+msgstr ""
+
 #, php-format
 msgid "both rank for: %s"
+msgstr ""
+
+#, php-format
+msgid "%s% of the smaller page’s impressions are fought over"
+msgstr ""
+
+#, php-format
+msgid "Google swapped them %s times"
+msgstr ""
+
+msgid "same search intent"
 msgstr ""
 
 msgid "Why they are grouped:"
 msgstr ""
 
-msgid "Keep the suggested primary and merge the others into it."
+msgid "Merge into the primary"
+msgstr ""
+
+msgid "Differentiate (retarget one)"
+msgstr ""
+
+msgid "Canonical to the primary"
+msgstr ""
+
+msgid "Strengthen the primary with internal links"
+msgstr ""
+
+msgid "Recommended:"
+msgstr ""
+
+msgid "Other options"
+msgstr ""
+
+msgid "Primary suggestion:"
 msgstr ""
 
 msgid "Instructions for this merge (optional), e.g. “keep the price table from the second article”, “do not change the introduction”."
@@ -8427,6 +8962,13 @@ msgid "Fix cannibalization"
 msgstr ""
 
 msgid "The AI merges the articles first. You then see the full before/after of every step. Redirects and link updates run only after the merged article was saved and verified; nothing is deleted and every edit keeps a WordPress revision."
+msgstr ""
+
+#, php-format
+msgid "The AI retargets “%s” to a different query (title, SEO title, description, focus keyword) so both articles can rank. Review and approve."
+msgstr ""
+
+msgid "Set canonical"
 msgstr ""
 
 msgid "Duplicate & near-duplicate articles"
@@ -8901,9 +9443,6 @@ msgid "Canonical URL"
 msgstr ""
 
 msgid "Product tags"
-msgstr ""
-
-msgid "robots.txt"
 msgstr ""
 
 msgid "Approval mode"
@@ -9382,9 +9921,6 @@ msgid "missing_page"
 msgstr ""
 
 msgid "weak_page"
-msgstr ""
-
-msgid "noindex"
 msgstr ""
 
 msgid "redirect"
