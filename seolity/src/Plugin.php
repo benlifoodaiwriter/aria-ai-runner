@@ -153,6 +153,7 @@ final class Plugin {
 			'competitors'     => Competitors\CompetitorService::class,
 			'intel'           => Competitors\Intel::class,
 			'ai_visibility'   => Serp\AiVisibility::class,
+			'chat_tools'      => Chat\Toolbox::class,
 			'experiments'     => Experiments\ExperimentService::class,
 			'learning'        => Experiments\Learning::class,
 			'health'          => Health\HealthScore::class,

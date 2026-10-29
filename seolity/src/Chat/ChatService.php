@@ -79,6 +79,7 @@ final class ChatService {
 		array_pop( $history ); // The question itself goes into the task input.
 		$question = isset( $meta['question'] ) ? (string) $meta['question'] : '';
 		$context  = $this->context( $question, isset( $meta['page'] ) ? (string) $meta['page'] : '' );
+		$context  = $this->with_tools( $context, $question, $history );
 		$t0       = microtime( true );
 		$res      = $this->plugin->ai->run(
 			'chat',
@@ -203,6 +204,51 @@ final class ChatService {
 				'created_at'      => Database::now(),
 			)
 		);
+	}
+
+	/**
+	 * Full access: the plugin snapshot and navigation map always, plus the data tools the question
+	 * needs — chosen by a short AI planning step (when the AI answers synchronously) and by keywords.
+	 */
+	private function with_tools( array $ctx, $question, array $history ) {
+		$tb                    = $this->plugin->chat_tools;
+		$ctx['plugin_state']   = $tb->snapshot();
+		$ctx['navigation']     = Toolbox::navigation();
+		$calls                 = $tb->by_keywords( $question );
+		if ( in_array( $this->plugin->gateway->current(), array( 'direct', 'cloudflare' ), true ) ) {
+			try {
+				$recent = array_slice( array_map( static function ( $h ) {
+					return $h['role'] . ': ' . mb_substr( $h['content'], 0, 400 );
+				}, $history ), -4 );
+				$catalog = array();
+				foreach ( Toolbox::catalog() as $name => $def ) {
+					$catalog[] = array( 'tool' => $name, 'argument' => $def[0], 'what' => $def[1] );
+				}
+				$plan = $this->plugin->ai->run( 'chat_plan', array( 'question' => $question, 'recent_conversation' => $recent, 'tools' => $catalog ), array( 'max_tokens' => 800 ) );
+				if ( ! is_wp_error( $plan ) ) {
+					$calls = array_merge( (array) $plan['data']['calls'], $calls );
+				}
+			} catch ( \Throwable $e ) {
+				// Keyword routing below still applies.
+				unset( $e );
+			}
+		}
+		$done = array();
+		foreach ( $calls as $c ) {
+			$tool = isset( $c['tool'] ) ? sanitize_key( $c['tool'] ) : '';
+			$arg  = isset( $c['arg'] ) ? (string) $c['arg'] : '';
+			$key  = $tool . ( '' !== $arg ? '(' . $arg . ')' : '' );
+			if ( ! isset( Toolbox::catalog()[ $tool ] ) || isset( $done[ $key ] ) || count( $done ) >= 7 ) {
+				continue;
+			}
+			try {
+				$done[ $key ] = $tb->execute( $tool, $arg );
+			} catch ( \Throwable $e ) {
+				$done[ $key ] = array( 'error' => $e->getMessage() );
+			}
+		}
+		$ctx['data'] = $done;
+		return $ctx;
 	}
 
 	/** Retrieve data relevant to the question. */

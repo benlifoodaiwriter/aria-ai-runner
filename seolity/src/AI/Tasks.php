@@ -560,6 +560,18 @@ Also give a site-level verdict: does this site have a crawl-budget problem from 
 					)
 				),
 			),
+			'chat_plan'          => array(
+				'version'      => 'chat_plan@1.0',
+				'max_tokens'   => 800,
+				'topics'       => array(),
+				'cache'        => false,
+				'instructions' => 'Decide which data tools the assistant needs to answer the owner\'s question about their website precisely. Choose up to 6 calls from the tool list, with the argument each needs (a search query, a URL or page title, a competitor name or a category) taken from the question or the recent conversation. Prefer specific tools (gsc_query for a named search term, page_audit/gsc_page for a named page) over general ones. Return an empty list only for small talk.',
+				'schema'       => S::obj(
+					array(
+						'calls' => S::arr( S::obj( array( 'tool' => S::str(), 'arg' => S::str() ) ) ),
+					)
+				),
+			),
 			'competitor_query_compare' => array(
 				'version'      => 'competitor_query_compare@1.0',
 				'max_tokens'   => 8000,
@@ -629,7 +641,7 @@ Then give concrete, ordered steps to overtake them (or to match them where we ca
 				'max_tokens'   => 6000,
 				'topics'       => array(),
 				'cache'        => false,
-				'instructions' => 'You are SEOlity, the site\'s in-house AI SEO strategist. Answer using ONLY the site data provided in context (GSC, audit issues, recommendations, experiments, competitors, content) plus SEO best practice. Cite the data you used (URLs, numbers, dates). If data is missing, say what is missing and how to get it (e.g. connect GSC). Be concrete and prioritized. Answer in the user\'s language, markdown allowed. search_console_detail holds query- and page-level history: for every query the weekly clicks / impressions / position, pages_over_time (which URL Google showed in which week), page_swaps, the sharpest drop with the edits made around it (edits_near_drop), the home page\'s own numbers for that query, and the last vs. previous 28 days. Use it to say exactly since when and by how much a ranking changed, which page replaced which, and which edits or swaps coincide with the change — never claim that only site totals are available when this detail is present.',
+				'instructions' => 'You are SEOlity, the site\'s in-house AI SEO strategist. Answer using ONLY the site data provided in context (GSC, audit issues, recommendations, experiments, competitors, content) plus SEO best practice. Cite the data you used (URLs, numbers, dates). If data is missing, say what is missing and how to get it (e.g. connect GSC). Be concrete and prioritized. Answer in the user\'s language, markdown allowed. search_console_detail holds query- and page-level history: for every query the weekly clicks / impressions / position, pages_over_time (which URL Google showed in which week), page_swaps, the sharpest drop with the edits made around it (edits_near_drop), the home page\'s own numbers for that query, and the last vs. previous 28 days. Use it to say exactly since when and by how much a ranking changed, which page replaced which, and which edits or swaps coincide with the change — never claim that only site totals are available when this detail is present. plugin_state is a snapshot of the whole site and plugin, data holds the results of the data tools run for this question, and navigation lists every section of the plugin with its link: whenever you tell the owner to look at or change something, link straight to it in markdown, e.g. [Indexability](#/indexability) or [AI settings](#/settings?tab=ai), and put the most useful links in suggested_actions. You have access to all of this site\'s data and settings — never say you have no access; if a piece of data does not exist yet (e.g. Search Console not connected, no Google results source, a scan not run), say exactly that and link to where it is set up or started.',
 				'schema'       => S::obj(
 					array(
 						'answer'            => S::str( 'Markdown answer.' ),
