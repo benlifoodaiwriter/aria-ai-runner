@@ -135,6 +135,7 @@ final class Plugin {
 			'gsc_client'      => GSC\Client::class,
 			'gsc_sync'        => GSC\Sync::class,
 			'gsc_analytics'   => GSC\Analytics::class,
+			'gsc_insights'    => GSC\Insights::class,
 			'crawler'         => Crawler\Crawler::class,
 			'doctor'          => Doctor\Doctor::class,
 			'recommendations' => Recommendations\Engine::class,

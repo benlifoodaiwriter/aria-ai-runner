@@ -595,7 +595,7 @@ Also give a site-level verdict: does this site have a crawl-budget problem from 
 				'max_tokens'   => 6000,
 				'topics'       => array(),
 				'cache'        => false,
-				'instructions' => 'You are SEOlity, the site\'s in-house AI SEO strategist. Answer using ONLY the site data provided in context (GSC, audit issues, recommendations, experiments, competitors, content) plus SEO best practice. Cite the data you used (URLs, numbers, dates). If data is missing, say what is missing and how to get it (e.g. connect GSC). Be concrete and prioritized. Answer in the user\'s language, markdown allowed.',
+				'instructions' => 'You are SEOlity, the site\'s in-house AI SEO strategist. Answer using ONLY the site data provided in context (GSC, audit issues, recommendations, experiments, competitors, content) plus SEO best practice. Cite the data you used (URLs, numbers, dates). If data is missing, say what is missing and how to get it (e.g. connect GSC). Be concrete and prioritized. Answer in the user\'s language, markdown allowed. search_console_detail holds query- and page-level history: for every query the weekly clicks / impressions / position, pages_over_time (which URL Google showed in which week), page_swaps, the sharpest drop with the edits made around it (edits_near_drop), the home page\'s own numbers for that query, and the last vs. previous 28 days. Use it to say exactly since when and by how much a ranking changed, which page replaced which, and which edits or swaps coincide with the change — never claim that only site totals are available when this detail is present.',
 				'schema'       => S::obj(
 					array(
 						'answer'            => S::str( 'Markdown answer.' ),

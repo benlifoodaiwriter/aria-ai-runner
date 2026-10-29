@@ -247,6 +247,10 @@ final class ChatService {
 				}, $p->recommendations->query( array( 'object_type' => $row['object_type'], 'object_id' => (int) $row['object_id'], 'limit' => 5 ) ) ) : array(),
 			);
 		}
+		if ( $has_gsc ) {
+			// Query- and page-level Search Console history for whatever the question is about.
+			$ctx['search_console_detail'] = $p->gsc_insights->for_question( $q, $object ? $object : '' );
+		}
 		if ( $has_gsc && preg_match( '/traffic|drop|decline|sales|فروش|ترافیک|افت|کاهش|کم شده|ریزش|بازدید|رشد|organic|ارگانیک/u', $n ) ) {
 			$ctx['losers']        = array_slice( $p->gsc_analytics->movers( 'page', 28, 10 )['losers'], 0, 10 );
 			$ctx['lost_keywords'] = $p->gsc_analytics->keyword_changes( 28, 15 )['lost'];
