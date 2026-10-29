@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: SEOlity 1.0.0\n"
-"POT-Creation-Date: 2026-10-29 20:36+0000\n"
+"POT-Creation-Date: 2026-10-29 21:54+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -7334,21 +7334,14 @@ msgstr "%s آدرس، هر کدام یک مربع، مرتب بر اساس آد�
 msgid "%s clicks"
 msgstr "%s کلیک"
 
-msgid "Site root"
-msgstr "ریشه سایت"
-
-#, php-format
-msgid "%s URLs"
-msgstr "%s آدرس"
-
-msgid "Pages in this folder"
-msgstr "صفحات این پوشه"
-
-msgid "Sort: address"
-msgstr "مرتب‌سازی: آدرس"
+msgid "No extra warnings"
+msgstr "بدون هشدار دیگر"
 
 msgid "Sort: clicks"
 msgstr "مرتب‌سازی: کلیک"
+
+msgid "Sort: address"
+msgstr "مرتب‌سازی: آدرس"
 
 msgid "Sort: impressions"
 msgstr "مرتب‌سازی: نمایش"
@@ -7365,6 +7358,19 @@ msgstr "مرتب‌سازی: تعداد کلمه"
 msgid "Sort: response time"
 msgstr "مرتب‌سازی: زمان پاسخ"
 
+#, php-format
+msgid "%s URLs"
+msgstr "%s آدرس"
+
+msgid "Show more"
+msgstr "نمایش بیشتر"
+
+msgid "Site root"
+msgstr "ریشه سایت"
+
+msgid "Pages in this folder"
+msgstr "صفحات این پوشه"
+
 msgid "Flags"
 msgstr "نشانه‌ها"
 
@@ -7373,9 +7379,6 @@ msgstr "لینک ورودی"
 
 msgid "Depth"
 msgstr "عمق"
-
-msgid "Show more"
-msgstr "نمایش بیشتر"
 
 msgid "The daily history starts with the first refresh"
 msgstr "تاریخچه روزانه از اولین به‌روزرسانی شروع می‌شود"
@@ -7410,17 +7413,23 @@ msgstr "%1$s آدرس · به‌روزشده %2$s"
 msgid "last daily refresh %s"
 msgstr "آخرین به‌روزرسانی روزانه %s"
 
+msgid "Your whole site at a glance"
+msgstr "کل سایت در یک نگاه"
+
 msgid "Search address or title…"
 msgstr "جستجوی آدرس یا عنوان…"
 
 msgid "Clear filters"
 msgstr "پاک کردن فیلترها"
 
+msgid "Overview picture"
+msgstr "تصویر کلی"
+
 msgid "Folders"
 msgstr "پوشه‌ها"
 
-msgid "List"
-msgstr "فهرست"
+msgid "Table"
+msgstr "جدول"
 
 msgid "Daily trend"
 msgstr "روند روزانه"

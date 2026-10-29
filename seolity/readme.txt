@@ -4,7 +4,7 @@ Tags: seo, ai, search console, woocommerce, schema
 Requires at least: 6.2
 Tested up to: 6.6
 Requires PHP: 7.4
-Stable tag: 1.12.0
+Stable tag: 1.12.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -72,6 +72,10 @@ Yes. The interface is fully translated and RTL-native, text analysis understands
 Enable "Delete all data on uninstall" in Settings → Privacy, then delete the plugin.
 
 == Changelog ==
+
+= 1.12.1 =
+* Site map: every URL is now a large horizontal card (status icon and colour, title, address, what Google does with it, clicks, impressions, position, internal links, depth, words, warnings, Details / Open page); status tiles and folders use the dashboard card style; whole-site bar; the square picture moved to its own tab.
+* Competitors: "who you meet most in Google" is shown as cards with a presence bar instead of a small table.
 
 = 1.12.0 =
 * Google results from your choice of source, with what each costs and needs: Serper.dev (2,500 free searches, email only), SearchApi.io, SerpApi, DataForSEO, Google Programmable Search (official) — or "your own browser": no key, account, phone or card; search in an incognito window and one bookmark click sends the results page to SEOlity.

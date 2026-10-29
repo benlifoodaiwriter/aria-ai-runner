@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: SEOlity 1.0.0\n"
-"POT-Creation-Date: 2026-10-29 20:36+0000\n"
+"POT-Creation-Date: 2026-10-29 21:54+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -7333,20 +7333,13 @@ msgstr ""
 msgid "%s clicks"
 msgstr ""
 
-msgid "Site root"
-msgstr ""
-
-#, php-format
-msgid "%s URLs"
-msgstr ""
-
-msgid "Pages in this folder"
-msgstr ""
-
-msgid "Sort: address"
+msgid "No extra warnings"
 msgstr ""
 
 msgid "Sort: clicks"
+msgstr ""
+
+msgid "Sort: address"
 msgstr ""
 
 msgid "Sort: impressions"
@@ -7364,6 +7357,19 @@ msgstr ""
 msgid "Sort: response time"
 msgstr ""
 
+#, php-format
+msgid "%s URLs"
+msgstr ""
+
+msgid "Show more"
+msgstr ""
+
+msgid "Site root"
+msgstr ""
+
+msgid "Pages in this folder"
+msgstr ""
+
 msgid "Flags"
 msgstr ""
 
@@ -7371,9 +7377,6 @@ msgid "Links in"
 msgstr ""
 
 msgid "Depth"
-msgstr ""
-
-msgid "Show more"
 msgstr ""
 
 msgid "The daily history starts with the first refresh"
@@ -7409,16 +7412,22 @@ msgstr ""
 msgid "last daily refresh %s"
 msgstr ""
 
+msgid "Your whole site at a glance"
+msgstr ""
+
 msgid "Search address or title…"
 msgstr ""
 
 msgid "Clear filters"
 msgstr ""
 
+msgid "Overview picture"
+msgstr ""
+
 msgid "Folders"
 msgstr ""
 
-msgid "List"
+msgid "Table"
 msgstr ""
 
 msgid "Daily trend"

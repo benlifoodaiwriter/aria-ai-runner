@@ -675,11 +675,6 @@ button.sl-segcard { cursor: pointer; }
 .sl-dup__sev b { position: relative; padding-inline: 8px; font-size: 12px; line-height: 22px; }
 .sl-dup__strat { border: 1px dashed var(--sl-border); border-radius: 10px; padding: 8px 12px; }
 .sl-dup__strat p { margin: 4px 0 0; }
-.sl-map__tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 8px; margin: 10px 0; }
-.sl-map__tile { display: grid; gap: 2px; text-align: start; padding: 10px 12px; border: 1px solid var(--sl-border); border-inline-start: 6px solid var(--c); border-radius: 12px; background: var(--sl-surface); color: inherit; cursor: pointer; font: inherit; }
-.sl-map__tile b { font-size: 20px; }
-.sl-map__tile span { font-size: 12px; color: var(--sl-muted); }
-.sl-map__tile.is-on { box-shadow: 0 0 0 2px var(--c); }
 .sl-map__flags .sl-chip { cursor: pointer; border: 1px solid var(--sl-border); background: var(--sl-surface); font: inherit; font-size: 12px; }
 .sl-map__flags .sl-chip.is-on { border-color: var(--sl-brand); color: var(--sl-brand); }
 .sl-map__canvaswrap { position: relative; overflow: hidden; padding: 2px; border: 1px solid var(--sl-border); border-radius: 12px; background: var(--sl-surface); }
@@ -688,17 +683,83 @@ button.sl-segcard { cursor: pointer; }
 .sl-map__dot { display: inline-block; width: 12px; height: 12px; border-radius: 3px; flex: 0 0 auto; }
 .sl-map__badge { color: #fff; padding: 3px 10px; border-radius: 999px; font-weight: 700; font-size: 12px; }
 .sl-map__crumbs { display: flex; flex-wrap: wrap; gap: 4px; align-items: center; margin-bottom: 8px; }
-.sl-map__folder { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 10px; width: 100%; text-align: start; padding: 10px 12px; margin-bottom: 6px; border: 1px solid var(--sl-border); border-radius: 10px; background: var(--sl-surface); color: inherit; cursor: pointer; font: inherit; }
-.sl-map__folder:hover { border-color: var(--sl-brand); }
-.sl-map__fname { font-weight: 700; overflow-wrap: anywhere; }
-.sl-map__stack { grid-column: 1 / -1; display: flex; height: 8px; border-radius: 4px; overflow: hidden; background: var(--sl-surface-2); }
-.sl-map__stack span { display: block; height: 100%; }
-.sl-map__url { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; width: 100%; text-align: start; padding: 6px 8px; border: 0; border-bottom: 1px solid var(--sl-border); background: none; color: inherit; cursor: pointer; font: inherit; }
-.sl-map__url:hover { background: var(--sl-surface-2); }
-.sl-map__urltext { font-size: 13px; overflow-wrap: anywhere; }
 .sl-map__trend { display: flex; align-items: flex-end; gap: 3px; height: 180px; padding: 8px; border: 1px solid var(--sl-border); border-radius: 12px; direction: ltr; overflow-x: auto; }
 .sl-map__tcol { display: flex; flex-direction: column-reverse; width: 14px; min-width: 14px; height: 100%; }
 .sl-map__tcol span { display: block; width: 100%; }
 .sl-map__actions { flex-wrap: wrap; margin-top: 12px; }
 /* Phones: the task dock floats over the bottom of the screen — leave room so the end of every page stays reachable. */
 @media (max-width: 600px) { .sl-view { padding-bottom: 300px; } }
+
+/* Site map: status tiles, whole-site bar, folders and one large card per URL (same language as the dashboard cards). */
+.sl-map__overall { margin: 14px 0 12px; padding: 16px 18px; border: 1px solid var(--sl-border); border-radius: var(--sl-radius); background: var(--sl-surface); box-shadow: var(--sl-shadow); }
+.sl-map__overallhead { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; margin-bottom: 10px; }
+.sl-map__overall .sl-map__stack { height: 14px; border-radius: 7px; }
+.sl-map__stack { display: flex; height: 10px; border-radius: 5px; overflow: hidden; background: var(--sl-surface-2); }
+.sl-map__stack span { display: block; height: 100%; }
+.sl-map__tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; margin: 0 0 14px; }
+.sl-map__tile { display: grid; grid-template-columns: auto minmax(0, 1fr); grid-template-areas: "ic label" "ic num" "desc desc"; column-gap: 14px; row-gap: 2px; align-items: center; text-align: start; padding: 16px 18px; border: 1px solid var(--sl-border); border-radius: var(--sl-radius); background: var(--sl-surface); box-shadow: var(--sl-shadow); color: inherit; cursor: pointer; font: inherit; transition: border-color .15s, box-shadow .15s; }
+.sl-map__tile:hover { box-shadow: var(--sl-shadow-lg); }
+.sl-map__tile:focus-visible { outline: 2px solid var(--c); outline-offset: 2px; }
+.sl-map__tile.is-on { border-color: var(--c); box-shadow: 0 0 0 3px color-mix(in srgb, var(--c) 22%, transparent); }
+.sl-map__tic { grid-area: ic; width: 46px; height: 46px; border-radius: 14px; display: grid; place-items: center; color: var(--c); background: color-mix(in srgb, var(--c) 14%, transparent); }
+.sl-map__tlabel { grid-area: label; font-size: 13px; color: var(--sl-muted); }
+.sl-map__tile b { grid-area: num; font-size: 26px; font-weight: 800; line-height: 1.15; }
+.sl-map__tdesc { grid-area: desc; margin-top: 10px; font-size: 12px; line-height: 1.7; color: var(--sl-muted); }
+.sl-map__folder { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; grid-template-areas: "ic name meta" "bar bar bar" "leg leg leg"; gap: 8px 14px; align-items: center; width: 100%; text-align: start; padding: 16px 18px; margin-bottom: 10px; border: 1px solid var(--sl-border); border-radius: var(--sl-radius); background: var(--sl-surface); box-shadow: var(--sl-shadow); color: inherit; cursor: pointer; font: inherit; transition: border-color .15s; }
+.sl-map__folder:hover { border-color: var(--sl-brand); }
+.sl-map__fic { grid-area: ic; width: 42px; height: 42px; border-radius: 12px; display: grid; place-items: center; background: var(--sl-brand-50); color: var(--sl-brand); }
+.sl-map__fname { grid-area: name; font-size: 16px; font-weight: 700; overflow-wrap: anywhere; }
+.sl-map__fmeta { grid-area: meta; font-size: 13px; color: var(--sl-muted); }
+.sl-map__folder .sl-map__stack { grid-area: bar; }
+.sl-map__flegend { grid-area: leg; display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 12px; color: var(--sl-muted); }
+.sl-map__flegend > span { display: inline-flex; align-items: center; gap: 6px; }
+.sl-mapcards { display: grid; gap: 14px; margin-top: 12px; }
+.sl-mapcards__more { display: flex; justify-content: center; margin-top: 14px; }
+.sl-mapcard { display: grid; gap: 12px; padding: 18px 20px; border: 1px solid var(--sl-border); border-inline-start: 5px solid var(--c); border-radius: var(--sl-radius); background: var(--sl-surface); box-shadow: var(--sl-shadow); }
+.sl-mapcard__head { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 14px; align-items: center; }
+.sl-mapcard__ic { width: 46px; height: 46px; border-radius: 14px; display: grid; place-items: center; color: var(--c); background: color-mix(in srgb, var(--c) 14%, transparent); }
+.sl-mapcard__titles { display: grid; gap: 4px; min-width: 0; }
+.sl-mapcard__title { all: unset; cursor: pointer; font-size: 16px; font-weight: 700; line-height: 1.6; color: var(--sl-text); overflow-wrap: anywhere; }
+.sl-mapcard__title:hover { color: var(--sl-brand); }
+.sl-mapcard__title:focus-visible { outline: 2px solid var(--sl-brand); outline-offset: 2px; border-radius: 4px; }
+.sl-mapcard__url { font-size: 12px; color: var(--sl-muted); text-decoration: none; overflow-wrap: anywhere; text-align: end; }
+.sl-mapcard__url:hover { color: var(--sl-brand); text-decoration: underline; }
+.sl-mapcard__status { display: grid; justify-items: center; gap: 2px; padding: 8px 14px; border-radius: 12px; color: var(--c); background: color-mix(in srgb, var(--c) 12%, transparent); font-size: 12px; white-space: nowrap; }
+.sl-mapcard__status b { font-size: 13px; }
+.sl-mapcard__status span { color: var(--sl-muted); }
+.sl-mapcard__why { margin: 0; font-size: 13px; line-height: 1.8; color: var(--sl-text-2); }
+.sl-mapcard__metrics { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 8px; }
+.sl-mapcard__m { display: grid; gap: 2px; padding: 10px 12px; border-radius: 12px; background: var(--sl-surface-2); }
+.sl-mapcard__m b { font-size: 18px; font-weight: 800; }
+.sl-mapcard__m span { font-size: 12px; color: var(--sl-muted); }
+.sl-mapcard__m.is-good b { color: var(--sl-good); }
+.sl-mapcard__m.is-warn b { color: var(--sl-warn); }
+.sl-mapcard__m.is-bad b { color: var(--sl-bad); }
+.sl-mapcard__foot { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px; padding-top: 12px; border-top: 1px solid var(--sl-border); }
+.sl-mapcard__flags { display: flex; flex-wrap: wrap; gap: 6px; }
+.sl-mapcard__flag, .sl-mapcard__ok { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 999px; font-size: 12px; }
+.sl-mapcard__flag { background: var(--sl-warn-50); color: var(--sl-warn); }
+.sl-mapcard__ok { background: var(--sl-good-50); color: var(--sl-good); }
+.sl-mapcard__actions { display: flex; flex-wrap: wrap; gap: 8px; }
+@media (max-width: 900px) { .sl-mapcard__metrics { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 600px) {
+	.sl-mapcard { padding: 14px; }
+	.sl-mapcard__head { grid-template-columns: auto minmax(0, 1fr); }
+	.sl-mapcard__status { grid-column: 1 / -1; justify-items: start; grid-auto-flow: column; justify-content: start; gap: 8px; }
+	.sl-mapcard__metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+	.sl-mapcard__url { text-align: start; }
+	.sl-map__folder { grid-template-columns: auto minmax(0, 1fr); grid-template-areas: "ic name" "ic meta" "bar bar" "leg leg"; }
+}
+@media (max-width: 600px) {
+	.sl-map__tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+	.sl-map__tile { padding: 12px; column-gap: 10px; }
+	.sl-map__tic { width: 36px; height: 36px; border-radius: 10px; }
+	.sl-map__tile b { font-size: 20px; }
+	.sl-map__tdesc { display: none; }
+}
+.sl-rival { gap: 10px; }
+.sl-rival .sl-mapcard__title { text-decoration: none; text-align: start; }
+.sl-rival__bar { height: 10px; border-radius: 5px; background: var(--sl-surface-2); overflow: hidden; }
+.sl-rival__bar span { display: block; height: 100%; background: var(--c); border-radius: 5px; }
+.sl-rival__metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); max-width: 420px; }
+@media (max-width: 600px) { .sl-rival .sl-mapcard__head > .sl-btn { grid-column: 1 / -1; } }

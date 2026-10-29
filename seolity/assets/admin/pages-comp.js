@@ -82,27 +82,33 @@
 			} ) ), h( 'p', { class: 'sl-muted sl-small', text: t( 'Your own queries plus your most important Search Console queries. Each query uses one search per check (at most once a day).' ) } ) ) );
 			if ( r.suggestions && r.suggestions.length ) {
 				body.appendChild( h( 'h4', { text: t( 'Who you meet most in Google' ) } ) );
-				body.appendChild( App.table( [
-					{ label: t( 'Domain' ), render: function ( x ) {
-						return h( 'b', { dir: 'ltr', text: x.domain } );
-					} },
-					{ label: t( 'Appears in' ), render: function ( x ) {
-						return t( '%1$s of %2$s queries', x.queries, x.of );
-					} },
-					{ label: t( 'Avg. position' ), render: function ( x ) {
-						return SL.num( x.avg_position );
-					} },
-					{ label: '', render: function ( x ) {
-						return App.cap( 'manage' ) ? App.abtn( t( 'Add as competitor' ), function () {
-							return SL.api( 'competitors', { body: { name: x.domain, domain: x.domain, frequency: 'weekly' } } ).then( function () {
-								SL.toast( t( 'Competitor added. First analysis is running in the background.' ), 'success' );
-								if ( onChange ) {
-									onChange();
-								}
-							} );
-						}, 'sm' ) : null;
-					} },
-				], r.suggestions ) );
+				var rivals = h( 'div', { class: 'sl-mapcards' } );
+				r.suggestions.forEach( function ( x ) {
+					var share = Math.round( 100 * x.queries / Math.max( 1, x.of ) );
+					rivals.appendChild( h( 'article', { class: 'sl-mapcard sl-rival', style: '--c:' + ( x.avg_position <= 3 ? '#dc2626' : x.avg_position <= 10 ? '#f59e0b' : '#2563eb' ) },
+						h( 'div', { class: 'sl-mapcard__head' },
+							h( 'span', { class: 'sl-mapcard__ic', 'aria-hidden': 'true' }, SL.icon( 'globe', 22 ) ),
+							h( 'div', { class: 'sl-mapcard__titles' },
+								h( 'a', { class: 'sl-mapcard__title', href: 'https://' + x.domain, target: '_blank', rel: 'noopener', dir: 'ltr', text: x.domain } ),
+								h( 'span', { class: 'sl-muted sl-small', text: t( '%1$s of %2$s queries', x.queries, x.of ) } )
+							),
+							App.cap( 'manage' ) ? App.abtn( t( 'Add as competitor' ), function () {
+								return SL.api( 'competitors', { body: { name: x.domain, domain: x.domain, frequency: 'weekly' } } ).then( function () {
+									SL.toast( t( 'Competitor added. First analysis is running in the background.' ), 'success' );
+									if ( onChange ) {
+										onChange();
+									}
+								} );
+							}, 'primary' ) : null
+						),
+						h( 'div', { class: 'sl-rival__bar' }, h( 'span', { style: 'width:' + share + '%' } ) ),
+						h( 'div', { class: 'sl-mapcard__metrics sl-rival__metrics' },
+							h( 'div', { class: 'sl-mapcard__m' }, h( 'b', { text: SL.num( share, 0 ) + '%' } ), h( 'span', { text: t( 'Appears in' ) } ) ),
+							h( 'div', { class: 'sl-mapcard__m' }, h( 'b', { text: SL.num( x.avg_position ) } ), h( 'span', { text: t( 'Avg. position' ) } ) )
+						)
+					) );
+				} );
+				body.appendChild( rivals );
 			}
 			box.appendChild( App.card( t( 'Google results database' ), body, { icon: 'search' } ) );
 			var aiBox = h( 'div' );

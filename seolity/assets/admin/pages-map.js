@@ -10,6 +10,7 @@
 	var t = SL.t;
 	var h = SL.h;
 
+	var IC = { indexable: 'check-circle', noindex: 'eye-off', blocked: 'lock', redirect: 'corner', error: 'x-circle', canonicalized: 'link', not_crawled: 'clock' };
 	var ST = {
 		indexable: [ '#16a34a', t( 'Indexable' ), t( 'Google can crawl and index this page.' ) ],
 		noindex: [ '#f59e0b', t( 'noindex' ), t( 'Google can crawl it but is told not to index it.' ) ],
@@ -220,14 +221,72 @@
 		return bar;
 	}
 
-	function urlRow( u, reload ) {
-		return h( 'button', { type: 'button', class: 'sl-map__url', onClick: function () {
-			App.mapUrl( u.url, reload );
-		} }, dot( u.status ), h( 'span', { class: 'sl-map__urltext', dir: 'ltr', text: path( u.url ) } ), u.title ? h( 'span', { class: 'sl-muted sl-small sl-clip', dir: 'auto', text: u.title } ) : null, u.clicks ? SL.badge( t( '%s clicks', SL.num( u.clicks, 0 ) ), 'good' ) : null, ( u.flags || [] ).filter( function ( x ) {
+	function metric( label, value, tone ) {
+		return h( 'div', { class: 'sl-mapcard__m' + ( tone ? ' is-' + tone : '' ) }, h( 'b', { text: value } ), h( 'span', { text: label } ) );
+	}
+
+	/** One URL as a large horizontal card: status, title, address, numbers, warnings, actions. */
+	function urlCard( u, reload ) {
+		var st = ST[ u.status ] || [ '#9ca3af', u.status, '' ];
+		var warn = ( u.flags || [] ).filter( function ( x ) {
 			return 'in_sitemap' !== x && 'traffic' !== x;
-		} ).map( function ( x ) {
-			return SL.badge( FL[ x ] || x, 'warn' );
-		} ) );
+		} );
+		var open = function () {
+			App.mapUrl( u.url, reload );
+		};
+		return h( 'article', { class: 'sl-mapcard', style: '--c:' + st[ 0 ] },
+			h( 'div', { class: 'sl-mapcard__head' },
+				h( 'span', { class: 'sl-mapcard__ic', 'aria-hidden': 'true' }, SL.icon( IC[ u.status ] || 'info', 22 ) ),
+				h( 'div', { class: 'sl-mapcard__titles' },
+					h( 'button', { type: 'button', class: 'sl-mapcard__title', dir: 'auto', onClick: open, text: u.title || path( u.url ) } ),
+					h( 'a', { class: 'sl-mapcard__url', href: u.url, target: '_blank', rel: 'noopener', dir: 'ltr', text: path( u.url ) } )
+				),
+				h( 'span', { class: 'sl-mapcard__status' }, h( 'b', { text: st[ 1 ] } ), u.code ? h( 'span', { text: 'HTTP ' + u.code } ) : null )
+			),
+			h( 'p', { class: 'sl-mapcard__why', text: st[ 2 ] } ),
+			h( 'div', { class: 'sl-mapcard__metrics' },
+				metric( t( 'Clicks (90 days)' ), SL.num( u.clicks || 0, 0 ), u.clicks ? 'good' : '' ),
+				metric( t( 'Impressions' ), SL.num( u.impressions || 0, 0 ) ),
+				metric( t( 'Avg. position' ), u.position ? SL.num( u.position ) : '—' ),
+				metric( t( 'Internal links in' ), SL.num( u.inlinks || 0, 0 ), u.inlinks ? '' : 'bad' ),
+				metric( t( 'Click depth' ), u.depth !== undefined && u.depth !== null ? String( u.depth ) : '—', u.depth > 3 ? 'warn' : '' ),
+				metric( t( 'Words' ), SL.num( u.words || 0, 0 ), u.words && u.words < 300 ? 'warn' : '' )
+			),
+			h( 'div', { class: 'sl-mapcard__foot' },
+				h( 'div', { class: 'sl-mapcard__flags' }, warn.length ? warn.map( function ( x ) {
+					return h( 'span', { class: 'sl-mapcard__flag' }, SL.icon( 'alert', 13 ), h( 'span', { text: FL[ x ] || x } ) );
+				} ) : h( 'span', { class: 'sl-mapcard__ok' }, SL.icon( 'check', 13 ), h( 'span', { text: t( 'No extra warnings' ) } ) ) ),
+				h( 'div', { class: 'sl-mapcard__actions' },
+					App.btn( t( 'Details' ), open, 'primary' ),
+					h( 'a', { class: 'sl-btn', href: u.url, target: '_blank', rel: 'noopener' }, SL.icon( 'external', 14 ), ' ', t( 'Open page' ) )
+				)
+			)
+		);
+	}
+
+	function cards( box, f ) {
+		App.load( box, SL.api( 'sitemap/map', { query: { status: f.status, flag: f.flag, q: f.q, sort: f.sort, all: 1, per_page: f.cards } } ), function ( r ) {
+			box.appendChild( h( 'div', { class: 'sl-toolbar' }, App.select( [ [ 'clicks', t( 'Sort: clicks' ) ], [ 'url', t( 'Sort: address' ) ], [ 'impressions', t( 'Sort: impressions' ) ], [ 'inlinks', t( 'Sort: internal links' ) ], [ 'depth', t( 'Sort: click depth' ) ], [ 'words', t( 'Sort: words' ) ], [ 'ms', t( 'Sort: response time' ) ] ], f.sort, function ( x ) {
+				f.sort = x;
+				cards( SL.clear( box ), f );
+			} ), h( 'span', { class: 'sl-muted sl-small', text: t( '%s URLs', SL.num( r.found, 0 ) ) } ) ) );
+			if ( ! r.urls.length ) {
+				box.appendChild( SL.empty( t( 'No URLs match' ), '' ) );
+				return;
+			}
+			var list = h( 'div', { class: 'sl-mapcards' } );
+			r.urls.forEach( function ( u ) {
+				list.appendChild( urlCard( u, f.reload ) );
+			} );
+			box.appendChild( list );
+			if ( r.found > r.urls.length ) {
+				box.appendChild( h( 'div', { class: 'sl-mapcards__more' }, App.abtn( t( 'Show more' ), function () {
+					f.cards += 30;
+					cards( SL.clear( box ), f );
+					return Promise.resolve();
+				} ) ) );
+			}
+		} );
 	}
 
 	function folders( box, f ) {
@@ -250,13 +309,19 @@
 				box.appendChild( h( 'button', { type: 'button', class: 'sl-map__folder', onClick: function () {
 					f.folder = fo.folder;
 					folders( SL.clear( box ), f );
-				} }, h( 'span', { class: 'sl-map__fname', dir: 'auto' }, SL.icon( 'folder', 16 ), ' ', fo.name + '/' ), h( 'span', { class: 'sl-muted sl-small', text: t( '%s URLs', SL.num( fo.total, 0 ) ) + ( fo.clicks ? ' · ' + t( '%s clicks', SL.num( fo.clicks, 0 ) ) : '' ) } ), stack( fo.counts, fo.total ) ) );
+				} }, h( 'span', { class: 'sl-map__fic', 'aria-hidden': 'true' }, SL.icon( 'folder', 22 ) ), h( 'span', { class: 'sl-map__fname', dir: 'auto', text: fo.name + '/' } ), h( 'span', { class: 'sl-map__fmeta', text: t( '%s URLs', SL.num( fo.total, 0 ) ) + ( fo.clicks ? '، ' + t( '%s clicks', SL.num( fo.clicks, 0 ) ) : '' ) } ), stack( fo.counts, fo.total ), h( 'span', { class: 'sl-map__flegend' }, Object.keys( ST ).filter( function ( k ) {
+					return fo.counts[ k ];
+				} ).map( function ( k ) {
+					return h( 'span', null, dot( k ), h( 'span', { text: ST[ k ][ 1 ] + ': ' + SL.num( fo.counts[ k ], 0 ) } ) );
+				} ) ) ) );
 			} );
 			if ( r.urls.length ) {
 				box.appendChild( h( 'h4', { text: t( 'Pages in this folder' ) } ) );
+				var fl = h( 'div', { class: 'sl-mapcards' } );
 				r.urls.forEach( function ( u ) {
-					box.appendChild( urlRow( u, f.reload ) );
+					fl.appendChild( urlCard( u, f.reload ) );
 				} );
+				box.appendChild( fl );
 			}
 			if ( ! r.folders.length && ! r.urls.length ) {
 				box.appendChild( SL.empty( t( 'No URLs match' ), '' ) );
@@ -354,7 +419,7 @@
 	}
 
 	App.pages.sitemap = function ( v ) {
-		var f = { status: '', flag: '', q: '', folder: '/', sort: 'url', per: 300 };
+		var f = { status: '', flag: '', q: '', folder: '/', sort: 'clicks', per: 300, cards: 30 };
 		var body = h( 'div' );
 		var timer;
 		v.appendChild( App.header( t( 'Site map' ), t( 'Every URL of your site in one picture — from the crawl, the XML sitemap, WordPress and Search Console — coloured by what Google can do with it. Rebuilt every day.' ), [
@@ -381,11 +446,12 @@
 				body.appendChild( h( 'p', { class: 'sl-muted sl-small', text: t( '%1$s URLs · updated %2$s', SL.num( r.total, 0 ), SL.date( r.at ) ) + ( r.last_refresh ? ' · ' + t( 'last daily refresh %s', SL.date( r.last_refresh.at ) ) : '' ) } ) );
 				var tiles = h( 'div', { class: 'sl-map__tiles' } );
 				Object.keys( ST ).forEach( function ( k ) {
-					tiles.appendChild( h( 'button', { type: 'button', class: 'sl-map__tile' + ( f.status === k ? ' is-on' : '' ), style: '--c:' + ST[ k ][ 0 ], title: ST[ k ][ 2 ], onClick: function () {
+					tiles.appendChild( h( 'button', { type: 'button', class: 'sl-map__tile' + ( f.status === k ? ' is-on' : '' ), style: '--c:' + ST[ k ][ 0 ], 'aria-pressed': f.status === k ? 'true' : 'false', onClick: function () {
 						f.status = f.status === k ? '' : k;
 						load();
-					} }, h( 'b', { text: SL.num( r.counts[ k ] || 0, 0 ) } ), h( 'span', { text: ST[ k ][ 1 ] } ) ) );
+					} }, h( 'span', { class: 'sl-map__tic', 'aria-hidden': 'true' }, SL.icon( IC[ k ], 22 ) ), h( 'span', { class: 'sl-map__tlabel', text: ST[ k ][ 1 ] } ), h( 'b', { text: SL.num( r.counts[ k ] || 0, 0 ) } ), h( 'span', { class: 'sl-map__tdesc', text: ST[ k ][ 2 ] } ) ) );
 				} );
+				body.appendChild( h( 'div', { class: 'sl-map__overall' }, h( 'div', { class: 'sl-map__overallhead' }, h( 'b', { text: t( 'Your whole site at a glance' ) } ), h( 'span', { class: 'sl-muted sl-small', text: t( '%s URLs', SL.num( r.total, 0 ) ) } ) ), stack( r.counts, r.total ) ) );
 				body.appendChild( tiles );
 				var flags = h( 'div', { class: 'sl-chips sl-map__flags' } );
 				Object.keys( FL ).forEach( function ( k ) {
@@ -409,7 +475,12 @@
 					load();
 				}, 'sm' ) : null ) );
 				body.appendChild( SL.tabs( [
-					{ label: t( 'Site map' ), render: function () {
+					{ label: t( 'Pages' ), render: function () {
+						var b = h( 'div' );
+						cards( b, f );
+						return b;
+					} },
+					{ label: t( 'Overview picture' ), render: function () {
 						var b = h( 'div' );
 						pixelMap( b, f );
 						return b;
@@ -419,7 +490,7 @@
 						folders( b, f );
 						return b;
 					} },
-					{ label: t( 'List' ), render: function () {
+					{ label: t( 'Table' ), render: function () {
 						var b = h( 'div' );
 						list( b, f );
 						return b;
