@@ -67,4 +67,8 @@ final class OpenRouter extends OpenAI {
 		}
 		return $out;
 	}
+
+	protected function apply_effort( array &$body ) {
+		\SEOlity\AI\Effort::apply_openrouter( $body );
+	}
 }

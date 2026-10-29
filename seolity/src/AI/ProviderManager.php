@@ -195,6 +195,7 @@ final class ProviderManager {
 			'account'    => isset( $st['account'] ) ? $st['account'] : null,
 			'checked'    => isset( $st['checked'] ) ? (array) $st['checked'] : array(),
 			'pending'    => isset( $st['pending'] ) ? $st['pending'] : null,
+			'effort'     => \SEOlity\AI\Effort::describe( $id ),
 		);
 		if ( 'ollama' === $id ) {
 			$out['base_url'] = (string) $this->plugin->settings->get( 'ollama_base_url' );

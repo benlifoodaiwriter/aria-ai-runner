@@ -252,7 +252,29 @@
 					} );
 				}, 'primary' )
 			) );
+			box.appendChild( effortStep() );
 			return box;
+		}
+
+		/** Reasoning effort for this connection, sent in the provider's own parameter. */
+		function effortStep() {
+			var e = st.effort || p.effort;
+			var wrap = h( 'div', { class: 'sl-stack' } );
+			if ( ! e || ! e.levels || e.levels.length < 2 ) {
+				return wrap;
+			}
+			var L = { auto: t( 'Auto (the provider’s default)' ), minimal: t( 'Minimal' ), low: t( 'Low — fastest' ), medium: t( 'Medium' ), high: t( 'High — deeper analysis' ), xhigh: t( 'Extra high' ), max: t( 'Maximum — strongest, slowest' ), off: t( 'Thinking off' ), on: t( 'Thinking on' ) };
+			var sel = App.select( e.levels.map( function ( l ) {
+				return [ l, L[ l ] || l ];
+			} ), e.value, function ( v ) {
+				SL.api( 'ai/providers/' + p.id + '/effort', { body: { level: v } } ).then( function () {
+					SL.toast( t( 'Saved' ), 'success' );
+				} ).catch( SL.fail );
+			} );
+			wrap.appendChild( h( 'h4', { class: 'sl-aipanel__step', text: t( '3. AI power (reasoning effort)' ) } ) );
+			wrap.appendChild( sel );
+			wrap.appendChild( h( 'p', { class: 'sl-muted sl-small', text: e.note + ' ' + t( 'Higher levels give the most thorough analyses but take longer and use more tokens / plan quota.' ) } ) );
+			return wrap;
 		}
 		draw();
 	}

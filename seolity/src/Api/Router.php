@@ -1108,6 +1108,15 @@ final class Router {
 			$key = $r->get_param( 'key' );
 			return $p->aiproviders->connect( self::key( $r, 'id' ), null === $key ? null : trim( wp_unslash( (string) $key ) ), array( 'base_url' => self::url( $r, 'base_url' ) ) );
 		} );
+		$this->route( 'POST', '/ai/providers/(?P<id>[a-z_]+)/effort', 'manage', function ( Req $r ) use ( $p ) {
+			$id    = self::key( $r, 'id' );
+			$level = self::key( $r, 'level' );
+			if ( ! isset( \SEOlity\AI\Effort::LEVELS[ $id ] ) || ! in_array( $level, \SEOlity\AI\Effort::LEVELS[ $id ], true ) ) {
+				return new \WP_Error( 'seolity_effort', __( 'This level is not available for this AI.', 'seolity' ), array( 'status' => 400 ) );
+			}
+			$p->settings->update( array( \SEOlity\AI\Effort::setting( $id ) => $level ) );
+			return \SEOlity\AI\Effort::describe( $id );
+		} );
 		$this->route( 'POST', '/ai/providers/(?P<id>[a-z_]+)/verify', 'manage', function ( Req $r ) use ( $p ) {
 			return $p->aiproviders->verify( self::key( $r, 'id' ), self::str( $r, 'model' ) );
 		} );

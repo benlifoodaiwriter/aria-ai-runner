@@ -57,8 +57,9 @@ final class Anthropic extends AbstractProvider {
 		);
 
 		$output_config = array();
-		if ( $this->is_modern( $model ) ) {
-			$output_config['effort'] = (string) $this->plugin->settings->get( 'ai_effort', 'medium' );
+		$effort = \SEOlity\AI\Effort::get( 'anthropic' );
+		if ( $this->is_modern( $model ) && 'auto' !== $effort ) {
+			$output_config['effort'] = $effort;
 		}
 		if ( ! empty( $request['schema'] ) ) {
 			$output_config['format'] = array(

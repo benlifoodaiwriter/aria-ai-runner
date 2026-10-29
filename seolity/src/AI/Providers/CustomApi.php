@@ -243,7 +243,12 @@ final class CustomApi extends AbstractProvider {
 		} elseif ( 'json_object' === $mode ) {
 			$body['response_format'] = array( 'type' => 'json_object' );
 		}
+		\SEOlity\AI\Effort::apply_openai( $body, 'custom', $this->model(), true );
 		$res = $this->post( $this->endpoint(), $body, $this->headers() );
+		if ( is_wp_error( $res ) && isset( $body['reasoning_effort'] ) && preg_match( '/reasoning/i', $res->get_error_message() ) ) {
+			unset( $body['reasoning_effort'] );
+			$res = $this->post( $this->endpoint(), $body, $this->headers() );
+		}
 		if ( is_wp_error( $res ) && 'auto' === $this->opt( 'token_param' ) && preg_match( '/max_tokens|max_completion_tokens/i', $res->get_error_message() ) ) {
 			// Newer OpenAI-style models want max_completion_tokens: swap once.
 			$body['max_completion_tokens'] = $body['max_tokens'];
@@ -295,7 +300,19 @@ final class CustomApi extends AbstractProvider {
 		if ( 'json_schema' === $mode ) {
 			$body['output_config'] = array( 'format' => array( 'type' => 'json_schema', 'schema' => $request['schema'] ) );
 		}
+		$effort = \SEOlity\AI\Effort::get( 'custom' );
+		if ( 'auto' !== $effort ) {
+			$body['output_config']           = isset( $body['output_config'] ) ? $body['output_config'] : array();
+			$body['output_config']['effort'] = $effort;
+		}
 		$res = $this->post( $this->endpoint(), $body, $this->headers() );
+		if ( is_wp_error( $res ) && 'auto' !== $effort && preg_match( '/effort|output_config/i', $res->get_error_message() ) ) {
+			unset( $body['output_config']['effort'] );
+			if ( ! $body['output_config'] ) {
+				unset( $body['output_config'] );
+			}
+			$res = $this->post( $this->endpoint(), $body, $this->headers() );
+		}
 		if ( is_wp_error( $res ) ) {
 			return $res;
 		}

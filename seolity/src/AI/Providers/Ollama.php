@@ -48,8 +48,13 @@ final class Ollama extends AbstractProvider {
 		if ( ! empty( $request['schema'] ) ) {
 			$body['format'] = $request['schema'];
 		}
+		\SEOlity\AI\Effort::apply_ollama( $body, $this->model() );
 		$url = untrailingslashit( (string) $this->plugin->settings->get( 'ollama_base_url' ) ) . '/api/chat';
 		$res = $this->post( $url, $body, array() );
+		if ( is_wp_error( $res ) && isset( $body['think'] ) && preg_match( '/think/i', $res->get_error_message() ) ) {
+			unset( $body['think'] );
+			$res = $this->post( $url, $body, array() );
+		}
 		if ( is_wp_error( $res ) ) {
 			return $res;
 		}

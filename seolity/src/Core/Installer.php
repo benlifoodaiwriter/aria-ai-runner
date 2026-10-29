@@ -55,6 +55,14 @@ final class Installer {
 			if ( '' !== $from_db && version_compare( $from_db, '1.5.0', '<' ) ) {
 				self::migrate_150();
 			}
+			if ( '' !== $from_db && version_compare( $from_db, '1.6.0', '<' ) ) {
+				// 1.11: effort is set per connection; the old single value was Anthropic's.
+				$st = get_option( Settings::OPTION, array() );
+				if ( is_array( $st ) && ! empty( $st['ai_effort'] ) && empty( $st['ai_effort_anthropic'] ) ) {
+					$st['ai_effort_anthropic'] = $st['ai_effort'];
+					update_option( Settings::OPTION, $st, false );
+				}
+			}
 		}
 		$prev = (string) get_option( 'seolity_plugin_version', '' );
 		if ( SEOLITY_VERSION !== $prev ) {

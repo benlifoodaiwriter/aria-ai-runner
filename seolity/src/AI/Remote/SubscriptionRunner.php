@@ -410,6 +410,7 @@ final class SubscriptionRunner {
 				'id'      => $r['id'],
 				'engine'  => $r['engine'],
 				'model'   => $r['model'],
+				'effort'  => in_array( $r['engine'], array( 'claude', 'codex' ), true ) ? \SEOlity\AI\Effort::get( 'sub_' . $r['engine'] ) : 'auto',
 				'task'    => $r['task'],
 				'system'  => isset( $p['system'] ) ? $p['system'] : '',
 				'prompt'  => isset( $p['prompt'] ) ? $p['prompt'] : '',

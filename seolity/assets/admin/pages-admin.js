@@ -259,7 +259,7 @@
 	};
 	var GROUPS = [
 		[ 'general', 'General', [ 'approval_mode', 'ui_language', 'admin_webfont', 'frontend_output', 'title_separator', 'brand_name', 'brand_logo', 'brand_color' ] ],
-		[ 'ai', 'AI', [ 'ai_effort', 'ai_content_language', 'ai_brand_voice', 'ai_use_knowledge', 'ai_media_on_upload', 'ai_max_tokens', 'ai_timeout', 'ai_monthly_budget', 'ai_cache_hours' ] ],
+		[ 'ai', 'AI', [ 'ai_content_language', 'ai_brand_voice', 'ai_use_knowledge', 'ai_media_on_upload', 'ai_max_tokens', 'ai_timeout', 'ai_monthly_budget', 'ai_cache_hours' ] ],
 		[ 'crawler', 'Crawler & audits', [ 'crawl_frequency', 'crawl_max_urls', 'crawl_batch_size', 'crawl_timeout', 'thin_content_words', 'crawl_check_external', 'competitor_max_pages', 'experiment_window', 'gsc_sync_days', 'gsc_row_limit' ] ],
 		[ 'reports', 'Alerts & reports', [ 'alert_email_enabled', 'alert_email', 'alert_drop_percent', 'report_frequency', 'report_recipients' ] ],
 		[ 'technical', 'Technical SEO', [ 'sitemap_enabled', 'sitemap_exclude_types', 'redirects_enabled', 'log_404', 'log_404_bots' ] ],
@@ -499,7 +499,7 @@
 					model.focus();
 				} );
 			}, 'sm' ) );
-			wrap.appendChild( h( 'p', { class: 'sl-muted sl-small', text: t( 'Use any AI service with exactly the settings its documentation gives: choose a ready-made service or fill in the base URL, API format, how the key is sent, extra headers and the model. SEOlity shows the exact request it will send.' ) } ) );
+			wrap.appendChild( h( 'p', { class: 'sl-muted sl-small', text: t( 'Use any AI service with exactly the settings its documentation gives: choose a ready-made service or fill in the base URL, API format, how the key is sent and extra headers. SEOlity shows the exact request it will send. After saving, load the models of the endpoint and pick, test and activate one in “2. Model” above — the only place where models are chosen.' ) } ) );
 			var form = h( 'div', { class: 'sl-form' },
 				App.field( t( 'Service' ), h( 'div', { class: 'sl-stack' }, presetSel, keyLinks ) ),
 				App.field( t( 'Display name' ), label ),
@@ -508,7 +508,6 @@
 				App.field( t( 'How the key is sent' ), auth ),
 				authNameRow,
 				key,
-				App.field( t( 'Model' ), modelRow, t( 'Exact model id from the service (use “Fetch models” to list them).' ) ),
 				App.field( t( 'Structured output' ), json, t( 'Automatic tries strict JSON schema, then JSON mode, then prompt instructions, and remembers what works.' ) ),
 				h( 'details', { class: 'sl-more' }, h( 'summary', { text: t( 'Advanced: extra headers, query parameters, token limit, temperature' ) } ), h( 'div', { class: 'sl-form' },
 					App.field( t( 'Extra headers (one per line)' ), headers, t( 'Name: value. Use {key} to insert the API key, e.g. Authorization: Token {key}' ) ),
@@ -523,21 +522,6 @@
 				App.abtn( SL.il( 'save', t( 'Save Custom API' ) ), function () {
 					return save().then( function () {
 						SL.toast( t( 'Settings saved.' ), 'success' );
-					} );
-				}, 'primary' ),
-				App.abtn( SL.il( 'zap', t( 'Test model' ) ), function () {
-					return save().then( function () {
-						return SL.api( 'ai/providers/custom/verify', { body: { model: model.value.trim() } } );
-					} ).then( function () {
-						SL.toast( t( 'The model works.' ), 'success' );
-					} );
-				} ),
-				App.abtn( SL.il( 'check', t( 'Use for all AI features' ) ), function () {
-					return save().then( function () {
-						return SL.api( 'ai/providers/custom/activate', { body: { model: model.value.trim() } } );
-					} ).then( function () {
-						App.refreshBoot();
-						SL.toast( t( 'AI engine switched.' ), 'success' );
 					} );
 				}, 'primary' ),
 				h( 'a', { class: 'sl-btn sl-btn--ghost', href: '#/guide?service=custom' }, SL.il( 'lifebuoy', t( 'Guide' ), 15 ) )

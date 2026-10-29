@@ -38,8 +38,13 @@ final class Gemini extends AbstractProvider {
 			$body['generationConfig']['responseMimeType']   = 'application/json';
 			$body['generationConfig']['responseJsonSchema'] = $request['schema'];
 		}
+		\SEOlity\AI\Effort::apply_gemini( $body, $this->model() );
 		$url = 'https://generativelanguage.googleapis.com/v1beta/models/' . rawurlencode( $this->model() ) . ':generateContent';
 		$res = $this->post( $url, $body, array( 'x-goog-api-key' => $this->api_key() ) );
+		if ( is_wp_error( $res ) && isset( $body['generationConfig']['thinkingConfig'] ) && preg_match( '/thinking/i', $res->get_error_message() ) ) {
+			unset( $body['generationConfig']['thinkingConfig'] );
+			$res = $this->post( $url, $body, array( 'x-goog-api-key' => $this->api_key() ) );
+		}
 
 		if ( is_wp_error( $res ) && ! empty( $request['schema'] ) && false !== stripos( $res->get_error_message(), 'responseJsonSchema' ) ) {
 			unset( $body['generationConfig']['responseJsonSchema'] );

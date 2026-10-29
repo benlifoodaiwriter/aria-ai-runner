@@ -112,6 +112,7 @@ final class LocalCli {
 				file_put_contents( $sys, $system ? $system : 'You are a helpful assistant.' ); // phpcs:ignore
 				$env['CLAUDE_CODE_OAUTH_TOKEN'] = $credential;
 				$cmd = array( $bin, '-p', '--output-format', 'json', '--model', $model ? $model : 'sonnet', '--tools', '', '--max-turns', '2', '--no-session-persistence', '--system-prompt-file', $sys );
+				$env = array_merge( $env, \SEOlity\AI\Effort::cli( 'claude' )['env'] );
 				$r   = $this->run( $cmd, $prompt, $env, $tmp );
 				if ( is_wp_error( $r ) ) {
 					return $r;
@@ -140,6 +141,7 @@ final class LocalCli {
 			$env['CODEX_HOME'] = $home;
 			$out               = $tmp . '/out.txt';
 			$cmd               = array( $bin, 'exec', '--skip-git-repo-check', '--sandbox', 'read-only', '--ephemeral', '-o', $out );
+			$cmd               = array_merge( $cmd, \SEOlity\AI\Effort::cli( 'codex' )['args'] );
 			if ( $model ) {
 				$cmd[] = '-m';
 				$cmd[] = $model;

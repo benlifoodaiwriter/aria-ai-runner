@@ -719,12 +719,8 @@
 			var ghConnected = !! gh.token.account;
 			var ghTok = SL.secretInput( 'ghp_…' );
 			var repo = h( 'input', { class: 'sl-input', dir: 'ltr', value: sub.repo || gh.defaults.runner } );
-			var model;
-			if ( isClaude ) {
-				model = App.select( [ [ 'sonnet', T( 'Sonnet (پیشنهادی)', 'Sonnet (recommended)' ) ], [ 'opus', T( 'Opus (قوی‌تر، سهمیه بیشتر)', 'Opus (stronger, more quota)' ) ], [ 'haiku', T( 'Haiku (سریع)', 'Haiku (fast)' ) ] ], ( sub.models && sub.models.claude ) || 'sonnet' );
-			} else {
-				model = h( 'input', { class: 'sl-input', dir: 'ltr', value: ( sub.models && sub.models.codex ) || '', placeholder: T( 'خالی = پیش‌فرض پلن شما', 'empty = your plan’s default' ) } );
-			}
+			// The model (and its power level) is chosen in one place only: Settings → AI.
+			var model = { value: '' };
 			var activate = h( 'input', { type: 'checkbox', checked: true } );
 			var log = h( 'div' );
 			body.appendChild( h( 'section', { class: 'sl-card sl-wiz-one', id: 'sub-account' }, h( 'div', { class: 'sl-card__body sl-stack' },
@@ -744,7 +740,7 @@
 				) ),
 				h( 'div', { class: 'sl-part' }, h( 'div', { class: 'sl-part__num', text: '3' } ), h( 'div', { class: 'sl-stack' },
 					h( 'h3', { text: T( 'استقرار', 'Deploy' ) } ),
-					App.field( T( 'مدل', 'Model' ), model ),
+					App.field( T( 'مدل', 'Model' ), h( 'p', { class: 'sl-muted sl-small' }, T( 'مدل و سطح توان فقط در یک جا انتخاب می‌شود: ', 'The model and the power level are chosen in one place only: ' ), h( 'a', { href: '#/settings?tab=ai', text: T( 'تنظیمات ← هوش مصنوعی ← اشتراکی', 'Settings → AI → Subscription' ) } ), T( ' (بعد از راه‌اندازی، مدل را آنجا آزمایش و انتخاب کنید).', ' (after the setup, test and choose the model there).' ) ) ),
 					h( 'label', { class: 'sl-check' }, activate, h( 'span', { text: T( 'از این به بعد همه کارهای هوش مصنوعی با این اکانت انجام شود', 'Use this account for all AI work from now on' ) } ) ),
 					App.abtn( SL.il( 'rocket', T( 'استقرار همین حالا (حدود ۳۰ ثانیه)', 'Deploy now (about 30 seconds)' ) ), function () {
 						SL.clear( log );

@@ -78,6 +78,15 @@ final class Settings {
 			'ai_route'             => array( 'enum', 'auto', array( 'auto', 'direct', 'cloudflare', 'github' ) ),
 			'route_google'         => array( 'bool', true ),
 			'ai_effort'            => array( 'enum', 'medium', array( 'low', 'medium', 'high', 'xhigh', 'max' ) ),
+			'ai_effort_anthropic'  => array( 'enum', 'auto', array( 'auto', 'low', 'medium', 'high', 'xhigh', 'max' ) ),
+			'ai_effort_openai'     => array( 'enum', 'auto', array( 'auto', 'minimal', 'low', 'medium', 'high' ) ),
+			'ai_effort_github_models'=> array( 'enum', 'auto', array( 'auto', 'low', 'medium', 'high' ) ),
+			'ai_effort_openrouter' => array( 'enum', 'auto', array( 'auto', 'low', 'medium', 'high' ) ),
+			'ai_effort_gemini'     => array( 'enum', 'auto', array( 'auto', 'low', 'medium', 'high' ) ),
+			'ai_effort_ollama'     => array( 'enum', 'auto', array( 'auto', 'off', 'on', 'low', 'medium', 'high' ) ),
+			'ai_effort_custom'     => array( 'enum', 'auto', array( 'auto', 'low', 'medium', 'high' ) ),
+			'ai_effort_sub_claude' => array( 'enum', 'auto', array( 'auto', 'low', 'medium', 'high', 'max' ) ),
+			'ai_effort_sub_codex'  => array( 'enum', 'auto', array( 'auto', 'minimal', 'low', 'medium', 'high' ) ),
 			'ollama_base_url'      => array( 'url', 'http://localhost:11434' ),
 			'custom_base_url'      => array( 'string', '' ), // Not 'url': esc_url_raw() would strip {PLACEHOLDERS}.
 			// Custom API: any provider's own settings (format, auth, headers, query, JSON mode).

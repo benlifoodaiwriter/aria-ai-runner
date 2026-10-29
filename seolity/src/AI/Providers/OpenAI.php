@@ -30,6 +30,11 @@ class OpenAI extends AbstractProvider {
 		return array( 'Authorization' => 'Bearer ' . $this->api_key() );
 	}
 
+	/** Reasoning effort in this provider's own parameter. */
+	protected function apply_effort( array &$body ) {
+		\SEOlity\AI\Effort::apply_openai( $body, $this->id(), $body['model'] );
+	}
+
 	/** Whether the endpoint supports response_format=json_schema. */
 	protected function supports_json_schema() {
 		return true;
@@ -68,7 +73,13 @@ class OpenAI extends AbstractProvider {
 				$body['messages'][0]['content'] .= $this->schema_instruction( $request['schema'] );
 			}
 		}
+		$this->apply_effort( $body );
 		$res = $this->post( $this->endpoint(), $body, $this->headers() );
+		// A model that does not take the reasoning setting: ask again without it.
+		if ( is_wp_error( $res ) && ( isset( $body['reasoning_effort'] ) || isset( $body['reasoning'] ) ) && preg_match( '/reasoning/i', $res->get_error_message() ) ) {
+			unset( $body['reasoning_effort'], $body['reasoning'] );
+			$res = $this->post( $this->endpoint(), $body, $this->headers() );
+		}
 
 		// Some compatible gateways reject json_schema or max_completion_tokens: degrade gracefully once.
 		if ( is_wp_error( $res ) && preg_match( '/response_format|json_schema|max_completion_tokens/i', $res->get_error_message() ) ) {
