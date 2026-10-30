@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: SEOlity 1.0.0\n"
-"POT-Creation-Date: 2026-10-29 21:54+0000\n"
+"POT-Creation-Date: 2026-10-30 04:39+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -328,6 +328,123 @@ msgstr "مدل پیش‌فرض پلن ChatGPT شما"
 msgid "recommended"
 msgstr "پیشنهادی"
 
+msgid "Claude Code signs in with a token: run “claude setup-token” on your computer and paste the token."
+msgstr "Claude Code با توکن وارد می‌شود: روی رایانه خودتان «claude setup-token» را اجرا کنید و توکن را بچسبانید."
+
+msgid "This Codex version has no device sign-in. Update it with “Install / repair”, or paste auth.json from your computer."
+msgstr "این نسخه Codex ورود با کد دستگاه ندارد. با «نصب / تعمیر» به‌روزش کنید یا auth.json را از رایانه خودتان بچسبانید."
+
+msgid "Node.js was not found. The CLI needs Node.js to run."
+msgstr "Node.js پیدا نشد. ابزار خط فرمان برای اجرا به Node.js نیاز دارد."
+
+msgid "PHP cannot execute the Node.js program on this server."
+msgstr "PHP اجازه اجرای برنامه Node.js را روی این سرور ندارد."
+
+msgid "The Node.js version on this server is too old for this CLI."
+msgstr "نسخه Node.js این سرور برای این ابزار خیلی قدیمی است."
+
+msgid "Node.js was found but does not start correctly."
+msgstr "Node.js پیدا شد ولی درست اجرا نمی‌شود."
+
+msgid "npm (the Node.js package installer) was not found next to Node.js."
+msgstr "npm (نصب‌کننده بسته‌های Node.js) کنار Node.js پیدا نشد."
+
+msgid "The selected AI CLI is not installed on this server."
+msgstr "ابزار هوش مصنوعی انتخاب‌شده روی این سرور نصب نیست."
+
+msgid "The CLI file exists but PHP is not allowed to execute it."
+msgstr "فایل ابزار هست ولی PHP اجازه اجرای آن را ندارد."
+
+msgid "This host does not allow PHP to start programs (proc_open is disabled)."
+msgstr "این هاست به PHP اجازه اجرای برنامه نمی‌دهد (proc_open غیرفعال است)."
+
+msgid "The host refused to start the program."
+msgstr "هاست اجازه شروع برنامه را نداد."
+
+msgid "Please connect your AI account."
+msgstr "لطفاً حساب هوش مصنوعی‌تان را وصل کنید."
+
+msgid "The saved login is not valid. Please reconnect your account."
+msgstr "ورود ذخیره‌شده معتبر نیست. لطفاً دوباره وصل شوید."
+
+msgid "Your login has expired. Please reconnect."
+msgstr "ورود شما منقضی شده است. لطفاً دوباره وصل شوید."
+
+msgid "Your login has been revoked. Please reconnect."
+msgstr "ورود شما باطل شده است. لطفاً دوباره وصل شوید."
+
+msgid "Your account is not allowed to use this model or feature."
+msgstr "حساب شما اجازه استفاده از این مدل یا امکان را ندارد."
+
+msgid "The account has reached its usage or rate limit. Try again later."
+msgstr "سقف مصرف یا سرعت حساب پر شده است. کمی بعد دوباره امتحان کنید."
+
+msgid "The AI provider could not be reached from this server."
+msgstr "از این سرور به سرویس هوش مصنوعی دسترسی نیست."
+
+msgid "The process could not get enough memory. On CloudLinux this is usually the per-process memory limit, not the account total."
+msgstr "برنامه حافظه کافی نگرفت. در CloudLinux معمولاً علتش سقف حافظه هر پردازه است، نه کل حافظه حساب."
+
+msgid "The host stopped the process before it finished."
+msgstr "هاست برنامه را پیش از پایان متوقف کرد."
+
+msgid "The AI process exceeded its time limit."
+msgstr "پردازش هوش مصنوعی از زمان مجاز بیشتر شد."
+
+msgid "This server cannot download packages from npm."
+msgstr "این سرور نمی‌تواند بسته‌ها را از npm دانلود کند."
+
+msgid "There is not enough disk space or quota."
+msgstr "فضای دیسک یا سهمیه کافی نیست."
+
+msgid "The CLI stopped with an error."
+msgstr "ابزار با خطا متوقف شد."
+
+msgid "In cPanel open “Setup Node.js App”, create an app with the newest Node.js version (this installs it for your account), then press “Refresh diagnostics”."
+msgstr "در سی‌پنل «Setup Node.js App» را باز کنید و یک اپ با جدیدترین نسخه Node.js بسازید (این کار Node.js را برای حساب شما نصب می‌کند)، سپس «بررسی دوباره» را بزنید."
+
+msgid "Press “Install / repair”. If it persists, ask the host whether PHP may run programs from your home folder (noexec mount or CageFS rule)."
+msgstr "«نصب / تعمیر» را بزنید. اگر باقی ماند، از هاست بپرسید آیا PHP اجازه اجرای برنامه از پوشه خانگی را دارد (noexec یا قانون CageFS)."
+
+msgid "Choose another Node.js version in cPanel “Setup Node.js App” (it includes npm)."
+msgstr "در «Setup Node.js App» سی‌پنل نسخه دیگری از Node.js انتخاب کنید (npm همراهش هست)."
+
+msgid "Press “Install / repair”."
+msgstr "«نصب / تعمیر» را بزنید."
+
+msgid "Ask the host to allow proc_open for your account, or run the subscription through the GitHub route, or use an API key."
+msgstr "از هاست بخواهید proc_open را برای حساب شما فعال کند، یا اشتراک را از مسیر گیت‌هاب اجرا کنید، یا از کلید API استفاده کنید."
+
+msgid "Press “Reconnect” and sign in with your ChatGPT account again."
+msgstr "«اتصال دوباره» را بزنید و دوباره با حساب ChatGPT وارد شوید."
+
+msgid "Press “Reconnect” and paste a new token from “claude setup-token”."
+msgstr "«اتصال دوباره» را بزنید و توکن تازه‌ای از «claude setup-token» بچسبانید."
+
+msgid "Choose another model or check the subscription plan of this account."
+msgstr "مدل دیگری انتخاب کنید یا پلن اشتراک این حساب را بررسی کنید."
+
+msgid "Wait until the limit resets, or switch to another engine meanwhile."
+msgstr "صبر کنید تا سقف تازه شود، یا در این فاصله موتور دیگری را انتخاب کنید."
+
+msgid "Check the server’s outbound connection; in Iran use the Cloudflare or GitHub route."
+msgstr "اتصال خروجی سرور را بررسی کنید؛ در ایران از مسیر کلودفلر یا گیت‌هاب استفاده کنید."
+
+msgid "Ask the host to raise the per-process memory (LVE PMEM/VMEM) limit, or use the GitHub route."
+msgstr "از هاست بخواهید سقف حافظه هر پردازه (LVE PMEM/VMEM) را بالا ببرد، یا از مسیر گیت‌هاب استفاده کنید."
+
+msgid "Raise the AI timeout in Settings, or choose a faster model or lower effort."
+msgstr "زمان انتظار هوش مصنوعی را در تنظیمات بیشتر کنید، یا مدل سریع‌تر یا سطح تلاش کمتری انتخاب کنید."
+
+msgid "Ask the host to allow outbound HTTPS to registry.npmjs.org. Shortest alternative: run the one install command shown below once over SSH, then press “Refresh diagnostics”."
+msgstr "از هاست بخواهید اتصال HTTPS خروجی به registry.npmjs.org را باز کند. کوتاه‌ترین راه جایگزین: فرمان نصبِ زیر را یک بار با SSH اجرا کنید و بعد «بررسی دوباره» را بزنید."
+
+msgid "Free some disk space or ask for a larger quota, then try again."
+msgstr "کمی فضا آزاد کنید یا سهمیه بیشتری بگیرید و دوباره امتحان کنید."
+
+msgid "Copy the diagnostic report and send it to support."
+msgstr "گزارش عیب‌یابی را کپی کنید و برای پشتیبانی بفرستید."
+
 msgid "PHP may start programs (proc_open)"
 msgstr "PHP اجازه اجرای برنامه دارد (proc_open)"
 
@@ -402,17 +519,79 @@ msgstr "npm install %s …"
 msgid "Installed and verified: %s"
 msgstr "نصب و تأیید شد: %s"
 
-msgid "The installation did not finish — see the log."
-msgstr "نصب کامل نشد — گزارش را ببینید."
+msgid "PHP version"
+msgstr "نسخه PHP"
 
-msgid "The official CLI is not installed on this server."
-msgstr "ابزار رسمی (CLI) روی این سرور نصب نیست."
+msgid "PHP 7.4 or newer is required."
+msgstr "PHP نسخه ۷٫۴ یا جدیدتر لازم است."
 
-msgid "This server does not allow starting the CLI."
-msgstr "این سرور اجازه اجرای ابزار CLI را نمی‌دهد."
+msgid "PHP memory limit"
+msgstr "سقف حافظه PHP"
 
-msgid "The CLI on this server did not answer in time."
-msgstr "ابزار CLI روی این سرور به‌موقع پاسخ نداد."
+msgid "Raise memory_limit to 128M or more in cPanel → MultiPHP INI Editor."
+msgstr "در سی‌پنل ← MultiPHP INI Editor مقدار memory_limit را ۱۲۸M یا بیشتر کنید."
+
+msgid "PHP time limit"
+msgstr "سقف زمان PHP"
+
+msgid "Unlimited"
+msgstr "نامحدود"
+
+msgid "can be raised per request"
+msgstr "برای هر درخواست قابل افزایش"
+
+msgid "Long AI answers need more than 120 seconds; ask the host to allow set_time_limit."
+msgstr "پاسخ‌های طولانی هوش مصنوعی بیش از ۱۲۰ ثانیه زمان می‌خواهند؛ از هاست بخواهید set_time_limit را مجاز کند."
+
+msgid "PHP may start programs"
+msgstr "PHP اجازه اجرای برنامه دارد"
+
+#, php-format
+msgid "%s is disabled"
+msgstr "%s غیرفعال است"
+
+msgid "Other shell functions"
+msgstr "توابع دیگر پوسته"
+
+#, php-format
+msgid "Disabled: %s (not needed — SEOlity never uses a shell)"
+msgstr "غیرفعال: %s (لازم نیست — SEOlity هرگز از پوسته استفاده نمی‌کند)"
+
+msgid "Not needed — SEOlity never uses a shell"
+msgstr "لازم نیست — SEOlity هرگز از پوسته استفاده نمی‌کند"
+
+msgid "Not set"
+msgstr "تنظیم نشده"
+
+msgid "Set — some folders may be invisible to PHP"
+msgstr "تنظیم شده — ممکن است بعضی پوشه‌ها برای PHP دیده نشوند"
+
+msgid "If Node.js is not found, ask the host to add /opt/alt to open_basedir or turn it off for your account."
+msgstr "اگر Node.js پیدا نشد، از هاست بخواهید ‎/opt/alt‎ را به open_basedir اضافه کند یا آن را برای حساب شما خاموش کند."
+
+msgid "Temporary folder is writable"
+msgstr "پوشه موقت قابل نوشتن است"
+
+msgid "Set WP_TEMP_DIR in wp-config.php to a writable folder."
+msgstr "در wp-config.php مقدار WP_TEMP_DIR را روی یک پوشه قابل نوشتن بگذارید."
+
+msgid "Private install folder"
+msgstr "پوشه خصوصی نصب"
+
+msgid "inside the web root, protected with deny rules"
+msgstr "داخل ریشه وب، با قانون‌های عدم دسترسی محافظت شده"
+
+msgid "outside the web root"
+msgstr "بیرون از ریشه وب"
+
+msgid "Free disk space"
+msgstr "فضای آزاد دیسک"
+
+msgid "An install needs about 1 GB free (package + npm cache)."
+msgstr "نصب حدود ۱ گیگابایت فضای آزاد می‌خواهد (بسته + حافظه موقت npm)."
+
+msgid "Installed and signed in — run “Test connection” once to confirm it answers."
+msgstr "نصب و وارد شده — یک بار «آزمایش اتصال» را بزنید تا مطمئن شوید پاسخ می‌دهد."
 
 msgid "Claude subscription token (claude setup-token)"
 msgstr "توکن اشتراک Claude ‏(claude setup-token)"
@@ -792,6 +971,9 @@ msgstr "تغییر هدف یک مقاله رقیب"
 msgid "Full-site analysis"
 msgstr "تحلیل کامل سایت"
 
+msgid "Signing in to Codex"
+msgstr "ورود به Codex"
+
 msgid "Site map refresh"
 msgstr "به‌روزرسانی نقشه سایت"
 
@@ -1034,6 +1216,9 @@ msgstr "اتوماسیون"
 
 msgid "Knowledge Base"
 msgstr "پایگاه دانش"
+
+msgid "AI Engines — Installation & Diagnostics"
+msgstr "موتورهای هوش مصنوعی — نصب و عیب‌یابی"
 
 msgid "Server & speed"
 msgstr "سرور و سرعت"
@@ -1732,6 +1917,9 @@ msgstr "auth.json باید JSON معتبر باشد (کل فایل ~/.codex/auth
 
 msgid "This level is not available for this AI."
 msgstr "این سطح برای این هوش مصنوعی در دسترس نیست."
+
+msgid "Enter the full path of the program (for example /opt/alt/alt-nodejs22/root/usr/bin/node)."
+msgstr "مسیر کامل برنامه را وارد کنید (مثلاً ‎/opt/alt/alt-nodejs22/root/usr/bin/node‎)."
 
 msgid "This host does not allow PHP to start programs (proc_open is disabled). Subscriptions can only run through GitHub here."
 msgstr "این هاست اجازه اجرای برنامه به PHP نمی‌دهد (proc_open غیرفعال است). اینجا اشتراک فقط از طریق گیت‌هاب کار می‌کند."
@@ -6212,12 +6400,6 @@ msgstr "کوئری‌های خود شما به‌علاوه مهم‌ترین ک
 msgid "Who you meet most in Google"
 msgstr "بیشتر با چه کسانی در گوگل روبه‌رو می‌شوید"
 
-msgid "Domain"
-msgstr "دامنه"
-
-msgid "Appears in"
-msgstr "حضور در"
-
 #, php-format
 msgid "%1$s of %2$s queries"
 msgstr "%1$s از %2$s کوئری"
@@ -6227,6 +6409,9 @@ msgstr "افزودن به‌عنوان رقیب"
 
 msgid "Competitor added. First analysis is running in the background."
 msgstr "رقیب اضافه شد. اولین تحلیل در پس‌زمینه در حال اجراست."
+
+msgid "Appears in"
+msgstr "حضور در"
 
 msgid "Google results database"
 msgstr "پایگاه داده نتایج گوگل"
@@ -6470,8 +6655,177 @@ msgstr "در صفحه رقبا «تحلیل همین حالا» را بزنید 
 msgid "Connected"
 msgstr "متصل"
 
-msgid "Not set"
-msgstr "تنظیم نشده"
+msgid "Needs configuration"
+msgstr "نیاز به تنظیم"
+
+msgid "Authentication required"
+msgstr "نیاز به ورود"
+
+msgid "Not installed"
+msgstr "نصب نیست"
+
+msgid "Permission denied"
+msgstr "دسترسی رد شد"
+
+msgid "Unsupported environment"
+msgstr "محیط پشتیبانی نمی‌شود"
+
+msgid "Runtime error"
+msgstr "خطای اجرا"
+
+msgid "Diagnostics"
+msgstr "بررسی"
+
+msgid "Install"
+msgstr "نصب"
+
+msgid "Sign in"
+msgstr "ورود"
+
+msgid "Test"
+msgstr "آزمایش"
+
+msgid "Reconnect"
+msgstr "اتصال دوباره"
+
+msgid "Open this page, sign in with your ChatGPT account and enter the code:"
+msgstr "این صفحه را باز کنید، با حساب ChatGPT وارد شوید و این کد را وارد کنید:"
+
+msgid "Open sign-in page"
+msgstr "باز کردن صفحه ورود"
+
+msgid "The code is valid for 15 minutes. This window updates by itself."
+msgstr "کد ۱۵ دقیقه اعتبار دارد. این پنجره خودش به‌روز می‌شود."
+
+msgid "Signed in. Now press “Test connection”."
+msgstr "وارد شدید. حالا «آزمایش اتصال» را بزنید."
+
+msgid "Sign-in failed."
+msgstr "ورود ناموفق بود."
+
+msgid "Starting the sign-in…"
+msgstr "در حال شروع ورود…"
+
+msgid "Sign in from here (recommended)"
+msgstr "ورود از همین‌جا (پیشنهادی)"
+
+msgid "Uses the official device sign-in of Codex. Your password never passes through SEOlity; the login is saved encrypted on this server."
+msgstr "از ورود رسمی Codex با کد دستگاه استفاده می‌کند. رمز عبور شما هرگز از SEOlity عبور نمی‌کند و ورود به‌صورت رمزنگاری‌شده روی همین سرور ذخیره می‌شود."
+
+msgid "Sign in with ChatGPT"
+msgstr "ورود با ChatGPT"
+
+msgid "Or paste a login from your computer"
+msgstr "یا ورودِ ساخته‌شده روی رایانه‌تان را بچسبانید"
+
+msgid "On your computer run “codex login”, sign in with ChatGPT, then paste the whole content of ~/.codex/auth.json here."
+msgstr "روی رایانه خودتان «codex login» را اجرا کنید، با ChatGPT وارد شوید و کل محتوای ‎~/.codex/auth.json‎ را این‌جا بچسبانید."
+
+msgid "On your computer run “claude setup-token”, sign in with your Claude account, then paste the token (starts with sk-ant-oat01-)."
+msgstr "روی رایانه خودتان «claude setup-token» را اجرا کنید، با حساب Claude وارد شوید و توکن را بچسبانید (با sk-ant-oat01- شروع می‌شود)."
+
+msgid "Save login"
+msgstr "ذخیره ورود"
+
+msgid "Login saved. Now press “Test connection”."
+msgstr "ورود ذخیره شد. حالا «آزمایش اتصال» را بزنید."
+
+msgid "One command over SSH:"
+msgstr "یک فرمان با SSH:"
+
+msgid "CLI version"
+msgstr "نسخه ابزار"
+
+msgid "Login"
+msgstr "ورود"
+
+msgid "From SSH"
+msgstr "از SSH"
+
+msgid "None"
+msgstr "ندارد"
+
+msgid "Last successful connection"
+msgstr "آخرین اتصال موفق"
+
+msgid "Last result"
+msgstr "آخرین نتیجه"
+
+msgid "OK"
+msgstr "موفق"
+
+msgid "Detected paths (administrators only)"
+msgstr "مسیرهای پیداشده (فقط مدیران)"
+
+msgid "Installing… (a few minutes; this page updates by itself)"
+msgstr "در حال نصب… (چند دقیقه؛ این صفحه خودش به‌روز می‌شود)"
+
+msgid "Install log"
+msgstr "گزارش نصب"
+
+msgid "Test connection"
+msgstr "تست اتصال"
+
+msgid "It works"
+msgstr "کار می‌کند"
+
+msgid "Install / repair"
+msgstr "نصب / تعمیر"
+
+msgid "Sign out"
+msgstr "خروج"
+
+#, php-format
+msgid "Remove the saved login of %s from this site?"
+msgstr "ورود ذخیره‌شده %s از این سایت حذف شود؟"
+
+msgid "Version"
+msgstr "نسخه"
+
+msgid "No Node.js was found on this server."
+msgstr "هیچ Node.js روی این سرور پیدا نشد."
+
+msgid "Server checks"
+msgstr "بررسی‌های سرور"
+
+msgid "Node.js found on this server"
+msgstr "Node.jsهای پیداشده روی این سرور"
+
+msgid "Checked from PHP itself — the same environment the AI runs in."
+msgstr "از خود PHP بررسی شده — همان محیطی که هوش مصنوعی در آن اجرا می‌شود."
+
+msgid "Node.js to use (empty = automatic)"
+msgstr "Node.js مورد استفاده (خالی = خودکار)"
+
+msgid "Login saved in SEOlity (recommended)"
+msgstr "ورود ذخیره‌شده در SEOlity (پیشنهادی)"
+
+msgid "Login made with the CLI over SSH"
+msgstr "ورود انجام‌شده با ابزار از طریق SSH"
+
+msgid "where the login comes from"
+msgstr "منبع ورود"
+
+msgid "CODEX_HOME of an SSH login (empty = ~/.codex)"
+msgstr "CODEX_HOME ورود SSH (خالی = ‎~/.codex‎)"
+
+msgid "Advanced settings"
+msgstr "تنظیمات پیشرفته"
+
+msgid "Install, sign in and test Claude Code and Codex on this server. Each engine works on its own: one failing never stops the other."
+msgstr "Claude Code و Codex را روی همین سرور نصب کنید، وارد شوید و آزمایش کنید. هر موتور مستقل کار می‌کند: خرابی یکی دیگری را متوقف نمی‌کند."
+
+msgid "Refresh diagnostics"
+msgstr "بررسی دوباره"
+
+msgid "Copy diagnostic report"
+msgstr "کپی گزارش عیب‌یابی"
+
+msgid "Report copied — it contains no passwords or tokens."
+msgstr "گزارش کپی شد — هیچ رمز یا توکنی در آن نیست."
+
+msgid "Diagnostic report"
+msgstr "گزارش عیب‌یابی"
 
 msgid "Focus keywords chosen from the queries Google already shows each page for — written straight into Rank Math (or your SEO plugin), cannibalization-safe, with approval and undo."
 msgstr "کلمات کلیدی کانونی از کوئری‌هایی انتخاب می‌شوند که گوگل همین حالا هر صفحه را برایشان نشان می‌دهد — مستقیم در رنک مث (یا افزونه سئوی شما) نوشته می‌شوند، بدون کنیبالیزیشن، با تأیید و امکان بازگشت."
@@ -9090,9 +9444,6 @@ msgstr "هنوز تغییری ثبت نشده"
 
 msgid "Every change SEOlity makes is versioned here and can be restored."
 msgstr "هر تغییری که سئولیتی انجام می‌دهد اینجا نسخه‌بندی می‌شود و قابل بازیابی است."
-
-msgid "Version"
-msgstr "نسخه"
 
 msgid "Restore this version as the current value?"
 msgstr "این نسخه به‌عنوان مقدار فعلی بازیابی شود؟"

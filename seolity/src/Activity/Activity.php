@@ -558,6 +558,7 @@ final class Activity {
 			'differentiate_prepare'   => __( 'Retargeting a competing article', 'seolity' ),
 			'full_analysis'           => __( 'Full-site analysis', 'seolity' ),
 			'cli_install'             => __( 'Installing the official CLI', 'seolity' ),
+			'cli_login'               => __( 'Signing in to Codex', 'seolity' ),
 			'sitemap_map_refresh'     => __( 'Site map refresh', 'seolity' ),
 			'ai_visibility_check'     => __( 'AI search visibility check', 'seolity' ),
 			'serp_track'              => __( 'Google results check', 'seolity' ),

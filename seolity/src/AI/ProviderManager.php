@@ -480,6 +480,13 @@ final class ProviderManager {
 		$low  = strtolower( $msg );
 		$kind = 'other';
 		$fix  = '';
+		if ( is_array( $data ) && ! empty( $data['cli_code'] ) ) {
+			// Local CLI errors are already classified (CliErrors): keep their cause and next step.
+			$map = array( 'auth_required' => 'auth', 'not_installed' => 'setup', 'permission_denied' => 'setup', 'unsupported' => 'setup' );
+			$cli = (string) $data['cli_code'];
+			$kind = isset( $map[ $data['group'] ] ) ? $map[ $data['group'] ] : ( 'RATE_LIMIT' === $cli ? 'rate' : ( 'PROVIDER_UNAVAILABLE' === $cli ? 'network' : 'other' ) );
+			return array( 'kind' => $kind, 'message' => $msg, 'fix' => (string) $data['action'], 'code' => $cli, 'at' => gmdate( 'c' ) );
+		}
 		if ( 'seolity_ai_auth' === $code || in_array( $http, array( 401, 403 ), true ) || preg_match( '/invalid[ _-]?(api[ _-]?)?key|api key not valid|incorrect api key|authentication|unauthori[sz]ed|permission|x-api-key header/', $low ) ) {
 			$kind = 'auth';
 			$fix  = __( 'The key was rejected: check that it was copied completely, has not been revoked, and belongs to this provider — or create a new one.', 'seolity' );

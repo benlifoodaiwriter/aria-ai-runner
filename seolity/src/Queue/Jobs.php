@@ -23,6 +23,9 @@ final class Jobs {
 			$p->indexability->scan();
 			return true;
 		} );
+		$q->handler( 'cli_login', static function ( $a ) use ( $p ) {
+			return $p->cliauth->run_login( 'codex' );
+		} );
 		$q->handler( 'cli_install', static function ( $a ) use ( $p ) {
 			return $p->clisetup->install( in_array( $a['engine'], array( 'claude', 'codex' ), true ) ? $a['engine'] : 'claude', (int) $a['activity_id'] );
 		} );

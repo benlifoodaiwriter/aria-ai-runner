@@ -4,7 +4,7 @@ Tags: seo, ai, search console, woocommerce, schema
 Requires at least: 6.2
 Tested up to: 6.6
 Requires PHP: 7.4
-Stable tag: 1.12.1
+Stable tag: 1.13.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -72,6 +72,14 @@ Yes. The interface is fully translated and RTL-native, text analysis understands
 Enable "Delete all data on uninstall" in Settings → Privacy, then delete the plugin.
 
 == Changelog ==
+
+= 1.13.0 =
+* AI engines — Installation & Diagnostics (Connections): one page to check the server, install or repair Claude Code / Codex, sign in, test and copy a support report; clear status per engine (ready, needs configuration, authentication required, not installed, permission denied, unsupported environment, runtime error) with the cause and the next step.
+* Node.js is found automatically wherever the host put it (CloudLinux /opt/alt/alt-nodejs*, cPanel ea-nodejs, ~/nodevenv, nvm, Volta …), validated and passed to every CLI run, so `#!/usr/bin/env node` works even when PHP has a short PATH.
+* One process runner for every program: argument lists only, explicit environment, timeouts, exit codes, no shell.
+* Errors are recognised: a revoked or expired login is reported as such (never as a memory problem) and stops further runs until you reconnect; memory, timeout, network, rate-limit and permission errors each get their own message.
+* Codex sign-in from WordPress with the official device code; logins stay in a private folder (0700/0600) outside the web root, refreshed tokens are kept, an older login never overwrites a newer one.
+* Claude and Codex are fully independent: one failing never blocks the other.
 
 = 1.12.1 =
 * Site map: every URL is now a large horizontal card (status icon and colour, title, address, what Google does with it, clicks, impressions, position, internal links, depth, words, warnings, Details / Open page); status tiles and folders use the dashboard card style; whole-site bar; the square picture moved to its own tab.

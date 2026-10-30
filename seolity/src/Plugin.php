@@ -26,6 +26,7 @@ defined( 'ABSPATH' ) || exit;
  * @property-read Content\Optimizer          $optimizer
  * @property-read AI\Gateway                 $gateway
  * @property-read AI\Remote\LocalCli         $localcli
+ * @property-read AI\Remote\CliAuth          $cliauth
  * @property-read AI\ProviderManager          $aiproviders
  * @property-read Operations\Operations        $operations
  * @property-read Technical\Indexability       $indexability
@@ -177,6 +178,7 @@ final class Plugin {
 			'gateway'         => AI\Gateway::class,
 			'localcli'        => AI\Remote\LocalCli::class,
 			'clisetup'        => AI\Remote\CliSetup::class,
+			'cliauth'         => AI\Remote\CliAuth::class,
 			'aiproviders'     => AI\ProviderManager::class,
 			'operations'      => Operations\Operations::class,
 			'indexability'    => Technical\Indexability::class,

@@ -297,7 +297,7 @@ final class SubscriptionRunner {
 	/** One tiny request through the CLI on this server (Server & speed → test). */
 	public function local_test( $engine ) {
 		$model = (string) $this->plugin->settings->get( 'ai_model_sub_' . $engine );
-		return $this->plugin->localcli->complete( $engine, $model, 'Answer in one short sentence.', 'Reply with: SEOlity connection works.', $this->raw_secret( self::ENGINE_SECRETS[ $engine ][1] ) );
+		return $this->plugin->localcli->complete( $engine, $model, 'Answer in one short sentence.', 'Reply with: SEOlity connection works.', '', true );
 	}
 
 	/**

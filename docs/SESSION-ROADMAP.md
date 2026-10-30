@@ -1,7 +1,7 @@
 # SEOlity — session roadmap (read this first; replaces the old chat history)
 
 ## State
-- Plugin: `seolity/` (WordPress, PHP PSR-4 `SEOlity\`, no-build JS SPA in `assets/admin/`). Version **1.12.0**, DB schema **1.7.0**.
+- Plugin: `seolity/` (WordPress, PHP PSR-4 `SEOlity\`, no-build JS SPA in `assets/admin/`). Version **1.13.0**, DB schema **1.7.0**.
 - Branch: `claude/beautiful-ride-7ilxpf` (push with `git push -u origin claude/beautiful-ride-7ilxpf`). No PR unless asked. `main` belongs to another tool (ARIAGH.AIWRITER) — do not touch.
 - Release ZIP: `git archive --format=zip --prefix=seolity/ -o <scratch>/seolity-X.zip HEAD:seolity` → send to user; never commit ZIPs.
 - Commits end with `Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>` and `Claude-Session: …`; never put model ids in code/commits.
@@ -10,6 +10,7 @@
 
 ## Where things are (load only what a task needs)
 - Services map: `src/Plugin.php` (lazy `seolity()->x`). REST: `src/Api/Router.php` (`seolity/v1`, tiers view/ai/apply/manage). Jobs: `src/Queue/Jobs.php` (+ `daily_pipeline`). Settings/secrets: `src/Core/Settings.php`. Schema + migrations: `src/Core/Database.php`, `src/Core/Installer.php`.
+- Local CLIs (Claude Code/Codex): `src/AI/Remote/{ProcessRunner,NodeLocator,CliErrors,CliAuth,LocalCli,CliSetup}.php`, UI `assets/admin/pages-engines.js` (#/engines). Scenario test `$S/cli-arch-test.php` (run with PATH=/usr/local/bin:/bin:/usr/bin and /usr/local/bin/node moved aside; fake CLIs in `$S/seolity-cli/node_modules/.bin`).
 - AI: `src/AI/Engine.php`, tasks/prompts `src/AI/Tasks.php`, providers `src/AI/Providers/*`, connections `src/AI/ProviderManager.php`, effort `src/AI/Effort.php`, subscription runner `src/AI/Remote/*` + `runner/runner.mjs`.
 - Operations (preview→approve→apply→verify→undo): `src/Operations/Operations.php`, `Verifier.php`. Canonical issues/roadmap: `src/Recommendations/Engine.php`, `src/Roadmap/*`, `src/Analysis/FullAnalysis.php`, `ProblemAreas.php`.
 - GSC deep data for AI: `src/GSC/Insights.php`. Chat tools: `src/Chat/Toolbox.php`, `ChatService.php`.

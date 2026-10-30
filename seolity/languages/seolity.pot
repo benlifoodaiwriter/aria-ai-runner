@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: SEOlity 1.0.0\n"
-"POT-Creation-Date: 2026-10-29 21:54+0000\n"
+"POT-Creation-Date: 2026-10-30 04:39+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -327,6 +327,123 @@ msgstr ""
 msgid "recommended"
 msgstr ""
 
+msgid "Claude Code signs in with a token: run “claude setup-token” on your computer and paste the token."
+msgstr ""
+
+msgid "This Codex version has no device sign-in. Update it with “Install / repair”, or paste auth.json from your computer."
+msgstr ""
+
+msgid "Node.js was not found. The CLI needs Node.js to run."
+msgstr ""
+
+msgid "PHP cannot execute the Node.js program on this server."
+msgstr ""
+
+msgid "The Node.js version on this server is too old for this CLI."
+msgstr ""
+
+msgid "Node.js was found but does not start correctly."
+msgstr ""
+
+msgid "npm (the Node.js package installer) was not found next to Node.js."
+msgstr ""
+
+msgid "The selected AI CLI is not installed on this server."
+msgstr ""
+
+msgid "The CLI file exists but PHP is not allowed to execute it."
+msgstr ""
+
+msgid "This host does not allow PHP to start programs (proc_open is disabled)."
+msgstr ""
+
+msgid "The host refused to start the program."
+msgstr ""
+
+msgid "Please connect your AI account."
+msgstr ""
+
+msgid "The saved login is not valid. Please reconnect your account."
+msgstr ""
+
+msgid "Your login has expired. Please reconnect."
+msgstr ""
+
+msgid "Your login has been revoked. Please reconnect."
+msgstr ""
+
+msgid "Your account is not allowed to use this model or feature."
+msgstr ""
+
+msgid "The account has reached its usage or rate limit. Try again later."
+msgstr ""
+
+msgid "The AI provider could not be reached from this server."
+msgstr ""
+
+msgid "The process could not get enough memory. On CloudLinux this is usually the per-process memory limit, not the account total."
+msgstr ""
+
+msgid "The host stopped the process before it finished."
+msgstr ""
+
+msgid "The AI process exceeded its time limit."
+msgstr ""
+
+msgid "This server cannot download packages from npm."
+msgstr ""
+
+msgid "There is not enough disk space or quota."
+msgstr ""
+
+msgid "The CLI stopped with an error."
+msgstr ""
+
+msgid "In cPanel open “Setup Node.js App”, create an app with the newest Node.js version (this installs it for your account), then press “Refresh diagnostics”."
+msgstr ""
+
+msgid "Press “Install / repair”. If it persists, ask the host whether PHP may run programs from your home folder (noexec mount or CageFS rule)."
+msgstr ""
+
+msgid "Choose another Node.js version in cPanel “Setup Node.js App” (it includes npm)."
+msgstr ""
+
+msgid "Press “Install / repair”."
+msgstr ""
+
+msgid "Ask the host to allow proc_open for your account, or run the subscription through the GitHub route, or use an API key."
+msgstr ""
+
+msgid "Press “Reconnect” and sign in with your ChatGPT account again."
+msgstr ""
+
+msgid "Press “Reconnect” and paste a new token from “claude setup-token”."
+msgstr ""
+
+msgid "Choose another model or check the subscription plan of this account."
+msgstr ""
+
+msgid "Wait until the limit resets, or switch to another engine meanwhile."
+msgstr ""
+
+msgid "Check the server’s outbound connection; in Iran use the Cloudflare or GitHub route."
+msgstr ""
+
+msgid "Ask the host to raise the per-process memory (LVE PMEM/VMEM) limit, or use the GitHub route."
+msgstr ""
+
+msgid "Raise the AI timeout in Settings, or choose a faster model or lower effort."
+msgstr ""
+
+msgid "Ask the host to allow outbound HTTPS to registry.npmjs.org. Shortest alternative: run the one install command shown below once over SSH, then press “Refresh diagnostics”."
+msgstr ""
+
+msgid "Free some disk space or ask for a larger quota, then try again."
+msgstr ""
+
+msgid "Copy the diagnostic report and send it to support."
+msgstr ""
+
 msgid "PHP may start programs (proc_open)"
 msgstr ""
 
@@ -401,16 +518,78 @@ msgstr ""
 msgid "Installed and verified: %s"
 msgstr ""
 
-msgid "The installation did not finish — see the log."
+msgid "PHP version"
 msgstr ""
 
-msgid "The official CLI is not installed on this server."
+msgid "PHP 7.4 or newer is required."
 msgstr ""
 
-msgid "This server does not allow starting the CLI."
+msgid "PHP memory limit"
 msgstr ""
 
-msgid "The CLI on this server did not answer in time."
+msgid "Raise memory_limit to 128M or more in cPanel → MultiPHP INI Editor."
+msgstr ""
+
+msgid "PHP time limit"
+msgstr ""
+
+msgid "Unlimited"
+msgstr ""
+
+msgid "can be raised per request"
+msgstr ""
+
+msgid "Long AI answers need more than 120 seconds; ask the host to allow set_time_limit."
+msgstr ""
+
+msgid "PHP may start programs"
+msgstr ""
+
+#, php-format
+msgid "%s is disabled"
+msgstr ""
+
+msgid "Other shell functions"
+msgstr ""
+
+#, php-format
+msgid "Disabled: %s (not needed — SEOlity never uses a shell)"
+msgstr ""
+
+msgid "Not needed — SEOlity never uses a shell"
+msgstr ""
+
+msgid "Not set"
+msgstr ""
+
+msgid "Set — some folders may be invisible to PHP"
+msgstr ""
+
+msgid "If Node.js is not found, ask the host to add /opt/alt to open_basedir or turn it off for your account."
+msgstr ""
+
+msgid "Temporary folder is writable"
+msgstr ""
+
+msgid "Set WP_TEMP_DIR in wp-config.php to a writable folder."
+msgstr ""
+
+msgid "Private install folder"
+msgstr ""
+
+msgid "inside the web root, protected with deny rules"
+msgstr ""
+
+msgid "outside the web root"
+msgstr ""
+
+msgid "Free disk space"
+msgstr ""
+
+msgid "An install needs about 1 GB free (package + npm cache)."
+msgstr ""
+
+msgid "Installed and signed in — run “Test connection” once to confirm it answers."
 msgstr ""
 
 msgid "Claude subscription token (claude setup-token)"
@@ -791,6 +970,9 @@ msgstr ""
 msgid "Full-site analysis"
 msgstr ""
 
+msgid "Signing in to Codex"
+msgstr ""
+
 msgid "Site map refresh"
 msgstr ""
 
@@ -1032,6 +1214,9 @@ msgid "Automation"
 msgstr ""
 
 msgid "Knowledge Base"
+msgstr ""
+
+msgid "AI Engines — Installation & Diagnostics"
 msgstr ""
 
 msgid "Server & speed"
@@ -1730,6 +1915,9 @@ msgid "auth.json must be valid JSON (copy the whole file from ~/.codex/auth.json
 msgstr ""
 
 msgid "This level is not available for this AI."
+msgstr ""
+
+msgid "Enter the full path of the program (for example /opt/alt/alt-nodejs22/root/usr/bin/node)."
 msgstr ""
 
 msgid "This host does not allow PHP to start programs (proc_open is disabled). Subscriptions can only run through GitHub here."
@@ -6211,12 +6399,6 @@ msgstr ""
 msgid "Who you meet most in Google"
 msgstr ""
 
-msgid "Domain"
-msgstr ""
-
-msgid "Appears in"
-msgstr ""
-
 #, php-format
 msgid "%1$s of %2$s queries"
 msgstr ""
@@ -6225,6 +6407,9 @@ msgid "Add as competitor"
 msgstr ""
 
 msgid "Competitor added. First analysis is running in the background."
+msgstr ""
+
+msgid "Appears in"
 msgstr ""
 
 msgid "Google results database"
@@ -6469,7 +6654,176 @@ msgstr ""
 msgid "Connected"
 msgstr ""
 
-msgid "Not set"
+msgid "Needs configuration"
+msgstr ""
+
+msgid "Authentication required"
+msgstr ""
+
+msgid "Not installed"
+msgstr ""
+
+msgid "Permission denied"
+msgstr ""
+
+msgid "Unsupported environment"
+msgstr ""
+
+msgid "Runtime error"
+msgstr ""
+
+msgid "Diagnostics"
+msgstr ""
+
+msgid "Install"
+msgstr ""
+
+msgid "Sign in"
+msgstr ""
+
+msgid "Test"
+msgstr ""
+
+msgid "Reconnect"
+msgstr ""
+
+msgid "Open this page, sign in with your ChatGPT account and enter the code:"
+msgstr ""
+
+msgid "Open sign-in page"
+msgstr ""
+
+msgid "The code is valid for 15 minutes. This window updates by itself."
+msgstr ""
+
+msgid "Signed in. Now press “Test connection”."
+msgstr ""
+
+msgid "Sign-in failed."
+msgstr ""
+
+msgid "Starting the sign-in…"
+msgstr ""
+
+msgid "Sign in from here (recommended)"
+msgstr ""
+
+msgid "Uses the official device sign-in of Codex. Your password never passes through SEOlity; the login is saved encrypted on this server."
+msgstr ""
+
+msgid "Sign in with ChatGPT"
+msgstr ""
+
+msgid "Or paste a login from your computer"
+msgstr ""
+
+msgid "On your computer run “codex login”, sign in with ChatGPT, then paste the whole content of ~/.codex/auth.json here."
+msgstr ""
+
+msgid "On your computer run “claude setup-token”, sign in with your Claude account, then paste the token (starts with sk-ant-oat01-)."
+msgstr ""
+
+msgid "Save login"
+msgstr ""
+
+msgid "Login saved. Now press “Test connection”."
+msgstr ""
+
+msgid "One command over SSH:"
+msgstr ""
+
+msgid "CLI version"
+msgstr ""
+
+msgid "Login"
+msgstr ""
+
+msgid "From SSH"
+msgstr ""
+
+msgid "None"
+msgstr ""
+
+msgid "Last successful connection"
+msgstr ""
+
+msgid "Last result"
+msgstr ""
+
+msgid "OK"
+msgstr ""
+
+msgid "Detected paths (administrators only)"
+msgstr ""
+
+msgid "Installing… (a few minutes; this page updates by itself)"
+msgstr ""
+
+msgid "Install log"
+msgstr ""
+
+msgid "Test connection"
+msgstr ""
+
+msgid "It works"
+msgstr ""
+
+msgid "Install / repair"
+msgstr ""
+
+msgid "Sign out"
+msgstr ""
+
+#, php-format
+msgid "Remove the saved login of %s from this site?"
+msgstr ""
+
+msgid "Version"
+msgstr ""
+
+msgid "No Node.js was found on this server."
+msgstr ""
+
+msgid "Server checks"
+msgstr ""
+
+msgid "Node.js found on this server"
+msgstr ""
+
+msgid "Checked from PHP itself — the same environment the AI runs in."
+msgstr ""
+
+msgid "Node.js to use (empty = automatic)"
+msgstr ""
+
+msgid "Login saved in SEOlity (recommended)"
+msgstr ""
+
+msgid "Login made with the CLI over SSH"
+msgstr ""
+
+msgid "where the login comes from"
+msgstr ""
+
+msgid "CODEX_HOME of an SSH login (empty = ~/.codex)"
+msgstr ""
+
+msgid "Advanced settings"
+msgstr ""
+
+msgid "Install, sign in and test Claude Code and Codex on this server. Each engine works on its own: one failing never stops the other."
+msgstr ""
+
+msgid "Refresh diagnostics"
+msgstr ""
+
+msgid "Copy diagnostic report"
+msgstr ""
+
+msgid "Report copied — it contains no passwords or tokens."
+msgstr ""
+
+msgid "Diagnostic report"
 msgstr ""
 
 msgid "Focus keywords chosen from the queries Google already shows each page for — written straight into Rank Math (or your SEO plugin), cannibalization-safe, with approval and undo."
@@ -9088,9 +9442,6 @@ msgid "No changes yet"
 msgstr ""
 
 msgid "Every change SEOlity makes is versioned here and can be restored."
-msgstr ""
-
-msgid "Version"
 msgstr ""
 
 msgid "Restore this version as the current value?"

@@ -1,0 +1,119 @@
+Claude Code signs in with a token: run “claude setup-token” on your computer and paste the token.	Claude Code با توکن وارد می‌شود: روی رایانه خودتان «claude setup-token» را اجرا کنید و توکن را بچسبانید.
+This Codex version has no device sign-in. Update it with “Install / repair”, or paste auth.json from your computer.	این نسخه Codex ورود با کد دستگاه ندارد. با «نصب / تعمیر» به‌روزش کنید یا auth.json را از رایانه خودتان بچسبانید.
+Node.js was not found. The CLI needs Node.js to run.	Node.js پیدا نشد. ابزار خط فرمان برای اجرا به Node.js نیاز دارد.
+PHP cannot execute the Node.js program on this server.	PHP اجازه اجرای برنامه Node.js را روی این سرور ندارد.
+The Node.js version on this server is too old for this CLI.	نسخه Node.js این سرور برای این ابزار خیلی قدیمی است.
+Node.js was found but does not start correctly.	Node.js پیدا شد ولی درست اجرا نمی‌شود.
+npm (the Node.js package installer) was not found next to Node.js.	npm (نصب‌کننده بسته‌های Node.js) کنار Node.js پیدا نشد.
+The selected AI CLI is not installed on this server.	ابزار هوش مصنوعی انتخاب‌شده روی این سرور نصب نیست.
+The CLI file exists but PHP is not allowed to execute it.	فایل ابزار هست ولی PHP اجازه اجرای آن را ندارد.
+This host does not allow PHP to start programs (proc_open is disabled).	این هاست به PHP اجازه اجرای برنامه نمی‌دهد (proc_open غیرفعال است).
+The host refused to start the program.	هاست اجازه شروع برنامه را نداد.
+Please connect your AI account.	لطفاً حساب هوش مصنوعی‌تان را وصل کنید.
+The saved login is not valid. Please reconnect your account.	ورود ذخیره‌شده معتبر نیست. لطفاً دوباره وصل شوید.
+Your login has expired. Please reconnect.	ورود شما منقضی شده است. لطفاً دوباره وصل شوید.
+Your login has been revoked. Please reconnect.	ورود شما باطل شده است. لطفاً دوباره وصل شوید.
+Your account is not allowed to use this model or feature.	حساب شما اجازه استفاده از این مدل یا امکان را ندارد.
+The account has reached its usage or rate limit. Try again later.	سقف مصرف یا سرعت حساب پر شده است. کمی بعد دوباره امتحان کنید.
+The AI provider could not be reached from this server.	از این سرور به سرویس هوش مصنوعی دسترسی نیست.
+The process could not get enough memory. On CloudLinux this is usually the per-process memory limit, not the account total.	برنامه حافظه کافی نگرفت. در CloudLinux معمولاً علتش سقف حافظه هر پردازه است، نه کل حافظه حساب.
+The host stopped the process before it finished.	هاست برنامه را پیش از پایان متوقف کرد.
+The AI process exceeded its time limit.	پردازش هوش مصنوعی از زمان مجاز بیشتر شد.
+This server cannot download packages from npm.	این سرور نمی‌تواند بسته‌ها را از npm دانلود کند.
+There is not enough disk space or quota.	فضای دیسک یا سهمیه کافی نیست.
+The CLI stopped with an error.	ابزار با خطا متوقف شد.
+In cPanel open “Setup Node.js App”, create an app with the newest Node.js version (this installs it for your account), then press “Refresh diagnostics”.	در سی‌پنل «Setup Node.js App» را باز کنید و یک اپ با جدیدترین نسخه Node.js بسازید (این کار Node.js را برای حساب شما نصب می‌کند)، سپس «بررسی دوباره» را بزنید.
+Press “Install / repair”. If it persists, ask the host whether PHP may run programs from your home folder (noexec mount or CageFS rule).	«نصب / تعمیر» را بزنید. اگر باقی ماند، از هاست بپرسید آیا PHP اجازه اجرای برنامه از پوشه خانگی را دارد (noexec یا قانون CageFS).
+Choose another Node.js version in cPanel “Setup Node.js App” (it includes npm).	در «Setup Node.js App» سی‌پنل نسخه دیگری از Node.js انتخاب کنید (npm همراهش هست).
+Press “Install / repair”.	«نصب / تعمیر» را بزنید.
+Ask the host to allow proc_open for your account, or run the subscription through the GitHub route, or use an API key.	از هاست بخواهید proc_open را برای حساب شما فعال کند، یا اشتراک را از مسیر گیت‌هاب اجرا کنید، یا از کلید API استفاده کنید.
+Press “Reconnect” and sign in with your ChatGPT account again.	«اتصال دوباره» را بزنید و دوباره با حساب ChatGPT وارد شوید.
+Press “Reconnect” and paste a new token from “claude setup-token”.	«اتصال دوباره» را بزنید و توکن تازه‌ای از «claude setup-token» بچسبانید.
+Choose another model or check the subscription plan of this account.	مدل دیگری انتخاب کنید یا پلن اشتراک این حساب را بررسی کنید.
+Wait until the limit resets, or switch to another engine meanwhile.	صبر کنید تا سقف تازه شود، یا در این فاصله موتور دیگری را انتخاب کنید.
+Check the server’s outbound connection; in Iran use the Cloudflare or GitHub route.	اتصال خروجی سرور را بررسی کنید؛ در ایران از مسیر کلودفلر یا گیت‌هاب استفاده کنید.
+Ask the host to raise the per-process memory (LVE PMEM/VMEM) limit, or use the GitHub route.	از هاست بخواهید سقف حافظه هر پردازه (LVE PMEM/VMEM) را بالا ببرد، یا از مسیر گیت‌هاب استفاده کنید.
+Raise the AI timeout in Settings, or choose a faster model or lower effort.	زمان انتظار هوش مصنوعی را در تنظیمات بیشتر کنید، یا مدل سریع‌تر یا سطح تلاش کمتری انتخاب کنید.
+Ask the host to allow outbound HTTPS to registry.npmjs.org. Shortest alternative: run the one install command shown below once over SSH, then press “Refresh diagnostics”.	از هاست بخواهید اتصال HTTPS خروجی به registry.npmjs.org را باز کند. کوتاه‌ترین راه جایگزین: فرمان نصبِ زیر را یک بار با SSH اجرا کنید و بعد «بررسی دوباره» را بزنید.
+Free some disk space or ask for a larger quota, then try again.	کمی فضا آزاد کنید یا سهمیه بیشتری بگیرید و دوباره امتحان کنید.
+Copy the diagnostic report and send it to support.	گزارش عیب‌یابی را کپی کنید و برای پشتیبانی بفرستید.
+PHP version	نسخه PHP
+PHP 7.4 or newer is required.	PHP نسخه ۷٫۴ یا جدیدتر لازم است.
+PHP memory limit	سقف حافظه PHP
+Raise memory_limit to 128M or more in cPanel → MultiPHP INI Editor.	در سی‌پنل ← MultiPHP INI Editor مقدار memory_limit را ۱۲۸M یا بیشتر کنید.
+PHP time limit	سقف زمان PHP
+Unlimited	نامحدود
+can be raised per request	برای هر درخواست قابل افزایش
+Long AI answers need more than 120 seconds; ask the host to allow set_time_limit.	پاسخ‌های طولانی هوش مصنوعی بیش از ۱۲۰ ثانیه زمان می‌خواهند؛ از هاست بخواهید set_time_limit را مجاز کند.
+PHP may start programs	PHP اجازه اجرای برنامه دارد
+%s is disabled	%s غیرفعال است
+Other shell functions	توابع دیگر پوسته
+Disabled: %s (not needed — SEOlity never uses a shell)	غیرفعال: %s (لازم نیست — SEOlity هرگز از پوسته استفاده نمی‌کند)
+Not needed — SEOlity never uses a shell	لازم نیست — SEOlity هرگز از پوسته استفاده نمی‌کند
+Set — some folders may be invisible to PHP	تنظیم شده — ممکن است بعضی پوشه‌ها برای PHP دیده نشوند
+If Node.js is not found, ask the host to add /opt/alt to open_basedir or turn it off for your account.	اگر Node.js پیدا نشد، از هاست بخواهید ‎/opt/alt‎ را به open_basedir اضافه کند یا آن را برای حساب شما خاموش کند.
+Temporary folder is writable	پوشه موقت قابل نوشتن است
+Set WP_TEMP_DIR in wp-config.php to a writable folder.	در wp-config.php مقدار WP_TEMP_DIR را روی یک پوشه قابل نوشتن بگذارید.
+Private install folder	پوشه خصوصی نصب
+inside the web root, protected with deny rules	داخل ریشه وب، با قانون‌های عدم دسترسی محافظت شده
+outside the web root	بیرون از ریشه وب
+Free disk space	فضای آزاد دیسک
+An install needs about 1 GB free (package + npm cache).	نصب حدود ۱ گیگابایت فضای آزاد می‌خواهد (بسته + حافظه موقت npm).
+Installed and signed in — run “Test connection” once to confirm it answers.	نصب و وارد شده — یک بار «آزمایش اتصال» را بزنید تا مطمئن شوید پاسخ می‌دهد.
+Signing in to Codex	ورود به Codex
+AI Engines — Installation & Diagnostics	موتورهای هوش مصنوعی — نصب و عیب‌یابی
+Enter the full path of the program (for example /opt/alt/alt-nodejs22/root/usr/bin/node).	مسیر کامل برنامه را وارد کنید (مثلاً ‎/opt/alt/alt-nodejs22/root/usr/bin/node‎).
+Needs configuration	نیاز به تنظیم
+Authentication required	نیاز به ورود
+Not installed	نصب نیست
+Permission denied	دسترسی رد شد
+Unsupported environment	محیط پشتیبانی نمی‌شود
+Runtime error	خطای اجرا
+Diagnostics	بررسی
+Install	نصب
+Sign in	ورود
+Reconnect	اتصال دوباره
+Open this page, sign in with your ChatGPT account and enter the code:	این صفحه را باز کنید، با حساب ChatGPT وارد شوید و این کد را وارد کنید:
+Open sign-in page	باز کردن صفحه ورود
+The code is valid for 15 minutes. This window updates by itself.	کد ۱۵ دقیقه اعتبار دارد. این پنجره خودش به‌روز می‌شود.
+Signed in. Now press “Test connection”.	وارد شدید. حالا «آزمایش اتصال» را بزنید.
+Sign-in failed.	ورود ناموفق بود.
+Starting the sign-in…	در حال شروع ورود…
+Sign in from here (recommended)	ورود از همین‌جا (پیشنهادی)
+Uses the official device sign-in of Codex. Your password never passes through SEOlity; the login is saved encrypted on this server.	از ورود رسمی Codex با کد دستگاه استفاده می‌کند. رمز عبور شما هرگز از SEOlity عبور نمی‌کند و ورود به‌صورت رمزنگاری‌شده روی همین سرور ذخیره می‌شود.
+Sign in with ChatGPT	ورود با ChatGPT
+Or paste a login from your computer	یا ورودِ ساخته‌شده روی رایانه‌تان را بچسبانید
+On your computer run “codex login”, sign in with ChatGPT, then paste the whole content of ~/.codex/auth.json here.	روی رایانه خودتان «codex login» را اجرا کنید، با ChatGPT وارد شوید و کل محتوای ‎~/.codex/auth.json‎ را این‌جا بچسبانید.
+On your computer run “claude setup-token”, sign in with your Claude account, then paste the token (starts with sk-ant-oat01-).	روی رایانه خودتان «claude setup-token» را اجرا کنید، با حساب Claude وارد شوید و توکن را بچسبانید (با sk-ant-oat01- شروع می‌شود).
+Save login	ذخیره ورود
+Login saved. Now press “Test connection”.	ورود ذخیره شد. حالا «آزمایش اتصال» را بزنید.
+One command over SSH:	یک فرمان با SSH:
+CLI version	نسخه ابزار
+Login	ورود
+From SSH	از SSH
+None	ندارد
+Last successful connection	آخرین اتصال موفق
+Last result	آخرین نتیجه
+OK	موفق
+Detected paths (administrators only)	مسیرهای پیداشده (فقط مدیران)
+Installing… (a few minutes; this page updates by itself)	در حال نصب… (چند دقیقه؛ این صفحه خودش به‌روز می‌شود)
+Install log	گزارش نصب
+It works	کار می‌کند
+Install / repair	نصب / تعمیر
+Sign out	خروج
+Remove the saved login of %s from this site?	ورود ذخیره‌شده %s از این سایت حذف شود؟
+No Node.js was found on this server.	هیچ Node.js روی این سرور پیدا نشد.
+Server checks	بررسی‌های سرور
+Node.js found on this server	Node.jsهای پیداشده روی این سرور
+Checked from PHP itself — the same environment the AI runs in.	از خود PHP بررسی شده — همان محیطی که هوش مصنوعی در آن اجرا می‌شود.
+Node.js to use (empty = automatic)	Node.js مورد استفاده (خالی = خودکار)
+Login saved in SEOlity (recommended)	ورود ذخیره‌شده در SEOlity (پیشنهادی)
+Login made with the CLI over SSH	ورود انجام‌شده با ابزار از طریق SSH
+where the login comes from	منبع ورود
+CODEX_HOME of an SSH login (empty = ~/.codex)	CODEX_HOME ورود SSH (خالی = ‎~/.codex‎)
+Advanced settings	تنظیمات پیشرفته
+Install, sign in and test Claude Code and Codex on this server. Each engine works on its own: one failing never stops the other.	Claude Code و Codex را روی همین سرور نصب کنید، وارد شوید و آزمایش کنید. هر موتور مستقل کار می‌کند: خرابی یکی دیگری را متوقف نمی‌کند.
+Refresh diagnostics	بررسی دوباره
+Copy diagnostic report	کپی گزارش عیب‌یابی
+Report copied — it contains no passwords or tokens.	گزارش کپی شد — هیچ رمز یا توکنی در آن نیست.
+Diagnostic report	گزارش عیب‌یابی

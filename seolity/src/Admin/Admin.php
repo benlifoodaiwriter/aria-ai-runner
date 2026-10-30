@@ -44,6 +44,7 @@ final class Admin {
 			'alerts'      => array( __( 'Alerts', 'seolity' ), Capabilities::VIEW ),
 			'automation'  => array( __( 'Automation', 'seolity' ), Capabilities::MANAGE ),
 			'knowledge'   => array( __( 'Knowledge Base', 'seolity' ), Capabilities::VIEW ),
+			'engines'     => array( __( 'AI Engines — Installation & Diagnostics', 'seolity' ), Capabilities::MANAGE ),
 			'network'     => array( __( 'Server & speed', 'seolity' ), Capabilities::MANAGE ),
 			'subscription' => array( __( 'Subscription AI', 'seolity' ), Capabilities::MANAGE ),
 			'github'      => array( __( 'GitHub & data', 'seolity' ), Capabilities::MANAGE ),
@@ -151,7 +152,7 @@ final class Admin {
 		wp_enqueue_script( 'seolity-charts', SEOLITY_URL . 'assets/admin/charts.js', array(), SEOLITY_VERSION, true );
 		wp_enqueue_script( 'seolity-ui', SEOLITY_URL . 'assets/admin/ui.js', array( 'seolity-charts' ), SEOLITY_VERSION, true );
 		wp_enqueue_script( 'seolity-app', SEOLITY_URL . 'assets/admin/app.js', array( 'seolity-ui' ), SEOLITY_VERSION, true );
-		foreach ( array( 'pages-seo', 'pages-intel', 'pages-admin', 'pages-focus', 'pages-guide', 'pages-connect', 'pages-network', 'pages-roadmap', 'pages-chat', 'pages-activity', 'pages-ai', 'pages-ops', 'pages-tech', 'pages-comp', 'pages-map' ) as $module ) {
+		foreach ( array( 'pages-seo', 'pages-intel', 'pages-admin', 'pages-focus', 'pages-guide', 'pages-connect', 'pages-network', 'pages-roadmap', 'pages-chat', 'pages-activity', 'pages-ai', 'pages-ops', 'pages-tech', 'pages-comp', 'pages-map', 'pages-engines' ) as $module ) {
 			wp_enqueue_script( 'seolity-' . $module, SEOLITY_URL . 'assets/admin/' . $module . '.js', array( 'seolity-app' ), SEOLITY_VERSION, true );
 		}
 		wp_localize_script( 'seolity-ui', 'SEOLITY', $this->js_config( $route ) );

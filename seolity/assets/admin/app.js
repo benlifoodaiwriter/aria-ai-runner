@@ -308,7 +308,7 @@
 	var root;
 	var view;
 	var nav;
-	var ICONS = { dashboard: 'dashboard', actions: 'wand', ai: 'prompt', audit: 'pulse', gsc: 'chart', keywords: 'key', content: 'content', products: 'bag', images: 'image', links: 'link', competitors: 'swords', experiments: 'flask', changes: 'undo', redirects: 'corner', 404: 'unlink', schema: 'braces', sitemap: 'map', robots: 'bot', reports: 'review', alerts: 'bell', automation: 'zap', knowledge: 'book', settings: 'settings', rankmath: 'target', guide: 'lifebuoy', subscription: 'sparkles', github: 'github', cloudflare: 'cloud', network: 'server', activity: 'activity', indexability: 'eye-off', duplicates: 'copy' };
+	var ICONS = { dashboard: 'dashboard', actions: 'wand', ai: 'prompt', audit: 'pulse', gsc: 'chart', keywords: 'key', content: 'content', products: 'bag', images: 'image', links: 'link', competitors: 'swords', experiments: 'flask', changes: 'undo', redirects: 'corner', 404: 'unlink', schema: 'braces', sitemap: 'map', robots: 'bot', reports: 'review', alerts: 'bell', automation: 'zap', knowledge: 'book', settings: 'settings', rankmath: 'target', guide: 'lifebuoy', subscription: 'sparkles', github: 'github', cloudflare: 'cloud', network: 'server', engines: 'cpu', activity: 'activity', indexability: 'eye-off', duplicates: 'copy' };
 	/** Sidebar groups (ARIAGH-style navigation sections). */
 	/**
 	 * Simple navigation: a few sections; related pages are tabs inside a section.
@@ -326,7 +326,7 @@
 		[ 'contenthub', 'Content', 'content', [ 'content', 'duplicates', 'products', 'images' ] ],
 		[ 'kwhub', 'Keywords & links', 'key', [ 'keywords', 'rankmath', 'links' ] ],
 		[ 'technical', 'Technical SEO', 'wrench', [ 'redirects', '404', 'indexability', 'schema', 'sitemap', 'robots' ] ],
-		[ 'connections', 'Connections', 'link', [ 'network', 'subscription', 'github', 'cloudflare', 'guide' ] ],
+		[ 'connections', 'Connections', 'link', [ 'engines', 'network', 'subscription', 'github', 'cloudflare', 'guide' ] ],
 		[ 'system', 'Settings', 'settings', [ 'settings', 'automation' ] ],
 	];
 	var HUB_LABELS = { Dashboard: t( 'Dashboard' ), 'AI Center': t( 'AI Center' ), 'Data collection': t( 'Data collection' ), Content: t( 'Content' ), 'Keywords & links': t( 'Keywords & links' ), 'Technical SEO': t( 'Technical SEO' ), Connections: t( 'Connections' ), Settings: t( 'Settings' ) };

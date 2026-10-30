@@ -1313,6 +1313,63 @@ final class Router {
 			$e = 'codex' === self::key( $r, 'engine' ) ? 'codex' : 'claude';
 			return $p->clisetup->start_install( $e );
 		} );
+		// AI engines → Installation & diagnostics (administrators only; no command ever comes from the browser).
+		$this->route( 'GET', '/cli/doctor', 'manage', function ( Req $r ) use ( $p ) {
+			return $p->clisetup->doctor( (bool) $r->get_param( 'fresh' ) );
+		} );
+		$this->route( 'GET', '/cli/report', 'manage', function () use ( $p ) {
+			return array( 'report' => $p->clisetup->report() );
+		} );
+		$this->route( 'POST', '/cli/test', 'manage', function ( Req $r ) use ( $p ) {
+			$engine = 'codex' === self::key( $r, 'engine' ) ? 'codex' : 'claude';
+			$start  = microtime( true );
+			$res    = $p->subscription->local_test( $engine );
+			$status = $p->clisetup->engine_status( $engine );
+			if ( is_wp_error( $res ) ) {
+				$data = (array) $res->get_error_data();
+				return array( 'ok' => false, 'code' => isset( $data['cli_code'] ) ? $data['cli_code'] : 'RUNTIME_ERROR', 'message' => $res->get_error_message(), 'action' => isset( $data['action'] ) ? $data['action'] : '', 'engine' => $status );
+			}
+			return array( 'ok' => true, 'ms' => (int) round( ( microtime( true ) - $start ) * 1000 ), 'text' => mb_substr( (string) $res['text'], 0, 200 ), 'engine' => $status );
+		} );
+		$this->route( 'GET', '/cli/login', 'manage', function () use ( $p ) {
+			return $p->cliauth->login_state( 'codex' );
+		} );
+		$this->route( 'POST', '/cli/login', 'manage', function () use ( $p ) {
+			return $p->cliauth->start_login( 'codex' );
+		} );
+		$this->route( 'POST', '/cli/signout', 'manage', function ( Req $r ) use ( $p ) {
+			$engine = 'codex' === self::key( $r, 'engine' ) ? 'codex' : 'claude';
+			$p->cliauth->sign_out( $engine );
+			return $p->clisetup->engine_status( $engine );
+		} );
+		$this->route( 'POST', '/cli/settings', 'manage', function ( Req $r ) use ( $p ) {
+			$values = array();
+			foreach ( array( 'cli_node_path' => 'node', 'sub_cli_claude' => 'claude', 'sub_cli_codex' => 'codex', 'cli_codex_home' => '' ) as $k => $base ) {
+				if ( null === $r->get_param( $k ) ) {
+					continue;
+				}
+				$v = trim( wp_unslash( (string) $r->get_param( $k ) ) );
+				// Only absolute paths to the expected program (or a folder for CODEX_HOME) are accepted.
+				if ( '' !== $v && ( '/' !== substr( $v, 0, 1 ) || false !== strpos( $v, '..' ) || preg_match( '/[\x00-\x1f;|&`$<>]/', $v ) || ( $base && 0 !== strpos( strtolower( basename( $v ) ), $base ) ) ) ) {
+					return new \WP_Error( 'seolity_cli_path', __( 'Enter the full path of the program (for example /opt/alt/alt-nodejs22/root/usr/bin/node).', 'seolity' ), array( 'status' => 400, 'field' => $k ) );
+				}
+				$values[ $k ] = $v;
+			}
+			foreach ( array( 'cli_auth_claude', 'cli_auth_codex' ) as $k ) {
+				if ( null !== $r->get_param( $k ) ) {
+					$values[ $k ] = 'cli' === $r->get_param( $k ) ? 'cli' : 'plugin';
+				}
+			}
+			$res = $p->settings->update( $values );
+			if ( is_wp_error( $res ) ) {
+				return $res;
+			}
+			delete_transient( \SEOlity\AI\Remote\NodeLocator::CACHE );
+			delete_transient( 'seolity_cli_claude' );
+			delete_transient( 'seolity_cli_codex' );
+			$p->audit_log->log( 'cli.settings', 'site', null, array_keys( $values ) );
+			return $p->clisetup->doctor();
+		} );
 		$this->route( 'POST', '/network/local-test', 'manage', function ( Req $r ) use ( $p ) {
 			$engine = 'codex' === $r->get_param( 'engine' ) ? 'codex' : 'claude';
 			delete_transient( 'seolity_cli_' . $engine );
@@ -1324,7 +1381,7 @@ final class Router {
 				return new \WP_Error( 'seolity_local_cli', 'claude' === $engine ? __( 'Claude Code CLI was not found on this server. Install it (npm install -g @anthropic-ai/claude-code) or enter its full path.', 'seolity' ) : __( 'Codex CLI was not found on this server. Install it (npm install -g @openai/codex) or enter its full path.', 'seolity' ), array( 'status' => 400 ) );
 			}
 			$sub = $p->subscription;
-			if ( ! $p->settings->has_secret( $sub::ENGINE_SECRETS[ $engine ][1] ) ) {
+			if ( ! $p->cliauth->has_login( $engine ) ) {
 				return new \WP_Error( 'seolity_local_cli', __( 'Save your subscription login first (Settings → AI).', 'seolity' ), array( 'status' => 400 ) );
 			}
 			$start = microtime( true );

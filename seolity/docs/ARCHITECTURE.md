@@ -508,6 +508,23 @@ generates prioritized actions, `HealthScore` computes the explainable score.
 * Persian-aware text processing: normalization of Arabic ي/ك, ZWNJ handling, Persian digits, stop words,
   tokenization and pixel-width estimation for SERP previews.
 
+## 15b. Local AI CLIs (Claude Code, Codex) on shared hosting
+
+Built for cPanel + CloudLinux + LiteSpeed, where PHP's PATH is often `/usr/local/bin:/bin:/usr/bin` and Node.js lives under `/opt/alt/alt-nodejsNN`.
+
+| Class | Job |
+|---|---|
+| `AI\Remote\ProcessRunner` | The only place programs start. Argument arrays to `proc_open` (no shell), first argument must be an absolute executable file, explicit environment (PATH = CLI folder, selected Node.js folder, every validated Node.js folder, inherited PATH, system folders; HOME, TMPDIR, LANG, proxy/CA variables), timeout, separate stdout/stderr, exit code and signal. Detects disabled `proc_open`/`proc_get_status`/`stream_select`. Private 0700 folders, 0600 secret files, secure delete. |
+| `AI\Remote\NodeLocator` | Finds every Node.js: PATH, `NODE`/`NVM_BIN`, `/opt/alt/alt-nodejs*/root/usr/bin`, `/opt/cpanel/ea-nodejs*/bin`, `~/nodevenv/*/*/bin`, nvm, Volta, Homebrew, common folders (filter `seolity_node_search_paths`). Each candidate: exists, executable, `node --version`, matching npm (or `npm-cli.js`). Choice: admin setting `cli_node_path` → newest even (LTS) major meeting the CLI minimum → newest meeting the minimum. Cached 12 h; never cached when programs cannot run. |
+| `AI\Remote\CliErrors` | Codes (NODE_NOT_FOUND, NODE_PERMISSION_DENIED, CLI_NOT_FOUND, CLI_PERMISSION_DENIED, PROC_OPEN_DISABLED, AUTH_REQUIRED/INVALID/TOKEN_EXPIRED/TOKEN_REVOKED/FORBIDDEN, RATE_LIMIT, PROVIDER_UNAVAILABLE, MEMORY_LIMIT, PROCESS_KILLED, EXECUTION_TIMEOUT, INSTALL_BLOCKED, DISK_FULL, RUNTIME_ERROR), wizard group, message, next step, redaction. Authentication rules run before memory rules, so a revoked token that also prints `memory allocation of N bytes failed` is reported as AUTH_TOKEN_REVOKED. |
+| `AI\Remote\CliAuth` | Logins per engine. Plugin-managed (default): encrypted secret; Codex uses a persistent private `CODEX_HOME` synced both ways (refreshed tokens copied back, an older `last_refresh` of the same account never overwrites a newer one), runs serialized with a lock. CLI-managed: an SSH login (`~/.codex` or `cli_codex_home`; Claude `~/.claude`), never written. Dead logins (revoked/expired/invalid) are remembered with a credential fingerprint and stop further runs until the login changes or "Test connection" is pressed. Codex device sign-in (`codex login --device-auth`) runs as a background job into a fresh folder. |
+| `AI\Remote\LocalCli` | Runs a request through the above; returns classified errors. |
+| `AI\Remote\CliSetup` | `doctor()` (environment, Node.js candidates, per-engine status: ready / needs_config / auth_required / not_installed / permission_denied / unsupported / runtime_error), `report()` (no tokens, user names or home paths), install/repair into a private prefix outside the web root (`<account>/seolity-cli`), npm failure causes, execute-bit repair. |
+
+REST (manage capability, REST nonce): `GET cli/doctor`, `GET cli/report`, `POST cli/test`, `GET|POST cli/login`, `POST cli/signout`, `POST cli/settings`, `POST cli/install`. UI: Connections → AI Engines — Installation & Diagnostics (`#/engines`).
+
+Upgrade: settings `sub_cli_*` and the saved secrets are reused unchanged; new settings default to automatic discovery and plugin-managed logins. Rollback: install the previous ZIP — the new settings are ignored, the private folders (`seolity-cli/codex-home`, `claude-home`, `runs`, `locks`) can stay or be deleted.
+
 ## 16. Compatibility
 
 * **WooCommerce**: product SEO (title, descriptions, short description, attributes, images, schema,

@@ -25,7 +25,7 @@ final class CliSetup {
 	 * 0.164.0 = 444.3 MB). Free space must cover the package plus npm's cache and temp files.
 	 */
 	const PACKAGES = array(
-		'claude' => array( 'package' => '@anthropic-ai/claude-code', 'node' => 22, 'mb' => 292, 'need_mb' => 700, 'ram_mb' => 512 ),
+		'claude' => array( 'package' => '@anthropic-ai/claude-code', 'node' => 18, 'mb' => 292, 'need_mb' => 700, 'ram_mb' => 512 ),
 		'codex'  => array( 'package' => '@openai/codex', 'node' => 16, 'mb' => 445, 'need_mb' => 1000, 'ram_mb' => 512 ),
 	);
 
@@ -52,28 +52,10 @@ final class CliSetup {
 		return 0 === strpos( wp_normalize_path( $dir ), wp_normalize_path( ABSPATH ) );
 	}
 
-	/** Node.js binary: system PATH, common folders, CloudLinux "Setup Node.js App" and nodevenv. */
-	public function node() {
-		$dirs = array_merge( explode( PATH_SEPARATOR, (string) getenv( 'PATH' ) ), array( '/usr/local/bin', '/usr/bin', '/opt/homebrew/bin' ) );
-		foreach ( array_merge( (array) glob( '/opt/alt/alt-nodejs*/root/usr/bin', GLOB_ONLYDIR ), (array) glob( ( getenv( 'HOME' ) ? getenv( 'HOME' ) : '/nonexistent' ) . '/nodevenv/*/*/bin', GLOB_ONLYDIR ) ) as $d ) {
-			$dirs[] = $d;
-		}
-		$best = array( '', 0 );
-		foreach ( array_filter( array_unique( $dirs ) ) as $dir ) {
-			$f = rtrim( $dir, '/' ) . '/node';
-			if ( @is_file( $f ) && @is_executable( $f ) ) { // phpcs:ignore WordPress.PHP.NoSilencedErrors
-				$v = $this->version( $f );
-				if ( $v > $best[1] ) {
-					$best = array( $f, $v );
-				}
-			}
-		}
-		return $best;
-	}
-
-	private function version( $node ) {
-		$r = $this->plugin->localcli->exec( array( $node, '--version' ), array( 'PATH' => dirname( $node ) . ':/usr/bin:/bin' ), sys_get_temp_dir(), 20 );
-		return ! is_wp_error( $r ) && preg_match( '/v(\d+)\./', $r['out'], $m ) ? (int) $m[1] : 0;
+	/** [ path, major ] of the Node.js used for installs (kept for compatibility). */
+	public function node( $min = 16 ) {
+		$n = NodeLocator::select( $min );
+		return $n ? array( $n['path'], $n['major'] ) : array( '', 0 );
 	}
 
 	private static function ram_mb() {
@@ -109,7 +91,8 @@ final class CliSetup {
 		$node = $exec ? $this->node() : array( '', 0 );
 		/* translators: %d: version */
 		$add( 'node', $node[1] >= $req['node'], sprintf( __( 'Node.js %d or newer', 'seolity' ), $req['node'] ), $node[0] ? 'v' . $node[1] . ' — ' . $node[0] : __( 'Not found', 'seolity' ), __( 'In cPanel open “Setup Node.js App” and create an app with the newest Node.js (this installs it for your account), or install Node.js on the server.', 'seolity' ) );
-		$npm = $node[0] && is_file( dirname( $node[0] ) . '/npm' ) ? dirname( $node[0] ) . '/npm' : '';
+		$sel = $exec ? NodeLocator::select( $req['node'] ) : null;
+		$npm = $sel && $sel['npm'] ? implode( ' ', $sel['npm'] ) : '';
 		$add( 'npm', '' !== $npm, 'npm', $npm ? $npm : __( 'Not found', 'seolity' ), __( 'npm comes with Node.js; reinstall Node.js with npm.', 'seolity' ) );
 		$prefix = self::prefix();
 		$parent = is_dir( $prefix ) ? $prefix : dirname( $prefix );
@@ -120,7 +103,7 @@ final class CliSetup {
 		$add( 'disk', null === $free || $free >= $req['need_mb'], sprintf( __( 'Free disk space: %1$d MB (package %2$d MB + npm cache)', 'seolity' ), $req['need_mb'], $req['mb'] ), null === $free ? __( 'Unknown (the host does not report it)', 'seolity' ) : $free . ' MB', __( 'Free up space or ask for a larger plan; shared plans with 1–2 GB of total space usually cannot hold it.', 'seolity' ) );
 		$ram = self::ram_mb();
 		/* translators: %d: MB */
-		$add( 'ram', null === $ram || $ram >= $req['ram_mb'], sprintf( __( 'Available memory: %d MB', 'seolity' ), $req['ram_mb'] ), null === $ram ? __( 'Unknown', 'seolity' ) : $ram . ' MB', __( 'The CLI is a Node.js program; hosts that limit processes to a few hundred MB stop it while it answers.', 'seolity' ) );
+		$add( 'ram', true, sprintf( __( 'Available memory: %d MB', 'seolity' ), $req['ram_mb'] ), null === $ram ? __( 'Unknown', 'seolity' ) : $ram . ' MB', __( 'The CLI is a Node.js program; hosts that limit processes to a few hundred MB stop it while it answers.', 'seolity' ) );
 		$add( 'writable', is_writable( $parent ), __( 'Install folder is writable', 'seolity' ), $prefix . ( self::inside_webroot( $prefix ) ? ' ' . __( '(inside the web root — protected with deny rules)', 'seolity' ) : '' ), __( 'Make the folder writable for the PHP user.', 'seolity' ) );
 		$installed = $this->plugin->localcli->binary( $engine );
 		$possible  = ! array_filter(
@@ -134,6 +117,11 @@ final class CliSetup {
 
 	/** Start the installation in the background (only when every check passes). */
 	public function start_install( $engine ) {
+		$bin = $this->plugin->localcli->binary( $engine );
+		if ( '' !== $bin && ! @is_executable( $bin ) && $this->repair_permissions( $bin ) ) { // phpcs:ignore WordPress.PHP.NoSilencedErrors
+			delete_transient( 'seolity_cli_' . $engine );
+			return $this->diagnose( $engine ); // Repaired: the file only lacked its execute bit.
+		}
 		$d = $this->diagnose( $engine );
 		if ( ! $d['possible'] ) {
 			return new \WP_Error( 'seolity_cli', __( 'This server does not meet the requirements — see the checks.', 'seolity' ), array( 'status' => 400, 'diagnose' => $d ) );
@@ -146,49 +134,277 @@ final class CliSetup {
 		return $this->diagnose( $engine );
 	}
 
-	/** Queue handler: npm install into the prefix, then verify `<cli> --version`. */
+	/** Queue handler: npm install into the private prefix, then verify `<cli> --version`. */
 	public function install( $engine, $aid ) {
-		$req  = self::PACKAGES[ $engine ];
-		$node = $this->node();
-		$npm  = dirname( $node[0] ) . '/npm';
-		$pre  = self::prefix();
+		$req = self::PACKAGES[ $engine ];
+		$sel = NodeLocator::select( $req['node'] );
+		$pre = self::prefix();
 		wp_mkdir_p( $pre );
 		if ( self::inside_webroot( $pre ) ) {
 			@file_put_contents( $pre . '/.htaccess', "Require all denied\nDeny from all\n" ); // phpcs:ignore
 			@file_put_contents( $pre . '/index.php', "<?php // Silence.\n" ); // phpcs:ignore
 		}
-		$env = array( 'PATH' => dirname( $node[0] ) . ':/usr/bin:/bin', 'HOME' => $pre, 'npm_config_cache' => $pre . '/.npm-cache', 'npm_config_update_notifier' => 'false', 'LANG' => 'C.UTF-8' );
-		// Servers behind an outbound proxy or with their own CA keep working (standard variables only).
-		foreach ( array( 'HTTPS_PROXY', 'https_proxy', 'HTTP_PROXY', 'http_proxy', 'NO_PROXY', 'no_proxy', 'NODE_EXTRA_CA_CERTS', 'SSL_CERT_FILE', 'npm_config_cafile', 'npm_config_registry', 'npm_config_https_proxy', 'npm_config_proxy' ) as $k ) {
-			if ( false !== getenv( $k ) && '' !== getenv( $k ) ) {
-				$env[ $k ] = getenv( $k );
+		$code = '';
+		$out  = '';
+		$ver  = '';
+		$bin  = $pre . '/node_modules/.bin/' . LocalCli::BINARIES[ $engine ];
+		if ( ! $sel ) {
+			$code = 'NODE_NOT_FOUND';
+		} elseif ( ! $sel['npm'] ) {
+			$code = 'NPM_NOT_FOUND';
+		} else {
+			$cache = $pre . '/.npm-cache';
+			$env   = ProcessRunner::env( array( $sel['npm'][0], $sel['path'] ), array( 'HOME' => $pre, 'npm_config_cache' => $cache, 'npm_config_update_notifier' => 'false', 'npm_config_fund' => 'false', 'npm_config_audit' => 'false', 'npm_config_tmp' => $pre . '/.npm-tmp' ) );
+			wp_mkdir_p( $pre . '/.npm-tmp' );
+			$this->plugin->activity->step( (int) $aid, sprintf( /* translators: %s: package */ __( 'npm install %s …', 'seolity' ), $req['package'] ), 20 );
+			$r   = ProcessRunner::run( array_merge( $sel['npm'], array( 'install', '--prefix', $pre, '--no-audit', '--no-fund', '--omit=dev', '--loglevel=error', $req['package'] . '@latest' ) ), '', $env, $pre, 1100 );
+			$out = is_wp_error( $r ) ? $r->get_error_message() : trim( $r['err'] . "\n" . $r['out'] );
+			// npm's download cache and temp files are not needed after the install.
+			ProcessRunner::rrmdir( $cache );
+			ProcessRunner::rrmdir( $pre . '/.npm-tmp' );
+			if ( is_wp_error( $r ) ) {
+				$code = (string) $r->get_error_data()['cli_code'];
+			} elseif ( 0 !== $r['code'] ) {
+				$code = self::npm_error( $r );
 			}
 		}
-		if ( empty( $env['NODE_EXTRA_CA_CERTS'] ) && ! empty( $env['SSL_CERT_FILE'] ) ) {
-			$env['NODE_EXTRA_CA_CERTS'] = $env['SSL_CERT_FILE'];
-		}
-		$this->plugin->activity->step( (int) $aid, sprintf( /* translators: %s: package */ __( 'npm install %s …', 'seolity' ), $req['package'] ), 20 );
-		$r   = $this->plugin->localcli->exec( array( $npm, 'install', '--prefix', $pre, '--no-audit', '--no-fund', '--omit=dev', '--loglevel=error', $req['package'] . '@latest' ), $env, $pre, 1100 );
-		$out = is_wp_error( $r ) ? $r->get_error_message() : trim( $r['err'] . "\n" . $r['out'] );
-		// Remove npm's download cache: the installed files are all that is needed.
-		$this->rrmdir( $pre . '/.npm-cache' );
 		delete_transient( 'seolity_cli_' . $engine );
-		$bin = $pre . '/node_modules/.bin/' . LocalCli::BINARIES[ $engine ];
-		$ver = '';
-		if ( is_file( $bin ) ) {
-			$v   = $this->plugin->localcli->exec( array( $bin, '--version' ), $env, $pre, 60 );
-			$ver = is_wp_error( $v ) ? '' : trim( $v['out'] );
+		if ( '' === $code && is_file( $bin ) ) {
+			$this->repair_permissions( $bin );
+			$v = $this->plugin->localcli->version( $engine, true );
+			if ( is_wp_error( $v ) ) {
+				$code = (string) $v->get_error_data()['cli_code'];
+			} else {
+				$ver = $v;
+			}
+		} elseif ( '' === $code ) {
+			$code = 'CLI_NOT_FOUND';
 		}
-		$ok = '' !== $ver;
+		$ok = '' === $code;
 		if ( $ok ) {
 			$this->plugin->settings->update( array( 'sub_cli_' . $engine => $bin ) );
 		}
-		update_option( self::LOG . '_' . $engine, array( 'status' => $ok ? 'done' : 'failed', 'at' => gmdate( 'c' ), 'version' => $ver, 'out' => mb_substr( $out, -3000 ) ), false );
+		update_option( self::LOG . '_' . $engine, array( 'status' => $ok ? 'done' : 'failed', 'at' => gmdate( 'c' ), 'version' => $ver, 'code' => $code, 'message' => $ok ? '' : CliErrors::message( $code ), 'action' => $ok ? '' : CliErrors::action( $code, $engine ), 'out' => mb_substr( CliErrors::redact( $out ), -3000 ) ), false );
 		/* translators: %s: version */
-		$msg = $ok ? sprintf( __( 'Installed and verified: %s', 'seolity' ), $ver ) : __( 'The installation did not finish — see the log.', 'seolity' );
-		$this->plugin->activity->finish( (int) $aid, $ok ? 'done' : 'failed', $msg, array( 'summary' => $msg, 'route' => '#/network' ) );
-		$this->plugin->audit_log->log( 'cli.install', 'site', null, array( 'engine' => $engine, 'ok' => $ok, 'version' => $ver ) );
+		$msg = $ok ? sprintf( __( 'Installed and verified: %s', 'seolity' ), $ver ) : CliErrors::message( $code );
+		$this->plugin->activity->finish( (int) $aid, $ok ? 'done' : 'failed', $msg, array( 'summary' => $msg, 'route' => '#/engines' ) );
+		$this->plugin->audit_log->log( 'cli.install', 'site', null, array( 'engine' => $engine, 'ok' => $ok, 'version' => $ver, 'code' => $code ) );
 		return true;
+	}
+
+	/** Cause of a failed `npm install`. */
+	private static function npm_error( array $r ) {
+		$t = $r['err'] . "\n" . $r['out'];
+		if ( preg_match( '/E403|E401|ENOTFOUND|EAI_AGAIN|ECONNREFUSED|ECONNRESET|ETIMEDOUT|ERR_SOCKET|SELF_SIGNED|UNABLE_TO_GET_ISSUER|certificate|network|proxy/i', $t ) ) {
+			return 'INSTALL_BLOCKED';
+		}
+		if ( preg_match( '/ENOSPC|EDQUOT|no space left|quota/i', $t ) ) {
+			return 'DISK_FULL';
+		}
+		if ( preg_match( '/EACCES|EPERM|permission denied/i', $t ) ) {
+			return 'CLI_PERMISSION_DENIED';
+		}
+		return CliErrors::classify( $r );
+	}
+
+	/** Make the installed CLI executable again (only files inside the private prefix). */
+	public function repair_permissions( $bin ) {
+		$real = (string) @realpath( $bin ); // phpcs:ignore WordPress.PHP.NoSilencedErrors
+		if ( '' !== $real && 0 === strpos( $real, (string) realpath( self::prefix() ) ) && ! is_executable( $real ) ) {
+			@chmod( $real, 0755 ); // phpcs:ignore WordPress.PHP.NoSilencedErrors
+		}
+		return '' !== $real && is_executable( $real );
+	}
+
+	/* ------------------------------------------------------------------ full diagnostics */
+
+	/** Size (bytes) from php.ini notation. */
+	private static function bytes( $v ) {
+		$v = trim( (string) $v );
+		if ( '' === $v || '-1' === $v ) {
+			return -1;
+		}
+		$n = (int) $v;
+		switch ( strtolower( substr( $v, -1 ) ) ) {
+			case 'g':
+				$n *= 1024;
+				// Fall through.
+			case 'm':
+				$n *= 1024;
+				// Fall through.
+			case 'k':
+				$n *= 1024;
+		}
+		return $n;
+	}
+
+	/**
+	 * Everything the AI setup wizard shows: environment checks, Node.js candidates and one status
+	 * per engine (ready / not_installed / needs_config / auth_required / permission_denied /
+	 * unsupported / runtime_error) with the cause, next step and buttons that apply.
+	 *
+	 * @param bool $fresh Re-scan Node.js and re-run `--version`.
+	 */
+	public function doctor( $fresh = false ) {
+		if ( $fresh ) {
+			delete_transient( NodeLocator::CACHE );
+			delete_transient( 'seolity_cli_claude' );
+			delete_transient( 'seolity_cli_codex' );
+		}
+		$blocked  = ProcessRunner::blocked();
+		$disabled = array_filter( array_map( 'trim', explode( ',', (string) ini_get( 'disable_functions' ) ) ) );
+		$env      = array();
+		$add      = static function ( $id, $state, $label, $value, $fix = '' ) use ( &$env ) {
+			$env[] = array( 'id' => $id, 'state' => $state, 'label' => $label, 'value' => $value, 'fix' => 'ok' === $state ? '' : $fix );
+		};
+		$add( 'php', version_compare( PHP_VERSION, '7.4', '>=' ) ? 'ok' : 'bad', __( 'PHP version', 'seolity' ), PHP_VERSION . ' (' . PHP_SAPI . ')', __( 'PHP 7.4 or newer is required.', 'seolity' ) );
+		$mem = self::bytes( ini_get( 'memory_limit' ) );
+		$add( 'memory_limit', -1 === $mem || $mem >= 128 * 1048576 ? 'ok' : 'warn', __( 'PHP memory limit', 'seolity' ), (string) ini_get( 'memory_limit' ), __( 'Raise memory_limit to 128M or more in cPanel → MultiPHP INI Editor.', 'seolity' ) );
+		$met = (int) ini_get( 'max_execution_time' );
+		$add( 'max_execution_time', 0 === $met || $met >= 120 || function_exists( 'set_time_limit' ) ? 'ok' : 'warn', __( 'PHP time limit', 'seolity' ), 0 === $met ? __( 'Unlimited', 'seolity' ) : $met . ' s' . ( function_exists( 'set_time_limit' ) ? ' (' . __( 'can be raised per request', 'seolity' ) . ')' : '' ), __( 'Long AI answers need more than 120 seconds; ask the host to allow set_time_limit.', 'seolity' ) );
+		$add( 'proc_open', '' === $blocked ? 'ok' : 'bad', __( 'PHP may start programs', 'seolity' ), '' === $blocked ? 'proc_open ✓' : sprintf( /* translators: %s: function */ __( '%s is disabled', 'seolity' ), $blocked ), CliErrors::action( 'PROC_OPEN_DISABLED' ) );
+		$others = array_values( array_intersect( array( 'exec', 'shell_exec', 'system', 'passthru', 'popen' ), $disabled ) );
+		$add( 'shell', 'ok', __( 'Other shell functions', 'seolity' ), $others ? sprintf( /* translators: %s: functions */ __( 'Disabled: %s (not needed — SEOlity never uses a shell)', 'seolity' ), implode( ', ', $others ) ) : __( 'Not needed — SEOlity never uses a shell', 'seolity' ) );
+		$obd = (string) ini_get( 'open_basedir' );
+		$add( 'open_basedir', '' === $obd ? 'ok' : 'warn', 'open_basedir', '' === $obd ? __( 'Not set', 'seolity' ) : __( 'Set — some folders may be invisible to PHP', 'seolity' ), __( 'If Node.js is not found, ask the host to add /opt/alt to open_basedir or turn it off for your account.', 'seolity' ) );
+		$os = PHP_OS_FAMILY . ' ' . php_uname( 'm' ) . ( self::libc() ? ' (' . self::libc() . ')' : '' );
+		$add( 'os', in_array( PHP_OS_FAMILY, array( 'Linux', 'Darwin' ), true ) && in_array( php_uname( 'm' ), array( 'x86_64', 'amd64', 'aarch64', 'arm64' ), true ) ? 'ok' : 'bad', __( 'Operating system', 'seolity' ), $os . ( @is_dir( '/opt/alt' ) || @is_file( '/proc/lve/list' ) ? ' · CloudLinux' : '' ), __( 'The official CLIs ship for Linux and macOS on x64/arm64 only.', 'seolity' ) ); // phpcs:ignore WordPress.PHP.NoSilencedErrors
+		$tmp = get_temp_dir();
+		$add( 'tmp', wp_is_writable( $tmp ) ? 'ok' : 'bad', __( 'Temporary folder is writable', 'seolity' ), $tmp, __( 'Set WP_TEMP_DIR in wp-config.php to a writable folder.', 'seolity' ) );
+		$pre    = self::prefix();
+		$parent = is_dir( $pre ) ? $pre : dirname( $pre );
+		$add( 'prefix', is_writable( $parent ) ? 'ok' : 'bad', __( 'Private install folder', 'seolity' ), $pre . ( self::inside_webroot( $pre ) ? ' — ' . __( 'inside the web root, protected with deny rules', 'seolity' ) : ' — ' . __( 'outside the web root', 'seolity' ) ), __( 'Make the folder writable for the PHP user.', 'seolity' ) );
+		$free = @disk_free_space( $parent ); // phpcs:ignore WordPress.PHP.NoSilencedErrors
+		$add( 'disk', false === $free || $free >= 1000 * 1048576 ? 'ok' : 'warn', __( 'Free disk space', 'seolity' ), false === $free ? __( 'Unknown (the host does not report it)', 'seolity' ) : (int) round( $free / 1048576 ) . ' MB', __( 'An install needs about 1 GB free (package + npm cache).', 'seolity' ) );
+		$nodes = '' === $blocked ? NodeLocator::scan( $fresh ) : array();
+		$sel   = '' === $blocked ? NodeLocator::select( 16 ) : null;
+		$npmv  = '';
+		if ( $sel && $sel['npm'] ) {
+			$r    = ProcessRunner::run( array_merge( $sel['npm'], array( '--version' ) ), '', ProcessRunner::env( array( $sel['npm'][0], $sel['path'] ) ), get_temp_dir(), 30 );
+			$npmv = is_wp_error( $r ) ? '' : trim( $r['out'] );
+		}
+		$add( 'node', $sel ? 'ok' : 'bad', 'Node.js', $sel ? $sel['version'] . ' — ' . $sel['path'] : __( 'Not found', 'seolity' ), CliErrors::action( 'NODE_NOT_FOUND' ) );
+		$add( 'npm', $sel && $sel['npm'] ? ( '' !== $npmv ? 'ok' : 'warn' ) : 'bad', 'npm', $sel && $sel['npm'] ? ( $npmv ? $npmv : '?' ) . ' — ' . implode( ' ', $sel['npm'] ) : __( 'Not found', 'seolity' ), CliErrors::action( 'NPM_NOT_FOUND' ) );
+		$engines = array();
+		foreach ( array_keys( self::PACKAGES ) as $e ) {
+			$engines[ $e ] = $this->engine_status( $e, $blocked, $fresh );
+		}
+		return array(
+			'environment' => $env,
+			'nodes'       => array_map(
+				static function ( $n ) use ( $sel ) {
+					return array( 'path' => $n['path'], 'version' => $n['version'], 'ok' => $n['ok'], 'error' => $n['error'], 'npm' => (bool) $n['npm'], 'selected' => $sel && $sel['path'] === $n['path'] );
+				},
+				$nodes
+			),
+			'node'        => $sel ? array( 'path' => $sel['path'], 'version' => $sel['version'], 'source' => $sel['source'], 'npm' => $sel['npm'] ? implode( ' ', $sel['npm'] ) : '', 'npm_version' => $npmv ) : null,
+			'engines'     => $engines,
+			'prefix'      => $pre,
+			'at'          => gmdate( 'c' ),
+		);
+	}
+
+	/** One engine: what is there, what is missing, and the next step. */
+	public function engine_status( $engine, $blocked = null, $fresh = false ) {
+		$blocked = null === $blocked ? ProcessRunner::blocked() : $blocked;
+		$req     = self::PACKAGES[ $engine ];
+		$cli     = $this->plugin->localcli;
+		$auth    = $this->plugin->cliauth;
+		$st      = $auth->state( $engine );
+		$out     = array(
+			'engine'     => $engine,
+			'package'    => $req['package'],
+			'path'       => '',
+			'version'    => '',
+			'node'       => '',
+			'auth_mode'  => $auth->mode( $engine ),
+			'logged_in'  => $auth->has_login( $engine ),
+			'last_ok'    => $st['last_ok'],
+			'last_state' => $st['state'],
+			'last_code'  => $st['code'],
+			'last_at'    => $st['at'],
+			'install'    => get_option( self::LOG . '_' . $engine ),
+			'login'      => 'codex' === $engine ? $auth->login_state( 'codex' ) : null,
+			'device'     => false,
+			'status'     => 'ready',
+			'code'       => '',
+			'message'    => '',
+			'action'     => '',
+		);
+		$set = function ( $code ) use ( &$out, $engine ) {
+			$out['code']    = $code;
+			$out['status']  = CliErrors::group( $code );
+			$out['message'] = CliErrors::message( $code );
+			$out['action']  = CliErrors::action( $code, $engine );
+			return $out;
+		};
+		if ( '' !== $blocked ) {
+			return $set( 'PROC_OPEN_DISABLED' );
+		}
+		$node = $cli->node_for( $engine );
+		$out['node'] = $node;
+		$bin  = $cli->binary( $engine );
+		$out['path'] = $bin;
+		if ( '' === $node ) {
+			return $set( NodeLocator::select( 1 ) ? 'NODE_TOO_OLD' : 'NODE_NOT_FOUND' );
+		}
+		if ( '' === $bin ) {
+			return $set( 'CLI_NOT_FOUND' );
+		}
+		if ( ! @is_executable( $bin ) ) { // phpcs:ignore WordPress.PHP.NoSilencedErrors
+			return $set( 'CLI_PERMISSION_DENIED' );
+		}
+		$v = $cli->version( $engine, $fresh );
+		if ( is_wp_error( $v ) ) {
+			return $set( (string) $v->get_error_data()['cli_code'] );
+		}
+		$out['version'] = $v;
+		$out['device']  = 'codex' === $engine && $auth->device_supported();
+		if ( ! $out['logged_in'] ) {
+			return $set( 'AUTH_REQUIRED' );
+		}
+		if ( 'auth' === $st['state'] && $st['fp'] === $auth->fingerprint( $engine ) ) {
+			return $set( $st['code'] );
+		}
+		if ( 'ok' !== $st['state'] || $st['fp'] !== $auth->fingerprint( $engine ) ) {
+			$out['status']  = 'needs_config';
+			$out['code']    = 'NOT_TESTED';
+			$out['message'] = __( 'Installed and signed in — run “Test connection” once to confirm it answers.', 'seolity' );
+			$out['action']  = '';
+		}
+		return $out;
+	}
+
+	/** Plain-text report an administrator can send to support: no tokens, no account names. */
+	public function report() {
+		$d     = $this->doctor();
+		$lines = array( 'SEOlity ' . SEOLITY_VERSION . ' — AI engines diagnostic report — ' . $d['at'], '' );
+		foreach ( $d['environment'] as $c ) {
+			$lines[] = sprintf( '[%s] %s: %s', strtoupper( $c['state'] ), $c['label'], $c['value'] );
+		}
+		$lines[] = '';
+		$lines[] = 'Node.js candidates:';
+		foreach ( $d['nodes'] as $n ) {
+			$lines[] = sprintf( ' %s %s %s%s', $n['selected'] ? '*' : '-', $n['path'], $n['ok'] ? $n['version'] : 'ERROR ' . $n['error'], $n['npm'] ? ' +npm' : '' );
+		}
+		foreach ( $d['engines'] as $e ) {
+			$lines[] = '';
+			$lines[] = strtoupper( $e['engine'] ) . ': ' . $e['status'] . ( $e['code'] ? ' (' . $e['code'] . ')' : '' );
+			$lines[] = ' cli: ' . ( $e['path'] ? $e['path'] : '-' ) . ' ' . $e['version'];
+			$lines[] = ' node: ' . ( $e['node'] ? $e['node'] : '-' );
+			$lines[] = ' login: ' . ( $e['logged_in'] ? 'saved' : 'none' ) . ', mode ' . $e['auth_mode'] . ', last ok ' . ( $e['last_ok'] ? $e['last_ok'] : '-' ) . ', last result ' . $e['last_state'] . ( $e['last_code'] ? ' ' . $e['last_code'] : '' );
+			if ( is_array( $e['install'] ) ) {
+				$lines[] = ' install: ' . $e['install']['status'] . ' ' . ( isset( $e['install']['code'] ) ? $e['install']['code'] : '' ) . ' ' . $e['install']['at'];
+			}
+		}
+		$text = implode( "\n", $lines );
+		// Hide the hosting account name and anything credential-like.
+		$text = CliErrors::redact( $text );
+		$user = function_exists( 'posix_getpwuid' ) && function_exists( 'posix_geteuid' ) ? @posix_getpwuid( posix_geteuid() ) : null; // phpcs:ignore WordPress.PHP.NoSilencedErrors
+		if ( is_array( $user ) && ! empty( $user['name'] ) && strlen( $user['name'] ) > 2 ) {
+			$text = preg_replace( '#(?<=/)' . preg_quote( $user['name'], '#' ) . '(?=/)#', '<user>', $text );
+		}
+		return preg_replace( '#/home\d*/[^/\s]+#', '/home/<user>', $text );
 	}
 
 	private function rrmdir( $dir ) {

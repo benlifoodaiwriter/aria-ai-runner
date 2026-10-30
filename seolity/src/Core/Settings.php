@@ -74,6 +74,10 @@ final class Settings {
 			'sub_warm_minutes'     => array( 'int', 10, array( 1, 30 ) ),
 			'sub_cli_claude'       => array( 'string', '' ), // Path of the Claude Code CLI on this server ('' = find it).
 			'sub_cli_codex'        => array( 'string', '' ),
+			'cli_node_path'        => array( 'string', '' ), // Node.js chosen by the administrator ('' = automatic discovery).
+			'cli_auth_claude'      => array( 'enum', 'plugin', array( 'plugin', 'cli' ) ), // plugin = token saved in SEOlity; cli = login made over SSH.
+			'cli_auth_codex'       => array( 'enum', 'plugin', array( 'plugin', 'cli' ) ),
+			'cli_codex_home'       => array( 'string', '' ), // CODEX_HOME of a CLI-managed login ('' = ~/.codex).
 			// Network: where the host is and how AI / Google requests travel.
 			'host_region'          => array( 'enum', '', array( '', 'iran', 'abroad' ) ),
 			'ai_route'             => array( 'enum', 'auto', array( 'auto', 'direct', 'cloudflare', 'github' ) ),

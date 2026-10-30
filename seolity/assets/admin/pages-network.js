@@ -258,7 +258,7 @@
 				),
 				h( 'div', {}, App.btn( SL.il( 'pulse', T( 'بررسی سرور و نصب خودکار', 'Check this server & install' ), 14 ), function () {
 					cliDialog( id, name );
-				} ) )
+				} ), ' ', h( 'a', { class: 'sl-btn sl-btn--primary', href: '#/engines' }, SL.icon( 'cpu', 14 ), ' ', t( 'AI Engines — Installation & Diagnostics' ) ) )
 			);
 		};
 		var body = h( 'div', { class: 'sl-stack' },
