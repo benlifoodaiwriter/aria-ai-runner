@@ -203,7 +203,15 @@
 					isP ? h( 'span', { class: 'sl-small sl-muted', text: '—' } ) : h( 'label', { class: 'sl-dup__pick', title: t( 'Merge into the primary article' ) }, h( 'input', { type: 'checkbox', checked: !! merge[ p.id ], onChange: function ( e ) {
 						merge[ p.id ] = e.target.checked;
 					} } ), h( 'span', { text: t( 'Merge' ) } ) ),
-					h( 'div', { class: 'sl-dup__meta' }, h( 'a', { href: p.url, target: '_blank', rel: 'noopener', dir: 'auto', text: p.title || p.url } ), h( 'div', { class: 'sl-muted sl-small' }, h( 'span', { dir: 'ltr', text: decodeURI( p.url ) } ), ' · ', t( '%s words', SL.num( p.words, 0 ) ), ' · ', t( '%s clicks', SL.num( p.clicks, 0 ) ), ' · ', t( '%s internal links', SL.num( p.inlinks, 0 ) ) ), INTENT[ p.intent ] ? SL.badge( INTENT[ p.intent ], 'commercial' === p.intent ? 'warn' : 'brand' ) : null ),
+					h( 'div', { class: 'sl-dup__meta' },
+						h( 'a', { class: 'sl-dup__title', href: p.url, target: '_blank', rel: 'noopener', dir: 'auto', text: p.title || p.url } ),
+						h( 'span', { class: 'sl-dup__url', dir: 'ltr', text: decodeURI( p.url ) } ),
+						h( 'div', { class: 'sl-dup__nums' },
+							h( 'div', { class: 'sl-mapcard__m' }, h( 'b', { text: SL.num( p.clicks, 0 ) } ), h( 'span', { text: t( 'Clicks (90 days)' ) } ) ),
+							h( 'div', { class: 'sl-mapcard__m' }, h( 'b', { text: SL.num( p.words, 0 ) } ), h( 'span', { text: t( 'Words' ) } ) ),
+							h( 'div', { class: 'sl-mapcard__m' }, h( 'b', { text: SL.num( p.inlinks, 0 ) } ), h( 'span', { text: t( 'Internal links in' ) } ) )
+						),
+						INTENT[ p.intent ] ? SL.badge( INTENT[ p.intent ], 'commercial' === p.intent ? 'warn' : 'brand' ) : null ),
 					h( 'a', { class: 'sl-btn sl-btn--ghost sl-btn--sm', href: p.edit, text: t( 'Edit' ) } )
 				) );
 			} );

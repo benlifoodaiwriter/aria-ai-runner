@@ -90,10 +90,11 @@ final class CliSetup {
 		$add( 'os', in_array( PHP_OS_FAMILY, array( 'Linux', 'Darwin' ), true ) && in_array( php_uname( 'm' ), array( 'x86_64', 'amd64', 'aarch64', 'arm64' ), true ), __( 'Operating system', 'seolity' ), $os, __( 'The official CLIs ship for Linux and macOS on x64/arm64 only.', 'seolity' ) );
 		$node = $exec ? $this->node() : array( '', 0 );
 		/* translators: %d: version */
-		$add( 'node', $node[1] >= $req['node'], sprintf( __( 'Node.js %d or newer', 'seolity' ), $req['node'] ), $node[0] ? 'v' . $node[1] . ' — ' . $node[0] : __( 'Not found', 'seolity' ), __( 'In cPanel open “Setup Node.js App” and create an app with the newest Node.js (this installs it for your account), or install Node.js on the server.', 'seolity' ) );
+		$native = 'codex' === $engine;
+		$add( 'node', $native || $node[1] >= $req['node'], sprintf( __( 'Node.js %d or newer', 'seolity' ), $req['node'] ), $node[0] ? 'v' . $node[1] . ' — ' . $node[0] : __( 'Not found', 'seolity' ), __( 'In cPanel open “Setup Node.js App” and create an app with the newest Node.js (this installs it for your account), or install Node.js on the server.', 'seolity' ) );
 		$sel = $exec ? NodeLocator::select( $req['node'] ) : null;
 		$npm = $sel && $sel['npm'] ? implode( ' ', $sel['npm'] ) : '';
-		$add( 'npm', '' !== $npm, 'npm', $npm ? $npm : __( 'Not found', 'seolity' ), __( 'npm comes with Node.js; reinstall Node.js with npm.', 'seolity' ) );
+		$add( 'npm', $native || '' !== $npm, 'npm', $native ? __( 'Not needed — Codex is installed as a native program', 'seolity' ) : ( $npm ? $npm : __( 'Not found', 'seolity' ) ), __( 'npm comes with Node.js; reinstall Node.js with npm.', 'seolity' ) );
 		$prefix = self::prefix();
 		$parent = is_dir( $prefix ) ? $prefix : dirname( $prefix );
 		wp_mkdir_p( $parent );
@@ -103,6 +104,9 @@ final class CliSetup {
 		$add( 'disk', null === $free || $free >= $req['need_mb'], sprintf( __( 'Free disk space: %1$d MB (package %2$d MB + npm cache)', 'seolity' ), $req['need_mb'], $req['mb'] ), null === $free ? __( 'Unknown (the host does not report it)', 'seolity' ) : $free . ' MB', __( 'Free up space or ask for a larger plan; shared plans with 1–2 GB of total space usually cannot hold it.', 'seolity' ) );
 		$ram = self::ram_mb();
 		/* translators: %d: MB */
+		$vm = ProcessRunner::vmem_mb();
+		/* translators: %d: MB */
+		$add( 'vmem', null === $vm || -1 === $vm || $vm >= ( $native ? 1024 : 2048 ), sprintf( __( 'Virtual memory per program: %d MB or more', 'seolity' ), $native ? 1024 : 2048 ), null === $vm ? __( 'Unknown', 'seolity' ) : ( -1 === $vm ? __( 'Unlimited', 'seolity' ) : $vm . ' MB' ), CliErrors::action( 'MEMORY_LIMIT' ) );
 		$add( 'ram', true, sprintf( __( 'Available memory: %d MB', 'seolity' ), $req['ram_mb'] ), null === $ram ? __( 'Unknown', 'seolity' ) : $ram . ' MB', __( 'The CLI is a Node.js program; hosts that limit processes to a few hundred MB stop it while it answers.', 'seolity' ) );
 		$add( 'writable', is_writable( $parent ), __( 'Install folder is writable', 'seolity' ), $prefix . ( self::inside_webroot( $prefix ) ? ' ' . __( '(inside the web root — protected with deny rules)', 'seolity' ) : '' ), __( 'Make the folder writable for the PHP user.', 'seolity' ) );
 		$installed = $this->plugin->localcli->binary( $engine );
@@ -112,7 +116,7 @@ final class CliSetup {
 				return ! $c['ok'];
 			}
 		);
-		return array( 'engine' => $engine, 'package' => $req['package'], 'possible' => $possible, 'checks' => $checks, 'installed' => $installed, 'prefix' => $prefix, 'log' => get_option( self::LOG . '_' . $engine ) );
+		return array( 'engine' => $engine, 'package' => $req['package'], 'possible' => $possible, 'checks' => $checks, 'installed' => $installed, 'prefix' => $prefix, 'log' => $this->install_state( $engine ) );
 	}
 
 	/** Start the installation in the background (only when every check passes). */
@@ -136,6 +140,20 @@ final class CliSetup {
 
 	/** Queue handler: npm install into the private prefix, then verify `<cli> --version`. */
 	public function install( $engine, $aid ) {
+		// A fatal error (PHP memory limit, host kill) must never leave the page waiting on "running".
+		register_shutdown_function(
+			static function () use ( $engine, $aid ) {
+				$e   = error_get_last();
+				$log = get_option( self::LOG . '_' . $engine );
+				if ( is_array( $log ) && 'running' === $log['status'] && $e && in_array( $e['type'], array( E_ERROR, E_CORE_ERROR, E_COMPILE_ERROR ), true ) ) {
+					$code = false !== stripos( $e['message'], 'memory' ) ? 'MEMORY_LIMIT' : 'RUNTIME_ERROR';
+					update_option( self::LOG . '_' . $engine, array( 'status' => 'failed', 'at' => gmdate( 'c' ), 'code' => $code, 'message' => CliErrors::message( $code ), 'action' => CliErrors::action( $code, $engine ), 'out' => CliErrors::redact( $e['message'] ) ), false );
+				}
+			}
+		);
+		if ( 'codex' === $engine ) {
+			return $this->install_codex( (int) $aid );
+		}
 		$req = self::PACKAGES[ $engine ];
 		$sel = NodeLocator::select( $req['node'] );
 		$pre = self::prefix();
@@ -190,6 +208,37 @@ final class CliSetup {
 		$this->plugin->activity->finish( (int) $aid, $ok ? 'done' : 'failed', $msg, array( 'summary' => $msg, 'route' => '#/engines' ) );
 		$this->plugin->audit_log->log( 'cli.install', 'site', null, array( 'engine' => $engine, 'ok' => $ok, 'version' => $ver, 'code' => $code ) );
 		return true;
+	}
+
+	/** Codex: the native program straight from the npm registry, without npm (see CodexInstaller). */
+	private function install_codex( $aid ) {
+		$log  = function ( $msg, $pct ) use ( $aid ) {
+			update_option( self::LOG . '_codex', array( 'status' => 'running', 'at' => gmdate( 'c' ), 'stage' => $msg, 'pct' => $pct ), false );
+			$this->plugin->activity->step( $aid, $msg, $pct );
+		};
+		$res  = ( new CodexInstaller( $this->plugin ) )->install( $log );
+		delete_transient( 'seolity_cli_codex' );
+		$ok   = ! is_wp_error( $res );
+		$code = $ok ? '' : (string) $res->get_error_data()['cli_code'];
+		if ( $ok ) {
+			$this->plugin->settings->update( array( 'sub_cli_codex' => $res['bin'] ) );
+		}
+		update_option( self::LOG . '_codex', array( 'status' => $ok ? 'done' : 'failed', 'at' => gmdate( 'c' ), 'version' => $ok ? $res['version'] : '', 'code' => $code, 'message' => $ok ? '' : CliErrors::message( $code ), 'action' => $ok ? '' : CliErrors::action( $code, 'codex' ), 'out' => $ok ? '' : CliErrors::redact( $res->get_error_message() ) ), false );
+		/* translators: %s: version */
+		$msg = $ok ? sprintf( __( 'Installed and verified: %s', 'seolity' ), $res['version'] ) : CliErrors::message( $code );
+		$this->plugin->activity->finish( $aid, $ok ? 'done' : 'failed', $msg, array( 'summary' => $msg, 'route' => '#/engines' ) );
+		$this->plugin->audit_log->log( 'cli.install', 'site', null, array( 'engine' => 'codex', 'ok' => $ok, 'code' => $code, 'method' => 'native' ) );
+		return true;
+	}
+
+	/** Install state; a "running" install older than the queue's own limit was killed by the host. */
+	public function install_state( $engine ) {
+		$log = get_option( self::LOG . '_' . $engine );
+		if ( is_array( $log ) && 'running' === $log['status'] && strtotime( $log['at'] ) < time() - 25 * MINUTE_IN_SECONDS ) {
+			$log = array( 'status' => 'failed', 'at' => gmdate( 'c' ), 'code' => 'PROCESS_KILLED', 'message' => CliErrors::message( 'PROCESS_KILLED' ), 'action' => CliErrors::action( 'PROCESS_KILLED', $engine ), 'out' => '' );
+			update_option( self::LOG . '_' . $engine, $log, false );
+		}
+		return is_array( $log ) ? $log : null;
 	}
 
 	/** Cause of a failed `npm install`. */
@@ -276,6 +325,10 @@ final class CliSetup {
 		$add( 'prefix', is_writable( $parent ) ? 'ok' : 'bad', __( 'Private install folder', 'seolity' ), $pre . ( self::inside_webroot( $pre ) ? ' — ' . __( 'inside the web root, protected with deny rules', 'seolity' ) : ' — ' . __( 'outside the web root', 'seolity' ) ), __( 'Make the folder writable for the PHP user.', 'seolity' ) );
 		$free = @disk_free_space( $parent ); // phpcs:ignore WordPress.PHP.NoSilencedErrors
 		$add( 'disk', false === $free || $free >= 1000 * 1048576 ? 'ok' : 'warn', __( 'Free disk space', 'seolity' ), false === $free ? __( 'Unknown (the host does not report it)', 'seolity' ) : (int) round( $free / 1048576 ) . ' MB', __( 'An install needs about 1 GB free (package + npm cache).', 'seolity' ) );
+		$vm = ProcessRunner::vmem_mb();
+		$lim = ProcessRunner::limits();
+		/* translators: 1: soft MB 2: hard MB */
+		$add( 'vmem', null === $vm || -1 === $vm || $vm >= 2048 ? 'ok' : ( $vm >= 1024 ? 'warn' : 'bad' ), __( 'Virtual memory per program (inherited from PHP)', 'seolity' ), null === $vm ? __( 'Unknown', 'seolity' ) : ( -1 === $vm ? __( 'Unlimited', 'seolity' ) : $vm . ' MB' . ( null !== $lim['as_hard'] && $lim['as_hard'] !== $lim['as_soft'] ? ' (' . __( 'raised to the hard limit for each run', 'seolity' ) . ')' : '' ) ), __( 'Codex needs about 1 GB and npm installs need about 2 GB of virtual memory per program. Ask the host to raise the LiteSpeed lsphp “Memory Hard Limit” (or the CloudLinux VMEM limit) for your account.', 'seolity' ) );
 		$nodes = '' === $blocked ? NodeLocator::scan( $fresh ) : array();
 		$sel   = '' === $blocked ? NodeLocator::select( 16 ) : null;
 		$npmv  = '';
@@ -323,7 +376,8 @@ final class CliSetup {
 			'last_state' => $st['state'],
 			'last_code'  => $st['code'],
 			'last_at'    => $st['at'],
-			'install'    => get_option( self::LOG . '_' . $engine ),
+			'install'    => $this->install_state( $engine ),
+			'model'      => (string) $this->plugin->settings->get( 'ai_model_sub_' . $engine ),
 			'login'      => 'codex' === $engine ? $auth->login_state( 'codex' ) : null,
 			'device'     => false,
 			'status'     => 'ready',
@@ -341,15 +395,26 @@ final class CliSetup {
 		if ( '' !== $blocked ) {
 			return $set( 'PROC_OPEN_DISABLED' );
 		}
-		$node = $cli->node_for( $engine );
-		$out['node'] = $node;
-		$bin  = $cli->binary( $engine );
+		$bin         = $cli->binary( $engine );
 		$out['path'] = $bin;
-		if ( '' === $node ) {
+		$out['native'] = '' !== $bin && ! LocalCli::needs_node( $bin );
+		$node        = '' === $bin || ! $out['native'] ? $cli->node_for( $engine ) : '';
+		$out['node'] = $node;
+		if ( 'running' === ( is_array( $out['install'] ) ? $out['install']['status'] : '' ) ) {
+			// Never start the CLI while it is being installed (half-written files, double memory).
+			$out['status']  = 'needs_config';
+			$out['code']    = 'INSTALLING';
+			$out['message'] = isset( $out['install']['stage'] ) ? $out['install']['stage'] : __( 'Installing…', 'seolity' );
+			return $out;
+		}
+		if ( '' === $bin && 'codex' !== $engine && '' === $node ) {
 			return $set( NodeLocator::select( 1 ) ? 'NODE_TOO_OLD' : 'NODE_NOT_FOUND' );
 		}
 		if ( '' === $bin ) {
 			return $set( 'CLI_NOT_FOUND' );
+		}
+		if ( ! $out['native'] && '' === $node ) {
+			return $set( NodeLocator::select( 1 ) ? 'NODE_TOO_OLD' : 'NODE_NOT_FOUND' );
 		}
 		if ( ! @is_executable( $bin ) ) { // phpcs:ignore WordPress.PHP.NoSilencedErrors
 			return $set( 'CLI_PERMISSION_DENIED' );

@@ -232,21 +232,34 @@
 					Object.keys( src.ai_engines ).forEach( function ( id ) {
 						names[ id ] = src.ai_engines[ id ].label;
 					} );
-					var cols = [ { label: t( 'Query' ), render: function ( x ) {
-						return h( 'b', { dir: 'auto', text: x.query } );
-					} } ];
-					Object.keys( src.ai_engines ).forEach( function ( id ) {
-						cols.push( { label: names[ id ], render: function ( x ) {
-							var e = x.engines[ id ];
-							if ( ! e ) {
-								return '—';
-							}
-							return h( 'div', { title: e.answer }, e.cited_at ? SL.badge( t( 'Cited #%s', e.cited_at ), 'good' ) : SL.badge( t( 'Not cited' ), 'bad' ), e.competitors.length ? h( 'div', { class: 'sl-small sl-muted', dir: 'ltr', text: e.competitors.map( function ( c ) {
-								return c.domain + ' #' + c.position;
-							} ).join( ', ' ) } ) : null );
-						} } );
+					// One large card per query: every AI engine as a tile (cited where / who is cited instead).
+					var vis = h( 'div', { class: 'sl-mapcards' } );
+					r.items.forEach( function ( x ) {
+						var ids = Object.keys( src.ai_engines ).filter( function ( id ) {
+							return x.engines[ id ];
+						} );
+						var cited = ids.filter( function ( id ) {
+							return x.engines[ id ].cited_at;
+						} ).length;
+						vis.appendChild( h( 'article', { class: 'sl-mapcard sl-aivis', style: '--c:' + ( cited ? '#16a34a' : '#dc2626' ) },
+							h( 'div', { class: 'sl-mapcard__head' },
+								h( 'span', { class: 'sl-mapcard__ic', 'aria-hidden': 'true' }, SL.icon( 'sparkles', 22 ) ),
+								h( 'div', { class: 'sl-mapcard__titles' }, h( 'b', { class: 'sl-mapcard__title', dir: 'auto', text: x.query } ) ),
+								h( 'span', { class: 'sl-mapcard__status' }, h( 'b', { text: t( '%1$s of %2$s', cited, ids.length ) } ), h( 'span', { text: t( 'AI engines cite you' ) } ) )
+							),
+							h( 'div', { class: 'sl-aivis__engines' }, ids.map( function ( id ) {
+								var e = x.engines[ id ];
+								return h( 'div', { class: 'sl-aivis__e' + ( e.cited_at ? ' is-cited' : '' ), title: e.answer },
+									h( 'b', { text: names[ id ] } ),
+									e.cited_at ? SL.badge( t( 'Cited #%s', e.cited_at ), 'good' ) : SL.badge( t( 'Not cited' ), 'bad' ),
+									e.competitors.length ? h( 'span', { class: 'sl-small sl-muted', dir: 'ltr', text: e.competitors.map( function ( c ) {
+										return c.domain + ' #' + c.position;
+									} ).join( ', ' ) } ) : null
+								);
+							} ) )
+						) );
 					} );
-					body.appendChild( App.table( cols, r.items ) );
+					body.appendChild( vis );
 				}
 				box.appendChild( App.card( t( 'Visibility in AI search' ), body, { icon: 'sparkles' } ) );
 				if ( r.running ) {
@@ -403,34 +416,38 @@
 			if ( ! r.overview.queries.length ) {
 				box.appendChild( SL.empty( t( 'No Google data for this competitor yet' ), r.budget.available ? t( 'Press “Check Google now”. The competitor appears here for every tracked query where it is in the top 20.' ) : t( 'Add a SerpApi key in Settings → Crawler & audits to search Google.' ) ) );
 			} else {
-				box.appendChild( App.table( [
-					{ label: t( 'Query' ), render: function ( x ) {
-						return h( 'b', { dir: 'auto', text: x.query } );
-					} },
-					{ label: t( 'Them' ), render: function ( x ) {
-						return h( 'div', null, h( 'div', null, SL.badge( '#' + pos( x.their_position ), 'above_us' === x.status || 'only_them' === x.status ? 'bad' : 'good' ), ' ', trend( x.their_position, x.their_previous ) ), link( x.their_url ) );
-					} },
-					{ label: t( 'Us' ), render: function ( x ) {
-						return h( 'div', null, h( 'div', null, x.our_position ? SL.badge( '#' + pos( x.our_position ), '' ) : SL.badge( t( 'not in top 20' ), 'warn' ), x.our_gsc ? h( 'span', { class: 'sl-muted sl-small', text: ' · ' + t( 'Search Console: %s', SL.num( x.our_gsc.position ) ) } ) : null ), link( x.our_url ) );
-					} },
-					{ label: t( 'Their est. clicks' ), render: function ( x ) {
-						return null === x.their_est_clicks ? h( 'span', { class: 'sl-muted', text: t( 'no volume data' ) } ) : SL.num( x.their_est_clicks, 0 );
-					} },
-					{ label: '', render: function ( x ) {
-						if ( x.analysis && 'done' === x.analysis.status ) {
-							return h( 'a', { class: 'sl-btn sl-btn--sm', href: '#/competitor?id=' + id + '&q=' + encodeURIComponent( x.query ), onClick: function () {
-								focus = x.query;
-								setTimeout( load, 0 );
-							}, text: t( 'Open analysis' ) } );
-						}
-						return App.cap( 'ai' ) ? App.abtn( t( 'Why? Analyze' ), function () {
+				var qcards = h( 'div', { class: 'sl-mapcards' } );
+				r.overview.queries.forEach( function ( x ) {
+					var bad = 'above_us' === x.status || 'only_them' === x.status;
+					var act;
+					if ( x.analysis && 'done' === x.analysis.status ) {
+						act = h( 'a', { class: 'sl-btn sl-btn--primary', href: '#/competitor?id=' + id + '&q=' + encodeURIComponent( x.query ), onClick: function () {
+							focus = x.query;
+							setTimeout( load, 0 );
+						}, text: t( 'Open analysis' ) } );
+					} else if ( App.cap( 'ai' ) ) {
+						act = App.abtn( SL.il( 'wand', t( 'Why? Analyze' ), 14 ), function () {
 							return SL.api( 'competitors/' + id + '/compare', { body: { query: x.query } } ).then( function () {
 								focus = x.query;
 								load();
 							} );
-						}, 'sm' ) : null;
-					} },
-				], r.overview.queries ) );
+						}, 'primary' );
+					}
+					qcards.appendChild( h( 'article', { class: 'sl-mapcard', style: '--c:' + ( bad ? '#dc2626' : '#16a34a' ) },
+						h( 'div', { class: 'sl-mapcard__head' },
+							h( 'span', { class: 'sl-mapcard__ic', 'aria-hidden': 'true' }, SL.icon( bad ? 'trending-down' : 'trending', 22 ) ),
+							h( 'div', { class: 'sl-mapcard__titles' }, h( 'b', { class: 'sl-mapcard__title', dir: 'auto', text: x.query } ) ),
+							h( 'span', { class: 'sl-mapcard__status' }, h( 'b', { text: bad ? t( 'They rank above you' ) : t( 'You rank above them' ) } ) )
+						),
+						h( 'div', { class: 'sl-mapcard__metrics sl-cqm' },
+							h( 'div', { class: 'sl-mapcard__m' + ( bad ? ' is-bad' : '' ) }, h( 'b', null, '#' + pos( x.their_position ), ' ', trend( x.their_position, x.their_previous ) ), h( 'span', { text: t( 'Them' ) } ), link( x.their_url ) ),
+							h( 'div', { class: 'sl-mapcard__m' + ( bad ? '' : ' is-good' ) }, h( 'b', { text: x.our_position ? '#' + pos( x.our_position ) : t( 'not in top 20' ) } ), h( 'span', { text: t( 'Us' ) + ( x.our_gsc ? ' — ' + t( 'Search Console: %s', SL.num( x.our_gsc.position ) ) : '' ) } ), link( x.our_url ) ),
+							h( 'div', { class: 'sl-mapcard__m' }, h( 'b', { text: null === x.their_est_clicks ? '—' : SL.num( x.their_est_clicks, 0 ) } ), h( 'span', { text: null === x.their_est_clicks ? t( 'no volume data' ) : t( 'Their est. clicks' ) } ) )
+						),
+						act ? h( 'div', { class: 'sl-mapcard__foot' }, h( 'span' ), h( 'div', { class: 'sl-mapcard__actions' }, act ) ) : null
+					) );
+				} );
+				box.appendChild( qcards );
 			}
 			if ( r.candidates && r.candidates.length ) {
 				var sel = {};

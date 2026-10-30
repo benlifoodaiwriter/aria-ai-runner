@@ -1331,6 +1331,25 @@ final class Router {
 			}
 			return array( 'ok' => true, 'ms' => (int) round( ( microtime( true ) - $start ) * 1000 ), 'text' => mb_substr( (string) $res['text'], 0, 200 ), 'engine' => $status );
 		} );
+		// Light status for polling: reads saved state only, never starts a program.
+		$this->route( 'GET', '/cli/status', 'manage', function ( Req $r ) use ( $p ) {
+			$engine = 'codex' === self::key( $r, 'engine' ) ? 'codex' : 'claude';
+			return array( 'install' => $p->clisetup->install_state( $engine ), 'login' => 'codex' === $engine ? $p->cliauth->login_state( 'codex' ) : null );
+		} );
+		$this->route( 'GET', '/cli/models', 'manage', function ( Req $r ) use ( $p ) {
+			$engine = 'codex' === self::key( $r, 'engine' ) ? 'codex' : 'claude';
+			return array( 'models' => $p->localcli->models( $engine ), 'model' => (string) $p->settings->get( 'ai_model_sub_' . $engine ) );
+		} );
+		$this->route( 'POST', '/cli/model', 'manage', function ( Req $r ) use ( $p ) {
+			$engine = 'codex' === self::key( $r, 'engine' ) ? 'codex' : 'claude';
+			$model  = trim( (string) $r->get_param( 'model' ) );
+			if ( '' !== $model && ! preg_match( '/^[A-Za-z0-9._:\/\[\]-]{1,80}$/', $model ) ) {
+				return new \WP_Error( 'seolity_cli_model', __( 'This is not a valid model name.', 'seolity' ), array( 'status' => 400 ) );
+			}
+			$p->settings->update( array( 'ai_model_sub_' . $engine => $model ) );
+			$p->audit_log->log( 'cli.model', 'site', null, array( 'engine' => $engine, 'model' => $model ) );
+			return array( 'model' => $model );
+		} );
 		$this->route( 'GET', '/cli/login', 'manage', function () use ( $p ) {
 			return $p->cliauth->login_state( 'codex' );
 		} );

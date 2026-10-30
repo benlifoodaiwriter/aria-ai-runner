@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: SEOlity 1.0.0\n"
-"POT-Creation-Date: 2026-10-30 04:39+0000\n"
+"POT-Creation-Date: 2026-10-30 05:46+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -473,6 +473,9 @@ msgstr "پیدا نشد"
 msgid "In cPanel open “Setup Node.js App” and create an app with the newest Node.js (this installs it for your account), or install Node.js on the server."
 msgstr "در cPanel بخش «Setup Node.js App» را باز کنید و با جدیدترین Node.js یک برنامه بسازید (این کار Node.js را برای حساب شما نصب می‌کند) یا Node.js را روی سرور نصب کنید."
 
+msgid "Not needed — Codex is installed as a native program"
+msgstr "لازم نیست — Codex به‌صورت برنامه مستقل نصب می‌شود"
+
 msgid "npm comes with Node.js; reinstall Node.js with npm."
 msgstr "npm همراه Node.js نصب می‌شود؛ Node.js را همراه npm دوباره نصب کنید."
 
@@ -487,11 +490,18 @@ msgid "Free up space or ask for a larger plan; shared plans with 1–2 GB of tot
 msgstr "فضا آزاد کنید یا پلن بزرگ‌تری بگیرید؛ پلن‌های اشتراکی با ۱ تا ۲ گیگابایت فضای کل معمولاً جای آن را ندارند."
 
 #, php-format
-msgid "Available memory: %d MB"
-msgstr "حافظه آزاد: %d مگابایت"
+msgid "Virtual memory per program: %d MB or more"
+msgstr "حافظه مجازی هر برنامه: %d مگابایت یا بیشتر"
 
 msgid "Unknown"
 msgstr "نامشخص"
+
+msgid "Unlimited"
+msgstr "نامحدود"
+
+#, php-format
+msgid "Available memory: %d MB"
+msgstr "حافظه آزاد: %d مگابایت"
 
 msgid "The CLI is a Node.js program; hosts that limit processes to a few hundred MB stop it while it answers."
 msgstr "CLI یک برنامه Node.js است؛ هاست‌هایی که حافظه هر فرایند را به چند صد مگابایت محدود می‌کنند آن را هنگام پاسخ دادن متوقف می‌کنند."
@@ -533,9 +543,6 @@ msgstr "در سی‌پنل ← MultiPHP INI Editor مقدار memory_limit را 
 
 msgid "PHP time limit"
 msgstr "سقف زمان PHP"
-
-msgid "Unlimited"
-msgstr "نامحدود"
 
 msgid "can be raised per request"
 msgstr "برای هر درخواست قابل افزایش"
@@ -590,8 +597,37 @@ msgstr "فضای آزاد دیسک"
 msgid "An install needs about 1 GB free (package + npm cache)."
 msgstr "نصب حدود ۱ گیگابایت فضای آزاد می‌خواهد (بسته + حافظه موقت npm)."
 
+msgid "Virtual memory per program (inherited from PHP)"
+msgstr "حافظه مجازی هر برنامه (به ارث رسیده از PHP)"
+
+msgid "raised to the hard limit for each run"
+msgstr "برای هر اجرا تا سقف مجاز بالا برده می‌شود"
+
+msgid "Codex needs about 1 GB and npm installs need about 2 GB of virtual memory per program. Ask the host to raise the LiteSpeed lsphp “Memory Hard Limit” (or the CloudLinux VMEM limit) for your account."
+msgstr "Codex حدود ۱ گیگابایت و نصب با npm حدود ۲ گیگابایت حافظه مجازی برای هر برنامه لازم دارد. از هاست بخواهید «Memory Hard Limit» در lsphp لایت‌اسپید (یا سقف VMEM در CloudLinux) را برای حساب شما بالا ببرد."
+
+msgid "Installing…"
+msgstr "در حال نصب…"
+
 msgid "Installed and signed in — run “Test connection” once to confirm it answers."
 msgstr "نصب و وارد شده — یک بار «آزمایش اتصال» را بزنید تا مطمئن شوید پاسخ می‌دهد."
+
+#, php-format
+msgid "Downloading Codex %1$s (%2$d MB, straight to disk)…"
+msgstr "در حال دانلود Codex %1$s (%2$d مگابایت، مستقیم روی دیسک)…"
+
+msgid "Checking the file signature (sha512 from the npm registry)…"
+msgstr "بررسی امضای فایل (sha512 از مخزن رسمی npm)…"
+
+msgid "Unpacking…"
+msgstr "در حال باز کردن فایل…"
+
+msgid "Testing the installed program…"
+msgstr "آزمایش برنامه نصب‌شده…"
+
+#, php-format
+msgid "PHP passes a virtual-memory limit of %d MB to every program; Codex needs about 1 GB."
+msgstr "PHP برای هر برنامه سقف حافظه مجازی %d مگابایت می‌گذارد؛ Codex حدود ۱ گیگابایت لازم دارد."
 
 msgid "Claude subscription token (claude setup-token)"
 msgstr "توکن اشتراک Claude ‏(claude setup-token)"
@@ -1917,6 +1953,9 @@ msgstr "auth.json باید JSON معتبر باشد (کل فایل ~/.codex/auth
 
 msgid "This level is not available for this AI."
 msgstr "این سطح برای این هوش مصنوعی در دسترس نیست."
+
+msgid "This is not a valid model name."
+msgstr "این نام مدل معتبر نیست."
 
 msgid "Enter the full path of the program (for example /opt/alt/alt-nodejs22/root/usr/bin/node)."
 msgstr "مسیر کامل برنامه را وارد کنید (مثلاً ‎/opt/alt/alt-nodejs22/root/usr/bin/node‎)."
@@ -6471,6 +6510,13 @@ msgid "Check AI search now"
 msgstr "بررسی جستجوی هوش مصنوعی همین حالا"
 
 #, php-format
+msgid "%1$s of %2$s"
+msgstr "%1$s از %2$s"
+
+msgid "AI engines cite you"
+msgstr "موتور هوش مصنوعی از شما نام می‌برند"
+
+#, php-format
 msgid "Cited #%s"
 msgstr "ذکر شده #%s"
 
@@ -6603,6 +6649,18 @@ msgstr "«بررسی گوگل همین حالا» را بزنید. رقیب بر
 msgid "Add a SerpApi key in Settings → Crawler & audits to search Google."
 msgstr "برای جستجو در گوگل در «تنظیمات ← خزنده و ممیزی» کلید SerpApi را وارد کنید."
 
+msgid "Open analysis"
+msgstr "باز کردن تحلیل"
+
+msgid "Why? Analyze"
+msgstr "چرا؟ تحلیل کن"
+
+msgid "They rank above you"
+msgstr "رقیب بالاتر از شماست"
+
+msgid "You rank above them"
+msgstr "شما بالاتر از رقیب هستید"
+
 msgid "not in top 20"
 msgstr "در ۲۰ نتیجه اول نیست"
 
@@ -6610,17 +6668,11 @@ msgstr "در ۲۰ نتیجه اول نیست"
 msgid "Search Console: %s"
 msgstr "سرچ کنسول: %s"
 
-msgid "Their est. clicks"
-msgstr "کلیک تخمینی آن‌ها"
-
 msgid "no volume data"
 msgstr "داده حجم جستجو نیست"
 
-msgid "Open analysis"
-msgstr "باز کردن تحلیل"
-
-msgid "Why? Analyze"
-msgstr "چرا؟ تحلیل کن"
+msgid "Their est. clicks"
+msgstr "کلیک تخمینی آن‌ها"
 
 msgid "Queries their pages probably target (AI)"
 msgstr "کوئری‌هایی که صفحات آن‌ها احتمالاً هدف گرفته‌اند (هوش مصنوعی)"
@@ -6729,6 +6781,15 @@ msgstr "ذخیره ورود"
 
 msgid "Login saved. Now press “Test connection”."
 msgstr "ورود ذخیره شد. حالا «آزمایش اتصال» را بزنید."
+
+msgid "Model"
+msgstr "مدل"
+
+msgid "Choose model"
+msgstr "انتخاب مدل"
+
+msgid "Model saved. Press “Test connection” to check it."
+msgstr "مدل ذخیره شد. برای بررسی، «آزمایش اتصال» را بزنید."
 
 msgid "One command over SSH:"
 msgstr "یک فرمان با SSH:"
@@ -9261,10 +9322,6 @@ msgstr "نگه‌داشتن"
 msgid "Merge into the primary article"
 msgstr "ادغام در مقاله اصلی"
 
-#, php-format
-msgid "%s words"
-msgstr "%s کلمه"
-
 msgid "same content"
 msgstr "محتوای یکسان"
 
@@ -9513,9 +9570,6 @@ msgstr "اصلی"
 
 msgid "Edit HTML"
 msgstr "ویرایش HTML"
-
-msgid "Model"
-msgstr "مدل"
 
 msgid "Knowledge"
 msgstr "دانش"

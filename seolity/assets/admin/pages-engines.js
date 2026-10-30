@@ -102,6 +102,33 @@
 		}
 	}
 
+	/** Choose the model right where the engine is installed (loaded from the installed CLI). */
+	function modelPicker( e ) {
+		var box = h( 'div', { class: 'sl-eng__model' }, h( 'b', { text: t( 'Model' ) } ), h( 'span', { class: 'sl-muted sl-small', text: e.model || ( 'codex' === e.engine ? t( 'Default model of your ChatGPT plan' ) : 'sonnet' ) } ) );
+		box.appendChild( App.btn( t( 'Choose model' ), function () {
+			SL.clear( box );
+			box.appendChild( h( 'b', { text: t( 'Model' ) } ) );
+			App.load( box, SL.api( 'cli/models', { query: { engine: e.engine } } ), function ( r ) {
+				var known = r.models.some( function ( m ) {
+					return m.id === r.model;
+				} );
+				var opts = r.models.map( function ( m ) {
+					return [ m.id, m.label + ( m.id ? ' (' + m.id + ')' : '' ) ];
+				} );
+				if ( ! known && r.model ) {
+					opts.push( [ r.model, r.model ] );
+				}
+				var sel = App.select( opts, r.model, function () {} );
+				box.appendChild( h( 'div', { class: 'sl-row' }, sel, App.abtn( t( 'Save' ), function () {
+					return SL.api( 'cli/model', { body: { engine: e.engine, model: sel.value } } ).then( function () {
+						SL.toast( t( 'Model saved. Press “Test connection” to check it.' ), 'success' );
+					} );
+				}, 'primary' ) ) );
+			} );
+		}, 'sm' ) );
+		return box;
+	}
+
 	function engineCard( e, prefix, reload ) {
 		var g = GROUP[ e.status ] || GROUP.runtime_error;
 		var at = step( e );
@@ -116,7 +143,7 @@
 			h( 'ol', { class: 'sl-eng__steps' }, STEPS.map( function ( s, i ) {
 				return h( 'li', { class: i < at ? 'is-done' : ( i === at ? 'is-now' : '' ) }, h( 'span', { text: String( i + 1 ) } ), s );
 			} ) ),
-			e.message ? h( 'div', { class: 'sl-eng__why' }, h( 'b', { text: e.message } ), e.action ? h( 'p', { text: e.action } ) : null ) : null,
+			e.message && 'INSTALLING' !== e.code ? h( 'div', { class: 'sl-eng__why' }, h( 'b', { text: e.message } ), e.action ? h( 'p', { text: e.action } ) : null ) : null,
 			'INSTALL_BLOCKED' === e.code || ( 'failed' === inst.status && 'INSTALL_BLOCKED' === inst.code ) ? h( 'div', { class: 'sl-eng__cmd' }, h( 'span', { text: t( 'One command over SSH:' ) } ), h( 'code', { dir: 'ltr', text: 'npm install --prefix ' + prefix + ' ' + e.package + '@latest' } ) ) : null,
 			h( 'div', { class: 'sl-mapcard__metrics sl-eng__metrics' },
 				metric( t( 'CLI version' ), e.version || '—', e.version ? 'good' : '' ),
@@ -126,7 +153,8 @@
 			),
 			h( 'details', { class: 'sl-eng__paths' }, h( 'summary', { text: t( 'Detected paths (administrators only)' ) } ),
 				h( 'div', { dir: 'ltr', class: 'sl-small' }, h( 'div', { text: 'CLI: ' + ( e.path || '—' ) } ), h( 'div', { text: 'Node.js: ' + ( e.node || '—' ) } ) ) ),
-			'running' === inst.status ? h( 'div', { class: 'sl-alert sl-alert--info sl-row' }, SL.spinner(), h( 'span', { text: t( 'Installing… (a few minutes; this page updates by itself)' ) } ) ) : null,
+			'running' === inst.status ? h( 'div', { class: 'sl-eng__progress', 'data-progress': e.engine }, h( 'div', { class: 'sl-row' }, SL.spinner(), h( 'span', { text: inst.stage || t( 'Installing… (a few minutes; this page updates by itself)' ) } ) ), h( 'div', { class: 'sl-eng__bar' }, h( 'i', { style: 'width:' + ( inst.pct || 5 ) + '%' } ) ) ) : null,
+			e.version && 'running' !== inst.status ? modelPicker( e ) : null,
 			'failed' === inst.status && inst.out ? h( 'details', null, h( 'summary', { text: t( 'Install log' ) } ), h( 'pre', { dir: 'ltr', class: 'sl-pre', text: inst.out } ) ) : null,
 			testOut,
 			h( 'div', { class: 'sl-mapcard__foot' },
@@ -211,7 +239,9 @@
 				var busy = false;
 				[ 'claude', 'codex' ].forEach( function ( id ) {
 					var e = r.engines[ id ];
-					busy = busy || ( e.install && 'running' === e.install.status ) || ( e.login && [ 'starting', 'waiting' ].indexOf( e.login.status ) >= 0 );
+					if ( e.install && 'running' === e.install.status ) {
+						busy = id;
+					}
 					list.appendChild( engineCard( e, r.prefix, function () {
 						load( false );
 					} ) );
@@ -222,11 +252,29 @@
 					load( true );
 				} ) );
 				if ( busy ) {
-					timer = setTimeout( function () {
-						if ( d.body.contains( body ) ) {
-							load( false );
-						}
-					}, 5000 );
+					// Poll the saved install state only (no program is started, nothing is re-drawn)
+					// and reload the page once when the install has finished.
+					var watch = function () {
+						timer = setTimeout( function () {
+							if ( ! d.body.contains( body ) ) {
+								return;
+							}
+							SL.api( 'cli/status', { query: { engine: busy } } ).then( function ( s ) {
+								var st = s.install || {};
+								var box = body.querySelector( '[data-progress="' + busy + '"]' );
+								if ( 'running' !== st.status ) {
+									load( false );
+									return;
+								}
+								if ( box ) {
+									box.querySelector( 'span' ).textContent = st.stage || t( 'Installing…' );
+									box.querySelector( 'i' ).style.width = ( st.pct || 5 ) + '%';
+								}
+								watch();
+							} ).catch( watch );
+						}, 4000 );
+					};
+					watch();
 				}
 			} );
 		}

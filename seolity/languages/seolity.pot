@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: SEOlity 1.0.0\n"
-"POT-Creation-Date: 2026-10-30 04:39+0000\n"
+"POT-Creation-Date: 2026-10-30 05:46+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -472,6 +472,9 @@ msgstr ""
 msgid "In cPanel open “Setup Node.js App” and create an app with the newest Node.js (this installs it for your account), or install Node.js on the server."
 msgstr ""
 
+msgid "Not needed — Codex is installed as a native program"
+msgstr ""
+
 msgid "npm comes with Node.js; reinstall Node.js with npm."
 msgstr ""
 
@@ -486,10 +489,17 @@ msgid "Free up space or ask for a larger plan; shared plans with 1–2 GB of tot
 msgstr ""
 
 #, php-format
-msgid "Available memory: %d MB"
+msgid "Virtual memory per program: %d MB or more"
 msgstr ""
 
 msgid "Unknown"
+msgstr ""
+
+msgid "Unlimited"
+msgstr ""
+
+#, php-format
+msgid "Available memory: %d MB"
 msgstr ""
 
 msgid "The CLI is a Node.js program; hosts that limit processes to a few hundred MB stop it while it answers."
@@ -531,9 +541,6 @@ msgid "Raise memory_limit to 128M or more in cPanel → MultiPHP INI Editor."
 msgstr ""
 
 msgid "PHP time limit"
-msgstr ""
-
-msgid "Unlimited"
 msgstr ""
 
 msgid "can be raised per request"
@@ -589,7 +596,36 @@ msgstr ""
 msgid "An install needs about 1 GB free (package + npm cache)."
 msgstr ""
 
+msgid "Virtual memory per program (inherited from PHP)"
+msgstr ""
+
+msgid "raised to the hard limit for each run"
+msgstr ""
+
+msgid "Codex needs about 1 GB and npm installs need about 2 GB of virtual memory per program. Ask the host to raise the LiteSpeed lsphp “Memory Hard Limit” (or the CloudLinux VMEM limit) for your account."
+msgstr ""
+
+msgid "Installing…"
+msgstr ""
+
 msgid "Installed and signed in — run “Test connection” once to confirm it answers."
+msgstr ""
+
+#, php-format
+msgid "Downloading Codex %1$s (%2$d MB, straight to disk)…"
+msgstr ""
+
+msgid "Checking the file signature (sha512 from the npm registry)…"
+msgstr ""
+
+msgid "Unpacking…"
+msgstr ""
+
+msgid "Testing the installed program…"
+msgstr ""
+
+#, php-format
+msgid "PHP passes a virtual-memory limit of %d MB to every program; Codex needs about 1 GB."
 msgstr ""
 
 msgid "Claude subscription token (claude setup-token)"
@@ -1915,6 +1951,9 @@ msgid "auth.json must be valid JSON (copy the whole file from ~/.codex/auth.json
 msgstr ""
 
 msgid "This level is not available for this AI."
+msgstr ""
+
+msgid "This is not a valid model name."
 msgstr ""
 
 msgid "Enter the full path of the program (for example /opt/alt/alt-nodejs22/root/usr/bin/node)."
@@ -6470,6 +6509,13 @@ msgid "Check AI search now"
 msgstr ""
 
 #, php-format
+msgid "%1$s of %2$s"
+msgstr ""
+
+msgid "AI engines cite you"
+msgstr ""
+
+#, php-format
 msgid "Cited #%s"
 msgstr ""
 
@@ -6602,6 +6648,18 @@ msgstr ""
 msgid "Add a SerpApi key in Settings → Crawler & audits to search Google."
 msgstr ""
 
+msgid "Open analysis"
+msgstr ""
+
+msgid "Why? Analyze"
+msgstr ""
+
+msgid "They rank above you"
+msgstr ""
+
+msgid "You rank above them"
+msgstr ""
+
 msgid "not in top 20"
 msgstr ""
 
@@ -6609,16 +6667,10 @@ msgstr ""
 msgid "Search Console: %s"
 msgstr ""
 
-msgid "Their est. clicks"
-msgstr ""
-
 msgid "no volume data"
 msgstr ""
 
-msgid "Open analysis"
-msgstr ""
-
-msgid "Why? Analyze"
+msgid "Their est. clicks"
 msgstr ""
 
 msgid "Queries their pages probably target (AI)"
@@ -6727,6 +6779,15 @@ msgid "Save login"
 msgstr ""
 
 msgid "Login saved. Now press “Test connection”."
+msgstr ""
+
+msgid "Model"
+msgstr ""
+
+msgid "Choose model"
+msgstr ""
+
+msgid "Model saved. Press “Test connection” to check it."
 msgstr ""
 
 msgid "One command over SSH:"
@@ -9260,10 +9321,6 @@ msgstr ""
 msgid "Merge into the primary article"
 msgstr ""
 
-#, php-format
-msgid "%s words"
-msgstr ""
-
 msgid "same content"
 msgstr ""
 
@@ -9511,9 +9568,6 @@ msgid "Original"
 msgstr ""
 
 msgid "Edit HTML"
-msgstr ""
-
-msgid "Model"
 msgstr ""
 
 msgid "Knowledge"

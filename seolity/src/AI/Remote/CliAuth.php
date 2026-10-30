@@ -238,7 +238,7 @@ final class CliAuth {
 		if ( false !== $cached ) {
 			return '1' === $cached;
 		}
-		$r  = ProcessRunner::run( array( $bin, 'login', '--help' ), '', ProcessRunner::env( array( $bin ) ), get_temp_dir(), 30 );
+		$r  = ProcessRunner::run( array( $bin, 'login', '--help' ), '', ProcessRunner::env( $this->plugin->localcli->path_bins( 'codex', $bin ) ), get_temp_dir(), 30 );
 		$ok = ! is_wp_error( $r ) && false !== strpos( $r['out'] . $r['err'], '--device-auth' );
 		set_transient( $key, $ok ? '1' : '0', DAY_IN_SECONDS );
 		return $ok;
@@ -277,7 +277,7 @@ final class CliAuth {
 		$r    = ProcessRunner::run(
 			array( $bin, 'login', '--device-auth' ),
 			'',
-			ProcessRunner::env( array( $bin, $this->plugin->localcli->node_for( 'codex' ) ), array( 'CODEX_HOME' => $tmp ) ),
+			ProcessRunner::env( $this->plugin->localcli->path_bins( 'codex', $bin ), array( 'CODEX_HOME' => $tmp ) ),
 			$tmp,
 			900,
 			static function ( $out, $err ) use ( $opt, &$seen ) {

@@ -4,7 +4,7 @@ Tags: seo, ai, search console, woocommerce, schema
 Requires at least: 6.2
 Tested up to: 6.6
 Requires PHP: 7.4
-Stable tag: 1.13.0
+Stable tag: 1.13.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -72,6 +72,13 @@ Yes. The interface is fully translated and RTL-native, text analysis understands
 Enable "Delete all data on uninstall" in Settings → Privacy, then delete the plugin.
 
 == Changelog ==
+
+= 1.13.1 =
+* Fix: Codex install on LiteSpeed/CloudLinux hosting no longer ends in a memory limit. Every program PHP starts inherits PHP's per-process virtual-memory limit, and `npm install` needs well over 1 GB for the 430 MB Codex package. Codex is now installed without npm: the official build is streamed from the npm registry straight to disk, checked against the registry's sha512 signature, unpacked and tested (tested at a 1 GB limit: 7 s, 71 MB PHP memory). The native program needs no Node.js. Existing npm installs are used through their native program too.
+* Fix: the AI Engines page no longer reloads itself every few seconds during an install. It polls a light status (no program is started) and shows a progress bar; a failed `--version` check is remembered for 10 minutes; an install killed by the host is reported instead of "running" forever.
+* Soft memory limits are raised to the host's hard limit for every run; diagnostics show the virtual-memory limit and what Codex (about 1 GB) and npm (about 2 GB) need.
+* Choose the model right on the AI Engines page (Codex models come from the installed program, offline). The CLI section left Server & speed.
+* Large horizontal cards: duplicate articles, competitor queries and AI-search visibility.
 
 = 1.13.0 =
 * AI engines — Installation & Diagnostics (Connections): one page to check the server, install or repair Claude Code / Codex, sign in, test and copy a support report; clear status per engine (ready, needs configuration, authentication required, not installed, permission denied, unsupported environment, runtime error) with the cause and the next step.

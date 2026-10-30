@@ -117,3 +117,21 @@ Refresh diagnostics	بررسی دوباره
 Copy diagnostic report	کپی گزارش عیب‌یابی
 Report copied — it contains no passwords or tokens.	گزارش کپی شد — هیچ رمز یا توکنی در آن نیست.
 Diagnostic report	گزارش عیب‌یابی
+Not needed — Codex is installed as a native program	لازم نیست — Codex به‌صورت برنامه مستقل نصب می‌شود
+Virtual memory per program: %d MB or more	حافظه مجازی هر برنامه: %d مگابایت یا بیشتر
+Virtual memory per program (inherited from PHP)	حافظه مجازی هر برنامه (به ارث رسیده از PHP)
+raised to the hard limit for each run	برای هر اجرا تا سقف مجاز بالا برده می‌شود
+Codex needs about 1 GB and npm installs need about 2 GB of virtual memory per program. Ask the host to raise the LiteSpeed lsphp “Memory Hard Limit” (or the CloudLinux VMEM limit) for your account.	Codex حدود ۱ گیگابایت و نصب با npm حدود ۲ گیگابایت حافظه مجازی برای هر برنامه لازم دارد. از هاست بخواهید «Memory Hard Limit» در lsphp لایت‌اسپید (یا سقف VMEM در CloudLinux) را برای حساب شما بالا ببرد.
+Installing…	در حال نصب…
+Downloading Codex %1$s (%2$d MB, straight to disk)…	در حال دانلود Codex %1$s (%2$d مگابایت، مستقیم روی دیسک)…
+Checking the file signature (sha512 from the npm registry)…	بررسی امضای فایل (sha512 از مخزن رسمی npm)…
+Unpacking…	در حال باز کردن فایل…
+Testing the installed program…	آزمایش برنامه نصب‌شده…
+PHP passes a virtual-memory limit of %d MB to every program; Codex needs about 1 GB.	PHP برای هر برنامه سقف حافظه مجازی %d مگابایت می‌گذارد؛ Codex حدود ۱ گیگابایت لازم دارد.
+This is not a valid model name.	این نام مدل معتبر نیست.
+%1$s of %2$s	%1$s از %2$s
+AI engines cite you	موتور هوش مصنوعی از شما نام می‌برند
+They rank above you	رقیب بالاتر از شماست
+You rank above them	شما بالاتر از رقیب هستید
+Choose model	انتخاب مدل
+Model saved. Press “Test connection” to check it.	مدل ذخیره شد. برای بررسی، «آزمایش اتصال» را بزنید.

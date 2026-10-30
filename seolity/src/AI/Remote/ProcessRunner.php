@@ -37,6 +37,57 @@ final class ProcessRunner {
 		return '' === self::blocked();
 	}
 
+	/**
+	 * Virtual-memory limits this PHP process passes on to every program it starts (LiteSpeed's
+	 * lsphp "Memory Soft/Hard Limit" sets RLIMIT_AS; CloudLinux may add its own). Bytes, -1 = none,
+	 * null = unknown.
+	 */
+	public static function limits() {
+		$l   = function_exists( 'posix_getrlimit' ) ? @posix_getrlimit() : false; // phpcs:ignore WordPress.PHP.NoSilencedErrors
+		$val = static function ( $v ) {
+			return null === $v || false === $v ? null : ( 'unlimited' === $v || (float) $v < 0 || (float) $v >= 9e18 ? -1 : (int) $v );
+		};
+		return array(
+			'as_soft'   => is_array( $l ) && isset( $l['soft totalmem'] ) ? $val( $l['soft totalmem'] ) : null,
+			'as_hard'   => is_array( $l ) && isset( $l['hard totalmem'] ) ? $val( $l['hard totalmem'] ) : null,
+			'data_soft' => is_array( $l ) && isset( $l['soft data'] ) ? $val( $l['soft data'] ) : null,
+			'data_hard' => is_array( $l ) && isset( $l['hard data'] ) ? $val( $l['hard data'] ) : null,
+		);
+	}
+
+	/** Usable virtual memory for a child in MB (-1 = unlimited, null = unknown). */
+	public static function vmem_mb() {
+		$l = self::limits();
+		$v = array_filter(
+			array( $l['as_soft'], $l['data_soft'] ),
+			static function ( $x ) {
+				return null !== $x && -1 !== $x;
+			}
+		);
+		if ( null === $l['as_soft'] && null === $l['data_soft'] ) {
+			return null;
+		}
+		return $v ? (int) floor( min( $v ) / 1048576 ) : -1;
+	}
+
+	/** Raise the soft limits to the hard limits (allowed without privileges); children inherit them. */
+	public static function raise_limits() {
+		static $done = false;
+		if ( $done || ! function_exists( 'posix_setrlimit' ) ) {
+			return;
+		}
+		$done = true;
+		$l    = self::limits();
+		$inf  = defined( 'POSIX_RLIMIT_INFINITY' ) ? POSIX_RLIMIT_INFINITY : -1;
+		foreach ( array( 'as' => 'POSIX_RLIMIT_AS', 'data' => 'POSIX_RLIMIT_DATA' ) as $k => $const ) {
+			if ( ! defined( $const ) || null === $l[ $k . '_soft' ] || $l[ $k . '_soft' ] === $l[ $k . '_hard' ] ) {
+				continue;
+			}
+			$hard = -1 === $l[ $k . '_hard' ] ? $inf : $l[ $k . '_hard' ];
+			@posix_setrlimit( constant( $const ), $hard, $hard ); // phpcs:ignore WordPress.PHP.NoSilencedErrors
+		}
+	}
+
 	/** Home folder of the PHP user (getenv('HOME') is empty under many PHP-FPM / lsphp pools). */
 	public static function user_home() {
 		$home = (string) getenv( 'HOME' );
@@ -130,6 +181,7 @@ final class ProcessRunner {
 		if ( function_exists( 'set_time_limit' ) ) {
 			@set_time_limit( $timeout + 60 ); // phpcs:ignore WordPress.PHP.NoSilencedErrors
 		}
+		self::raise_limits();
 		$start = microtime( true );
 		$proc  = @proc_open( $cmd, array( 0 => array( 'pipe', 'r' ), 1 => array( 'pipe', 'w' ), 2 => array( 'pipe', 'w' ) ), $pipes, $cwd, $env ); // phpcs:ignore
 		if ( ! is_resource( $proc ) ) {
