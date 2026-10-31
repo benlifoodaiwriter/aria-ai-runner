@@ -262,6 +262,9 @@ final class LocalCli {
 			}
 			// Codex: one login folder shared by all runs, so refreshed tokens are never lost.
 			$lock = $auth->lock( 'codex' );
+			if ( false === $lock ) {
+				return CliErrors::error( 'CLI_BUSY', '', array(), 'codex' );
+			}
 			$home = $auth->codex_before();
 			if ( is_wp_error( $home ) ) {
 				return $home;

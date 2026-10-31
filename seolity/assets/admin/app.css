@@ -774,7 +774,7 @@ button.sl-segcard { cursor: pointer; }
 .sl-eng__steps li.is-now span { background: var(--c); color: #fff; }
 .sl-eng__why { padding: 12px 14px; border-radius: 12px; background: color-mix(in srgb, var(--c) 9%, transparent); }
 .sl-eng__why p { margin: 4px 0 0; font-size: 13px; line-height: 1.8; }
-.sl-eng__metrics { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.sl-eng__metrics { grid-template-columns: repeat(5, minmax(0, 1fr)); }
 .sl-eng__metrics .sl-mapcard__m b { font-size: 15px; overflow-wrap: anywhere; }
 .sl-eng__cmd { display: grid; gap: 6px; font-size: 13px; }
 .sl-eng__cmd code { padding: 8px 10px; border-radius: 8px; background: var(--sl-surface-2); overflow-wrap: anywhere; }

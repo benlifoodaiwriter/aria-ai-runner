@@ -4,7 +4,7 @@ Tags: seo, ai, search console, woocommerce, schema
 Requires at least: 6.2
 Tested up to: 6.6
 Requires PHP: 7.4
-Stable tag: 1.13.1
+Stable tag: 1.13.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -72,6 +72,12 @@ Yes. The interface is fully translated and RTL-native, text analysis understands
 Enable "Delete all data on uninstall" in Settings → Privacy, then delete the plugin.
 
 == Changelog ==
+
+= 1.13.2 =
+* Fix: AI answers, GitHub results and competitor analyses no longer wait until they expire after a CLI was installed. "Auto" now answers with this server's Claude Code / Codex only after "Test connection" has passed here with the current login; until then every request goes to the GitHub runner as before. If a tested local CLI later fails for a server reason (memory limit, blocked network, timeout), that request and the next ones go to GitHub automatically; a login problem is shown instead.
+* Fix: Codex runs no longer wait on each other without limit (a blocked lock is not counted by PHP's time limit and could freeze every background worker); a busy CLI now answers "busy" after 20 s. The Codex sign-in no longer holds that lock while waiting for you.
+* Fix: when Codex refreshes its login on this server, the copy used by the GitHub runner is updated too (OpenAI revokes the previous refresh token).
+* The engine cards show where requests are answered (this server or GitHub runner); installs report progress to the queue so they are not mistaken for dead workers.
 
 = 1.13.1 =
 * Fix: Codex install on LiteSpeed/CloudLinux hosting no longer ends in a memory limit. Every program PHP starts inherits PHP's per-process virtual-memory limit, and `npm install` needs well over 1 GB for the 430 MB Codex package. Codex is now installed without npm: the official build is streamed from the npm registry straight to disk, checked against the registry's sha512 signature, unpacked and tested (tested at a 1 GB limit: 7 s, 71 MB PHP memory). The native program needs no Node.js. Existing npm installs are used through their native program too.

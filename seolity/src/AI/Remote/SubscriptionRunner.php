@@ -142,7 +142,10 @@ final class SubscriptionRunner {
 		if ( in_array( $m, array( 'cli', 'runner' ), true ) ) {
 			return $m;
 		}
-		if ( $this->plugin->localcli->available( $engine ) ) {
+		// "Auto" answers with this server's CLI only after it has passed a real test here with the
+		// current login. An installed but untested CLI (memory limit, blocked network, expired login)
+		// must never swallow requests that the GitHub runner would answer.
+		if ( $this->plugin->localcli->available( $engine ) && $this->plugin->cliauth->verified( $engine ) ) {
 			return 'cli';
 		}
 		return 'direct' === $this->plugin->gateway->mode() ? 'cli' : 'runner';
@@ -225,7 +228,14 @@ final class SubscriptionRunner {
 		// The official CLI on this server answers; the request never touches GitHub.
 		if ( 'cli' === $this->method( $engine ) && $this->plugin->localcli->available( $engine ) ) {
 			$this->route = 'local';
-			return $this->plugin->localcli->complete( $engine, $model, $system, $prompt, $this->raw_secret( self::ENGINE_SECRETS[ $engine ][1] ) );
+			$res         = $this->plugin->localcli->complete( $engine, $model, $system, $prompt, $this->raw_secret( self::ENGINE_SECRETS[ $engine ][1] ) );
+			// Auto mode: when the local CLI fails for a server reason (not the login), this request
+			// and the next ones go to the GitHub runner instead (the failure un-verifies the CLI).
+			$auto = ! in_array( (string) $this->plugin->settings->get( 'sub_method_' . $engine ), array( 'cli', 'runner' ), true ) && 'direct' !== $this->plugin->gateway->mode();
+			$data = is_wp_error( $res ) ? (array) $res->get_error_data() : array();
+			if ( ! $auto || ! is_wp_error( $res ) || 'auth_required' === ( isset( $data['group'] ) ? $data['group'] : '' ) || ! GitHubClient::valid_repo( $this->repo() ) || ! $this->plugin->github->has_token() ) {
+				return $res;
+			}
 		}
 		if ( 'cli' === $this->method( $engine ) ) {
 			$this->route = 'local';

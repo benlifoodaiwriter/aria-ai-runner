@@ -717,6 +717,7 @@ final class I18n {
 			'From SSH' => __( 'From SSH', 'seolity' ),
 			'None' => __( 'None', 'seolity' ),
 			'Last successful connection' => __( 'Last successful connection', 'seolity' ),
+			'Requests answered by' => __( 'Requests answered by', 'seolity' ),
 			'Last result' => __( 'Last result', 'seolity' ),
 			'OK' => __( 'OK', 'seolity' ),
 			'Detected paths (administrators only)' => __( 'Detected paths (administrators only)', 'seolity' ),

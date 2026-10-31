@@ -39,6 +39,7 @@ final class CliErrors {
 		'EXECUTION_TIMEOUT'      => array( 504, 'runtime_error' ),
 		'INSTALL_BLOCKED'        => array( 424, 'unsupported' ),
 		'DISK_FULL'              => array( 507, 'unsupported' ),
+		'CLI_BUSY'               => array( 503, 'runtime_error' ),
 		'RUNTIME_ERROR'          => array( 500, 'runtime_error' ),
 	);
 
@@ -80,6 +81,7 @@ final class CliErrors {
 			'EXECUTION_TIMEOUT'      => __( 'The AI process exceeded its time limit.', 'seolity' ),
 			'INSTALL_BLOCKED'        => __( 'This server cannot download packages from npm.', 'seolity' ),
 			'DISK_FULL'              => __( 'There is not enough disk space or quota.', 'seolity' ),
+			'CLI_BUSY'               => __( 'Another request is still using this CLI. Try again in a moment.', 'seolity' ),
 			'RUNTIME_ERROR'          => __( 'The CLI stopped with an error.', 'seolity' ),
 		);
 		return isset( $m[ $code ] ) ? $m[ $code ] : $m['RUNTIME_ERROR'];

@@ -214,6 +214,7 @@ final class CliSetup {
 	private function install_codex( $aid ) {
 		$log  = function ( $msg, $pct ) use ( $aid ) {
 			update_option( self::LOG . '_codex', array( 'status' => 'running', 'at' => gmdate( 'c' ), 'stage' => $msg, 'pct' => $pct ), false );
+			$this->plugin->queue->heartbeat( $pct ); // Keeps the queue from treating the install as a dead worker.
 			$this->plugin->activity->step( $aid, $msg, $pct );
 		};
 		$res  = ( new CodexInstaller( $this->plugin ) )->install( $log );
@@ -378,6 +379,7 @@ final class CliSetup {
 			'last_at'    => $st['at'],
 			'install'    => $this->install_state( $engine ),
 			'model'      => (string) $this->plugin->settings->get( 'ai_model_sub_' . $engine ),
+			'route'      => $this->plugin->subscription->method( $engine ),
 			'login'      => 'codex' === $engine ? $auth->login_state( 'codex' ) : null,
 			'device'     => false,
 			'status'     => 'ready',
@@ -434,7 +436,7 @@ final class CliSetup {
 		if ( 'ok' !== $st['state'] || $st['fp'] !== $auth->fingerprint( $engine ) ) {
 			$out['status']  = 'needs_config';
 			$out['code']    = 'NOT_TESTED';
-			$out['message'] = __( 'Installed and signed in — run “Test connection” once to confirm it answers.', 'seolity' );
+			$out['message'] = __( 'Installed and signed in — run “Test connection” once. Until the test passes, AI requests keep going through the GitHub runner.', 'seolity' );
 			$out['action']  = '';
 		}
 		return $out;

@@ -149,6 +149,7 @@
 				metric( t( 'CLI version' ), e.version || '—', e.version ? 'good' : '' ),
 				metric( t( 'Login' ), e.logged_in ? ( 'cli' === e.auth_mode ? t( 'From SSH' ) : t( 'Saved' ) ) : t( 'None' ), e.logged_in ? '' : 'warn' ),
 				metric( t( 'Last successful connection' ), e.last_ok ? SL.date( e.last_ok ) : '—' ),
+				metric( t( 'Requests answered by' ), 'cli' === e.route ? t( 'This server' ) : t( 'GitHub runner' ), 'cli' === e.route ? 'good' : '' ),
 				metric( t( 'Last result' ), e.last_code || ( 'ok' === e.last_state ? t( 'OK' ) : '—' ), e.last_code ? 'bad' : '' )
 			),
 			h( 'details', { class: 'sl-eng__paths' }, h( 'summary', { text: t( 'Detected paths (administrators only)' ) } ),

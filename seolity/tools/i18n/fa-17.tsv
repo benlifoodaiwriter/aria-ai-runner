@@ -135,3 +135,8 @@ They rank above you	رقیب بالاتر از شماست
 You rank above them	شما بالاتر از رقیب هستید
 Choose model	انتخاب مدل
 Model saved. Press “Test connection” to check it.	مدل ذخیره شد. برای بررسی، «آزمایش اتصال» را بزنید.
+Another request is still using this CLI. Try again in a moment.	درخواست دیگری هنوز از این ابزار استفاده می‌کند. کمی بعد دوباره امتحان کنید.
+Installed and signed in — run “Test connection” once. Until the test passes, AI requests keep going through the GitHub runner.	نصب و وارد شده — یک بار «آزمایش اتصال» را بزنید. تا وقتی آزمایش موفق نشده، درخواست‌های هوش مصنوعی از مسیر گیت‌هاب پاسخ داده می‌شوند.
+Requests answered by	پاسخ درخواست‌ها از
+This server	همین سرور
+GitHub runner	اجراکننده گیت‌هاب

@@ -189,6 +189,22 @@ final class CliAuth {
 		$old  = self::parse( $this->secret( 'codex' ) );
 		if ( $norm !== $this->secret( 'codex' ) && ( ! $old || self::refreshed( $file ) >= self::refreshed( $old ) || self::account( $file ) !== self::account( $old ) ) ) {
 			$this->plugin->settings->set_secret( 'codex_auth_json', $norm );
+			$this->sync_runner();
+		}
+	}
+
+	/**
+	 * OpenAI rotates the refresh token on every refresh: the old one is revoked. When the login
+	 * changed here, the copy the GitHub runner uses must change too, or the runner's next request
+	 * fails with token_revoked.
+	 */
+	private function sync_runner() {
+		if ( method_exists( $this->plugin->subscription, 'sync_secret' ) ) {
+			try {
+				$this->plugin->subscription->sync_secret( 'codex_auth_json' );
+			} catch ( \Throwable $e ) {
+				unset( $e ); // The local login is saved either way; the runner copy is retried on the next save.
+			}
 		}
 	}
 
@@ -199,13 +215,29 @@ final class CliAuth {
 	}
 
 	/** Exclusive lock around Codex runs: two processes refreshing one token at once revoke it. */
-	public function lock( $engine ) {
+	public function lock( $engine, $wait = 20 ) {
 		$dir = ProcessRunner::private_dir( 'locks' );
 		$fh  = @fopen( $dir . '/' . $engine . '.lock', 'c' ); // phpcs:ignore
-		if ( $fh ) {
-			@flock( $fh, LOCK_EX ); // phpcs:ignore WordPress.PHP.NoSilencedErrors
+		if ( ! $fh ) {
+			return null;
 		}
-		return $fh;
+		// Never wait without a limit: a blocked flock() is not counted by PHP's time limit, so a
+		// stuck holder would freeze every worker behind it.
+		$until = microtime( true ) + $wait;
+		do {
+			if ( @flock( $fh, LOCK_EX | LOCK_NB ) ) { // phpcs:ignore WordPress.PHP.NoSilencedErrors
+				return $fh;
+			}
+			usleep( 250000 );
+		} while ( microtime( true ) < $until );
+		fclose( $fh ); // phpcs:ignore
+		return false;
+	}
+
+	/** The CLI answered a real request on this server with the login that is saved now. */
+	public function verified( $engine ) {
+		$s = $this->state( $engine );
+		return 'ok' === $s['state'] && '' !== $s['fp'] && $s['fp'] === $this->fingerprint( $engine );
 	}
 
 	public function unlock( $fh ) {
@@ -267,7 +299,7 @@ final class CliAuth {
 	public function run_login( $engine ) {
 		$bin  = $this->plugin->localcli->binary( 'codex' );
 		$home = $this->codex_home();
-		$lock = $this->lock( 'codex' );
+		$lock = null;
 		$tmp  = $home . '/login-' . wp_generate_password( 8, false, false );
 		wp_mkdir_p( $tmp );
 		// Sign in into a fresh folder: a failed attempt never destroys the login that still works.
@@ -292,10 +324,13 @@ final class CliAuth {
 		);
 		$ok = ! is_wp_error( $r ) && 0 === $r['code'] && self::parse( is_file( $tmp . '/auth.json' ) ? (string) file_get_contents( $tmp . '/auth.json' ) : '' ); // phpcs:ignore
 		if ( $ok ) {
+			// Lock only for the short file swap — never while waiting for the user to approve.
+			$lock = $this->lock( 'codex', 60 );
 			ProcessRunner::write_secret( $home . '/auth.json', (string) file_get_contents( $tmp . '/auth.json' ) ); // phpcs:ignore
 			$this->plugin->settings->update( array( 'cli_auth_codex' => 'plugin' ) );
 			$this->plugin->settings->set_secret( 'codex_auth_json', (string) wp_json_encode( self::parse( (string) file_get_contents( $tmp . '/auth.json' ) ), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ) ); // phpcs:ignore
 			$this->forget( 'codex' );
+			$this->sync_runner();
 			update_option( $opt, array( 'status' => 'done', 'at' => gmdate( 'c' ) ), false );
 		} else {
 			$code = is_wp_error( $r ) ? $r->get_error_data()['cli_code'] : CliErrors::classify( $r );
