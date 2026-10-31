@@ -1459,7 +1459,7 @@ final class Router {
 			return $p->githubhub->disconnect();
 		} );
 		$this->route( 'POST', '/github/setup-all', 'manage', function ( Req $r ) use ( $p ) {
-			return $p->githubhub->setup_all( self::str( $r, 'repo' ), array( 'runner' => (bool) $r->get_param( 'runner' ), 'knowledge' => (bool) $r->get_param( 'knowledge' ), 'storage' => (bool) $r->get_param( 'storage' ) ), (bool) $r->get_param( 'share_key' ) );
+			return $p->githubhub->setup_all( self::str( $r, 'repo' ), array( 'runner' => (bool) $r->get_param( 'runner' ), 'knowledge' => (bool) $r->get_param( 'knowledge' ), 'storage' => (bool) $r->get_param( 'storage' ) ), (bool) $r->get_param( 'share_key' ), self::str( $r, 'data_repo' ) );
 		} );
 		$this->route( 'POST', '/github/runner', 'manage', function ( Req $r ) use ( $p ) {
 			return $p->githubhub->setup_runner( self::str( $r, 'repo' ) );

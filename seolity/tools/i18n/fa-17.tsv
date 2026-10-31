@@ -140,3 +140,15 @@ Installed and signed in — run “Test connection” once. Until the test passe
 Requests answered by	پاسخ درخواست‌ها از
 This server	همین سرور
 GitHub runner	اجراکننده گیت‌هاب
+Enter the runner repository as owner/name (it will be created as a public repository if it does not exist — GitHub Actions minutes are free there; requests are encrypted).	مخزن اجراکننده را به شکل owner/name وارد کنید (اگر وجود نداشته باشد، عمومی ساخته می‌شود — دقیقه‌های GitHub Actions آنجا رایگان است و درخواست‌ها رمزنگاری می‌شوند).
+Runner repository visibility	عمومی یا خصوصی بودن مخزن اجراکننده
+Private, because your knowledge base or data archive is in the same repository. Private repositories use your GitHub Actions minutes: if a payment fails or the spending limit is reached, GitHub does not start the jobs. Move the data to its own private repository (GitHub & data) and then make the runner public.	خصوصی مانده، چون پایگاه دانش یا بایگانی داده شما در همین مخزن است. مخزن خصوصی از دقیقه‌های پولی GitHub Actions استفاده می‌کند: اگر پرداخت ناموفق باشد یا سقف هزینه پر شود، گیت‌هاب کارها را اجرا نمی‌کند. داده‌ها را به مخزن خصوصی جداگانه ببرید («گیت‌هاب و داده») و بعد اجراکننده را عمومی کنید.
+Private: its jobs use your GitHub Actions minutes, and GitHub does not start them when a payment fails or the spending limit is reached. Press “Install / update runner” to make it public (free minutes), or change it on GitHub → Settings → General → Change visibility.	خصوصی است: کارهایش از دقیقه‌های پولی GitHub Actions استفاده می‌کنند و اگر پرداخت ناموفق باشد یا سقف هزینه پر شود، گیت‌هاب آن‌ها را اجرا نمی‌کند. «نصب / به‌روزرسانی اجراکننده» را بزنید تا عمومی شود (دقیقه رایگان)، یا در گیت‌هاب از Settings ← General ← Change visibility تغییرش دهید.
+Runner repository	مخزن اجراکننده
+public: free GitHub Actions minutes; requests and answers are encrypted, logins stay in hidden Secrets	عمومی: دقیقه رایگان GitHub Actions؛ درخواست‌ها و پاسخ‌ها رمزنگاری می‌شوند و ورودها در Secrets پنهان می‌مانند
+The knowledge base needs a private repository (the public one is only for the AI runner). Choose another name.	پایگاه دانش باید در مخزن خصوصی باشد (مخزن عمومی فقط برای اجراکننده است). نام دیگری انتخاب کنید.
+The runner and the data need two different repositories: the runner is public, the data stays private.	اجراکننده و داده‌ها به دو مخزن جدا نیاز دارند: اجراکننده عمومی است و داده‌ها خصوصی می‌مانند.
+AI runner — public repository (free GitHub Actions minutes; requests are encrypted, logins stay in hidden Secrets)	اجراکننده هوش مصنوعی — مخزن عمومی (دقیقه رایگان GitHub Actions؛ درخواست‌ها رمزنگاری می‌شوند و ورودها در Secrets پنهان می‌مانند)
+Own knowledge base — private data repository	پایگاه دانش اختصاصی — مخزن خصوصی داده
+Data archive — private data repository	بایگانی داده — مخزن خصوصی داده
+Runner repository (public, free GitHub minutes), runner, workflow, queue branch and secrets	مخزن اجراکننده (عمومی، دقیقه رایگان گیت‌هاب)، اجراکننده، ورک‌فلو، شاخه صف و Secrets

@@ -233,14 +233,19 @@ final class GitHubClient {
 	}
 
 	/** Create a private repository (user or organization) with an initial commit. */
-	public function create_repo( $repo, $description = '' ) {
+	public function create_repo( $repo, $description = '', $private = true ) {
 		list( $owner, $name ) = explode( '/', $repo, 2 );
 		$login = $this->login();
 		if ( is_wp_error( $login ) ) {
 			return $login;
 		}
 		$path = 0 === strcasecmp( $owner, $login ) ? '/user/repos' : '/orgs/' . rawurlencode( $owner ) . '/repos';
-		return $this->request( 'POST', $path, array( 'name' => $name, 'private' => true, 'auto_init' => true, 'description' => $description ) );
+		return $this->request( 'POST', $path, array( 'name' => $name, 'private' => (bool) $private, 'auto_init' => true, 'description' => $description ) );
+	}
+
+	/** Make a repository public or private (needs the token's "Administration: write" permission). */
+	public function set_visibility( $repo, $private ) {
+		return $this->request( 'PATCH', '/repos/' . $repo, array( 'private' => (bool) $private ) );
 	}
 
 	/**
@@ -266,12 +271,12 @@ final class GitHubClient {
 	}
 
 	/** Create the repository when it does not exist yet and wait until it is readable. */
-	public function ensure_repo( $repo, $description ) {
+	public function ensure_repo( $repo, $description, $private = true ) {
 		$info = $this->repo( $repo );
 		if ( ! is_wp_error( $info ) ) {
 			return $info;
 		}
-		$created = $this->create_repo( $repo, $description );
+		$created = $this->create_repo( $repo, $description, $private );
 		if ( is_wp_error( $created ) ) {
 			return $created;
 		}

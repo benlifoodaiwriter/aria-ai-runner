@@ -4,7 +4,7 @@ Tags: seo, ai, search console, woocommerce, schema
 Requires at least: 6.2
 Tested up to: 6.6
 Requires PHP: 7.4
-Stable tag: 1.13.2
+Stable tag: 1.13.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -72,6 +72,11 @@ Yes. The interface is fully translated and RTL-native, text analysis understands
 Enable "Delete all data on uninstall" in Settings → Privacy, then delete the plugin.
 
 == Changelog ==
+
+= 1.13.3 =
+* The AI runner repository on GitHub is now PUBLIC, and the knowledge base and data archive go to a separate PRIVATE repository. Why: GitHub Actions minutes are free for public repositories, while a private repository uses the account's paid quota — and when a payment fails or the spending limit is reached, GitHub does not start the jobs at all ("The job was not started because recent account payments have failed…"), so no AI answer ever came back. The public runner only holds its code and AES-256-GCM encrypted requests and answers; subscription logins and keys stay in GitHub Secrets, which are hidden in public repositories, and run logs print no site content.
+* New installs: one click creates `<you>/seolity-ai-runner` (public) and `<you>/seolity-ai` (private, knowledge + data). Existing private runners are made public on the next "Install / update runner" — but only when they hold no knowledge or data: a repository with the seolity-data branch, the knowledge folder, or one that cannot be checked, always stays private. Knowledge and data are refused in a public repository.
+* Status and guides explain the choice; a private runner shows a warning instead of an error.
 
 = 1.13.2 =
 * Fix: AI answers, GitHub results and competitor analyses no longer wait until they expire after a CLI was installed. "Auto" now answers with this server's Claude Code / Codex only after "Test connection" has passed here with the current login; until then every request goes to the GitHub runner as before. If a tested local CLI later fails for a server reason (memory limit, blocked network, timeout), that request and the next ones go to GitHub automatically; a login problem is shown instead.

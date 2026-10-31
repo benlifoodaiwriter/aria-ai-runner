@@ -734,7 +734,7 @@ final class SubscriptionRunner {
 	public function setup() {
 		$repo = $this->repo();
 		if ( ! GitHubClient::valid_repo( $repo ) ) {
-			return new \WP_Error( 'seolity_sub', __( 'Enter the runner repository as owner/name (it will be created as a private repository if it does not exist).', 'seolity' ), array( 'status' => 400 ) );
+			return new \WP_Error( 'seolity_sub', __( 'Enter the runner repository as owner/name (it will be created as a public repository if it does not exist — GitHub Actions minutes are free there; requests are encrypted).', 'seolity' ), array( 'status' => 400 ) );
 		}
 		if ( ! $this->plugin->github->has_token() ) {
 			return new \WP_Error( 'seolity_sub', __( 'Add a GitHub token first (Settings → GitHub).', 'seolity' ), array( 'status' => 400 ) );
@@ -744,7 +744,11 @@ final class SubscriptionRunner {
 		}
 		$info = $this->plugin->github->repo( $repo );
 		if ( is_wp_error( $info ) ) {
-			$created = $this->plugin->github->create_repo( $repo, 'SEOlity subscription AI runner (private)' );
+			// Public on purpose: GitHub Actions minutes are free for public repositories, so the runner
+			// keeps working without a paid plan or a payment method. Everything in it is safe to show:
+			// the workflow and runner code, and requests/answers that are AES-256-GCM encrypted; logins
+			// and keys live in GitHub Secrets, which stay hidden in public repositories.
+			$created = $this->plugin->github->create_repo( $repo, 'SEOlity subscription AI runner (public: free GitHub Actions minutes; requests are encrypted, logins are in hidden Secrets)', false );
 			if ( is_wp_error( $created ) ) {
 				return $created;
 			}
@@ -754,8 +758,8 @@ final class SubscriptionRunner {
 				return $info;
 			}
 		}
-		if ( empty( $info['private'] ) ) {
-			return new \WP_Error( 'seolity_sub', __( 'The runner repository must be private.', 'seolity' ), array( 'status' => 400 ) );
+		if ( ! empty( $info['private'] ) ) {
+			$this->make_public( $repo );
 		}
 		if ( '' === $this->secret() ) {
 			$this->plugin->settings->set_secret( 'sub_shared_secret', bin2hex( random_bytes( 32 ) ) );
@@ -895,7 +899,7 @@ final class SubscriptionRunner {
 
 		// 4–6. Repository, files, branch and secrets (SubscriptionRunner::setup does them in order).
 		$setup = $this->setup();
-		if ( ! $step( 'install', __( 'Private repository, runner, workflow, queue branch and secrets', 'seolity' ), is_wp_error( $setup ) ? $setup : true, 'https://github.com/' . $repo ) ) {
+		if ( ! $step( 'install', __( 'Runner repository (public, free GitHub minutes), runner, workflow, queue branch and secrets', 'seolity' ), is_wp_error( $setup ) ? $setup : true, 'https://github.com/' . $repo ) ) {
 			return $done( false );
 		}
 
@@ -934,6 +938,56 @@ final class SubscriptionRunner {
 	/**
 	 * Read-only verification from GitHub's side (what is really deployed).
 	 */
+	/**
+	 * An older private runner becomes public so its jobs run on free GitHub Actions minutes —
+	 * unless it also holds unencrypted knowledge or data (then it stays private). If the token
+	 * may not change visibility, it keeps working as a private repository (billed minutes).
+	 *
+	 * @return string 'public' | 'kept_private_data' | 'kept_private_token'
+	 */
+	public function make_public( $repo ) {
+		if ( $this->holds_data( $repo ) ) {
+			$this->set_state( array( 'visibility_note' => 'data' ) );
+			return 'kept_private_data';
+		}
+		$vis = $this->plugin->github->set_visibility( $repo, false );
+		$this->set_state( array( 'visibility_note' => is_wp_error( $vis ) ? $vis->get_error_message() : '' ) );
+		return is_wp_error( $vis ) ? 'kept_private_token' : 'public';
+	}
+
+	/**
+	 * Does this repository also hold the knowledge base or the data archive? Those are not
+	 * encrypted, so such a repository must stay private.
+	 */
+	public function holds_data( $repo ) {
+		$s      = $this->plugin->settings;
+		$own_kb = (string) $s->get( 'kb_repo' ) === $repo && ! $this->plugin->githubhub->shared_knowledge();
+		if ( $own_kb || ( (string) $s->get( 'storage_repo' ) === $repo && $s->get( 'storage_enabled' ) ) ) {
+			return true;
+		}
+		// Settings may point elsewhere now, but older data can still be inside: look at the repository.
+		// Fail safe: only a definite "404 not found" counts as absent; any other answer (network
+		// error, missing permission) keeps the repository private.
+		$gh     = $this->plugin->github;
+		$absent = static function ( $r ) {
+			return is_wp_error( $r ) && 404 === (int) ( (array) $r->get_error_data() + array( 'status' => 0 ) )['status'];
+		};
+		if ( ! $absent( $gh->request( 'GET', '/repos/' . $repo . '/branches/seolity-data' ) ) ) {
+			return true;
+		}
+		$info = $gh->repo( $repo );
+		if ( is_wp_error( $info ) || empty( $info['default_branch'] ) ) {
+			return true;
+		}
+		$path = trim( (string) $s->get( 'storage_path' ), '/' );
+		foreach ( array( 'seolity/knowledge', '' !== $path ? $path : 'seolity-data' ) as $p ) {
+			if ( ! $absent( $gh->request( 'GET', '/repos/' . $repo . '/contents/' . $p . '?ref=' . rawurlencode( $info['default_branch'] ) ) ) ) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	public function verify() {
 		$repo = $this->repo();
 		$out  = array( 'repo' => $repo, 'checked' => gmdate( 'c' ) );
@@ -948,7 +1002,7 @@ final class SubscriptionRunner {
 		$out['workflow']    = is_wp_error( $out['workflow'] ) ? 'unknown' : $out['workflow'];
 		$names              = $info['exists'] ? $this->plugin->github->secret_names( $repo ) : array();
 		$out['secrets']     = is_wp_error( $names ) ? null : $names;
-		$out['deployed']    = $info['exists'] && $info['private'] && 'active' === $out['workflow'] && is_array( $out['secrets'] ) && in_array( 'SEOLITY_SHARED_SECRET', $out['secrets'], true );
+		$out['deployed']    = $info['exists'] && 'active' === $out['workflow'] && is_array( $out['secrets'] ) && in_array( 'SEOLITY_SHARED_SECRET', $out['secrets'], true );
 		$out['engines']     = array(
 			'claude' => is_array( $out['secrets'] ) && in_array( 'CLAUDE_CODE_OAUTH_TOKEN', $out['secrets'], true ),
 			'codex'  => is_array( $out['secrets'] ) && in_array( 'CODEX_AUTH_JSON', $out['secrets'], true ),
@@ -995,14 +1049,17 @@ final class SubscriptionRunner {
 		}
 
 		$repo = $this->plugin->github->inspect( $this->repo() );
+		if ( $repo['valid'] && $repo['exists'] && $repo['private'] && $this->holds_data( $this->repo() ) ) {
+			$add( 'repo_visibility', 'warn', __( 'Runner repository visibility', 'seolity' ), __( 'Private, because your knowledge base or data archive is in the same repository. Private repositories use your GitHub Actions minutes: if a payment fails or the spending limit is reached, GitHub does not start the jobs. Move the data to its own private repository (GitHub & data) and then make the runner public.', 'seolity' ), 'runner' );
+		} elseif ( $repo['valid'] && $repo['exists'] && $repo['private'] ) {
+			$add( 'repo_visibility', 'warn', __( 'Runner repository visibility', 'seolity' ), __( 'Private: its jobs use your GitHub Actions minutes, and GitHub does not start them when a payment fails or the spending limit is reached. Press “Install / update runner” to make it public (free minutes), or change it on GitHub → Settings → General → Change visibility.', 'seolity' ), 'runner' );
+		}
 		if ( ! $repo['valid'] || ! $repo['exists'] ) {
-			$add( 'repo', 'fail', __( 'Private runner repository', 'seolity' ), __( 'Not created yet — one click creates it with everything inside.', 'seolity' ), 'runner' );
-		} elseif ( ! $repo['private'] ) {
-			$add( 'repo', 'fail', __( 'Private runner repository', 'seolity' ), __( 'The repository is PUBLIC. Make it private on GitHub (Settings → General → Danger Zone → Change visibility).', 'seolity' ), 'runner' );
+			$add( 'repo', 'fail', __( 'Runner repository', 'seolity' ), __( 'Not created yet — one click creates it with everything inside.', 'seolity' ), 'runner' );
 		} elseif ( empty( $state['setup'] ) || ( isset( $state['repo'] ) && $state['repo'] !== $this->repo() ) ) {
-			$add( 'repo', 'warn', __( 'Private runner repository', 'seolity' ), __( 'The repository exists but the runner is not installed yet.', 'seolity' ), 'runner' );
+			$add( 'repo', 'warn', __( 'Runner repository', 'seolity' ), __( 'The repository exists but the runner is not installed yet.', 'seolity' ), 'runner' );
 		} else {
-			$add( 'repo', 'ok', __( 'Private runner repository', 'seolity' ), $this->repo() . ( self::files_hash() === ( isset( $state['files_hash'] ) ? $state['files_hash'] : '' ) ? '' : ' — ' . __( 'runner files will be updated on the next request', 'seolity' ) ) );
+			$add( 'repo', 'ok', __( 'Runner repository', 'seolity' ), $this->repo() . ( $repo['private'] ? '' : ' — ' . __( 'public: free GitHub Actions minutes; requests and answers are encrypted, logins stay in hidden Secrets', 'seolity' ) ) . ( self::files_hash() === ( isset( $state['files_hash'] ) ? $state['files_hash'] : '' ) ? '' : ' — ' . __( 'runner files will be updated on the next request', 'seolity' ) ) );
 		}
 
 		$cred = self::ENGINE_SECRETS[ $engine ][1];

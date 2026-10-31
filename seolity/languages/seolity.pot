@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: SEOlity 1.0.0\n"
-"POT-Creation-Date: 2026-10-31 10:52+0000\n"
+"POT-Creation-Date: 2026-10-31 14:57+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -674,16 +674,13 @@ msgstr ""
 msgid "Your AI subscription usage limit was reached. Try again later or switch provider."
 msgstr ""
 
-msgid "Enter the runner repository as owner/name (it will be created as a private repository if it does not exist)."
+msgid "Enter the runner repository as owner/name (it will be created as a public repository if it does not exist — GitHub Actions minutes are free there; requests are encrypted)."
 msgstr ""
 
 msgid "Add a GitHub token first (Settings → GitHub)."
 msgstr ""
 
 msgid "The PHP OpenSSL extension is required."
-msgstr ""
-
-msgid "The runner repository must be private."
 msgstr ""
 
 msgid "This is not the whole auth.json file. Copy everything from { to }."
@@ -735,7 +732,7 @@ msgstr ""
 msgid "Repository must look like owner/name."
 msgstr ""
 
-msgid "Private repository, runner, workflow, queue branch and secrets"
+msgid "Runner repository (public, free GitHub minutes), runner, workflow, queue branch and secrets"
 msgstr ""
 
 msgid "GitHub Actions enabled"
@@ -780,16 +777,25 @@ msgstr ""
 msgid "Signed in as @%s"
 msgstr ""
 
-msgid "Private runner repository"
+msgid "Runner repository visibility"
+msgstr ""
+
+msgid "Private, because your knowledge base or data archive is in the same repository. Private repositories use your GitHub Actions minutes: if a payment fails or the spending limit is reached, GitHub does not start the jobs. Move the data to its own private repository (GitHub & data) and then make the runner public."
+msgstr ""
+
+msgid "Private: its jobs use your GitHub Actions minutes, and GitHub does not start them when a payment fails or the spending limit is reached. Press “Install / update runner” to make it public (free minutes), or change it on GitHub → Settings → General → Change visibility."
+msgstr ""
+
+msgid "Runner repository"
 msgstr ""
 
 msgid "Not created yet — one click creates it with everything inside."
 msgstr ""
 
-msgid "The repository is PUBLIC. Make it private on GitHub (Settings → General → Danger Zone → Change visibility)."
+msgid "The repository exists but the runner is not installed yet."
 msgstr ""
 
-msgid "The repository exists but the runner is not installed yet."
+msgid "public: free GitHub Actions minutes; requests and answers are encrypted, logins stay in hidden Secrets"
 msgstr ""
 
 msgid "runner files will be updated on the next request"
@@ -4525,6 +4531,9 @@ msgstr ""
 msgid "Connect your GitHub account first (step 1)."
 msgstr ""
 
+msgid "The knowledge base needs a private repository (the public one is only for the AI runner). Choose another name."
+msgstr ""
+
 msgid "Create your own knowledge repository first."
 msgstr ""
 
@@ -4540,19 +4549,16 @@ msgstr ""
 msgid "The shared knowledge base is updated by SEOlity. Create your own knowledge repository to run the builder yourself."
 msgstr ""
 
-msgid "Private repository"
+msgid "The runner and the data need two different repositories: the runner is public, the data stays private."
 msgstr ""
 
-msgid "AI runner (workflow, queue branch, secrets)"
+msgid "AI runner — public repository (free GitHub Actions minutes; requests are encrypted, logins stay in hidden Secrets)"
 msgstr ""
 
-msgid "Own knowledge base (knowledge + weekly builder)"
+msgid "Own knowledge base — private data repository"
 msgstr ""
 
-msgid "Data archive (branch seolity-data)"
-msgstr ""
-
-msgid "Ready"
+msgid "Data archive — private data repository"
 msgstr ""
 
 msgid "The data repository must be private. Change its visibility on GitHub or choose another name."
@@ -6479,6 +6485,9 @@ msgid "Source of Google results"
 msgstr ""
 
 msgid "saved — enter a new one to replace"
+msgstr ""
+
+msgid "Ready"
 msgstr ""
 
 msgid "Get the key"

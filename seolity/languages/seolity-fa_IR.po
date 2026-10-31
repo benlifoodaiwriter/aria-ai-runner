@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: SEOlity 1.0.0\n"
-"POT-Creation-Date: 2026-10-31 10:52+0000\n"
+"POT-Creation-Date: 2026-10-31 14:57+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -675,17 +675,14 @@ msgstr "پاسخ خالی از اجراکننده اشتراکی دریافت ش
 msgid "Your AI subscription usage limit was reached. Try again later or switch provider."
 msgstr "سقف استفاده از اشتراک هوش مصنوعی شما پر شده است. بعداً دوباره تلاش کنید یا ارائه‌دهنده را عوض کنید."
 
-msgid "Enter the runner repository as owner/name (it will be created as a private repository if it does not exist)."
-msgstr "مخزن اجراکننده را به شکل owner/name وارد کنید (اگر وجود نداشته باشد به‌صورت خصوصی ساخته می‌شود)."
+msgid "Enter the runner repository as owner/name (it will be created as a public repository if it does not exist — GitHub Actions minutes are free there; requests are encrypted)."
+msgstr "مخزن اجراکننده را به شکل owner/name وارد کنید (اگر وجود نداشته باشد، عمومی ساخته می‌شود — دقیقه‌های GitHub Actions آنجا رایگان است و درخواست‌ها رمزنگاری می‌شوند)."
 
 msgid "Add a GitHub token first (Settings → GitHub)."
 msgstr "ابتدا توکن گیت‌هاب را وارد کنید (تنظیمات ← گیت‌هاب)."
 
 msgid "The PHP OpenSSL extension is required."
 msgstr "افزونه OpenSSL در PHP لازم است."
-
-msgid "The runner repository must be private."
-msgstr "مخزن اجراکننده باید خصوصی باشد."
 
 msgid "This is not the whole auth.json file. Copy everything from { to }."
 msgstr "این کل فایل auth.json نیست. همه چیز را از { تا } کپی کنید."
@@ -736,8 +733,8 @@ msgstr "نام مخزن"
 msgid "Repository must look like owner/name."
 msgstr "مخزن باید به شکل owner/name باشد."
 
-msgid "Private repository, runner, workflow, queue branch and secrets"
-msgstr "مخزن خصوصی، رانر، ورک‌فلو، شاخهٔ صف و سکرت‌ها"
+msgid "Runner repository (public, free GitHub minutes), runner, workflow, queue branch and secrets"
+msgstr "مخزن اجراکننده (عمومی، دقیقه رایگان گیت‌هاب)، اجراکننده، ورک‌فلو، شاخه صف و Secrets"
 
 msgid "GitHub Actions enabled"
 msgstr "GitHub Actions فعال است"
@@ -781,17 +778,26 @@ msgstr "هنوز توکن GitHub ذخیره نشده است."
 msgid "Signed in as @%s"
 msgstr "وارد شده با ‎@%s"
 
-msgid "Private runner repository"
-msgstr "مخزن خصوصی اجراکننده"
+msgid "Runner repository visibility"
+msgstr "عمومی یا خصوصی بودن مخزن اجراکننده"
+
+msgid "Private, because your knowledge base or data archive is in the same repository. Private repositories use your GitHub Actions minutes: if a payment fails or the spending limit is reached, GitHub does not start the jobs. Move the data to its own private repository (GitHub & data) and then make the runner public."
+msgstr "خصوصی مانده، چون پایگاه دانش یا بایگانی داده شما در همین مخزن است. مخزن خصوصی از دقیقه‌های پولی GitHub Actions استفاده می‌کند: اگر پرداخت ناموفق باشد یا سقف هزینه پر شود، گیت‌هاب کارها را اجرا نمی‌کند. داده‌ها را به مخزن خصوصی جداگانه ببرید («گیت‌هاب و داده») و بعد اجراکننده را عمومی کنید."
+
+msgid "Private: its jobs use your GitHub Actions minutes, and GitHub does not start them when a payment fails or the spending limit is reached. Press “Install / update runner” to make it public (free minutes), or change it on GitHub → Settings → General → Change visibility."
+msgstr "خصوصی است: کارهایش از دقیقه‌های پولی GitHub Actions استفاده می‌کنند و اگر پرداخت ناموفق باشد یا سقف هزینه پر شود، گیت‌هاب آن‌ها را اجرا نمی‌کند. «نصب / به‌روزرسانی اجراکننده» را بزنید تا عمومی شود (دقیقه رایگان)، یا در گیت‌هاب از Settings ← General ← Change visibility تغییرش دهید."
+
+msgid "Runner repository"
+msgstr "مخزن اجراکننده"
 
 msgid "Not created yet — one click creates it with everything inside."
 msgstr "هنوز ساخته نشده — یک کلیک آن را با همه محتوا می‌سازد."
 
-msgid "The repository is PUBLIC. Make it private on GitHub (Settings → General → Danger Zone → Change visibility)."
-msgstr "مخزن عمومی (PUBLIC) است. آن را در GitHub خصوصی کنید (Settings ← General ← Danger Zone ← Change visibility)."
-
 msgid "The repository exists but the runner is not installed yet."
 msgstr "مخزن وجود دارد اما اجراکننده هنوز نصب نشده است."
+
+msgid "public: free GitHub Actions minutes; requests and answers are encrypted, logins stay in hidden Secrets"
+msgstr "عمومی: دقیقه رایگان GitHub Actions؛ درخواست‌ها و پاسخ‌ها رمزنگاری می‌شوند و ورودها در Secrets پنهان می‌مانند"
 
 msgid "runner files will be updated on the next request"
 msgstr "فایل‌های اجراکننده در درخواست بعدی به‌روز می‌شوند"
@@ -4526,6 +4532,9 @@ msgstr "GitHub این توکن را نپذیرفت. دوباره کپی کنید
 msgid "Connect your GitHub account first (step 1)."
 msgstr "ابتدا حساب GitHub را وصل کنید (مرحله ۱)."
 
+msgid "The knowledge base needs a private repository (the public one is only for the AI runner). Choose another name."
+msgstr "پایگاه دانش باید در مخزن خصوصی باشد (مخزن عمومی فقط برای اجراکننده است). نام دیگری انتخاب کنید."
+
 msgid "Create your own knowledge repository first."
 msgstr "ابتدا مخزن دانش اختصاصی خود را بسازید."
 
@@ -4541,20 +4550,17 @@ msgstr "سازندهٔ دانش به یک حساب هوش مصنوعی نیاز 
 msgid "The shared knowledge base is updated by SEOlity. Create your own knowledge repository to run the builder yourself."
 msgstr "دانش مشترک را SEOlity به‌روز می‌کند. برای اجرای سازنده توسط خودتان، مخزن دانش اختصاصی بسازید."
 
-msgid "Private repository"
-msgstr "مخزن خصوصی"
+msgid "The runner and the data need two different repositories: the runner is public, the data stays private."
+msgstr "اجراکننده و داده‌ها به دو مخزن جدا نیاز دارند: اجراکننده عمومی است و داده‌ها خصوصی می‌مانند."
 
-msgid "AI runner (workflow, queue branch, secrets)"
-msgstr "رانر هوش مصنوعی (ورک‌فلو، شاخهٔ صف، سکرت‌ها)"
+msgid "AI runner — public repository (free GitHub Actions minutes; requests are encrypted, logins stay in hidden Secrets)"
+msgstr "اجراکننده هوش مصنوعی — مخزن عمومی (دقیقه رایگان GitHub Actions؛ درخواست‌ها رمزنگاری می‌شوند و ورودها در Secrets پنهان می‌مانند)"
 
-msgid "Own knowledge base (knowledge + weekly builder)"
-msgstr "پایگاه دانش اختصاصی (دانش + سازندهٔ هفتگی)"
+msgid "Own knowledge base — private data repository"
+msgstr "پایگاه دانش اختصاصی — مخزن خصوصی داده"
 
-msgid "Data archive (branch seolity-data)"
-msgstr "آرشیو داده (شاخهٔ seolity-data)"
-
-msgid "Ready"
-msgstr "آماده"
+msgid "Data archive — private data repository"
+msgstr "بایگانی داده — مخزن خصوصی داده"
 
 msgid "The data repository must be private. Change its visibility on GitHub or choose another name."
 msgstr "مخزن داده باید خصوصی باشد. حالت آن را در GitHub تغییر دهید یا نام دیگری انتخاب کنید."
@@ -6481,6 +6487,9 @@ msgstr "منبع نتایج گوگل"
 
 msgid "saved — enter a new one to replace"
 msgstr "ذخیره شده — برای جایگزینی کلید جدید وارد کنید"
+
+msgid "Ready"
+msgstr "آماده"
 
 msgid "Get the key"
 msgstr "دریافت کلید"

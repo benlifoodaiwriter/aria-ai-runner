@@ -66,13 +66,15 @@ final class GitHubHub {
 	public function defaults() {
 		$me    = $this->account();
 		$login = is_array( $me ) && ! empty( $me['login'] ) ? $me['login'] : 'your-user';
-		// One private repository holds everything (runner on the default branch, knowledge
-		// in seolity/knowledge, archive on the seolity-data branch); separate names still work.
-		$one = $login . '/seolity-ai';
+		// Two repositories: the AI runner is PUBLIC (GitHub Actions minutes are free for public
+		// repositories, so it runs without a paid plan; it only holds code and encrypted requests,
+		// logins stay in hidden Secrets). The knowledge base and the data archive are not encrypted,
+		// so they live together in a separate PRIVATE repository.
+		$data = $login . '/seolity-ai';
 		return array(
-			'runner'    => $one,
-			'knowledge' => $one,
-			'storage'   => $one,
+			'runner'    => $login . '/seolity-ai-runner',
+			'knowledge' => $data,
+			'storage'   => $data,
 		);
 	}
 
@@ -250,6 +252,9 @@ final class GitHubHub {
 		$info = $this->gh()->ensure_repo( $repo, 'SEOlity SEO knowledge base (private)' );
 		if ( is_wp_error( $info ) ) {
 			return $info;
+		}
+		if ( empty( $info['private'] ) ) {
+			return new \WP_Error( 'seolity_github', __( 'The knowledge base needs a private repository (the public one is only for the AI runner). Choose another name.', 'seolity' ), array( 'status' => 400 ) );
 		}
 		$branch = (string) $info['default_branch'];
 		$files  = array();
@@ -446,40 +451,46 @@ final class GitHubHub {
 	}
 
 	/**
-	 * One click: one private repository with the runner, an own knowledge base and the data archive.
+	 * One click: a PUBLIC runner repository (free GitHub Actions minutes) and a PRIVATE data
+	 * repository for the knowledge base and the data archive.
 	 *
-	 * @param array $parts runner, knowledge, storage (bools).
+	 * @param string $repo  Runner repository (empty = default).
+	 * @param array  $parts runner, knowledge, storage (bools).
+	 * @param string $data  Data repository (empty = "<runner>-data" or the default).
 	 * @return array{ok:bool,steps:array[],status:array}
 	 */
-	public function setup_all( $repo, array $parts, $share_key = false ) {
+	public function setup_all( $repo, array $parts, $share_key = false, $data = '' ) {
 		$ok = $this->need_token();
 		if ( is_wp_error( $ok ) ) {
 			return $ok;
 		}
-		$repo = $this->pick_repo( $repo, 'runner' );
+		$given = trim( (string) $repo );
+		$repo  = $this->pick_repo( $repo, 'runner' );
 		if ( is_wp_error( $repo ) ) {
 			return $repo;
+		}
+		$data = $this->pick_repo( '' !== trim( (string) $data ) ? $data : ( '' !== $given ? $repo . '-data' : '' ), 'storage' );
+		if ( is_wp_error( $data ) ) {
+			return $data;
+		}
+		if ( $data === $repo ) {
+			return new \WP_Error( 'seolity_github', __( 'The runner and the data need two different repositories: the runner is public, the data stays private.', 'seolity' ), array( 'status' => 400 ) );
 		}
 		if ( function_exists( 'set_time_limit' ) ) {
 			@set_time_limit( 240 ); // phpcs:ignore WordPress.PHP.NoSilencedErrors
 		}
 		$steps = array();
 		$all   = true;
-		$info  = $this->gh()->ensure_repo( $repo, 'SEOlity AI: subscription runner, SEO knowledge and data archive (private)' );
-		$steps[] = array( 'title' => __( 'Private repository', 'seolity' ), 'ok' => ! is_wp_error( $info ) && ! empty( $info['private'] ), 'detail' => is_wp_error( $info ) ? $info->get_error_message() : ( empty( $info['private'] ) ? __( 'The repository is PUBLIC. Make it private on GitHub (Settings → General → Danger Zone → Change visibility).', 'seolity' ) : $repo ) );
-		if ( ! $steps[0]['ok'] ) {
-			return array( 'ok' => false, 'steps' => $steps, 'status' => $this->status( true ) );
-		}
-		$jobs = array(
-			'runner'    => array( __( 'AI runner (workflow, queue branch, secrets)', 'seolity' ), function () use ( $repo ) {
+		$jobs  = array(
+			'runner'    => array( __( 'AI runner — public repository (free GitHub Actions minutes; requests are encrypted, logins stay in hidden Secrets)', 'seolity' ), function () use ( $repo ) {
 				$this->plugin->settings->update( array( 'sub_repo' => $repo ) );
 				return $this->plugin->subscription->setup();
 			} ),
-			'knowledge' => array( __( 'Own knowledge base (knowledge + weekly builder)', 'seolity' ), function () use ( $repo, $share_key ) {
-				return $this->setup_knowledge( $repo, $share_key );
+			'knowledge' => array( __( 'Own knowledge base — private data repository', 'seolity' ), function () use ( $data, $share_key ) {
+				return $this->setup_knowledge( $data, $share_key );
 			} ),
-			'storage'   => array( __( 'Data archive (branch seolity-data)', 'seolity' ), function () use ( $repo ) {
-				return $this->setup_storage( $repo );
+			'storage'   => array( __( 'Data archive — private data repository', 'seolity' ), function () use ( $data ) {
+				return $this->setup_storage( $data );
 			} ),
 		);
 		foreach ( $jobs as $key => $job ) {
@@ -487,7 +498,7 @@ final class GitHubHub {
 				continue;
 			}
 			$res     = call_user_func( $job[1] );
-			$steps[] = array( 'title' => $job[0], 'ok' => ! is_wp_error( $res ), 'detail' => is_wp_error( $res ) ? $res->get_error_message() : __( 'Ready', 'seolity' ) );
+			$steps[] = array( 'title' => $job[0], 'ok' => ! is_wp_error( $res ), 'detail' => is_wp_error( $res ) ? $res->get_error_message() : ( 'runner' === $key ? $repo : $data ) );
 			$all     = $all && ! is_wp_error( $res );
 		}
 		return array( 'ok' => $all, 'steps' => $steps, 'status' => $this->status( true ) );
