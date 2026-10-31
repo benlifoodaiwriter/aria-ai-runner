@@ -1,0 +1,252 @@
+Images without ALT text	تصاویر بدون متن ALT
+ALT text is required for accessibility and helps image search.	متن ALT برای دسترس‌پذیری ضروری است و به جستجوی تصاویر کمک می‌کند.
+Generate descriptive ALT text (SEOlity → Images).	متن ALT توصیفی تولید کنید (سئولیتی ← تصاویر).
+Broken images	تصاویر خراب
+Broken images look unprofessional and waste requests.	تصاویر خراب غیرحرفه‌ای به نظر می‌رسند و درخواست‌ها را هدر می‌دهند.
+Re-upload or remove the image.	تصویر را دوباره بارگذاری یا حذف کنید.
+Images without width/height	تصاویر بدون عرض/ارتفاع
+Missing dimensions cause layout shift (CLS).	نبود ابعاد باعث جابه‌جایی چیدمان (CLS) می‌شود.
+Set width and height attributes.	ویژگی‌های width و height را تنظیم کنید.
+No structured data	بدون داده ساختاریافته
+Structured data enables rich results and helps entity understanding.	داده ساختاریافته نتایج غنی را ممکن می‌کند و به درک موجودیت‌ها کمک می‌کند.
+Enable SEOlity schema output.	خروجی اسکیمای سئولیتی را فعال کنید.
+Invalid JSON-LD	JSON-LD نامعتبر
+Invalid structured data is ignored by Google.	داده ساختاریافته نامعتبر توسط گوگل نادیده گرفته می‌شود.
+Fix the JSON syntax.	نحو JSON را اصلاح کنید.
+Product pages without Product schema	صفحات محصول بدون اسکیمای Product
+Product rich results (price, stock, rating) increase CTR.	نتایج غنی محصول (قیمت، موجودی، امتیاز) CTR را افزایش می‌دهند.
+Enable Product schema.	اسکیمای Product را فعال کنید.
+No breadcrumbs	بدون مسیر راهنما (بردکرامب)
+Breadcrumbs improve navigation and SERP display.	مسیر راهنما ناوبری و نمایش در نتایج را بهبود می‌دهد.
+Enable BreadcrumbList schema / breadcrumbs.	اسکیمای BreadcrumbList / مسیر راهنما را فعال کنید.
+Pages not served over HTTPS	صفحات بدون HTTPS
+HTTPS is a ranking signal and required for trust.	HTTPS یک سیگنال رتبه‌بندی و لازمه اعتماد است.
+Install SSL and redirect HTTP → HTTPS.	SSL نصب کرده و HTTP را به HTTPS ریدایرکت کنید.
+Mixed content (HTTP resources on HTTPS)	محتوای ترکیبی (منابع HTTP در HTTPS)
+Browsers block or warn on insecure resources.	مرورگرها منابع ناامن را مسدود می‌کنند یا هشدار می‌دهند.
+Load all resources over HTTPS.	همه منابع را از طریق HTTPS بارگذاری کنید.
+Missing viewport meta (not mobile-friendly)	متای viewport وجود ندارد (سازگار با موبایل نیست)
+Google uses mobile-first indexing.	گوگل از ایندکس موبایل‌محور استفاده می‌کند.
+Add <meta name="viewport" content="width=device-width, initial-scale=1">.	تگ <meta name="viewport" content="width=device-width, initial-scale=1"> را اضافه کنید.
+Missing html lang attribute	ویژگی lang در html وجود ندارد
+Helps search engines and screen readers pick the right language.	به موتورهای جستجو و صفحه‌خوان‌ها در تشخیص زبان درست کمک می‌کند.
+Set the site language in Settings → General.	زبان سایت را در تنظیمات ← عمومی تنظیم کنید.
+Invalid hreflang annotations	برچسب‌های hreflang نامعتبر
+Broken hreflang can show the wrong language version.	hreflang خراب ممکن است نسخه زبانی اشتباه را نمایش دهد.
+Use valid ISO codes, self-references and x-default.	از کدهای ISO معتبر، خودارجاعی و x-default استفاده کنید.
+Non-friendly URLs	URLهای نامناسب
+Long, parameter-heavy or uppercase URLs are harder to share and may duplicate.	URLهای طولانی، پرپارامتر یا با حروف بزرگ سخت‌تر به اشتراک گذاشته می‌شوند و ممکن است تکراری شوند.
+Use short, lowercase, hyphenated slugs (redirect old ones).	از نامک‌های کوتاه، با حروف کوچک و خط‌تیره استفاده کنید (قدیمی‌ها را ریدایرکت کنید).
+Slow server response (TTFB)	پاسخ کند سرور (TTFB)
+Slow responses hurt Core Web Vitals and crawl rate.	پاسخ‌های کند به Core Web Vitals و نرخ خزش آسیب می‌زنند.
+Enable page caching, upgrade hosting, reduce plugins.	کش صفحه را فعال کنید، هاست را ارتقا دهید و افزونه‌ها را کم کنید.
+Very large HTML document	سند HTML بسیار بزرگ
+Heavy HTML slows rendering on mobile.	HTML سنگین رندر را در موبایل کند می‌کند.
+Reduce inline code and DOM size.	کدهای درون‌خطی و اندازه DOM را کاهش دهید.
+Poor Core Web Vitals	Core Web Vitals ضعیف
+Poor LCP/INP/CLS hurt UX and are part of page experience signals.	LCP/INP/CLS ضعیف به تجربه کاربری آسیب می‌زند و بخشی از سیگنال‌های تجربه صفحه است.
+Optimize images, fonts, scripts and caching.	تصاویر، فونت‌ها، اسکریپت‌ها و کش را بهینه کنید.
+%1$d media library images have no ALT text (%2$d products affected)	%1$d تصویر کتابخانه رسانه متن ALT ندارند (%2$d محصول درگیر)
+Images without ALT text are invisible to screen readers and Google Images.	تصاویر بدون ALT برای صفحه‌خوان‌ها و گوگل ایمیجز نامرئی هستند.
+Use Bulk Optimize ALT — SEOlity writes context-aware ALT text from product/page data.	از بهینه‌سازی گروهی ALT استفاده کنید — سئولیتی از داده‌های محصول/صفحه ALT متناسب می‌نویسد.
+%d 404 URLs are linked from your own pages	%d URL با خطای ۴۰۴ از صفحات خود سایت لینک شده‌اند
+Visitors and crawlers keep hitting dead ends from inside your site.	بازدیدکنندگان و خزنده‌ها از داخل سایت به بن‌بست می‌رسند.
+Redirect them to the suggested targets (SEOlity → 404) and fix the source links.	آن‌ها را به مقاصد پیشنهادی ریدایرکت کنید (سئولیتی ← ۴۰۴) و لینک‌های مبدأ را اصلاح کنید.
+%d queries have several of your pages competing for them	برای %d کوئری چند صفحه شما با هم رقابت می‌کنند
+Competing URLs split clicks and links, so none of them ranks as well as one strong page would.	URLهای رقیب کلیک‌ها و لینک‌ها را تقسیم می‌کنند، پس هیچ‌کدام به خوبی یک صفحه قوی رتبه نمی‌گیرند.
+Merge, redirect, differentiate or re-target (AI advice per query in Keywords → Cannibalization).	ادغام، ریدایرکت، متمایزسازی یا تغییر هدف (مشاوره هوش مصنوعی برای هر کوئری در کلمات کلیدی ← هم‌نوع‌خواری).
+%1$d pages have CTR far below expected for their position (≈%2$d extra clicks/month possible)	%1$d صفحه CTR بسیار کمتر از انتظار جایگاهشان دارند (امکان حدود %2$d کلیک اضافه در ماه)
+Google already shows these pages, but searchers do not click — titles/descriptions don't match the intent or don't stand out.	گوگل این صفحات را نمایش می‌دهد اما کاربران کلیک نمی‌کنند — عنوان/توضیحات با هدف جستجو منطبق نیست یا جلب توجه نمی‌کند.
+Rewrite title + meta description with SEOlity (based on the real queries).	عنوان و توضیحات متا را با سئولیتی بازنویسی کنید (بر اساس کوئری‌های واقعی).
+%d products have no short description	%d محصول توضیحات کوتاه ندارند
+The short description is the most visible sales copy on product pages and is often used as snippet text.	توضیحات کوتاه دیده‌شده‌ترین متن فروش در صفحه محصول است و اغلب به‌عنوان اسنیپت استفاده می‌شود.
+Generate benefit-focused short descriptions with AI Product Optimizer.	با بهینه‌ساز هوشمند محصول، توضیحات کوتاه مزیت‌محور تولید کنید.
+Affected pages earn ~%d clicks / 28 days — fixing protects and grows that traffic.	صفحات درگیر حدود %d کلیک در ۲۸ روز دارند — رفع مشکل این ترافیک را حفظ و تقویت می‌کند.
+Blocks indexing or user access — fix first.	مانع ایندکس یا دسترسی کاربر است — اول این را رفع کنید.
+Likely ranking/CTR impact.	احتمالاً بر رتبه/CTR تأثیر دارد.
+Incremental quality improvement.	بهبود تدریجی کیفیت.
+Not enough search impressions to judge the effect.	نمایش جستجوی کافی برای قضاوت درباره اثر وجود ندارد.
+Clicks %1$s%%, CTR %2$s%%, position %3$s vs. before; site-wide clicks changed %4$s%% in the same period (control).	کلیک‌ها %1$s%%، CTR %2$s%%، جایگاه %3$s نسبت به قبل؛ کلیک‌های کل سایت در همین دوره %4$s%% تغییر کرد (گروه کنترل).
+Experiment had a negative effect: %s	آزمایش اثر منفی داشت: %s
+You can revert the change from Experiments.	می‌توانید تغییر را از بخش آزمایش‌ها بازگردانید.
+Experiment not found.	آزمایش پیدا نشد.
+Changing %1$s on %2$s pages moved %3$s by %4$s on average (%5$d experiments, %6$d positive).	تغییر %1$s در صفحات %2$s به‌طور میانگین %3$s را %4$s جابه‌جا کرد (%5$d آزمایش، %6$d مثبت).
+Frequently asked questions	سؤالات متداول
+Enter your Google OAuth Client ID and Client Secret first.	ابتدا Client ID و Client Secret مربوط به OAuth گوگل را وارد کنید.
+You are not allowed to connect Search Console.	شما اجازه اتصال سرچ کنسول را ندارید.
+Google Search Console is not connected.	گوگل سرچ کنسول متصل نیست.
+Search Console connection expired	اتصال سرچ کنسول منقضی شد
+Google revoked access. Reconnect Search Console to keep data flowing.	گوگل دسترسی را لغو کرد. برای ادامه دریافت داده، سرچ کنسول را دوباره متصل کنید.
+Search Console is not connected.	سرچ کنسول متصل نیست.
+Pages with critical issues	صفحات دارای مشکل بحرانی
+Pages with high security/mobile/server issues	صفحات دارای مشکلات جدی امنیت/موبایل/سرور
+Status codes, redirects, HTTPS, mixed content, mobile viewport, canonical conflicts.	کدهای وضعیت، ریدایرکت‌ها، HTTPS، محتوای ترکیبی، viewport موبایل، تداخل کنونیکال.
+Average on-page score	میانگین امتیاز درون‌صفحه‌ای
+Duplicate / near-duplicate pages	صفحات تکراری / تقریباً تکراری
+Pages with missing/duplicate title or description	صفحات با عنوان یا توضیحات ناموجود/تکراری
+On-page quality, depth, uniqueness and metadata.	کیفیت درون‌صفحه‌ای، عمق، یکتایی و متادیتا.
+Published pages that are indexable	صفحات منتشرشده قابل ایندکس
+Indexing conflicts (noindex w/ traffic, robots-blocked, bad canonicals)	تداخل‌های ایندکس (نوایندکس با ترافیک، مسدود با robots، کنونیکال اشتباه)
+Sitemap problems	مشکلات نقشه سایت
+yes	بله
+no	خیر
+Can Google crawl and index the pages you want indexed?	آیا گوگل می‌تواند صفحاتی که می‌خواهید را خزش و ایندکس کند؟
+Pages with broken internal links	صفحات دارای لینک داخلی خراب
+Link graph health: discoverability, depth and broken links.	سلامت گراف لینک: قابلیت کشف، عمق و لینک‌های خراب.
+Pages without (required) structured data	صفحات بدون داده ساختاریافته (الزامی)
+Pages with invalid JSON-LD	صفحات دارای JSON-LD نامعتبر
+Structured data coverage and validity.	پوشش و اعتبار داده ساختاریافته.
+Average server response (ms)	میانگین پاسخ سرور (میلی‌ثانیه)
+Pages with poor Core Web Vitals	صفحات با Core Web Vitals ضعیف
+Slow pages (>1.5s TTFB)	صفحات کند (TTFB بیش از ۱٫۵ ثانیه)
+Server speed and Core Web Vitals (PageSpeed Insights).	سرعت سرور و Core Web Vitals (PageSpeed Insights).
+Generic / stuffed / duplicate ALT	ALT کلی / پرکلمه / تکراری
+Accessibility and image-search readiness of the media library.	آمادگی کتابخانه رسانه برای دسترس‌پذیری و جستجوی تصاویر.
+Clicks vs previous 28 days	کلیک‌ها در برابر ۲۸ روز قبل
+Average position change	تغییر میانگین جایگاه
+Pages with CTR below expectation	صفحات با CTR کمتر از انتظار
+Real Google performance trend (Search Console).	روند واقعی عملکرد در گوگل (سرچ کنسول).
+Queries in the top 10	کوئری‌های در ۱۰ نتیجه اول
+Cannibalized queries	کوئری‌های دچار هم‌نوع‌خواری
+Ranking distribution and keyword conflicts.	توزیع رتبه‌ها و تداخل کلمات کلیدی.
+Competitors monitored	رقبای تحت پایش
+Open content gaps	شکاف‌های محتوایی باز
+How much ground competitors cover that you don't.	رقبا چه میزان از موضوعاتی را پوشش می‌دهند که شما ندارید.
+Some categories have no data yet and are excluded rather than guessed (connect Search Console, run an audit, add competitors).	برخی بخش‌ها هنوز داده ندارند و به‌جای حدس زدن کنار گذاشته شده‌اند (سرچ کنسول را متصل کنید، ممیزی اجرا کنید، رقبا را اضافه کنید).
+No images selected.	تصویری انتخاب نشده است.
+Enter at least one seed keyword.	حداقل یک کلمه کلیدی پایه وارد کنید.
+No current cannibalization found for this query.	برای این کوئری هم‌نوع‌خواری فعلی پیدا نشد.
+Title and content are required.	عنوان و محتوا الزامی هستند.
+Topically related page that already mentions "%s"; the target has few internal links.	صفحه‌ای مرتبط که از قبل به «%s» اشاره می‌کند؛ صفحه مقصد لینک داخلی کمی دارد.
+Run a site audit first so SEOlity knows your link graph.	ابتدا ممیزی سایت را اجرا کنید تا سئولیتی گراف لینک شما را بشناسد.
+Related page that mentions the target topic.	صفحه مرتبطی که به موضوع مقصد اشاره می‌کند.
+Suggestion not found.	پیشنهاد پیدا نشد.
+The anchor text is no longer present in the source content.	انکر تکست دیگر در محتوای مبدأ وجود ندارد.
+Add internal link "%1$s" → %2$s	افزودن لینک داخلی «%1$s» ← %2$s
+Plan item not found.	مورد برنامه پیدا نشد.
+You cannot create posts.	شما اجازه ایجاد نوشته ندارید.
+SEOlity brief — replace the notes below with your own expertise, examples and sources before publishing.	بریف سئولیتی — پیش از انتشار، یادداشت‌های زیر را با تخصص، مثال‌ها و منابع خودتان جایگزین کنید.
+Every minute (SEOlity queue)	هر دقیقه (صف سئولیتی)
+Rewrite the title & meta description of "%s"	بازنویسی عنوان و توضیحات متای «%s»
+This page has %1$s impressions but a %2$s%% CTR (expected ≈%3$s%% at position %4$s). Better snippet copy could bring ≈%5$d more clicks per month.	این صفحه %1$s نمایش اما CTR برابر %2$s%% دارد (انتظار حدود %3$s%% در جایگاه %4$s). متن بهتر در نتایج می‌تواند حدود %5$d کلیک بیشتر در ماه بیاورد.
+Deepen the content of "%s" to reach page 1	محتوای «%s» را برای رسیدن به صفحه اول عمیق‌تر کنید
+This URL ranks for %1$d queries at positions 8–20 (avg. %2$s). Improving depth, intent match and internal links usually moves such pages onto page 1.	این URL برای %1$d کوئری در جایگاه ۸ تا ۲۰ (میانگین %2$s) رتبه دارد. بهبود عمق، تطابق با هدف و لینک‌های داخلی معمولاً چنین صفحاتی را به صفحه اول می‌برد.
+Investigate the traffic drop on "%s"	بررسی افت ترافیک «%s»
+Clicks fell %1$s%% (%2$d → %3$d) versus the previous 28 days.	کلیک‌ها نسبت به ۲۸ روز قبل %1$s%% کاهش یافت (%2$d ← %3$d).
+The page was changed recently — check the experiment results.	این صفحه اخیراً تغییر کرده — نتایج آزمایش را بررسی کنید.
+Refresh outdated information, compare against current top results and check for cannibalization.	اطلاعات قدیمی را به‌روز کنید، با برترین نتایج فعلی مقایسه کنید و هم‌نوع‌خواری را بررسی کنید.
+Resolve cannibalization for "%s"	رفع هم‌نوع‌خواری برای «%s»
+%d of your URLs share the impressions for this query, so none of them ranks as well as it could.	%d URL شما در نمایش‌های این کوئری شریک‌اند، پس هیچ‌کدام به اندازه توانشان رتبه نمی‌گیرند.
+Add an FAQ section to "%s"	افزودن بخش سؤالات متداول به «%s»
+Searchers reach this page with %d question-style queries. Answering them directly improves relevance and can win FAQ/PAA visibility.	کاربران با %d کوئری سؤالی به این صفحه می‌رسند. پاسخ مستقیم به آن‌ها ارتباط را بهبود می‌دهد و می‌تواند جایگاه FAQ/PAA بگیرد.
+Remove noindex from "%s"	حذف نوایندکس از «%s»
+The page is set to noindex but still received %d impressions in 28 days — it will disappear from Google on the next crawl.	صفحه نوایندکس است اما هنوز در ۲۸ روز %d نمایش داشته — در خزش بعدی از گوگل حذف خواهد شد.
+Redirect the broken URL %s	ریدایرکت URL خراب %s
+It returns 404 but %d of your pages still link to it.	خطای ۴۰۴ می‌دهد اما %d صفحه شما هنوز به آن لینک داده‌اند.
+Best match: %s	بهترین تطابق: %s
+Link to the orphan page "%s"	لینک دادن به صفحه یتیم «%s»
+No page on your site links here, so crawlers rarely visit it and it receives no internal authority.	هیچ صفحه‌ای در سایت به اینجا لینک نداده، پس خزنده‌ها به‌ندرت سر می‌زنند و اعتبار داخلی نمی‌گیرد.
+Merge or noindex the thin page "%s"	ادغام یا نوایندکس صفحه کم‌عمق «%s»
+Expand the thin page "%s"	گسترش صفحه کم‌عمق «%s»
+Only %d words and zero search impressions in 90 days. Thin pages can lower overall site quality — merge it into a stronger page (301) or noindex it.	فقط %d کلمه و صفر نمایش جستجو در ۹۰ روز. صفحات کم‌عمق می‌توانند کیفیت کل سایت را کاهش دهند — آن را در صفحه قوی‌تری ادغام (۳۰۱) یا نوایندکس کنید.
+Only %d words, yet Google already shows it. Adding genuinely useful depth is likely to lift rankings.	فقط %d کلمه، اما گوگل همین حالا آن را نمایش می‌دهد. افزودن عمق واقعاً مفید احتمالاً رتبه را بالا می‌برد.
+Write meta descriptions for %d pages	نوشتن توضیحات متا برای %d صفحه
+Without a meta description Google improvises a snippet, which usually lowers CTR.	بدون توضیحات متا، گوگل خودش اسنیپت می‌سازد که معمولاً CTR را کاهش می‌دهد.
+Break %d redirect loop(s)	شکستن %d حلقه ریدایرکت
+Redirect loops make URLs completely inaccessible to users and Google.	حلقه‌های ریدایرکت URLها را برای کاربران و گوگل کاملاً غیرقابل دسترس می‌کنند.
+Link "%1$s" from %2$s to %3$s	لینک «%1$s» از %2$s به %3$s
+Optimize product "%s"	بهینه‌سازی محصول «%s»
+Product page has not been analyzed yet and may lack descriptions, meta or ALT text.	صفحه محصول هنوز تحلیل نشده و ممکن است توضیحات، متا یا ALT نداشته باشد.
+On-page score is %d/100 — weak descriptions, keyword coverage or meta tags.	امتیاز درون‌صفحه‌ای %d/100 است — توضیحات، پوشش کلمات کلیدی یا متاتگ‌ها ضعیف هستند.
+Strengthen category "%s"	تقویت دسته‌بندی «%s»
+This category earns %s impressions but has little or no descriptive content. A helpful intro, buying guidance and FAQs improve relevance.	این دسته‌بندی %s نمایش دارد اما محتوای توصیفی کمی دارد یا اصلاً ندارد. مقدمه مفید، راهنمای خرید و سؤالات متداول ارتباط را بهبود می‌دهد.
+Create "%1$s" (gap vs. %2$s)	ایجاد «%1$s» (شکاف نسبت به %2$s)
+Flatten %d redirect chain(s)	صاف کردن %d زنجیره ریدایرکت
+Each extra hop slows users and crawlers; point old URLs straight to their final destination.	هر پرش اضافه کاربران و خزنده‌ها را کند می‌کند؛ URLهای قدیمی را مستقیم به مقصد نهایی هدایت کنید.
+Recommendation not found.	پیشنهاد پیدا نشد.
+Higher CTR at the same rankings → more clicks within 2–4 weeks.	CTR بالاتر با همان رتبه‌ها ← کلیک بیشتر طی ۲ تا ۴ هفته.
+Better rankings for page-2 queries within 4–8 weeks.	رتبه بهتر برای کوئری‌های صفحه دوم طی ۴ تا ۸ هفته.
+The page stays in / returns to Google's index.	صفحه در ایندکس گوگل می‌ماند / به آن بازمی‌گردد.
+Recovered link equity and fewer dead ends for users.	بازیابی اعتبار لینک و بن‌بست کمتر برای کاربران.
+Faster discovery, more internal authority, improved rankings.	کشف سریع‌تر، اعتبار داخلی بیشتر، رتبه بهتر.
+One stronger URL ranks higher for the contested query.	یک URL قوی‌تر برای کوئری مورد رقابت رتبه بالاتری می‌گیرد.
+Better coverage of question queries; potential PAA visibility.	پوشش بهتر کوئری‌های سؤالی؛ احتمال حضور در «سؤالات مرتبط».
+More relevance and authority for the target page.	ارتباط و اعتبار بیشتر برای صفحه مقصد.
+New rankings for topics competitors already win.	رتبه‌های جدید در موضوعاتی که رقبا اکنون برنده آن هستند.
+Improved SEO quality for the affected URLs.	بهبود کیفیت سئو برای URLهای درگیر.
+Invalid redirect type.	نوع ریدایرکت نامعتبر است.
+Invalid regular expression.	عبارت باقاعده نامعتبر است.
+Target URL is required.	URL مقصد الزامی است.
+Source and target are the same.	مبدأ و مقصد یکسان هستند.
+This redirect would create a loop.	این ریدایرکت یک حلقه ایجاد می‌کند.
+Redirect not found.	ریدایرکت پیدا نشد.
+Entry not found.	مورد پیدا نشد.
+%1$s %2$s SEO report %3$s – %4$s	گزارش سئوی %2$s %1$s از %3$s تا %4$s
+Report not found.	گزارش پیدا نشد.
+Print / Save as PDF	چاپ / ذخیره به‌صورت PDF
+Top pages	برترین صفحات
+Top queries	برترین کوئری‌ها
+%1$d new issues, %2$d fixed in this period.	در این دوره %1$d مشکل جدید و %2$d مورد رفع‌شده.
+Diagnosis	تشخیص
+Improvements & AI changes	بهبودها و تغییرات هوش مصنوعی
+%1$d changes applied, %2$d reverted.	%1$d تغییر اعمال و %2$d مورد بازگردانده شد.
+New	جدید
+Summary	خلاصه
+Recommended next actions	اقدامات پیشنهادی بعدی
+Product image without ALT → Generate ALT	تصویر محصول بدون ALT ← تولید ALT
+CTR < 1% with > 500 impressions → Rewrite title + meta	CTR کمتر از ۱٪ با بیش از ۵۰۰ نمایش ← بازنویسی عنوان + متا
+New post published → Suggest internal links	انتشار نوشته جدید ← پیشنهاد لینک داخلی
+Published without meta description → Write one	انتشار بدون توضیحات متا ← نوشتن آن
+Uploaded image → Generate ALT	بارگذاری تصویر ← تولید ALT
+Ranking 8–20 → Recommend content refresh	رتبه ۸ تا ۲۰ ← پیشنهاد به‌روزرسانی محتوا
+Rule needs a name and a valid trigger.	قانون به نام و محرک معتبر نیاز دارد.
+Add at least one action.	حداقل یک اقدام اضافه کنید.
+Rule matched: %1$s (%2$s)	قانون منطبق شد: %1$s (%2$s)
+%1$s: %2$s	%1$s: %2$s
+Matched your automation rule.	با قانون اتوماسیون شما منطبق شد.
+Home	خانه
+%1$s is missing required property "%2$s".	در %1$s ویژگی الزامی «%2$s» وجود ندارد.
+%1$s is missing recommended property "%2$s".	در %1$s ویژگی توصیه‌شده «%2$s» وجود ندارد.
+Product needs offers, review or aggregateRating to be eligible for rich results.	برای واجد شرایط بودن نتایج غنی، Product به offers، review یا aggregateRating نیاز دارد.
+ratingValue exceeds bestRating.	ratingValue از bestRating بیشتر است.
+Only URLs of this site can be checked.	فقط URLهای همین سایت قابل بررسی هستند.
+Product page without Product schema — enable WooCommerce structured data or SEOlity schema.	صفحه محصول بدون اسکیمای Product — داده ساختاریافته ووکامرس یا اسکیمای سئولیتی را فعال کنید.
+Blog post without Article/BlogPosting schema.	نوشته وبلاگ بدون اسکیمای Article/BlogPosting.
+Page contains %d question headings — FAQ schema could describe them.	صفحه %d عنوان سؤالی دارد — اسکیمای FAQ می‌تواند آن‌ها را توصیف کند.
+Add BreadcrumbList schema.	اسکیمای BreadcrumbList را اضافه کنید.
+Homepage has no Organization/LocalBusiness entity — important for the Knowledge Panel and E-E-A-T.	صفحه اصلی موجودیت Organization/LocalBusiness ندارد — برای پنل دانش و E-E-A-T مهم است.
+GitHub storage is not configured.	ذخیره‌سازی گیت‌هاب تنظیم نشده است.
+Repository must look like owner/name.	مخزن باید به شکل owner/name باشد.
+robots.txt is empty or missing. That allows all crawling, but you lose the chance to block crawl waste and reference your sitemap.	robots.txt خالی یا ناموجود است. همه خزش‌ها مجازند، اما فرصت جلوگیری از هدررفت خزش و معرفی نقشه سایت را از دست می‌دهید.
+WordPress "Discourage search engines" is ON — the whole site is asking not to be indexed.	گزینه «موتورهای جستجو را از ایندکس این سایت منصرف کن» در وردپرس فعال است — کل سایت درخواست عدم ایندکس دارد.
+The homepage is blocked for Googlebot.	صفحه اصلی برای Googlebot مسدود است.
+uploads (images)	آپلودها (تصاویر)
+core JavaScript	جاوااسکریپت هسته
+theme CSS	CSS قالب
+Blocking %s prevents Google from rendering pages correctly.	مسدود کردن %s مانع رندر صحیح صفحات توسط گوگل می‌شود.
+admin-ajax.php is blocked; some themes load content through it. WordPress default allows it.	admin-ajax.php مسدود است؛ برخی قالب‌ها محتوا را از طریق آن بارگذاری می‌کنند. پیش‌فرض وردپرس آن را مجاز می‌داند.
+Crawl-delay is ignored by Google (manage crawl rate in Search Console instead).	Crawl-delay توسط گوگل نادیده گرفته می‌شود (نرخ خزش را در سرچ کنسول مدیریت کنید).
+Unknown directive "%s" will be ignored.	دستور ناشناخته «%s» نادیده گرفته می‌شود.
+Line %1$d could not be parsed: %2$s	خط %1$d قابل تجزیه نبود: %2$s
+Add a Sitemap: line pointing to your XML sitemap.	یک خط Sitemap: با اشاره به نقشه سایت XML اضافه کنید.
+internal search results	نتایج جستجوی داخلی
+add-to-cart URLs	URLهای افزودن به سبد
+sorting parameters	پارامترهای مرتب‌سازی
+layered-nav filter parameters	پارامترهای فیلتر لایه‌ای
+cart page	صفحه سبد خرید
+checkout page	صفحه تسویه حساب
+account pages	صفحات حساب کاربری
+Consider blocking %1$s to save crawl budget: Disallow: %2$s	برای صرفه‌جویی در بودجه خزش، مسدود کردن %1$s را در نظر بگیرید: Disallow: %2$s
+%d published page is blocked by robots.txt.	%d صفحه منتشرشده توسط robots.txt مسدود است.
+%d published pages are blocked by robots.txt.	%d صفحه منتشرشده توسط robots.txt مسدود هستند.
+Invalid XML	XML نامعتبر
+No sitemap found. Enable SEOlity sitemap enhancements (or your SEO plugin sitemap) and submit it in Search Console.	نقشه سایتی پیدا نشد. بهبودهای نقشه سایت سئولیتی (یا نقشه سایت افزونه سئو) را فعال و در سرچ کنسول ثبت کنید.
+Remove %1$d URL(s) from the sitemap (%2$s). Sitemaps should only contain canonical, indexable 200 pages.	%1$d URL را از نقشه سایت حذف کنید (%2$s). نقشه سایت فقط باید شامل صفحات کنونیکال، قابل ایندکس و با کد ۲۰۰ باشد.
+%d indexable published page(s) are not in any sitemap.	%d صفحه منتشرشده قابل ایندکس در هیچ نقشه سایتی نیست.
+Sitemap %s has no <lastmod> values — accurate lastmod helps Google prioritize recrawls.	نقشه سایت %s مقدار <lastmod> ندارد — lastmod دقیق به گوگل در اولویت‌بندی خزش مجدد کمک می‌کند.
+Sitemap %s exceeds 50,000 URLs and will be rejected.	نقشه سایت %s بیش از ۵۰٬۰۰۰ URL دارد و رد خواهد شد.
+Product not found (is WooCommerce active?).	محصول پیدا نشد (آیا ووکامرس فعال است؟).
+ALT generated from product data.	ALT از داده‌های محصول تولید شد.
+%d very similar product(s) may compete for the same keywords — differentiate titles/descriptions or canonicalize variants.	%d محصول بسیار مشابه ممکن است برای کلمات کلیدی یکسان رقابت کنند — عنوان/توضیحات را متمایز کنید یا نسخه‌ها را کنونیکال کنید.
+SEOlity requires PHP 7.4 or newer.	سئولیتی به PHP نسخه ۷٫۴ یا جدیدتر نیاز دارد.
+Thin content	محتوای کم‌عمق

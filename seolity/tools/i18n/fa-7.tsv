@@ -1,0 +1,47 @@
+Claude subscription (Pro/Max via GitHub)	اشتراک Claude (Pro/Max از طریق گیت‌هاب)
+ChatGPT subscription (Plus/Pro via GitHub)	اشتراک ChatGPT (Plus/Pro از طریق گیت‌هاب)
+Runner repository (owner/name)	مخزن اجراکننده (owner/name)
+GitHub token	توکن گیت‌هاب
+Claude subscription token (claude setup-token)	توکن اشتراک Claude ‏(claude setup-token)
+ChatGPT auth.json (codex login)	فایل auth.json چت‌جی‌پی‌تی (codex login)
+Run "Set up GitHub runner"	دکمه «راه‌اندازی اجراکننده گیت‌هاب» را بزنید
+The subscription runner did not answer in time. Check the "SEOlity AI" workflow runs on GitHub.	اجراکننده اشتراکی به‌موقع پاسخ نداد. اجراهای گردش‌کار «SEOlity AI» را در گیت‌هاب بررسی کنید.
+Subscription AI is not ready. Missing: %s.	هوش مصنوعی اشتراکی آماده نیست. موارد ناقص: %s.
+Empty answer from the subscription runner.	پاسخ خالی از اجراکننده اشتراکی دریافت شد.
+Your AI subscription usage limit was reached. Try again later or switch provider.	سقف استفاده از اشتراک هوش مصنوعی شما پر شده است. بعداً دوباره تلاش کنید یا ارائه‌دهنده را عوض کنید.
+Enter the runner repository as owner/name (it will be created as a private repository if it does not exist).	مخزن اجراکننده را به شکل owner/name وارد کنید (اگر وجود نداشته باشد به‌صورت خصوصی ساخته می‌شود).
+Add a GitHub token first (Settings → GitHub).	ابتدا توکن گیت‌هاب را وارد کنید (تنظیمات ← گیت‌هاب).
+The PHP OpenSSL extension is required.	افزونه OpenSSL در PHP لازم است.
+The runner repository must be private.	مخزن اجراکننده باید خصوصی باشد.
+Your AI subscription is working on this request on GitHub…	اشتراک هوش مصنوعی شما در حال انجام این درخواست روی گیت‌هاب است…
+auth.json must be valid JSON (copy the whole file from ~/.codex/auth.json).	auth.json باید JSON معتبر باشد (کل فایل ~/.codex/auth.json را کپی کنید).
+The PHP sodium extension is required to store GitHub secrets.	برای ذخیره Secretهای گیت‌هاب، افزونه sodium در PHP لازم است.
+Use the AI subscription you already pay for	از اشتراک هوش مصنوعی‌ای که همین حالا دارید استفاده کنید
+Instead of a pay-per-token API key, SEOlity can run every AI feature with your Claude Pro/Max or ChatGPT Plus/Pro plan. The official Claude Code / Codex command-line tools run on GitHub Actions in your own private repository; requests and answers are encrypted. Answers take about 1–3 minutes, so SEOlity waits for them automatically.	به‌جای کلید API با پرداخت به‌ازای توکن، سئولیتی می‌تواند همه قابلیت‌های هوش مصنوعی را با اشتراک Claude Pro/Max یا ChatGPT Plus/Pro شما اجرا کند. ابزارهای رسمی خط فرمان Claude Code / Codex روی GitHub Actions در مخزن خصوصی خودتان اجرا می‌شوند و درخواست‌ها و پاسخ‌ها رمزنگاری می‌شوند. هر پاسخ حدود ۱ تا ۳ دقیقه طول می‌کشد و سئولیتی خودکار منتظر آن می‌ماند.
+GitHub → Settings → Developer settings → create a token with access to the runner repository: Contents, Actions, Secrets and Workflows (read & write) — or a classic token with the "repo" and "workflow" scopes. Save it in the GitHub tab.	در گیت‌هاب ← Settings ← Developer settings یک توکن با دسترسی به مخزن اجراکننده بسازید: Contents، Actions، Secrets و Workflows (خواندن و نوشتن) — یا یک توکن کلاسیک با دسترسی‌های «repo» و «workflow». آن را در تب گیت‌هاب ذخیره کنید.
+Enter a repository name below, e.g. your-user/seolity-runner (it is created as a private repository if it does not exist) and save settings.	نام یک مخزن را پایین وارد کنید، مثلاً your-user/seolity-runner (اگر وجود نداشته باشد خصوصی ساخته می‌شود) و تنظیمات را ذخیره کنید.
+Claude: on your computer run “claude setup-token” (Claude Code CLI) and paste the token below. ChatGPT: run “codex login”, then paste the contents of ~/.codex/auth.json below.	Claude: روی کامپیوتر خود دستور «claude setup-token» (ابزار Claude Code) را اجرا کنید و توکن را پایین وارد کنید. ChatGPT: دستور «codex login» را اجرا کنید و محتوای فایل ~/.codex/auth.json را پایین وارد کنید.
+Click “Set up GitHub runner”, then choose the subscription provider in the AI tab and press Test.	دکمه «راه‌اندازی اجراکننده گیت‌هاب» را بزنید، سپس در تب هوش مصنوعی ارائه‌دهنده اشتراکی را انتخاب کنید و «تست» را بزنید.
+Runner repository set up	مخزن اجراکننده راه‌اندازی شده
+Claude subscription token	توکن اشتراک Claude
+ChatGPT login (auth.json)	ورود ChatGPT ‏(auth.json)
+runner files will be updated on the next request	فایل‌های اجراکننده در درخواست بعدی به‌روز می‌شوند
+Last 24 hours	۲۴ ساعت گذشته
+waiting	در انتظار
+Workflow run	اجرای گردش‌کار
+Set up GitHub runner	راه‌اندازی اجراکننده گیت‌هاب
+GitHub runner is ready.	اجراکننده گیت‌هاب آماده است.
+Start runner now	اجرای فوری
+Workflow started on GitHub.	گردش‌کار در گیت‌هاب شروع شد.
+Refresh status	به‌روزرسانی وضعیت
+GitHub runner	اجراکننده گیت‌هاب
+Your AI subscription is working on GitHub (%s)…	اشتراک هوش مصنوعی شما روی گیت‌هاب در حال کار است (%s)…
+Claude model (opus, sonnet, haiku or a full model id)	مدل Claude ‏(opus، sonnet، haiku یا شناسه کامل مدل)
+ChatGPT / Codex model (empty = default)	مدل ChatGPT / Codex ‏(خالی = پیش‌فرض)
+Runner repository (owner/name, private)	مخزن اجراکننده (owner/name، خصوصی)
+Queue branch	شاخه صف
+Send results directly to this site (faster when the site is public)	ارسال مستقیم نتایج به این سایت (وقتی سایت عمومی است سریع‌تر است)
+Maximum wait per request (minutes)	حداکثر انتظار برای هر درخواست (دقیقه)
+Subscription AI	هوش مصنوعی اشتراکی
+Claude subscription token (output of: claude setup-token)	توکن اشتراک Claude (خروجی دستور claude setup-token)
+ChatGPT login (contents of ~/.codex/auth.json after: codex login)	ورود ChatGPT (محتوای ~/.codex/auth.json پس از codex login)

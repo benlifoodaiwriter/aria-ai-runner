@@ -1,0 +1,1592 @@
+<?php
+/**
+ * REST API (namespace seolity/v1).
+ *
+ * Security model:
+ *  - Cookie auth + X-WP-Nonce (core) or Application Passwords for headless/SaaS use.
+ *  - Every route declares a capability tier (view / ai / apply / manage);
+ *    object-level writes additionally check edit_post / edit_term etc.
+ *  - All params are sanitized here; services re-validate domain rules.
+ *  - Secrets are write-only: no endpoint ever returns them.
+ *
+ * @package SEOlity
+ */
+
+namespace SEOlity\Api;
+
+use SEOlity\Core\Capabilities;
+use SEOlity\Core\Settings;
+use SEOlity\Plugin;
+use SEOlity\Queue\Scheduler;
+use WP_REST_Request as Req;
+
+defined( 'ABSPATH' ) || exit;
+
+final class Router {
+
+	const NS = 'seolity/v1';
+
+	const TIERS = array(
+		'view'   => Capabilities::VIEW,
+		'ai'     => Capabilities::AI,
+		'apply'  => Capabilities::APPLY,
+		'manage' => Capabilities::MANAGE,
+	);
+
+	/** @var Plugin */
+	private $p;
+
+	public function __construct( Plugin $plugin ) {
+		$this->p = $plugin;
+	}
+
+	private function route( $methods, $path, $tier, callable $cb ) {
+		$cap = self::TIERS[ $tier ];
+		register_rest_route(
+			self::NS,
+			$path,
+			array(
+				'methods'             => $methods,
+				'permission_callback' => static function () use ( $cap ) {
+					return current_user_can( $cap );
+				},
+				'callback'            => function ( Req $r ) use ( $cb ) {
+					try {
+						$res = $cb( $r );
+					} catch ( \SEOlity\AI\Deferred $d ) {
+						// Subscription AI is working on it: the admin UI waits and re-sends the same request.
+						return new \WP_REST_Response(
+							array(
+								'code'    => 'seolity_ai_deferred',
+								'message' => __( 'Your AI subscription is working on this request on GitHub…', 'seolity' ),
+								'data'    => array( 'status' => 202, 'job' => $d->job_id(), 'retry_after' => $d->retry_after() ),
+							),
+							202
+						);
+					} catch ( \Throwable $e ) {
+						return new \WP_Error( 'seolity_error', defined( 'WP_DEBUG' ) && WP_DEBUG ? $e->getMessage() : __( 'Unexpected error.', 'seolity' ), array( 'status' => 500 ) );
+					}
+					if ( is_array( $res ) ) {
+						foreach ( $res as $value ) {
+							if ( is_wp_error( $value ) ) {
+								$res = $value; // e.g. array( 'id' => save() ) where save() failed validation.
+								break;
+							}
+						}
+					}
+					if ( is_wp_error( $res ) ) {
+						$data = $res->get_error_data();
+						if ( ! is_array( $data ) || empty( $data['status'] ) ) {
+							// Service-level errors are expected conditions (not configured, provider refused…), not server faults.
+							$res->add_data( array_merge( is_array( $data ) ? $data : array(), array( 'status' => false !== strpos( $res->get_error_code(), 'disconnected' ) ? 409 : 400 ) ) );
+						}
+						return $res;
+					}
+					return rest_ensure_response( $res );
+				},
+			)
+		);
+	}
+
+	private static function int( Req $r, $key, $default = 0 ) {
+		return null === $r->get_param( $key ) ? $default : (int) $r->get_param( $key );
+	}
+
+	private static function str( Req $r, $key, $default = '' ) {
+		$v = $r->get_param( $key );
+		return null === $v ? $default : sanitize_text_field( wp_unslash( (string) $v ) );
+	}
+
+	/**
+	 * URL parameter. Never use str() for URLs: sanitize_text_field() strips
+	 * percent-encoded octets and would mangle non-ASCII (e.g. Persian) URLs.
+	 */
+	private static function url( Req $r, $key, $default = '' ) {
+		$v = $r->get_param( $key );
+		return null === $v ? $default : esc_url_raw( trim( wp_unslash( (string) $v ) ) );
+	}
+
+	private static function key( Req $r, $key, $default = '' ) {
+		$v = $r->get_param( $key );
+		return null === $v ? $default : sanitize_key( (string) $v );
+	}
+
+	private static function days( Req $r ) {
+		return max( 1, min( 480, self::int( $r, 'days', 28 ) ) );
+	}
+
+	/** Filters for list endpoints. */
+	private static function filters( Req $r, array $keys ) {
+		$out = array();
+		foreach ( $keys as $k ) {
+			if ( null !== $r->get_param( $k ) && '' !== $r->get_param( $k ) ) {
+				$out[ $k ] = in_array( $k, array( 'page', 'per_page', 'limit', 'object_id', 'type', 'status_code' ), true ) ? (int) $r->get_param( $k ) : sanitize_text_field( (string) $r->get_param( $k ) );
+			}
+		}
+		return $out;
+	}
+
+	public function register_routes() {
+		$p = $this->p;
+
+		/* ---------------- Bootstrap / dashboard ---------------- */
+		$this->route( 'GET', '/bootstrap', 'view', function () use ( $p ) {
+			$user = wp_get_current_user();
+			return array(
+				'version'   => SEOLITY_VERSION,
+				'brand'     => array( 'name' => $p->settings->get( 'brand_name' ), 'logo' => $p->settings->get( 'brand_logo' ), 'color' => $p->settings->get( 'brand_color' ) ),
+				'caps'      => array_combine( array_keys( self::TIERS ), array_map( 'current_user_can', array_values( self::TIERS ) ) ),
+				'user'      => array( 'id' => $user->ID, 'name' => $user->display_name ),
+				'ai_ready'  => $p->ai->is_ready(),
+				'ai_label'  => ( $prov = \SEOlity\AI\ProviderRegistry::get( $p, (string) $p->settings->get( 'ai_provider' ) ) ) ? $prov->label() : '',
+				'ai_state'  => $p->aiproviders->summary(),
+				'gsc_property' => (string) $p->settings->get( 'gsc_property' ),
+				'gsc'       => $p->gsc_oauth->is_connected(),
+				'github'    => array( 'token' => $p->github->has_token(), 'login' => is_array( get_transient( 'seolity_gh_whoami' ) ) && ! empty( get_transient( 'seolity_gh_whoami' )['login'] ) ? get_transient( 'seolity_gh_whoami' )['login'] : '' ),
+				'cloudflare' => $p->cloudflare->is_deployed(),
+				'region'    => $p->gateway->region(),
+				'region_set' => $p->gateway->region_is_set(),
+				'route'     => $p->gateway->current(),
+				'subscription' => in_array( $p->settings->get( 'ai_provider' ), array( 'sub_claude', 'sub_codex' ), true ),
+				'woo'       => class_exists( 'WooCommerce' ),
+				'serp'      => $p->serp->available(),
+				'engine'    => $p->meta->engine(),
+				'mode'      => $p->settings->get( 'approval_mode' ),
+				'unread_alerts' => $p->alerts->unread(),
+				'pending_changes' => (int) $p->db->value( "SELECT COUNT(*) FROM {changes} WHERE project_id = %d AND status = 'pending'", array( $p->db->project_id() ) ),
+				'home'      => home_url( '/' ),
+				'admin'     => admin_url(),
+			);
+		} );
+		$this->route( 'GET', '/dashboard', 'view', function () use ( $p ) {
+			$db    = $p->db;
+			$pid   = $db->project_id();
+			$audit = $p->crawler->current_audit();
+			$out   = array(
+				'health'       => $p->health->cached(),
+				'action'       => $p->recommendations->action_center(),
+				'audit'        => $audit,
+				'indexed'      => array(
+					'crawled'   => (int) $db->value( "SELECT COUNT(*) FROM {urls} WHERE project_id = %d AND crawl_status = 'done'", array( $pid ) ),
+					'indexable' => (int) $db->value( "SELECT COUNT(*) FROM {urls} WHERE project_id = %d AND crawl_status = 'done' AND status_code = 200 AND indexable = 1", array( $pid ) ),
+				),
+				'errors'       => $db->rows( "SELECT severity, COUNT(*) c FROM {issues} WHERE project_id = %d AND status = 'open' GROUP BY severity", array( $pid ) ),
+				'experiments'  => $p->experiments->query( array() )['stats'],
+				'ai_actions'   => array(
+					'applied_30d' => (int) $db->value( "SELECT COUNT(*) FROM {changes} WHERE project_id = %d AND status = 'applied' AND applied_at >= %s", array( $pid, gmdate( 'Y-m-d H:i:s', time() - 30 * DAY_IN_SECONDS ) ) ),
+					'pending'     => (int) $db->value( "SELECT COUNT(*) FROM {changes} WHERE project_id = %d AND status = 'pending'", array( $pid ) ),
+				),
+				'alerts'       => array_slice( $p->alerts->query( array( 'status' => 'new' ) )['items'], 0, 6 ),
+				'competitors'  => array_map( static function ( $c ) {
+					return array( 'id' => $c['id'], 'name' => $c['name'], 'domain' => $c['domain'], 'pages' => isset( $c['summary']['pages'] ) ? $c['summary']['pages'] : null, 'new_pages' => isset( $c['summary']['new_pages'] ) ? $c['summary']['new_pages'] : null, 'last' => $c['last_analyzed'] );
+				}, $p->competitors->query() ),
+				'briefing'     => $p->briefing->latest(),
+				'gsc'          => null,
+			);
+			if ( $p->gsc_oauth->is_connected() ) {
+				$out['gsc'] = $p->gsc_analytics->overview( 28 );
+			}
+			return $out;
+		} );
+		/* ---------------- Live activity & timeline ---------------- */
+		$this->route( 'GET', '/activity/live', 'view', function () use ( $p ) {
+			return $p->activity->live();
+		} );
+		$this->route( 'GET', '/activity', 'view', function ( Req $r ) use ( $p ) {
+			return $p->activity->history( self::filters( $r, array( 'kind', 'status', 'q', 'page', 'per_page' ) ) );
+		} );
+		$this->route( 'GET', '/activity/dock', 'view', function () use ( $p ) {
+			return $p->activity->dock_items();
+		} );
+		$this->route( 'GET', '/activity/(?P<id>\d+)', 'view', function ( Req $r ) use ( $p ) {
+			$a = $p->activity->get( (int) $r->get_param( 'id' ) );
+			if ( ! $a ) {
+				return new \WP_Error( 'seolity_activity', __( 'Not found.', 'seolity' ), array( 'status' => 404 ) );
+			}
+			// Low-traffic sites: move queued work forward while somebody is watching it.
+			if ( in_array( $a['status'], array( 'queued', 'running', 'waiting' ), true ) && time() - strtotime( $a['updated_at'] . ' UTC' ) > 3 ) {
+				$p->queue->work( 15 );
+				$p->activity->reconcile();
+				$a = $p->activity->get( (int) $r->get_param( 'id' ) );
+			}
+			return $a;
+		} );
+		$this->route( 'GET', '/recommendations/(?P<id>\d+)/guide', 'view', function ( Req $r ) use ( $p ) {
+			return $p->agent->guide( (int) $r->get_param( 'id' ) );
+		} );
+		$this->route( 'POST', '/agent/run', 'apply', function ( Req $r ) use ( $p ) {
+			if ( ! current_user_can( \SEOlity\Core\Capabilities::AI ) ) {
+				return new \WP_Error( 'seolity_forbidden', __( 'Sorry, you are not allowed to do that.', 'seolity' ), array( 'status' => 403 ) );
+			}
+			$instr = $r->get_param( 'instructions' );
+			return $p->agent->start( (int) $r->get_param( 'rec_id' ), null === $instr ? null : wp_unslash( (string) $instr ) );
+		} );
+		/* ---------------- Operations: preview → approve → apply → verify → rollback ---------------- */
+		$this->route( 'GET', '/operations/(?P<id>\d+)', 'view', function ( Req $r ) use ( $p ) {
+			$op = $p->operations->get( self::int( $r, 'id' ) );
+			return $op ? $op : new \WP_Error( 'seolity_op', __( 'Operation not found.', 'seolity' ), array( 'status' => 404 ) );
+		} );
+		$this->route( 'POST', '/operations/(?P<id>\d+)/approve', 'apply', function ( Req $r ) use ( $p ) {
+			$keys = $r->get_param( 'keys' );
+			return $p->operations->approve( self::int( $r, 'id' ), is_array( $keys ) ? array_map( 'sanitize_key', $keys ) : null );
+		} );
+		$this->route( 'POST', '/operations/(?P<id>\d+)/reject', 'apply', function ( Req $r ) use ( $p ) {
+			return $p->operations->reject( self::int( $r, 'id' ) );
+		} );
+		$this->route( 'POST', '/operations/(?P<id>\d+)/rollback', 'apply', function ( Req $r ) use ( $p ) {
+			return $p->operations->rollback( self::int( $r, 'id' ) );
+		} );
+		/* ---------------- Indexability & crawl budget ---------------- */
+		$this->route( 'GET', '/indexability', 'view', function () use ( $p ) {
+			$running = $p->queue->find_unique( 'indexability_scan', true );
+			return array( 'last' => $p->indexability->last(), 'running' => (bool) $running );
+		} );
+		$this->route( 'POST', '/indexability/scan', 'manage', function () use ( $p ) {
+			$job = $p->queue->push( 'indexability_scan', array( 'user_id' => get_current_user_id() ), array( 'unique' => true, 'priority' => 1, 'max_attempts' => 2 ) );
+			\SEOlity\Activity\AiJobs::run_after_response( $p );
+			return array( 'queued' => (bool) $job );
+		} );
+		$this->route( 'GET', '/duplicates', 'view', function () use ( $p ) {
+			$running = $p->queue->find_unique( 'duplicates_scan', true );
+			$last    = $p->duplicates->last();
+			if ( $last ) {
+				// Each group carries its canonical issue (state, instructions, latest operation).
+				foreach ( $last['clusters'] as &$c ) {
+					$c['issue'] = $p->db->row( 'SELECT id, status, instructions, operation_id, verified_at FROM {recommendations} WHERE project_id = %d AND dedupe_key = %s', array( $p->db->project_id(), sha1( 'duplicate_cluster|' . $c['key'] ) ) );
+				}
+				unset( $c );
+			}
+			return array( 'last' => $last, 'running' => (bool) $running, 'instructions' => $p->duplicates->instructions(), 'ai' => $p->ai->is_ready() );
+		} );
+		$this->route( 'POST', '/duplicates/scan', 'manage', function () use ( $p ) {
+			$job = $p->queue->push( 'duplicates_scan', array( 'user_id' => get_current_user_id() ), array( 'unique' => true, 'priority' => 1, 'max_attempts' => 2 ) );
+			\SEOlity\Activity\AiJobs::run_after_response( $p );
+			return array( 'queued' => (bool) $job );
+		} );
+		$this->route( 'POST', '/duplicates/instructions', 'manage', function ( Req $r ) use ( $p ) {
+			return array( 'instructions' => $p->duplicates->save_instructions( (string) $r->get_param( 'instructions' ) ) );
+		} );
+		$this->route( 'POST', '/duplicates/differentiate', 'apply', function ( Req $r ) use ( $p ) {
+			return $p->duplicates->start_differentiate( sanitize_text_field( (string) $r->get_param( 'key' ) ), (int) $r->get_param( 'post' ), (string) $r->get_param( 'instructions' ) );
+		} );
+		$this->route( 'POST', '/duplicates/canonical', 'apply', function ( Req $r ) use ( $p ) {
+			return $p->duplicates->start_canonical( sanitize_text_field( (string) $r->get_param( 'key' ) ), (int) $r->get_param( 'post' ), (int) $r->get_param( 'primary' ) );
+		} );
+		$this->route( 'POST', '/duplicates/consolidate', 'apply', function ( Req $r ) use ( $p ) {
+			return $p->duplicates->start( sanitize_text_field( (string) $r->get_param( 'key' ) ), (int) $r->get_param( 'primary' ), array_map( 'intval', (array) $r->get_param( 'secondaries' ) ), (string) $r->get_param( 'instructions' ) );
+		} );
+		$this->route( 'POST', '/indexability/fix', 'manage', function ( Req $r ) use ( $p ) {
+			return $p->indexability->prepare_fix( sanitize_text_field( (string) $r->get_param( 'key' ) ) );
+		} );
+		/* ---------------- Canonical issues (roadmap) ---------------- */
+		$this->route( 'GET', '/issues/board', 'view', function () use ( $p ) {
+			return array( 'categories' => $p->recommendations->board(), 'refreshed' => get_option( 'seolity_recommendations_refreshed' ), 'analysis' => $p->analysis->state(), 'areas' => $p->problem_areas->compute() );
+		} );
+		$this->route( 'POST', '/analysis/full', 'manage', function () use ( $p ) {
+			return $p->analysis->start();
+		} );
+		$this->route( 'GET', '/analysis/full', 'view', function () use ( $p ) {
+			return array( 'state' => $p->analysis->state() );
+		} );
+		$this->route( 'GET', '/issues/canonical', 'view', function ( Req $r ) use ( $p ) {
+			return $p->recommendations->items( array( 'category' => self::key( $r, 'category' ), 'status' => self::key( $r, 'status', 'active' ), 'q' => self::str( $r, 'q' ), 'page' => self::int( $r, 'page', 1 ), 'per_page' => self::int( $r, 'per_page', 30 ) ) );
+		} );
+		$this->route( 'POST', '/issues/(?P<id>\d+)/state', 'apply', function ( Req $r ) use ( $p ) {
+			$st = self::key( $r, 'status' );
+			if ( ! in_array( $st, array( 'open', 'dismissed', 'snoozed', 'done' ), true ) ) {
+				return new \WP_Error( 'seolity_issue', __( 'Invalid status.', 'seolity' ), array( 'status' => 400 ) );
+			}
+			$p->audit_log->log( 'issue.' . $st, 'recommendation', self::int( $r, 'id' ) );
+			// "Done" by hand is recorded as such — only a verified operation earns the checkmark.
+			$extra = 'done' === $st ? array( 'verified_at' => null, 'verification' => array( 'manual' => true, 'user_id' => get_current_user_id(), 'at' => gmdate( 'c' ) ) ) : ( 'open' === $st ? array( 'verified_at' => null ) : array() );
+			return array( 'ok' => $p->recommendations->set_state( self::int( $r, 'id' ), $st, $extra ) );
+		} );
+		$this->route( 'POST', '/issues/(?P<id>\d+)/instructions', 'apply', function ( Req $r ) use ( $p ) {
+			return array( 'ok' => $p->recommendations->set_state( self::int( $r, 'id' ), 'open', array( 'instructions' => sanitize_textarea_field( wp_unslash( (string) $r->get_param( 'instructions' ) ) ) ) ) );
+		} );
+		$this->route( 'POST', '/ai-jobs', 'ai', function ( Req $r ) use ( $p ) {
+			$params = $r->get_param( 'params' );
+			return $p->aijobs->start( sanitize_key( (string) $r->get_param( 'type' ) ), is_array( $params ) ? $params : array() );
+		} );
+		$this->route( 'POST', '/activity/(?P<id>\d+)/note', 'view', function ( Req $r ) use ( $p ) {
+			return $p->aijobs->note( (int) $r->get_param( 'id' ), (string) $r->get_param( 'text' ) );
+		} );
+		$this->route( 'POST', '/activity/(?P<id>\d+)/dismiss', 'view', function ( Req $r ) use ( $p ) {
+			return array( 'dismissed' => $p->activity->dismiss( (int) $r->get_param( 'id' ) ) );
+		} );
+		// Task management: cancel / retry / delete. Owners manage their own cards; managers manage everything.
+		$own = static function ( $id ) use ( $p ) {
+			$a = $p->activity->get( (int) $id, false );
+			if ( ! $a ) {
+				return new \WP_Error( 'seolity_activity', __( 'Not found.', 'seolity' ), array( 'status' => 404 ) );
+			}
+			if ( (int) $a['user_id'] !== get_current_user_id() && ! current_user_can( \SEOlity\Core\Capabilities::MANAGE ) ) {
+				return new \WP_Error( 'seolity_forbidden', __( 'You can only manage your own tasks.', 'seolity' ), array( 'status' => 403 ) );
+			}
+			return $a;
+		};
+		$this->route( 'POST', '/activity/(?P<id>\d+)/cancel', 'view', function ( Req $r ) use ( $p, $own ) {
+			$a = $own( $r->get_param( 'id' ) );
+			return is_wp_error( $a ) ? $a : $p->activity->cancel( (int) $a['id'] );
+		} );
+		$this->route( 'POST', '/activity/(?P<id>\d+)/retry', 'view', function ( Req $r ) use ( $p, $own ) {
+			$a = $own( $r->get_param( 'id' ) );
+			return is_wp_error( $a ) ? $a : $p->activity->retry( (int) $a['id'] );
+		} );
+		$this->route( 'POST', '/activity/delete', 'manage', function ( Req $r ) use ( $p ) {
+			return array( 'deleted' => $p->activity->delete( array_map( 'intval', (array) $r->get_param( 'ids' ) ) ) );
+		} );
+		$this->route( 'POST', '/activity/purge', 'manage', function ( Req $r ) use ( $p ) {
+			return array( 'deleted' => $p->activity->purge( array( 'kind' => self::key( $r, 'kind' ), 'status' => self::key( $r, 'status' ), 'older_than' => self::int( $r, 'older_than' ) ) ) );
+		} );
+		$this->route( 'GET', '/tasks', 'manage', function ( Req $r ) use ( $p ) {
+			$p->activity->reconcile();
+			return $p->queue->query( array( 'status' => self::key( $r, 'status', 'active' ), 'page' => self::int( $r, 'page', 1 ), 'per_page' => self::int( $r, 'per_page', 50 ) ) );
+		} );
+		$this->route( 'POST', '/tasks/(?P<id>\d+)/cancel', 'manage', function ( Req $r ) use ( $p ) {
+			return $p->queue->cancel( self::int( $r, 'id' ) );
+		} );
+		$this->route( 'POST', '/tasks/(?P<id>\d+)/retry', 'manage', function ( Req $r ) use ( $p ) {
+			$res = $p->queue->retry( self::int( $r, 'id' ) );
+			if ( ! is_wp_error( $res ) ) {
+				\SEOlity\Activity\AiJobs::run_after_response( $p );
+			}
+			return $res;
+		} );
+		$this->route( 'POST', '/tasks/(?P<id>\d+)/delete', 'manage', function ( Req $r ) use ( $p ) {
+			return array( 'deleted' => $p->queue->delete( self::int( $r, 'id' ) ) );
+		} );
+		$this->route( 'POST', '/tasks/purge', 'manage', function ( Req $r ) use ( $p ) {
+			return array( 'deleted' => $p->queue->purge( self::key( $r, 'status' ) ) );
+		} );
+		// Check every unfinished task now (dead workers, expired waits) and correct its state.
+		$this->route( 'POST', '/tasks/recover', 'manage', function () use ( $p ) {
+			$fixed = $p->activity->reconcile( true );
+			return array( 'fixed' => $fixed, 'counts' => $p->queue->counts() );
+		} );
+
+		/* ---------------- SEO roadmap ("What should I do today?") ---------------- */
+		$this->route( 'GET', '/roadmap', 'view', function () use ( $p ) {
+			$cur = $p->roadmap->current();
+			// Sites with little traffic (or blocked loopback requests) would never start the job: run it here.
+			if ( $cur['running'] && 'running' === $cur['running']['status'] && in_array( $cur['running']['stage'], array( 'queued', 'waiting_ai' ), true ) && time() - strtotime( $cur['running']['started_at'] . ' UTC' ) > 6 ) {
+				$p->queue->work( 20 );
+				$cur = $p->roadmap->current();
+			}
+			return $cur;
+		} );
+		$this->route( 'POST', '/roadmap/analyze', 'ai', function () use ( $p ) {
+			return $p->roadmap->start();
+		} );
+		$this->route( 'POST', '/roadmap/task', 'apply', function ( Req $r ) use ( $p ) {
+			return $p->roadmap->set_status( sanitize_text_field( (string) $r->get_param( 'key' ) ), sanitize_key( (string) $r->get_param( 'status' ) ) );
+		} );
+		$this->route( 'GET', '/roadmap/history', 'view', function () use ( $p ) {
+			return $p->roadmap->history();
+		} );
+		$this->route( 'GET', '/action-center', 'view', function () use ( $p ) {
+			return $p->recommendations->action_center();
+		} );
+		$this->route( 'GET', '/health', 'view', function ( Req $r ) use ( $p ) {
+			return $r->get_param( 'fresh' ) ? $p->health->compute() : $p->health->cached();
+		} );
+		$this->route( 'GET', '/doctor', 'view', function () use ( $p ) {
+			return $p->doctor->diagnose();
+		} );
+
+		/* ---------------- Recommendations ---------------- */
+		$this->route( 'GET', '/recommendations', 'view', function ( Req $r ) use ( $p ) {
+			return $p->recommendations->query( self::filters( $r, array( 'status', 'priority', 'type', 'limit', 'object_type', 'object_id' ) ) );
+		} );
+		$this->route( 'POST', '/recommendations/refresh', 'ai', function () use ( $p ) {
+			$p->queue->push( 'recommendations_refresh', array(), array( 'unique' => true, 'priority' => 1 ) );
+			Scheduler::kick();
+			return array( 'queued' => true );
+		} );
+		$this->route( 'GET', '/recommendations/(?P<id>\d+)/why', 'view', function ( Req $r ) use ( $p ) {
+			return $p->recommendations->explain( self::int( $r, 'id' ) );
+		} );
+		$this->route( 'POST', '/recommendations/(?P<id>\d+)/execute', 'ai', function ( Req $r ) use ( $p ) {
+			return $p->recommendations->execute( self::int( $r, 'id' ) );
+		} );
+		$this->route( 'POST', '/recommendations/(?P<id>\d+)/status', 'apply', function ( Req $r ) use ( $p ) {
+			return array( 'ok' => $p->recommendations->mark( self::int( $r, 'id' ), self::key( $r, 'status' ) ) );
+		} );
+
+		/* ---------------- Content optimization & changes ---------------- */
+		$this->route( 'POST', '/analyze', 'view', function ( Req $r ) use ( $p ) {
+			return $p->optimizer->analyze(
+				array(
+					'object_type'      => self::key( $r, 'object_type', 'post' ),
+					'object_id'        => self::int( $r, 'object_id' ),
+					'field'            => self::key( $r, 'field' ),
+					'content'          => null === $r->get_param( 'content' ) ? null : wp_kses_post( wp_unslash( (string) $r->get_param( 'content' ) ) ),
+					'title'            => self::str( $r, 'title' ),
+					'focus_keyword'    => self::str( $r, 'focus_keyword' ),
+					'meta_title'       => null === $r->get_param( 'meta_title' ) ? null : self::str( $r, 'meta_title' ),
+					'meta_description' => null === $r->get_param( 'meta_description' ) ? null : self::str( $r, 'meta_description' ),
+				)
+			);
+		} );
+		$this->route( 'POST', '/optimize', 'ai', function ( Req $r ) use ( $p ) {
+			$type = self::key( $r, 'object_type', 'post' );
+			$id   = self::int( $r, 'object_id' );
+			if ( $id && ! Capabilities::can_edit_object( $type, $id ) ) {
+				return new \WP_Error( 'seolity_forbidden', __( 'You are not allowed to edit this item.', 'seolity' ), array( 'status' => 403 ) );
+			}
+			return $p->optimizer->optimize(
+				array(
+					'object_type'   => $type,
+					'object_id'     => $id,
+					'field'         => self::key( $r, 'field', 'post_content' ),
+					'content'       => null === $r->get_param( 'content' ) ? null : wp_kses_post( wp_unslash( (string) $r->get_param( 'content' ) ) ),
+					'title'         => self::str( $r, 'title' ),
+					'focus_keyword' => self::str( $r, 'focus_keyword' ),
+					'goal'          => self::str( $r, 'goal' ),
+				)
+			);
+		} );
+		$this->route( 'POST', '/meta', 'ai', function ( Req $r ) use ( $p ) {
+			return $p->optimizer->meta( self::key( $r, 'object_type', 'post' ), self::int( $r, 'object_id' ) );
+		} );
+		$this->route( 'POST', '/faq', 'ai', function ( Req $r ) use ( $p ) {
+			$cid = $p->optimizer->faq( self::int( $r, 'object_id' ) );
+			return is_wp_error( $cid ) ? $cid : array( 'change' => $p->changes->get( $cid ) );
+		} );
+		$this->route( 'POST', '/eeat', 'ai', function ( Req $r ) use ( $p ) {
+			$type = self::key( $r, 'object_type', 'post' );
+			$id   = self::int( $r, 'object_id' );
+			if ( ! Capabilities::can_edit_object( $type, $id ) ) {
+				return new \WP_Error( 'seolity_forbidden', __( 'You are not allowed to edit this item.', 'seolity' ), array( 'status' => 403 ) );
+			}
+			return $p->optimizer->eeat( $type, $id );
+		} );
+		$this->route( 'GET', '/changes', 'view', function ( Req $r ) use ( $p ) {
+			return $p->changes->query( self::filters( $r, array( 'status', 'object_type', 'field', 'source', 'risk', 'batch_id', 'page', 'per_page' ) ) );
+		} );
+		$this->route( 'GET', '/changes/(?P<id>\d+)', 'view', function ( Req $r ) use ( $p ) {
+			$c = $p->changes->get( self::int( $r, 'id' ) );
+			return $c ? $c : new \WP_Error( 'seolity_change', __( 'Change not found.', 'seolity' ), array( 'status' => 404 ) );
+		} );
+		$this->route( 'POST', '/changes/(?P<id>\d+)/apply', 'apply', function ( Req $r ) use ( $p ) {
+			$value = $r->get_param( 'value' );
+			return $p->changes->apply( self::int( $r, 'id' ), null === $value ? null : wp_unslash( (string) $value ) );
+		} );
+		$this->route( 'POST', '/changes/(?P<id>\d+)/editor-applied', 'apply', function ( Req $r ) use ( $p ) {
+			return $p->changes->mark_applied_in_editor( self::int( $r, 'id' ) );
+		} );
+		$this->route( 'POST', '/changes/(?P<id>\d+)/reject', 'apply', function ( Req $r ) use ( $p ) {
+			return $p->changes->reject( self::int( $r, 'id' ), self::str( $r, 'note' ) );
+		} );
+		$this->route( 'POST', '/changes/(?P<id>\d+)/revert', 'apply', function ( Req $r ) use ( $p ) {
+			return $p->changes->revert( self::int( $r, 'id' ) );
+		} );
+		$this->route( 'POST', '/changes/(?P<id>\d+)/restore', 'apply', function ( Req $r ) use ( $p ) {
+			return $p->changes->restore_version( self::int( $r, 'id' ) );
+		} );
+		$this->route( 'POST', '/changes/batch/(?P<batch>[a-z0-9_]+)/(?P<action>apply|reject)', 'apply', function ( Req $r ) use ( $p ) {
+			$ids = $p->db->column( "SELECT id FROM {changes} WHERE batch_id = %s AND status = 'pending'", array( self::key( $r, 'batch' ) ) );
+			$out = array();
+			foreach ( $ids as $id ) {
+				$res        = 'apply' === $r['action'] ? $p->changes->apply( (int) $id ) : $p->changes->reject( (int) $id );
+				$out[ $id ] = is_wp_error( $res ) ? $res->get_error_message() : 'ok';
+			}
+			return array( 'results' => $out );
+		} );
+		$this->route( 'GET', '/history', 'view', function ( Req $r ) use ( $p ) {
+			return $p->changes->history( self::key( $r, 'object_type', 'post' ), self::int( $r, 'object_id' ), self::key( $r, 'field' ) );
+		} );
+		$this->route( 'POST', '/bulk', 'ai', function ( Req $r ) use ( $p ) {
+			return $p->optimizer->queue_bulk( self::key( $r, 'task' ), array_map( 'intval', (array) $r->get_param( 'ids' ) ), self::key( $r, 'object_type', 'post' ) );
+		} );
+		$this->route( 'GET', '/bulk/(?P<batch>[a-z0-9_]+)', 'view', function ( Req $r ) use ( $p ) {
+			return $p->optimizer->bulk_status( self::key( $r, 'batch' ) );
+		} );
+		$this->route( 'GET', '/content', 'view', function ( Req $r ) use ( $p ) {
+			return ( new ContentList( $p ) )->query( self::filters( $r, array( 'type', 'filter', 'search', 'page', 'per_page', 'post_type', 'taxonomy' ) ) + array( 'kind' => self::key( $r, 'kind', 'post' ) ) );
+		} );
+		$this->route( 'GET', '/search', 'view', function ( Req $r ) {
+			$q   = self::str( $r, 'q' );
+			$out = array();
+			foreach ( get_posts( array( 'post_type' => array_values( array_diff( get_post_types( array( 'public' => true ) ), array( 'attachment' ) ) ), 'post_status' => 'publish', 's' => $q, 'posts_per_page' => 10 ) ) as $post ) {
+				$out[] = array( 'type' => 'post', 'id' => $post->ID, 'label' => $post->post_title, 'sub' => $post->post_type, 'url' => get_permalink( $post ) );
+			}
+			foreach ( get_terms( array( 'taxonomy' => get_taxonomies( array( 'public' => true ) ), 'search' => $q, 'number' => 5, 'hide_empty' => false ) ) as $term ) {
+				if ( is_object( $term ) ) {
+					$out[] = array( 'type' => 'term', 'id' => $term->term_id, 'label' => $term->name, 'sub' => $term->taxonomy, 'url' => get_term_link( $term ) );
+				}
+			}
+			return $out;
+		} );
+
+		/* ---------------- Audit ---------------- */
+		$this->route( 'GET', '/audit', 'view', function () use ( $p ) {
+			return array(
+				'audit'    => $p->crawler->current_audit(),
+				'history'  => $p->db->rows( 'SELECT id, type, status, urls_total, urls_done, started_at, finished_at FROM {audits} WHERE project_id = %d ORDER BY id DESC LIMIT 10', array( $p->db->project_id() ) ),
+				'checks'   => array_map( static function ( $code ) {
+					return array( 'code' => $code ) + \SEOlity\Crawler\Checks::meta( $code );
+				}, array_keys( \SEOlity\Crawler\Checks::catalog() ) ),
+				'counts'   => $p->db->rows( "SELECT check_code, category, severity, COUNT(*) c FROM {issues} WHERE project_id = %d AND status = 'open' GROUP BY check_code, category, severity ORDER BY c DESC", array( $p->db->project_id() ) ),
+			);
+		} );
+		$this->route( 'POST', '/audit/start', 'manage', function ( Req $r ) use ( $p ) {
+			$p->queue->push( 'crawl_start', array( 'type' => 'incremental' === self::key( $r, 'type' ) ? 'incremental' : 'full' ), array( 'unique' => true, 'priority' => 1 ) );
+			Scheduler::kick();
+			return array( 'queued' => true );
+		} );
+		$this->route( 'GET', '/issues', 'view', function ( Req $r ) use ( $p ) {
+			return $p->crawler->issues( self::filters( $r, array( 'status', 'check_code', 'category', 'severity', 'page', 'per_page' ) ) );
+		} );
+		$this->route( 'POST', '/issues/(?P<id>\d+)/status', 'apply', function ( Req $r ) use ( $p ) {
+			return array( 'ok' => $p->crawler->set_issue_status( self::int( $r, 'id' ), self::key( $r, 'status' ) ) );
+		} );
+		$this->route( 'GET', '/urls', 'view', function ( Req $r ) use ( $p ) {
+			return $p->crawler->urls( self::filters( $r, array( 'search', 'status_code', 'orderby', 'page', 'per_page' ) ) );
+		} );
+		$this->route( 'GET', '/pagespeed', 'view', function () use ( $p ) {
+			return $p->pagespeed->summary();
+		} );
+		$this->route( 'POST', '/pagespeed/test', 'manage', function ( Req $r ) use ( $p ) {
+			$url = self::url( $r, 'url' );
+			if ( ! \SEOlity\Crawler\PageParser::same_site( wp_parse_url( $url, PHP_URL_HOST ), wp_parse_url( home_url(), PHP_URL_HOST ) ) ) {
+				return new \WP_Error( 'seolity_url', __( 'Only URLs of this site can be tested.', 'seolity' ), array( 'status' => 400 ) );
+			}
+			return $p->pagespeed->test( $url, 'desktop' === self::key( $r, 'strategy' ) ? 'desktop' : 'mobile' );
+		} );
+
+		/* ---------------- Google Search Console ---------------- */
+		$this->route( 'GET', '/gsc/status', 'view', function () use ( $p ) {
+			return $p->gsc_oauth->status() + array( 'client_id' => $p->settings->get( 'gsc_client_id' ), 'has_secret' => $p->settings->has_secret( 'gsc_client_secret' ) );
+		} );
+		$this->route( 'POST', '/gsc/credentials', 'manage', function ( Req $r ) use ( $p ) {
+			$p->settings->update( array( 'gsc_client_id' => self::str( $r, 'client_id' ) ) );
+			if ( '' !== self::str( $r, 'client_secret' ) ) {
+				$p->settings->set_secret( 'gsc_client_secret', self::str( $r, 'client_secret' ) );
+			}
+			$p->audit_log->log( 'gsc.credentials_saved', 'integration' );
+			return $p->gsc_oauth->status();
+		} );
+		$this->route( 'GET', '/gsc/auth-url', 'manage', function () use ( $p ) {
+			$url = $p->gsc_oauth->auth_url();
+			return is_wp_error( $url ) ? $url : array( 'url' => $url );
+		} );
+		$this->route( 'GET', '/gsc/sites', 'manage', function () use ( $p ) {
+			return $p->gsc_client->sites();
+		} );
+		$this->route( 'POST', '/gsc/property', 'manage', function ( Req $r ) use ( $p ) {
+			$property = self::str( $r, 'property' );
+			$sites    = $p->gsc_client->sites();
+			if ( is_wp_error( $sites ) ) {
+				return $sites;
+			}
+			if ( ! in_array( $property, wp_list_pluck( $sites, 'site_url' ), true ) ) {
+				return new \WP_Error( 'seolity_gsc_property', __( 'This property is not available for the connected account.', 'seolity' ), array( 'status' => 400 ) );
+			}
+			$changed = $property !== $p->settings->get( 'gsc_property' );
+			$p->settings->update( array( 'gsc_property' => $property ) );
+			if ( $changed ) {
+				$p->db->query( 'DELETE FROM {gsc_page_query} WHERE project_id = %d', array( $p->db->project_id() ) );
+				$p->db->query( 'DELETE FROM {gsc_daily} WHERE project_id = %d', array( $p->db->project_id() ) );
+				$p->db->query( 'DELETE FROM {gsc_breakdown} WHERE project_id = %d', array( $p->db->project_id() ) );
+			}
+			$p->gsc_sync->sync( null );
+			Scheduler::kick();
+			$p->audit_log->log( 'gsc.property_selected', 'integration', null, array( 'property' => $property ) );
+			return $p->gsc_oauth->status();
+		} );
+		$this->route( 'POST', '/gsc/disconnect', 'manage', function () use ( $p ) {
+			$p->gsc_oauth->disconnect();
+			return $p->gsc_oauth->status();
+		} );
+		$this->route( 'POST', '/gsc/sync', 'manage', function ( Req $r ) use ( $p ) {
+			$res = $p->gsc_sync->sync( $r->get_param( 'days' ) ? self::days( $r ) : null );
+			Scheduler::kick();
+			return is_wp_error( $res ) ? $res : array( 'queued' => true );
+		} );
+		$this->route( 'GET', '/gsc/overview', 'view', function ( Req $r ) use ( $p ) {
+			return $p->gsc_analytics->overview( self::days( $r ) );
+		} );
+		$this->route( 'GET', '/gsc/table', 'view', function ( Req $r ) use ( $p ) {
+			return $p->gsc_analytics->grouped( 'query' === self::key( $r, 'by' ) ? 'query' : 'page', self::days( $r ), max( 1, min( 1000, self::int( $r, 'limit', 100 ) ) ), self::key( $r, 'order', 'clicks' ), array_filter( array( 'search' => self::str( $r, 'search' ), 'page' => self::url( $r, 'page_url' ), 'query' => self::str( $r, 'query' ) ) ) );
+		} );
+		$this->route( 'GET', '/gsc/insights', 'view', function ( Req $r ) use ( $p ) {
+			$a    = $p->gsc_analytics;
+			$days = self::days( $r );
+			return array(
+				'distribution'           => $a->ranking_distribution( $days ),
+				'pages'                  => $a->movers( 'page', $days, 15 ),
+				'queries'                => $a->movers( 'query', $days, 15 ),
+				'keywords'               => $a->keyword_changes( $days, 30 ),
+				'trending'               => $a->trending_pages( $days, 15 ),
+				'new_pages'              => $a->new_pages( $days, 15 ),
+				'ctr_opportunities'      => $a->ctr_opportunities( $days, 25 ),
+				'position_opportunities' => $a->position_opportunities( $days, 25 ),
+			);
+		} );
+		$this->route( 'GET', '/gsc/breakdown', 'view', function ( Req $r ) use ( $p ) {
+			$dim = in_array( $r->get_param( 'dimension' ), array( 'country', 'device', 'searchAppearance' ), true ) ? $r->get_param( 'dimension' ) : 'device';
+			return $p->gsc_analytics->breakdown( $dim, self::days( $r ) );
+		} );
+		$this->route( 'GET', '/gsc/page', 'view', function ( Req $r ) use ( $p ) {
+			$url = self::url( $r, 'url' );
+			return array( 'metrics' => $p->gsc_analytics->page_metrics( $url, self::days( $r ) ), 'series' => $p->gsc_analytics->page_series( $url, max( 28, self::days( $r ) ) ), 'queries' => $p->gsc_analytics->page_queries( $url, self::days( $r ), 50 ) );
+		} );
+		$this->route( 'POST', '/gsc/inspect', 'manage', function ( Req $r ) use ( $p ) {
+			return $p->gsc_client->inspect( self::url( $r, 'url' ) );
+		} );
+
+		/* ---------------- Keywords ---------------- */
+		$this->route( 'GET', '/keywords', 'view', function ( Req $r ) use ( $p ) {
+			return $p->keywords->query( self::filters( $r, array( 'search', 'intent', 'kw_type', 'source', 'tracked', 'unmapped', 'orderby', 'page', 'per_page' ) ) );
+		} );
+		$this->route( 'POST', '/keywords', 'apply', function ( Req $r ) use ( $p ) {
+			return array( 'added' => $p->keywords->add( array_map( 'sanitize_text_field', (array) $r->get_param( 'keywords' ) ) ) );
+		} );
+		$this->route( 'PATCH', '/keywords/(?P<id>\d+)', 'apply', function ( Req $r ) use ( $p ) {
+			return array( 'ok' => $p->keywords->update( self::int( $r, 'id' ), (array) $r->get_json_params() ) );
+		} );
+		$this->route( 'DELETE', '/keywords/(?P<id>\d+)', 'apply', function ( Req $r ) use ( $p ) {
+			return array( 'ok' => $p->keywords->delete( self::int( $r, 'id' ) ) );
+		} );
+		$this->route( 'POST', '/keywords/research', 'ai', function ( Req $r ) use ( $p ) {
+			return $p->keywords->research( (array) $r->get_param( 'seeds' ), self::str( $r, 'market' ) );
+		} );
+		$this->route( 'POST', '/serp/analyze', 'ai', function ( Req $r ) use ( $p ) {
+			return $p->serp->analyze( self::str( $r, 'keyword' ), self::key( $r, 'market' ) );
+		} );
+		$this->route( 'POST', '/keywords/sync', 'manage', function () use ( $p ) {
+			$p->queue->push( 'keywords_sync', array(), array( 'unique' => true, 'priority' => 2 ) );
+			Scheduler::kick();
+			return array( 'queued' => true );
+		} );
+		$this->route( 'GET', '/keywords/cannibalization', 'view', function ( Req $r ) use ( $p ) {
+			return $p->keywords->cannibalization( self::days( $r ), 100 );
+		} );
+		$this->route( 'POST', '/keywords/cannibalization/advice', 'ai', function ( Req $r ) use ( $p ) {
+			return $p->keywords->cannibalization_advice( self::str( $r, 'query' ) );
+		} );
+		// GSC-driven focus keywords + Rank Math bridge.
+		$this->route( 'GET', '/focus/insights', 'view', function ( Req $r ) use ( $p ) {
+			return $p->focus->insights( self::key( $r, 'object_type', 'post' ), self::int( $r, 'object_id' ), max( 7, min( 480, self::int( $r, 'days', 90 ) ) ) );
+		} );
+		$this->route( 'POST', '/focus/apply', 'apply', function ( Req $r ) use ( $p ) {
+			return $p->focus->apply(
+				self::key( $r, 'object_type', 'post' ),
+				self::int( $r, 'object_id' ),
+				array_filter( array_map( 'sanitize_text_field', (array) $r->get_param( 'keywords' ) ) ),
+				'',
+				array( 'meta_title' => self::str( $r, 'meta_title' ), 'meta_description' => self::str( $r, 'meta_description' ) )
+			);
+		} );
+		$this->route( 'POST', '/focus/plan', 'ai', function ( Req $r ) use ( $p ) {
+			return $p->focus->ai_plan( self::key( $r, 'object_type', 'post' ), self::int( $r, 'object_id' ) );
+		} );
+		$this->route( 'POST', '/focus/bulk', 'apply', function ( Req $r ) use ( $p ) {
+			return $p->focus->assign_bulk(
+				array(
+					'only_empty'      => (bool) $r->get_param( 'only_empty' ),
+					'post_types'      => array_map( 'sanitize_key', (array) $r->get_param( 'post_types' ) ),
+					'limit'           => self::int( $r, 'limit', 200 ),
+					'min_impressions' => self::int( $r, 'min_impressions', 30 ),
+					'dry_run'         => (bool) $r->get_param( 'dry_run' ),
+				)
+			);
+		} );
+		$this->route( 'GET', '/rankmath', 'view', function () use ( $p ) {
+			return $p->rankmath->status();
+		} );
+		$this->route( 'POST', '/rankmath/import-redirects', 'manage', function () use ( $p ) {
+			return $p->rankmath->import_redirections();
+		} );
+		$this->route( 'POST', '/rankmath/sync-pillars', 'apply', function () use ( $p ) {
+			return $p->rankmath->sync_pillars();
+		} );
+		$this->route( 'GET', '/keywords/mapping', 'view', function () use ( $p ) {
+			return $p->keywords->mapping();
+		} );
+
+		/* ---------------- Products / images / links ---------------- */
+		$this->route( 'GET', '/products', 'view', function ( Req $r ) use ( $p ) {
+			return $p->products->query( self::filters( $r, array( 'search', 'filter', 'page', 'per_page' ) ) );
+		} );
+		$this->route( 'POST', '/products/(?P<id>\d+)/optimize', 'ai', function ( Req $r ) use ( $p ) {
+			if ( ! current_user_can( 'edit_post', self::int( $r, 'id' ) ) ) {
+				return new \WP_Error( 'seolity_forbidden', __( 'You are not allowed to edit this product.', 'seolity' ), array( 'status' => 403 ) );
+			}
+			$fields = array_values( array_intersect( (array) $r->get_param( 'fields' ), \SEOlity\Woo\ProductSeo::DEFAULT_FIELDS ) );
+			return $p->products->optimize( self::int( $r, 'id' ), $fields ? array( 'fields' => $fields ) : array() );
+		} );
+		$this->route( 'GET', '/images', 'view', function ( Req $r ) use ( $p ) {
+			return $p->images->query( self::filters( $r, array( 'issue', 'post_type', 'all', 'page', 'per_page' ) ) );
+		} );
+		$this->route( 'POST', '/images/scan', 'manage', function () use ( $p ) {
+			$p->queue->push( 'images_scan', array( 'offset' => 0 ), array( 'unique' => true, 'priority' => 3 ) );
+			Scheduler::kick();
+			return array( 'queued' => true );
+		} );
+		$this->route( 'POST', '/images/generate', 'ai', function ( Req $r ) use ( $p ) {
+			$ids = array_map( 'intval', (array) $r->get_param( 'ids' ) );
+			if ( count( $ids ) > 20 ) {
+				return $p->optimizer->queue_bulk( 'alt', $ids, 'attachment' );
+			}
+			return $p->images->generate( $ids );
+		} );
+		$this->route( 'POST', '/images/suggest', 'ai', function ( Req $r ) use ( $p ) {
+			$id = (int) $r->get_param( 'id' );
+			if ( ! current_user_can( 'edit_post', $id ) ) {
+				return new \WP_Error( 'seolity_forbidden', __( 'Sorry, you are not allowed to do that.', 'seolity' ), array( 'status' => 403 ) );
+			}
+			return $p->images->suggest( $id, (int) $r->get_param( 'post_id' ), (string) $r->get_param( 'hint' ) );
+		} );
+		$this->route( 'GET', '/links', 'view', function ( Req $r ) use ( $p ) {
+			return $p->links->query( self::filters( $r, array( 'status' ) ) );
+		} );
+		$this->route( 'POST', '/links/build', 'ai', function () use ( $p ) {
+			$p->queue->push( 'links_suggest', array(), array( 'unique' => true, 'priority' => 3 ) );
+			Scheduler::kick();
+			return array( 'queued' => true );
+		} );
+		$this->route( 'POST', '/links/suggest', 'ai', function ( Req $r ) use ( $p ) {
+			return 'to' === self::key( $r, 'direction' ) ? $p->links->suggest_to( self::int( $r, 'post_id' ) ) : $p->links->suggest_for( self::int( $r, 'post_id' ) );
+		} );
+		$this->route( 'GET', '/links/(?P<id>\d+)/preview', 'view', function ( Req $r ) use ( $p ) {
+			return $p->links->preview( self::int( $r, 'id' ) );
+		} );
+		$this->route( 'POST', '/links/(?P<id>\d+)/apply', 'apply', function ( Req $r ) use ( $p ) {
+			return $p->links->apply( self::int( $r, 'id' ) );
+		} );
+		$this->route( 'POST', '/links/(?P<id>\d+)/dismiss', 'apply', function ( Req $r ) use ( $p ) {
+			return array( 'ok' => $p->links->dismiss( self::int( $r, 'id' ) ) );
+		} );
+
+		/* ---------------- Competitors ---------------- */
+		$this->route( 'GET', '/competitors', 'view', function () use ( $p ) {
+			return $p->competitors->query();
+		} );
+		$this->route( 'POST', '/competitors', 'manage', function ( Req $r ) use ( $p ) {
+			$res = $p->competitors->create( self::str( $r, 'name' ), self::str( $r, 'domain' ), self::key( $r, 'frequency', 'weekly' ), self::url( $r, 'sitemap' ) );
+			if ( ! is_wp_error( $res ) && is_numeric( $res ) ) {
+				$p->intel->link_domain( (int) $res, self::str( $r, 'domain' ) );
+			}
+			return $res;
+		} );
+		$this->route( 'GET', '/competitors/(?P<id>\d+)/intel', 'view', function ( Req $r ) use ( $p ) {
+			$id = self::int( $r, 'id' );
+			return array(
+				'competitor' => $p->competitors->get( $id ),
+				'overview'   => $p->intel->overview( $id ),
+				'analyses'   => $p->intel->analyses( $id ),
+				'candidates' => (array) get_option( 'seolity_comp_candidates_' . $id, array() ),
+				'budget'     => $p->intel->budget(),
+				'last_track' => get_option( 'seolity_serp_last_track' ),
+				'tracking'   => (bool) $p->queue->find_unique( 'serp_track', true ),
+			);
+		} );
+		$this->route( 'GET', '/competitors/(?P<id>\d+)/estimate', 'view', function ( Req $r ) use ( $p ) {
+			return $p->intel->estimate( self::int( $r, 'id' ) );
+		} );
+		$this->route( 'POST', '/competitors/(?P<id>\d+)/compare', 'ai', function ( Req $r ) use ( $p ) {
+			return $p->intel->start_compare( self::int( $r, 'id' ), self::str( $r, 'query' ) );
+		} );
+		$this->route( 'GET', '/competitors/analysis/(?P<id>\d+)', 'view', function ( Req $r ) use ( $p ) {
+			return $p->intel->analysis( self::int( $r, 'id' ) );
+		} );
+		$this->route( 'POST', '/competitors/(?P<id>\d+)/discover', 'ai', function ( Req $r ) use ( $p ) {
+			return array( 'candidates' => $p->intel->discover( self::int( $r, 'id' ) ) );
+		} );
+		$this->route( 'GET', '/serp/tracking', 'view', function () use ( $p ) {
+			return array( 'queries' => $p->intel->tracked_queries(), 'own' => (array) get_option( \SEOlity\Competitors\Intel::QUERIES, array() ), 'budget' => $p->intel->budget(), 'suggestions' => $p->intel->suggestions(), 'last_track' => get_option( 'seolity_serp_last_track' ), 'tracking' => (bool) $p->queue->find_unique( 'serp_track', true ) );
+		} );
+		$this->route( 'POST', '/serp/queries', 'manage', function ( Req $r ) use ( $p ) {
+			$q = (array) $r->get_param( 'queries' );
+			if ( $r->get_param( 'remove' ) ) {
+				$p->intel->remove_query( self::str( $r, 'remove' ) );
+				return array( 'ok' => true );
+			}
+			return array( 'queries' => $p->intel->add_queries( $q ) );
+		} );
+		$this->route( 'GET', '/sitemap/map', 'view', function ( Req $r ) use ( $p ) {
+			$v                 = $p->sitemap_map->view( array( 'status' => self::key( $r, 'status' ), 'flag' => self::key( $r, 'flag' ), 'q' => self::str( $r, 'q' ), 'folder' => (string) $r->get_param( 'folder' ), 'sort' => self::key( $r, 'sort' ), 'all' => (bool) $r->get_param( 'all' ), 'page' => self::int( $r, 'page', 1 ), 'per_page' => self::int( $r, 'per_page', 200 ) ) );
+			$v['history']      = (array) get_option( \SEOlity\Technical\SiteMap::HISTORY, array() );
+			$v['last_refresh'] = get_option( 'seolity_sitemap_map_last' );
+			$v['refreshing']   = (bool) $p->queue->find_unique( 'sitemap_map_refresh', true );
+			return $v;
+		} );
+		$this->route( 'GET', '/sitemap/map/pixels', 'view', function () use ( $p ) {
+			return $p->sitemap_map->pixels();
+		} );
+		$this->route( 'GET', '/sitemap/map/url', 'view', function ( Req $r ) use ( $p ) {
+			return $p->sitemap_map->url( esc_url_raw( (string) $r->get_param( 'url' ) ) );
+		} );
+		$this->route( 'POST', '/sitemap/map/refresh', 'manage', function () use ( $p ) {
+			$job = $p->queue->push( 'sitemap_map_refresh', array(), array( 'unique' => true, 'priority' => 1, 'max_attempts' => 1, 'timeout' => 900 ) );
+			\SEOlity\Activity\AiJobs::run_after_response( $p );
+			return array( 'queued' => (bool) $job );
+		} );
+		$this->route( 'POST', '/sitemap/map/check', 'manage', function ( Req $r ) use ( $p ) {
+			return $p->sitemap_map->check( esc_url_raw( (string) $r->get_param( 'url' ) ) );
+		} );
+		$this->route( 'GET', '/serp/sources', 'manage', function () use ( $p ) {
+			$cat = \SEOlity\Serp\Sources::catalog();
+			foreach ( $cat as $id => &$c ) {
+				$c['ready']  = \SEOlity\Serp\Sources::ready( $p, $id );
+				$c['values'] = array();
+				foreach ( $c['fields'] as $f ) {
+					// Secrets are never sent back; only whether one is saved.
+					$c['values'][ $f ] = in_array( $f, \SEOlity\Core\Settings::SECRET_FIELDS, true ) ? ( $p->settings->secret( $f ) ? '••••' : '' ) : (string) $p->settings->get( $f );
+				}
+			}
+			unset( $c );
+			$ai = \SEOlity\Serp\AiVisibility::catalog();
+			foreach ( $ai as $id => &$e ) {
+				$e['has_key'] = (bool) $p->settings->secret( $e['key'] );
+			}
+			unset( $e );
+			return array( 'source' => $p->serp->source(), 'sources' => $cat, 'ai_engines' => $ai, 'ai_enabled' => array_filter( array_map( 'trim', explode( ',', (string) $p->settings->get( 'ai_visibility_engines' ) ) ) ) );
+		} );
+		$this->route( 'POST', '/serp/sources', 'manage', function ( Req $r ) use ( $p ) {
+			$src = self::key( $r, 'source' );
+			if ( ! isset( \SEOlity\Serp\Sources::catalog()[ $src ] ) ) {
+				return new \WP_Error( 'seolity_serp', __( 'Unknown source.', 'seolity' ), array( 'status' => 400 ) );
+			}
+			$set = array( 'serp_source' => $src );
+			foreach ( (array) $r->get_param( 'values' ) as $f => $v ) {
+				$v = trim( (string) $v );
+				if ( ! in_array( $f, \SEOlity\Serp\Sources::catalog()[ $src ]['fields'], true ) || '••••' === $v ) {
+					continue;
+				}
+				if ( in_array( $f, \SEOlity\Core\Settings::SECRET_FIELDS, true ) ) {
+					if ( '' !== $v ) {
+						$p->settings->set_secret( $f, $v );
+					}
+				} else {
+					$set[ $f ] = sanitize_text_field( $v );
+				}
+			}
+			if ( $r->get_param( 'ai_engines' ) !== null ) {
+				$set['ai_visibility_engines'] = implode( ',', array_intersect( array_map( 'sanitize_key', (array) $r->get_param( 'ai_engines' ) ), array_keys( \SEOlity\Serp\AiVisibility::catalog() ) ) );
+			}
+			if ( $r->get_param( 'perplexity_api_key' ) ) {
+				$p->settings->set_secret( 'perplexity_api_key', (string) $r->get_param( 'perplexity_api_key' ) );
+			}
+			$p->settings->update( $set );
+			return array( 'ok' => true, 'ready' => \SEOlity\Serp\Sources::ready( $p, $src ) );
+		} );
+		$this->route( 'POST', '/serp/import', 'manage', function ( Req $r ) use ( $p ) {
+			$q    = trim( sanitize_text_field( (string) $r->get_param( 'query' ) ) );
+			$rows = array();
+			foreach ( array_slice( (array) $r->get_param( 'results' ), 0, 100 ) as $i => $x ) {
+				$u = esc_url_raw( isset( $x['url'] ) ? (string) $x['url'] : '' );
+				if ( $u && preg_match( '#^https?://#', $u ) ) {
+					$rows[] = array( 'position' => count( $rows ) + 1, 'title' => sanitize_text_field( isset( $x['title'] ) ? $x['title'] : '' ), 'url' => $u, 'domain' => preg_replace( '/^www\./', '', strtolower( (string) wp_parse_url( $u, PHP_URL_HOST ) ) ), 'snippet' => sanitize_text_field( isset( $x['snippet'] ) ? $x['snippet'] : '' ) );
+				}
+			}
+			if ( '' === $q || ! $rows ) {
+				return new \WP_Error( 'seolity_serp', __( 'No search results were found on that page.', 'seolity' ), array( 'status' => 400 ) );
+			}
+			$sid = $p->intel->snapshot( $q, array( 'results' => $rows, 'questions' => array_map( 'sanitize_text_field', (array) $r->get_param( 'questions' ) ), 'related' => array_map( 'sanitize_text_field', (array) $r->get_param( 'related' ) ), 'features' => array() ), 'manual' );
+			$p->intel->add_queries( array( $q ) );
+			return array( 'snapshot_id' => $sid, 'results' => count( $rows ) );
+		} );
+		$this->route( 'GET', '/serp/ai-visibility', 'view', function () use ( $p ) {
+			return array( 'items' => $p->ai_visibility->overview(), 'enabled' => $p->ai_visibility->enabled(), 'last' => get_option( 'seolity_ai_visibility_last' ), 'running' => (bool) $p->queue->find_unique( 'ai_visibility_check', true ) );
+		} );
+		$this->route( 'POST', '/serp/ai-visibility/check', 'ai', function () use ( $p ) {
+			if ( ! $p->ai_visibility->enabled() ) {
+				return new \WP_Error( 'seolity_aiv', __( 'Choose at least one AI search engine whose key is saved.', 'seolity' ), array( 'status' => 400 ) );
+			}
+			$job = $p->queue->push( 'ai_visibility_check', array(), array( 'unique' => true, 'priority' => 2, 'max_attempts' => 1, 'timeout' => 1800 ) );
+			\SEOlity\Activity\AiJobs::run_after_response( $p );
+			return array( 'queued' => (bool) $job );
+		} );
+		$this->route( 'POST', '/serp/track', 'manage', function ( Req $r ) use ( $p ) {
+			$q   = array_values( array_filter( array_map( 'sanitize_text_field', (array) $r->get_param( 'queries' ) ) ) );
+			$job = $p->queue->push( 'serp_track', array( 'queries' => $q ), array( 'unique' => true, 'priority' => 2, 'max_attempts' => 1, 'timeout' => 1800 ) );
+			\SEOlity\Activity\AiJobs::run_after_response( $p );
+			return array( 'queued' => (bool) $job );
+		} );
+		$this->route( 'DELETE', '/competitors/(?P<id>\d+)', 'manage', function ( Req $r ) use ( $p ) {
+			return array( 'ok' => $p->competitors->delete( self::int( $r, 'id' ) ) );
+		} );
+		$this->route( 'POST', '/competitors/(?P<id>\d+)/analyze', 'manage', function ( Req $r ) use ( $p ) {
+			$p->queue->push( 'competitor_analyze', array( 'id' => self::int( $r, 'id' ) ), array( 'unique' => true, 'priority' => 3 ) );
+			Scheduler::kick();
+			return array( 'queued' => true );
+		} );
+		$this->route( 'GET', '/competitors/(?P<id>\d+)/pages', 'view', function ( Req $r ) use ( $p ) {
+			return $p->competitors->pages( self::int( $r, 'id' ), self::str( $r, 'search' ) );
+		} );
+		$this->route( 'POST', '/competitors/(?P<id>\d+)/gap', 'ai', function ( Req $r ) use ( $p ) {
+			$gap = $p->competitors->gap( self::int( $r, 'id' ) );
+			if ( ! is_wp_error( $gap ) ) {
+				$c       = $p->db->row( 'SELECT summary FROM {competitors} WHERE id = %d', array( self::int( $r, 'id' ) ) );
+				$summary = (array) json_decode( (string) $c['summary'], true );
+				$summary['gap'] = $gap;
+				$p->db->update( 'competitors', array( 'summary' => $summary ), array( 'id' => self::int( $r, 'id' ) ) );
+			}
+			return $gap;
+		} );
+
+		/* ---------------- Experiments / learning ---------------- */
+		$this->route( 'GET', '/experiments', 'view', function ( Req $r ) use ( $p ) {
+			return $p->experiments->query( self::filters( $r, array( 'status', 'outcome' ) ) ) + array( 'insights' => $p->learning->insights() );
+		} );
+		$this->route( 'POST', '/experiments/(?P<id>\d+)/revert', 'apply', function ( Req $r ) use ( $p ) {
+			return $p->experiments->revert( self::int( $r, 'id' ) );
+		} );
+		$this->route( 'POST', '/experiments/history', 'manage', function () use ( $p ) {
+			$job = $p->queue->push( 'experiments_history', array( 'user_id' => get_current_user_id() ), array( 'unique' => true, 'priority' => 3, 'max_attempts' => 2 ) );
+			\SEOlity\Activity\AiJobs::run_after_response( $p );
+			return array( 'queued' => (bool) $job );
+		} );
+		$this->route( 'POST', '/experiments/evaluate', 'manage', function () use ( $p ) {
+			$p->queue->push( 'experiments_evaluate', array(), array( 'unique' => true, 'priority' => 2 ) );
+			Scheduler::kick();
+			return array( 'queued' => true );
+		} );
+
+		/* ---------------- Redirects / 404 ---------------- */
+		$this->route( 'GET', '/redirects', 'view', function ( Req $r ) use ( $p ) {
+			return $p->redirects->query( self::filters( $r, array( 'search', 'type', 'page', 'per_page' ) ) );
+		} );
+		$this->route( 'POST', '/redirects', 'manage', function ( Req $r ) use ( $p ) {
+			return array( 'id' => $p->redirects->create( wp_unslash( (string) $r->get_param( 'source' ) ), esc_url_raw( wp_unslash( (string) $r->get_param( 'target' ) ) ), self::int( $r, 'type', 301 ), (bool) $r->get_param( 'is_regex' ), 'manual', self::str( $r, 'notes' ) ) );
+		} );
+		$this->route( 'PUT', '/redirects/(?P<id>\d+)', 'manage', function ( Req $r ) use ( $p ) {
+			$data = array_intersect_key( (array) $r->get_json_params(), array_flip( array( 'source', 'target', 'type', 'is_regex', 'notes', 'status' ) ) );
+			return array( 'id' => $p->redirects->update( self::int( $r, 'id' ), $data ) );
+		} );
+		$this->route( 'DELETE', '/redirects/(?P<id>\d+)', 'manage', function ( Req $r ) use ( $p ) {
+			return array( 'ok' => $p->redirects->delete( self::int( $r, 'id' ) ) );
+		} );
+		$this->route( 'POST', '/redirects/import', 'manage', function ( Req $r ) use ( $p ) {
+			return $p->redirects->import( wp_unslash( (string) $r->get_param( 'csv' ) ) );
+		} );
+		$this->route( 'POST', '/redirects/fix-chains', 'manage', function () use ( $p ) {
+			return array( 'fixed' => $p->redirects->fix_chains() );
+		} );
+		$this->route( 'GET', '/404', 'view', function ( Req $r ) use ( $p ) {
+			return $p->not_found->query( self::filters( $r, array( 'status', 'search', 'page', 'per_page' ) ) );
+		} );
+		$this->route( 'POST', '/404/(?P<id>\d+)/redirect', 'manage', function ( Req $r ) use ( $p ) {
+			return array( 'id' => $p->not_found->redirect( self::int( $r, 'id' ), self::url( $r, 'target' ), self::int( $r, 'type', 301 ) ) );
+		} );
+		// Bulk: every selected 404 to ITS OWN target. Each redirect is validated, shown for approval,
+		// applied separately and verified separately (one failure never hides the others).
+		$this->route( 'POST', '/404/bulk-redirect', 'manage', function ( Req $r ) use ( $p ) {
+			$rows = (array) $r->get_param( 'items' );
+			if ( ! $rows || count( $rows ) > 200 ) {
+				return new \WP_Error( 'seolity_404', __( 'Select between 1 and 200 URLs.', 'seolity' ), array( 'status' => 400 ) );
+			}
+			$items = array();
+			foreach ( $rows as $i => $row ) {
+				$nf = $p->db->row( 'SELECT id, url, suggested_target FROM {not_found} WHERE id = %d AND project_id = %d', array( (int) ( isset( $row['id'] ) ? $row['id'] : 0 ), $p->db->project_id() ) );
+				if ( ! $nf ) {
+					continue;
+				}
+				$target  = ! empty( $row['target'] ) ? esc_url_raw( wp_unslash( (string) $row['target'] ) ) : (string) $nf['suggested_target'];
+				$items[] = array( 'kind' => 'redirect', 'key' => 'nf' . (int) $nf['id'], 'source' => $nf['url'], 'target' => $target, 'type' => 301, 'origin' => '404', 'not_found_id' => (int) $nf['id'] );
+			}
+			if ( ! $items ) {
+				return new \WP_Error( 'seolity_404', __( 'None of the selected URLs were found.', 'seolity' ), array( 'status' => 400 ) );
+			}
+			if ( function_exists( 'set_time_limit' ) ) {
+				@set_time_limit( 300 ); // phpcs:ignore WordPress.PHP.NoSilencedErrors
+			}
+			/* translators: %d: number of URLs */
+			$id = $p->operations->create( 'bulk_redirect', array( 'title' => sprintf( __( 'Redirect %d broken URLs to their suggested pages', 'seolity' ), count( $items ) ), 'input' => array( 'count' => count( $items ) ) ) );
+			return $p->operations->staged( $id, $items );
+		} );
+		$this->route( 'POST', '/404/(?P<id>\d+)/status', 'manage', function ( Req $r ) use ( $p ) {
+			return array( 'ok' => $p->not_found->set_status( self::int( $r, 'id' ), self::key( $r, 'status' ) ) );
+		} );
+		$this->route( 'POST', '/404/triage', 'ai', function ( Req $r ) use ( $p ) {
+			return $p->nf_triage->start( (string) $r->get_param( 'instructions' ) );
+		} );
+		$this->route( 'POST', '/404/suggest', 'ai', function () use ( $p ) {
+			$p->queue->push( 'not_found_suggest', array(), array( 'unique' => true, 'priority' => 2 ) );
+			Scheduler::kick();
+			return array( 'queued' => true );
+		} );
+
+		/* ---------------- Schema / sitemap / robots ---------------- */
+		$this->route( 'GET', '/schema', 'view', function () use ( $p ) {
+			return $p->schema->coverage();
+		} );
+		$this->route( 'POST', '/schema/check', 'view', function ( Req $r ) use ( $p ) {
+			return $p->schema->check_url( self::url( $r, 'url' ) );
+		} );
+		$this->route( 'POST', '/schema/suggest', 'ai', function ( Req $r ) use ( $p ) {
+			return $p->schema->suggest( self::url( $r, 'url' ) );
+		} );
+		$this->route( 'GET', '/sitemap', 'view', function ( Req $r ) use ( $p ) {
+			$out = $p->sitemap->analyze( (bool) $r->get_param( 'fresh' ) );
+			if ( $p->gsc_oauth->is_connected() ) {
+				$gsc            = $p->gsc_client->sitemaps();
+				$out['gsc']     = is_wp_error( $gsc ) ? array( 'error' => $gsc->get_error_message() ) : ( isset( $gsc['sitemap'] ) ? $gsc['sitemap'] : array() );
+			}
+			return $out;
+		} );
+		$this->route( 'POST', '/sitemap/submit', 'manage', function ( Req $r ) use ( $p ) {
+			return $p->gsc_client->submit_sitemap( self::url( $r, 'url', home_url( '/wp-sitemap.xml' ) ) );
+		} );
+		$this->route( 'GET', '/robots', 'view', function () use ( $p ) {
+			return $p->robots->analyze();
+		} );
+		$this->route( 'POST', '/robots', 'manage', function ( Req $r ) use ( $p ) {
+			$content = sanitize_textarea_field( wp_unslash( (string) $r->get_param( 'content' ) ) );
+			$p->settings->update( array( 'robots_custom' => $content, 'robots_override' => (bool) $r->get_param( 'override' ) ) );
+			delete_transient( 'seolity_robots_txt' );
+			$p->audit_log->log( 'robots.saved', 'site', null, array( 'override' => (bool) $r->get_param( 'override' ) ) );
+			return $p->robots->analyze();
+		} );
+		$this->route( 'POST', '/robots/test', 'view', function ( Req $r ) use ( $p ) {
+			return $p->robots->test( self::url( $r, 'url' ), sanitize_textarea_field( wp_unslash( (string) $r->get_param( 'content' ) ) ) );
+		} );
+
+		/* ---------------- Reports / alerts / briefing / chat ---------------- */
+		$this->route( 'GET', '/reports', 'view', function () use ( $p ) {
+			return $p->reports->query();
+		} );
+		$this->route( 'POST', '/reports/generate', 'view', function ( Req $r ) use ( $p ) {
+			return array( 'id' => $p->reports->generate( self::key( $r, 'type', 'weekly' ) ) );
+		} );
+		$this->route( 'POST', '/reports/(?P<id>\d+)/email', 'manage', function ( Req $r ) use ( $p ) {
+			return array( 'sent' => $p->reports->email( self::int( $r, 'id' ) ) );
+		} );
+		$this->route( 'GET', '/alerts', 'view', function ( Req $r ) use ( $p ) {
+			return $p->alerts->query( self::filters( $r, array( 'status' ) ) );
+		} );
+		$this->route( 'POST', '/alerts/(?P<id>\d+)', 'view', function ( Req $r ) use ( $p ) {
+			return array( 'ok' => $p->alerts->set_status( self::int( $r, 'id' ), self::key( $r, 'status', 'read' ) ) );
+		} );
+		$this->route( 'POST', '/alerts/read-all', 'view', function () use ( $p ) {
+			return array( 'ok' => (bool) $p->alerts->mark_all_read() );
+		} );
+		$this->route( 'GET', '/briefing', 'view', function () use ( $p ) {
+			return $p->briefing->latest();
+		} );
+		$this->route( 'POST', '/briefing/generate', 'ai', function () use ( $p ) {
+			$p->briefing->generate();
+			return $p->briefing->latest();
+		} );
+		$this->route( 'POST', '/chat', 'ai', function ( Req $r ) use ( $p ) {
+			return $p->chat->ask( wp_unslash( (string) $r->get_param( 'message' ) ), self::key( $r, 'conversation_id' ), array( 'page' => $r->get_param( 'page' ) ) );
+		} );
+		$this->route( 'GET', '/chat/conversations', 'ai', function () use ( $p ) {
+			return $p->chat->conversations();
+		} );
+		$this->route( 'GET', '/chat/(?P<cid>[a-f0-9]{32})', 'ai', function ( Req $r ) use ( $p ) {
+			$cid = self::key( $r, 'cid' );
+			if ( $p->chat->pending( $cid ) ) {
+				// Answers that wait for GitHub (or a job nobody ran yet): move them forward.
+				$p->subscription->collect();
+				$p->queue->work( 12 );
+			}
+			return array( 'messages' => $p->chat->history( $cid ), 'pending' => $p->chat->pending( $cid ) );
+		} );
+		$this->route( 'POST', '/chat/(?P<cid>[a-f0-9]{32})/delete', 'ai', function ( Req $r ) use ( $p ) {
+			return array( 'deleted' => $p->chat->delete( self::key( $r, 'cid' ) ) );
+		} );
+		$this->route( 'POST', '/chat/message/(?P<id>\d+)/retry', 'ai', function ( Req $r ) use ( $p ) {
+			return $p->chat->retry( (int) $r->get_param( 'id' ) );
+		} );
+
+		/* ---------------- Automation ---------------- */
+		$this->route( 'GET', '/rules', 'view', function () use ( $p ) {
+			return array( 'rules' => $p->rules->all(), 'presets' => \SEOlity\Rules\RulesEngine::presets(), 'fields' => \SEOlity\Rules\RulesEngine::FIELDS, 'actions' => \SEOlity\Rules\RulesEngine::ACTIONS, 'triggers' => \SEOlity\Rules\RulesEngine::TRIGGERS );
+		} );
+		$this->route( 'POST', '/rules', 'manage', function ( Req $r ) use ( $p ) {
+			return array( 'id' => $p->rules->save( (array) $r->get_json_params() ) );
+		} );
+		$this->route( 'PUT', '/rules/(?P<id>\d+)', 'manage', function ( Req $r ) use ( $p ) {
+			return array( 'id' => $p->rules->save( (array) $r->get_json_params(), self::int( $r, 'id' ) ) );
+		} );
+		$this->route( 'DELETE', '/rules/(?P<id>\d+)', 'manage', function ( Req $r ) use ( $p ) {
+			return array( 'ok' => $p->rules->delete( self::int( $r, 'id' ) ) );
+		} );
+		$this->route( 'GET', '/queue', 'manage', function () use ( $p ) {
+			return $p->queue->stats();
+		} );
+		$this->route( 'POST', '/queue/run', 'manage', function () use ( $p ) {
+			return array( 'processed' => $p->queue->work( 20 ) );
+		} );
+		$this->route( 'POST', '/queue/retry', 'manage', function () use ( $p ) {
+			return array( 'retried' => $p->queue->retry_failed() );
+		} );
+		$this->route( 'GET', '/audit-log', 'manage', function ( Req $r ) use ( $p ) {
+			return $p->audit_log->recent( max( 1, min( 200, self::int( $r, 'per_page', 50 ) ) ), max( 0, ( self::int( $r, 'page', 1 ) - 1 ) * 50 ), self::key( $r, 'action' ) );
+		} );
+
+		/* ---------------- Planner / clusters ---------------- */
+		$this->route( 'GET', '/planner', 'view', function () use ( $p ) {
+			return $p->planner->query();
+		} );
+		$this->route( 'POST', '/planner/generate', 'ai', function ( Req $r ) use ( $p ) {
+			return $p->planner->generate( self::key( $r, 'cadence', 'weekly' ), self::int( $r, 'items', 8 ), self::str( $r, 'focus' ) );
+		} );
+		$this->route( 'PATCH', '/planner/(?P<id>\d+)', 'apply', function ( Req $r ) use ( $p ) {
+			return array( 'ok' => $p->planner->update( self::int( $r, 'id' ), (array) $r->get_json_params() ) );
+		} );
+		$this->route( 'DELETE', '/planner/(?P<id>\d+)', 'apply', function ( Req $r ) use ( $p ) {
+			return array( 'ok' => $p->planner->delete( self::int( $r, 'id' ) ) );
+		} );
+		$this->route( 'POST', '/planner/(?P<id>\d+)/draft', 'ai', function ( Req $r ) use ( $p ) {
+			return $p->planner->create_draft( self::int( $r, 'id' ) );
+		} );
+		$this->route( 'GET', '/clusters', 'view', function () use ( $p ) {
+			return $p->planner->clusters();
+		} );
+		$this->route( 'POST', '/clusters/build', 'ai', function () use ( $p ) {
+			$p->queue->push( 'clusters_build', array(), array( 'unique' => true, 'priority' => 3 ) );
+			Scheduler::kick();
+			return array( 'queued' => true );
+		} );
+
+		/* ---------------- Settings / AI / knowledge / storage ---------------- */
+		$this->route( 'GET', '/settings', 'manage', function () use ( $p ) {
+			$schema = array_map( static function ( $d ) {
+				return array( 'type' => $d[0], 'default' => $d[1], 'options' => isset( $d[2] ) && 'enum' === $d[0] ? $d[2] : null, 'range' => isset( $d[2] ) && in_array( $d[0], array( 'int', 'float' ), true ) ? $d[2] : null );
+			}, Settings::schema() );
+			$schema['ai_provider']['options'] = array_keys( \SEOlity\AI\ProviderRegistry::all( $p ) );
+			return array(
+				'settings' => $p->settings->all(),
+				'secrets'  => $p->settings->secret_flags(),
+				'schema'   => $schema,
+				'providers' => array_map( static function ( $pr ) use ( $p ) {
+					$hint = '';
+					if ( ! $pr->is_configured() && in_array( $pr->id(), array( 'sub_claude', 'sub_codex' ), true ) ) {
+						$hint = implode( ' · ', $p->subscription->missing( 'sub_codex' === $pr->id() ? 'codex' : 'claude' ) );
+					}
+					return array( 'id' => $pr->id(), 'label' => $pr->label(), 'configured' => $pr->is_configured(), 'model' => $pr->model(), 'hint' => $hint );
+				}, array_values( \SEOlity\AI\ProviderRegistry::all( $p ) ) ),
+				'gsc_redirect_uri' => \SEOlity\GSC\OAuth::redirect_uri(),
+				'encryption' => defined( 'SEOLITY_ENCRYPTION_KEY' ) ? 'custom_key' : ( function_exists( 'sodium_crypto_secretbox' ) ? 'sodium_salts' : 'openssl_salts' ),
+			);
+		} );
+		$this->route( 'POST', '/settings', 'manage', function ( Req $r ) use ( $p ) {
+			$values = (array) $r->get_json_params();
+			unset( $values['gsc_property'] ); // Only via /gsc/property (validated against the account).
+			$saved = $p->settings->update( $values );
+			$p->audit_log->log( 'settings.updated', 'settings', null, array( 'keys' => array_keys( $saved ) ) );
+			return array( 'settings' => $p->settings->all(), 'saved' => array_keys( $saved ) );
+		} );
+		$this->route( 'POST', '/settings/secret', 'manage', function ( Req $r ) use ( $p ) {
+			$key = self::key( $r, 'key' );
+			if ( ! in_array( $key, Settings::SECRET_FIELDS, true ) || in_array( $key, array( 'gsc_tokens', 'sub_shared_secret' ), true ) ) {
+				return new \WP_Error( 'seolity_secret', __( 'Unknown secret.', 'seolity' ), array( 'status' => 400 ) );
+			}
+			$value = trim( (string) wp_unslash( $r->get_param( 'value' ) ) );
+			if ( 'codex_auth_json' === $key && '' !== $value && ! is_array( json_decode( $value, true ) ) ) {
+				return new \WP_Error( 'seolity_secret', __( 'auth.json must be valid JSON (copy the whole file from ~/.codex/auth.json).', 'seolity' ), array( 'status' => 400 ) );
+			}
+			$p->settings->set_secret( $key, $value );
+			$p->audit_log->log( 'secret.updated', 'settings', null, array( 'key' => $key, 'cleared' => '' === $value ) );
+			$synced = $p->subscription->sync_secret( $key ); // Keep the runner repository's secret in step.
+			return array( 'secrets' => $p->settings->secret_flags(), 'runner_synced' => is_wp_error( $synced ) ? $synced->get_error_message() : $synced );
+		} );
+		/* ---------------- AI provider manager: connect, models, verify, activate ---------------- */
+		$this->route( 'GET', '/ai/providers', 'manage', function () use ( $p ) {
+			return $p->aiproviders->all();
+		} );
+		$this->route( 'GET', '/ai/providers/(?P<id>[a-z_]+)', 'manage', function ( Req $r ) use ( $p ) {
+			$id = self::key( $r, 'id' );
+			$st = $p->aiproviders->state( $id );
+			if ( ! $st ) {
+				return new \WP_Error( 'seolity_ai_provider', __( 'Unknown AI provider.', 'seolity' ), array( 'status' => 404 ) );
+			}
+			// A runner test in progress: collect its answer.
+			if ( ! empty( $st['pending'] ) && is_array( $st['pending'] ) ) {
+				$p->subscription->collect();
+				$v = $p->aiproviders->verify( $id, (string) $st['pending']['model'] );
+				return is_wp_error( $v ) ? array_merge( $p->aiproviders->state( $id ), array( 'verify_error' => $v->get_error_message() ) ) : $v;
+			}
+			return $st;
+		} );
+		$this->route( 'POST', '/ai/providers/(?P<id>[a-z_]+)/connect', 'manage', function ( Req $r ) use ( $p ) {
+			$key = $r->get_param( 'key' );
+			return $p->aiproviders->connect( self::key( $r, 'id' ), null === $key ? null : trim( wp_unslash( (string) $key ) ), array( 'base_url' => self::url( $r, 'base_url' ) ) );
+		} );
+		$this->route( 'POST', '/ai/providers/(?P<id>[a-z_]+)/effort', 'manage', function ( Req $r ) use ( $p ) {
+			$id    = self::key( $r, 'id' );
+			$level = self::key( $r, 'level' );
+			if ( ! isset( \SEOlity\AI\Effort::LEVELS[ $id ] ) || ! in_array( $level, \SEOlity\AI\Effort::LEVELS[ $id ], true ) ) {
+				return new \WP_Error( 'seolity_effort', __( 'This level is not available for this AI.', 'seolity' ), array( 'status' => 400 ) );
+			}
+			$p->settings->update( array( \SEOlity\AI\Effort::setting( $id ) => $level ) );
+			return \SEOlity\AI\Effort::describe( $id );
+		} );
+		$this->route( 'POST', '/ai/providers/(?P<id>[a-z_]+)/verify', 'manage', function ( Req $r ) use ( $p ) {
+			return $p->aiproviders->verify( self::key( $r, 'id' ), self::str( $r, 'model' ) );
+		} );
+		$this->route( 'POST', '/ai/providers/(?P<id>[a-z_]+)/activate', 'manage', function ( Req $r ) use ( $p ) {
+			return $p->aiproviders->activate( self::key( $r, 'id' ), self::str( $r, 'model' ) );
+		} );
+		$this->route( 'POST', '/ai/providers/(?P<id>[a-z_]+)/disconnect', 'manage', function ( Req $r ) use ( $p ) {
+			return $p->aiproviders->disconnect( self::key( $r, 'id' ) );
+		} );
+		$this->route( 'POST', '/ai/providers/(?P<id>sub_claude|sub_codex)/method', 'manage', function ( Req $r ) use ( $p ) {
+			$engine = 'sub_codex' === self::key( $r, 'id' ) ? 'codex' : 'claude';
+			$res    = $p->settings->update( array( 'sub_method_' . $engine => self::key( $r, 'method', 'auto' ) ) );
+			return is_wp_error( $res ) ? $res : $p->aiproviders->state( self::key( $r, 'id' ) );
+		} );
+		$this->route( 'POST', '/settings/test-ai', 'manage', function ( Req $r ) use ( $p ) {
+			return $p->ai->test( self::key( $r, 'provider' ) ? self::key( $r, 'provider' ) : null );
+		} );
+		$this->route( 'GET', '/ai/remote/(?P<id>[a-f0-9]{32})', 'ai', function ( Req $r ) use ( $p ) {
+			return $p->subscription->job_status( (string) $r->get_param( 'id' ) );
+		} );
+		$this->route( 'GET', '/subscription', 'manage', function () use ( $p ) {
+			return $p->subscription->status();
+		} );
+		$this->route( 'POST', '/subscription/setup', 'manage', function () use ( $p ) {
+			return $p->subscription->setup();
+		} );
+		$this->route( 'POST', '/subscription/run', 'manage', function () use ( $p ) {
+			$res = $p->subscription->dispatch( true );
+			return is_wp_error( $res ) ? $res : array( 'dispatched' => true );
+		} );
+		$this->route( 'GET', '/subscription/check', 'manage', function ( Req $r ) use ( $p ) {
+			return $p->subscription->check( self::key( $r, 'engine', 'claude' ) );
+		} );
+		$this->route( 'POST', '/subscription/account', 'manage', function ( Req $r ) use ( $p ) {
+			$engine = 'codex' === self::key( $r, 'engine' ) ? 'codex' : 'claude';
+			$value  = wp_unslash( (string) $r->get_param( 'value' ) );
+			if ( '' !== trim( $value ) ) {
+				$value = \SEOlity\AI\Remote\SubscriptionRunner::validate_credential( $engine, $value );
+				if ( is_wp_error( $value ) ) {
+					return $value;
+				}
+				$key = 'codex' === $engine ? 'codex_auth_json' : 'claude_oauth_token';
+				$p->settings->set_secret( $key, $value );
+				$synced = $p->subscription->sync_secret( $key );
+				if ( is_wp_error( $synced ) ) {
+					return $synced;
+				}
+			}
+			if ( null !== $r->get_param( 'model' ) ) {
+				$p->settings->update( array( 'ai_model_sub_' . $engine => self::str( $r, 'model' ) ) );
+			}
+			if ( false !== $r->get_param( 'activate' ) && '0' !== (string) $r->get_param( 'activate' ) ) {
+				$p->settings->update( array( 'ai_provider' => 'sub_' . $engine ) ); // Like ARIAGH: saving the account makes it the AI engine.
+			}
+			$p->audit_log->log( 'subscription.account', 'site', null, array( 'engine' => $engine ) );
+			return $p->subscription->check( $engine );
+		} );
+		$this->route( 'POST', '/subscription/deploy', 'manage', function ( Req $r ) use ( $p ) {
+			return $p->subscription->deploy(
+				array(
+					'engine'       => self::key( $r, 'engine', 'claude' ),
+					'credential'   => wp_unslash( (string) $r->get_param( 'credential' ) ),
+					'model'        => self::str( $r, 'model' ),
+					'github_token' => trim( wp_unslash( (string) $r->get_param( 'github_token' ) ) ),
+					'repo'         => self::str( $r, 'repo' ),
+					'activate'     => null === $r->get_param( 'activate' ) ? true : (bool) $r->get_param( 'activate' ),
+				)
+			);
+		} );
+		/* ---------------- Network: server location, routes, speed ---------------- */
+		$this->route( 'GET', '/network', 'view', function () use ( $p ) {
+			return $p->gateway->status();
+		} );
+		$this->route( 'POST', '/network', 'manage', function ( Req $r ) use ( $p ) {
+			$values = array();
+			foreach ( array( 'host_region', 'ai_route', 'route_google', 'sub_warm_minutes', 'sub_cli_claude', 'sub_cli_codex' ) as $k ) {
+				if ( null !== $r->get_param( $k ) ) {
+					$values[ $k ] = $r->get_param( $k );
+				}
+			}
+			$res = $p->settings->update( $values );
+			if ( is_wp_error( $res ) ) {
+				return $res;
+			}
+			$p->audit_log->log( 'network.saved', 'site', null, $values );
+			return $p->gateway->status();
+		} );
+		// Try the official subscription CLI on this server (the "Direct" way for Claude/ChatGPT subscriptions).
+		$this->route( 'GET', '/cli/diagnose', 'manage', function ( Req $r ) use ( $p ) {
+			$e = 'codex' === self::key( $r, 'engine' ) ? 'codex' : 'claude';
+			return $p->clisetup->diagnose( $e );
+		} );
+		$this->route( 'POST', '/cli/install', 'manage', function ( Req $r ) use ( $p ) {
+			$e = 'codex' === self::key( $r, 'engine' ) ? 'codex' : 'claude';
+			return $p->clisetup->start_install( $e );
+		} );
+		// AI engines → Installation & diagnostics (administrators only; no command ever comes from the browser).
+		$this->route( 'GET', '/cli/doctor', 'manage', function ( Req $r ) use ( $p ) {
+			return $p->clisetup->doctor( (bool) $r->get_param( 'fresh' ) );
+		} );
+		$this->route( 'GET', '/cli/report', 'manage', function () use ( $p ) {
+			return array( 'report' => $p->clisetup->report() );
+		} );
+		$this->route( 'POST', '/cli/test', 'manage', function ( Req $r ) use ( $p ) {
+			$engine = 'codex' === self::key( $r, 'engine' ) ? 'codex' : 'claude';
+			$start  = microtime( true );
+			$res    = $p->subscription->local_test( $engine );
+			$status = $p->clisetup->engine_status( $engine );
+			if ( is_wp_error( $res ) ) {
+				$data = (array) $res->get_error_data();
+				return array( 'ok' => false, 'code' => isset( $data['cli_code'] ) ? $data['cli_code'] : 'RUNTIME_ERROR', 'message' => $res->get_error_message(), 'action' => isset( $data['action'] ) ? $data['action'] : '', 'engine' => $status );
+			}
+			return array( 'ok' => true, 'ms' => (int) round( ( microtime( true ) - $start ) * 1000 ), 'text' => mb_substr( (string) $res['text'], 0, 200 ), 'engine' => $status );
+		} );
+		// Light status for polling: reads saved state only, never starts a program.
+		$this->route( 'GET', '/cli/status', 'manage', function ( Req $r ) use ( $p ) {
+			$engine = 'codex' === self::key( $r, 'engine' ) ? 'codex' : 'claude';
+			return array( 'install' => $p->clisetup->install_state( $engine ), 'login' => 'codex' === $engine ? $p->cliauth->login_state( 'codex' ) : null );
+		} );
+		$this->route( 'GET', '/cli/models', 'manage', function ( Req $r ) use ( $p ) {
+			$engine = 'codex' === self::key( $r, 'engine' ) ? 'codex' : 'claude';
+			return array( 'models' => $p->localcli->models( $engine ), 'model' => (string) $p->settings->get( 'ai_model_sub_' . $engine ) );
+		} );
+		$this->route( 'POST', '/cli/model', 'manage', function ( Req $r ) use ( $p ) {
+			$engine = 'codex' === self::key( $r, 'engine' ) ? 'codex' : 'claude';
+			$model  = trim( (string) $r->get_param( 'model' ) );
+			if ( '' !== $model && ! preg_match( '/^[A-Za-z0-9._:\/\[\]-]{1,80}$/', $model ) ) {
+				return new \WP_Error( 'seolity_cli_model', __( 'This is not a valid model name.', 'seolity' ), array( 'status' => 400 ) );
+			}
+			$p->settings->update( array( 'ai_model_sub_' . $engine => $model ) );
+			$p->audit_log->log( 'cli.model', 'site', null, array( 'engine' => $engine, 'model' => $model ) );
+			return array( 'model' => $model );
+		} );
+		$this->route( 'GET', '/cli/login', 'manage', function () use ( $p ) {
+			return $p->cliauth->login_state( 'codex' );
+		} );
+		$this->route( 'POST', '/cli/login', 'manage', function () use ( $p ) {
+			return $p->cliauth->start_login( 'codex' );
+		} );
+		$this->route( 'POST', '/cli/signout', 'manage', function ( Req $r ) use ( $p ) {
+			$engine = 'codex' === self::key( $r, 'engine' ) ? 'codex' : 'claude';
+			$p->cliauth->sign_out( $engine );
+			return $p->clisetup->engine_status( $engine );
+		} );
+		$this->route( 'POST', '/cli/settings', 'manage', function ( Req $r ) use ( $p ) {
+			$values = array();
+			foreach ( array( 'cli_node_path' => 'node', 'sub_cli_claude' => 'claude', 'sub_cli_codex' => 'codex', 'cli_codex_home' => '' ) as $k => $base ) {
+				if ( null === $r->get_param( $k ) ) {
+					continue;
+				}
+				$v = trim( wp_unslash( (string) $r->get_param( $k ) ) );
+				// Only absolute paths to the expected program (or a folder for CODEX_HOME) are accepted.
+				if ( '' !== $v && ( '/' !== substr( $v, 0, 1 ) || false !== strpos( $v, '..' ) || preg_match( '/[\x00-\x1f;|&`$<>]/', $v ) || ( $base && 0 !== strpos( strtolower( basename( $v ) ), $base ) ) ) ) {
+					return new \WP_Error( 'seolity_cli_path', __( 'Enter the full path of the program (for example /opt/alt/alt-nodejs22/root/usr/bin/node).', 'seolity' ), array( 'status' => 400, 'field' => $k ) );
+				}
+				$values[ $k ] = $v;
+			}
+			foreach ( array( 'cli_auth_claude', 'cli_auth_codex' ) as $k ) {
+				if ( null !== $r->get_param( $k ) ) {
+					$values[ $k ] = 'cli' === $r->get_param( $k ) ? 'cli' : 'plugin';
+				}
+			}
+			$res = $p->settings->update( $values );
+			if ( is_wp_error( $res ) ) {
+				return $res;
+			}
+			delete_transient( \SEOlity\AI\Remote\NodeLocator::CACHE );
+			delete_transient( 'seolity_cli_claude' );
+			delete_transient( 'seolity_cli_codex' );
+			$p->audit_log->log( 'cli.settings', 'site', null, array_keys( $values ) );
+			return $p->clisetup->doctor();
+		} );
+		$this->route( 'POST', '/network/local-test', 'manage', function ( Req $r ) use ( $p ) {
+			$engine = 'codex' === $r->get_param( 'engine' ) ? 'codex' : 'claude';
+			delete_transient( 'seolity_cli_' . $engine );
+			$cli = $p->localcli;
+			if ( ! $cli::can_exec() ) {
+				return new \WP_Error( 'seolity_local_cli', __( 'This host does not allow PHP to start programs (proc_open is disabled). Subscriptions can only run through GitHub here.', 'seolity' ), array( 'status' => 400 ) );
+			}
+			if ( ! $cli->available( $engine ) ) {
+				return new \WP_Error( 'seolity_local_cli', 'claude' === $engine ? __( 'Claude Code CLI was not found on this server. Install it (npm install -g @anthropic-ai/claude-code) or enter its full path.', 'seolity' ) : __( 'Codex CLI was not found on this server. Install it (npm install -g @openai/codex) or enter its full path.', 'seolity' ), array( 'status' => 400 ) );
+			}
+			$sub = $p->subscription;
+			if ( ! $p->cliauth->has_login( $engine ) ) {
+				return new \WP_Error( 'seolity_local_cli', __( 'Save your subscription login first (Settings → AI).', 'seolity' ), array( 'status' => 400 ) );
+			}
+			$start = microtime( true );
+			$res   = $sub->local_test( $engine );
+			if ( is_wp_error( $res ) ) {
+				return $res;
+			}
+			return array( 'ok' => true, 'ms' => (int) round( ( microtime( true ) - $start ) * 1000 ), 'text' => mb_substr( (string) $res['text'], 0, 200 ), 'path' => $cli->binary( $engine ) );
+		} );
+		$this->route( 'POST', '/network/probe', 'manage', function () use ( $p ) {
+			$probe  = $p->gateway->probe();
+			$status = $p->gateway->status();
+			$status['probe'] = $probe;
+			return $status;
+		} );
+		// Start the GitHub runner ahead of time (AI chat opened, a bulk job is about to start).
+		$this->route( 'POST', '/ai/warm', 'ai', function () use ( $p ) {
+			$gw       = $p->gateway;
+			$provider = (string) $p->settings->get( 'ai_provider' );
+			if ( 0 === strpos( $provider, 'sub_' ) ) {
+				return $p->subscription->warm( 'sub_codex' === $provider ? 'codex' : 'claude' );
+			}
+			if ( 'github' === $gw->current() ) {
+				return $p->subscription->warm( 'http' );
+			}
+			return array( 'warm' => false, 'reason' => 'not_needed', 'route' => $gw->current() );
+		} );
+		$this->route( 'GET', '/subscription/verify', 'manage', function () use ( $p ) {
+			return $p->subscription->verify();
+		} );
+		$this->route( 'POST', '/subscription/activate', 'manage', function ( Req $r ) use ( $p ) {
+			$p->settings->update( array( 'ai_provider' => 'codex' === self::key( $r, 'engine' ) ? 'sub_codex' : 'sub_claude' ) );
+			return array( 'provider' => $p->settings->get( 'ai_provider' ) );
+		} );
+		$this->route( 'POST', '/subscription/test', 'manage', function ( Req $r ) use ( $p ) {
+			return $p->ai->test( 'codex' === self::key( $r, 'engine' ) ? 'sub_codex' : 'sub_claude' );
+		} );
+		$this->route( 'POST', '/settings/custom-models', 'manage', function () use ( $p ) {
+			$custom = \SEOlity\AI\ProviderRegistry::get( $p, 'custom' );
+			$models = $custom ? $custom->model_ids() : array();
+			return is_wp_error( $models ) ? $models : array( 'models' => $models );
+		} );
+		$this->route( 'GET', '/settings/custom-describe', 'manage', function () use ( $p ) {
+			$custom = \SEOlity\AI\ProviderRegistry::get( $p, 'custom' );
+			return $custom ? $custom->describe() : array();
+		} );
+
+		// GitHub hub: account + one-click repositories.
+		$this->route( 'GET', '/github', 'manage', function ( Req $r ) use ( $p ) {
+			return $p->githubhub->status( (bool) $r->get_param( 'fresh' ) );
+		} );
+		$this->route( 'POST', '/github/connect', 'manage', function ( Req $r ) use ( $p ) {
+			return $p->githubhub->connect( wp_unslash( (string) $r->get_param( 'token' ) ) );
+		} );
+		$this->route( 'POST', '/github/disconnect', 'manage', function () use ( $p ) {
+			return $p->githubhub->disconnect();
+		} );
+		$this->route( 'POST', '/github/setup-all', 'manage', function ( Req $r ) use ( $p ) {
+			return $p->githubhub->setup_all( self::str( $r, 'repo' ), array( 'runner' => (bool) $r->get_param( 'runner' ), 'knowledge' => (bool) $r->get_param( 'knowledge' ), 'storage' => (bool) $r->get_param( 'storage' ) ), (bool) $r->get_param( 'share_key' ), self::str( $r, 'data_repo' ) );
+		} );
+		$this->route( 'POST', '/github/runner', 'manage', function ( Req $r ) use ( $p ) {
+			return $p->githubhub->setup_runner( self::str( $r, 'repo' ) );
+		} );
+		$this->route( 'POST', '/github/knowledge', 'manage', function ( Req $r ) use ( $p ) {
+			return $p->githubhub->setup_knowledge( self::str( $r, 'repo' ), (bool) $r->get_param( 'share_key' ) );
+		} );
+		$this->route( 'POST', '/github/knowledge/shared', 'manage', function () use ( $p ) {
+			return $p->githubhub->use_shared_knowledge();
+		} );
+		$this->route( 'POST', '/github/knowledge/sync', 'manage', function () use ( $p ) {
+			return $p->githubhub->sync_knowledge();
+		} );
+		$this->route( 'POST', '/github/knowledge/key', 'manage', function () use ( $p ) {
+			return $p->githubhub->share_builder_key();
+		} );
+		$this->route( 'POST', '/github/knowledge/collect', 'manage', function () use ( $p ) {
+			return $p->githubhub->collect_knowledge();
+		} );
+		$this->route( 'GET', '/github/knowledge/collect', 'manage', function () use ( $p ) {
+			return $p->githubhub->collect_status();
+		} );
+		$this->route( 'POST', '/github/knowledge/build', 'manage', function () use ( $p ) {
+			return $p->githubhub->run_builder();
+		} );
+		$this->route( 'POST', '/github/storage', 'manage', function ( Req $r ) use ( $p ) {
+			return $p->githubhub->setup_storage( self::str( $r, 'repo' ) );
+		} );
+
+		// Cloudflare relay.
+		$this->route( 'GET', '/cloudflare', 'manage', function () use ( $p ) {
+			return $p->cloudflare->status();
+		} );
+		$this->route( 'GET', '/cloudflare/accounts', 'manage', function () use ( $p ) {
+			return $p->cloudflare->accounts();
+		} );
+		$this->route( 'POST', '/cloudflare/connect', 'manage', function ( Req $r ) use ( $p ) {
+			return $p->cloudflare->connect( wp_unslash( (string) $r->get_param( 'token' ) ), self::str( $r, 'account_id' ) );
+		} );
+		$this->route( 'POST', '/cloudflare/deploy', 'manage', function () use ( $p ) {
+			return $p->cloudflare->deploy();
+		} );
+		$this->route( 'POST', '/cloudflare/remove', 'manage', function () use ( $p ) {
+			return $p->cloudflare->remove();
+		} );
+		$this->route( 'POST', '/cloudflare/disconnect', 'manage', function () use ( $p ) {
+			return $p->cloudflare->disconnect();
+		} );
+		$this->route( 'POST', '/cloudflare/diagnose', 'manage', function () use ( $p ) {
+			return $p->cloudflare->diagnose();
+		} );
+		$this->route( 'POST', '/cloudflare/pull', 'manage', function () use ( $p ) {
+			return array( 'stored' => $p->cloudflare->pull() );
+		} );
+		$this->route( 'GET', '/ai/usage', 'manage', function () use ( $p ) {
+			return $p->ai->usage_summary();
+		} );
+		$this->route( 'GET', '/knowledge', 'view', function () use ( $p ) {
+			return $p->knowledge->documents();
+		} );
+		$this->route( 'GET', '/knowledge/doc', 'view', function ( Req $r ) use ( $p ) {
+			return $p->knowledge->document( self::key( $r, 'source' ), sanitize_text_field( (string) $r->get_param( 'path' ) ) );
+		} );
+		$this->route( 'POST', '/knowledge/sync', 'manage', function () use ( $p ) {
+			return $p->knowledge->sync( false );
+		} );
+		$this->route( 'POST', '/knowledge/note', 'manage', function ( Req $r ) use ( $p ) {
+			return $p->knowledge->add_note( self::str( $r, 'title' ), wp_unslash( (string) $r->get_param( 'content' ) ), self::key( $r, 'topic', 'general' ), (bool) $r->get_param( 'push' ) );
+		} );
+		$this->route( 'DELETE', '/knowledge/note', 'manage', function ( Req $r ) use ( $p ) {
+			return array( 'ok' => $p->knowledge->delete_note( sanitize_text_field( (string) $r->get_param( 'path' ) ) ) );
+		} );
+		$this->route( 'GET', '/storage', 'manage', function () use ( $p ) {
+			return $p->archive->status();
+		} );
+		$this->route( 'POST', '/storage/test', 'manage', function ( Req $r ) use ( $p ) {
+			return $p->github->test( self::str( $r, 'repo', (string) $p->settings->get( 'storage_repo' ) ) );
+		} );
+		$this->route( 'POST', '/storage/run', 'manage', function () use ( $p ) {
+			return $p->archive->run();
+		} );
+		$this->route( 'POST', '/storage/restore', 'manage', function ( Req $r ) use ( $p ) {
+			$start = self::str( $r, 'start' );
+			$end   = self::str( $r, 'end' );
+			if ( ! preg_match( '/^\d{4}-\d{2}-\d{2}$/', $start ) || ! preg_match( '/^\d{4}-\d{2}-\d{2}$/', $end ) ) {
+				return new \WP_Error( 'seolity_date', __( 'Dates must be YYYY-MM-DD.', 'seolity' ), array( 'status' => 400 ) );
+			}
+			return $p->archive->restore_gsc( $start, $end );
+		} );
+
+		// Subscription runner callback: public route, authenticated by an HMAC signature
+		// made with the shared secret only SEOlity and the private runner repository know.
+		register_rest_route(
+			self::NS,
+			'/remote/callback',
+			array(
+				'methods'             => 'POST',
+				'permission_callback' => '__return_true',
+				'callback'            => function ( Req $r ) use ( $p ) {
+					return $p->subscription->handle_callback( $r );
+				},
+			)
+		);
+		// Cloudflare relay cron: signed heartbeat that runs the background queue on time.
+		register_rest_route(
+			self::NS,
+			'/remote/heartbeat',
+			array(
+				'methods'             => 'POST',
+				'permission_callback' => '__return_true',
+				'callback'            => function ( Req $r ) use ( $p ) {
+					return $p->subscription->handle_heartbeat( $r );
+				},
+			)
+		);
+		// Reachability probe for diagnostics (reveals nothing but "SEOlity is here").
+		register_rest_route(
+			self::NS,
+			'/remote/ping',
+			array(
+				'methods'             => 'GET',
+				'permission_callback' => '__return_true',
+				'callback'            => static function () {
+					return array( 'ok' => true, 'service' => 'seolity' );
+				},
+			)
+		);
+		do_action( 'seolity_rest_routes', $this );
+	}
+}
