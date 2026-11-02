@@ -129,7 +129,10 @@ final class Gateway {
 	public function current( $provider_id = null ) {
 		$provider_id = $provider_id ? $provider_id : (string) $this->plugin->settings->get( 'ai_provider' );
 		if ( 0 === strpos( $provider_id, 'sub_' ) ) {
-			return 'github';
+			// Subscriptions run the official CLI either on this server ("direct": the CLI installed
+			// here answers, nothing goes to GitHub) or on the GitHub runner — report where they really go.
+			$engine = substr( $provider_id, 4 );
+			return in_array( $engine, array( 'claude', 'codex' ), true ) && 'cli' === $this->plugin->subscription->method( $engine ) ? 'direct' : 'github';
 		}
 		if ( 'ollama' === $provider_id ) {
 			return 'direct';

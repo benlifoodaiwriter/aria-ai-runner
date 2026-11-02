@@ -30,6 +30,7 @@ final class Toolbox {
 			'gsc_query'     => array( 'query', 'Search Console history of one search query: weekly clicks/impressions/position, which of our pages ranked when, swaps, drops, edits around them.' ),
 			'gsc_page'      => array( 'url', 'Search Console history of one page: weekly series and its queries now vs. before.' ),
 			'gsc_overview'  => array( '', 'Site-wide Search Console: last 28 days vs previous, top queries and pages, winners and losers.' ),
+			'gsc_opportunities' => array( '', 'Search Console rows for link building, reportage and content planning: every page in positions 4–20 (closest to page 1 / the top 3) with its clicks, impressions, average position and the queries it ranks for, plus the strongest commercial pages (categories, products).' ),
 			'find_pages'    => array( 'text', 'Find pages / posts / products of the site by words in their title.' ),
 			'page_audit'    => array( 'url', 'Everything about one page: crawl data, open issues, SEO title/description/focus keyword, edits and their measured effect.' ),
 			'roadmap'       => array( '', 'The SEO roadmap: problem categories in recommended order and the most important open items.' ),
@@ -151,6 +152,8 @@ final class Toolbox {
 				}
 				$o = $p->gsc_analytics->overview( 28 );
 				return array( 'last_28_days' => $o['current'], 'previous' => $o['previous'], 'delta' => $o['delta'], 'top_queries' => array_slice( $p->gsc_analytics->top_queries( 28, 25 ), 0, 25 ), 'top_pages' => array_slice( $p->gsc_analytics->top_pages( 28, 20 ), 0, 20 ), 'movers' => $p->gsc_analytics->movers( 'page', 28, 10 ) );
+			case 'gsc_opportunities':
+				return $this->gsc_opportunities();
 			case 'find_pages':
 				return array_map(
 					static function ( $id ) {
@@ -267,9 +270,81 @@ final class Toolbox {
 	}
 
 	/** Words in a question → the tools to run when no AI planner is used. */
+	/**
+	 * Per page and per query, last 28 days of stored Search Console data: pages in positions 4–20
+	 * (the best link / content targets) with their queries, and the strongest commercial pages.
+	 */
+	private function gsc_opportunities() {
+		$p = $this->plugin;
+		if ( ! $p->gsc_analytics->has_data() ) {
+			return array( 'note' => 'Search Console is not connected or has no data yet — connect it at #/gsc.' );
+		}
+		$db  = $p->db;
+		$pid = $db->project_id();
+		$max = (string) $db->value( 'SELECT MAX(date) FROM {gsc_page_query} WHERE project_id = %d', array( $pid ) );
+		if ( '' === $max ) {
+			return array( 'note' => 'No per-page / per-query rows stored yet — they arrive with the next Search Console sync (#/gsc).' );
+		}
+		$rows  = $db->rows( 'SELECT page, query, SUM(clicks) c, SUM(impressions) i, SUM(position * impressions) / NULLIF(SUM(impressions), 0) pos FROM {gsc_page_query} WHERE project_id = %d AND date > DATE_SUB(%s, INTERVAL 28 DAY) GROUP BY page_hash, query_hash ORDER BY i DESC LIMIT %d', array( $pid, $max, 4000 ) );
+		$pages = array();
+		foreach ( $rows as $r ) {
+			$k = $r['page'];
+			if ( ! isset( $pages[ $k ] ) ) {
+				$path          = (string) wp_parse_url( $k, PHP_URL_PATH );
+				$pages[ $k ]   = array( 'url' => $k, 'type' => preg_match( '#/(product|shop|store|محصول)/#u', urldecode( $path ) ) ? 'product' : ( preg_match( '#/(category|product-category|دسته)/#u', urldecode( $path ) ) ? 'category' : ( '/' === $path || '' === $path ? 'home' : 'page' ) ), 'clicks' => 0, 'impressions' => 0, 'wpos' => 0, 'queries' => array() );
+			}
+			$pages[ $k ]['clicks']      += (int) $r['c'];
+			$pages[ $k ]['impressions'] += (int) $r['i'];
+			$pages[ $k ]['wpos']        += (float) $r['pos'] * (int) $r['i'];
+			if ( count( $pages[ $k ]['queries'] ) < 6 ) {
+				$pages[ $k ]['queries'][] = array( 'query' => $r['query'], 'clicks' => (int) $r['c'], 'impressions' => (int) $r['i'], 'position' => round( (float) $r['pos'], 1 ) );
+			}
+		}
+		foreach ( $pages as &$pg ) {
+			$pg['position'] = $pg['impressions'] ? round( $pg['wpos'] / $pg['impressions'], 1 ) : null;
+			unset( $pg['wpos'] );
+		}
+		unset( $pg );
+		$near = array_values(
+			array_filter(
+				$pages,
+				static function ( $x ) {
+					return null !== $x['position'] && $x['position'] >= 4 && $x['position'] <= 20;
+				}
+			)
+		);
+		usort(
+			$near,
+			static function ( $a, $b ) {
+				return $b['impressions'] <=> $a['impressions'];
+			}
+		);
+		$commercial = array_values(
+			array_filter(
+				$pages,
+				static function ( $x ) {
+					return in_array( $x['type'], array( 'category', 'product', 'home' ), true );
+				}
+			)
+		);
+		usort(
+			$commercial,
+			static function ( $a, $b ) {
+				return $b['impressions'] <=> $a['impressions'];
+			}
+		);
+		return array(
+			'period'                 => '28 days up to ' . $max,
+			'pages_positions_4_to_20' => array_slice( $near, 0, 25 ),
+			'commercial_pages'       => array_slice( $commercial, 0, 15 ),
+			'how_to_use'             => 'For backlinks / reportage pick pages in positions 4–20 with many impressions and a commercial intent; use their real queries as natural anchors (brand + generic, not exact-match money anchors).',
+		);
+	}
+
 	public function by_keywords( $q ) {
 		$map = array(
-			'gsc_overview'  => '/ترافیک|کلیک|نمایش|traffic|clicks|impressions|افت|رشد|drop|growth/u',
+			'gsc_overview'  => '/ترافیک|کلیک|نمایش|سرچ ?کنسول|کنسول|کوئری|جایگاه|رتبه|کلمه.? کلیدی|traffic|clicks|impressions|search console|gsc|query|queries|ranking|position|keyword|افت|رشد|drop|growth/u',
+			'gsc_opportunities' => '/رپورتاژ|ریپورتاژ|بک ?لینک|لینک ?سازی|لینک|انکر|مهمان|کمپین|محتوا|مقاله|سرچ ?کنسول|جایگاه|reportage|backlink|link ?building|anchor|guest ?post|pr article|content plan|search console/u',
 			'roadmap'       => '/اولویت|مسیر راه|چه کار کنم|roadmap|priorit|what should/u',
 			'audit'         => '/ممیزی|خطا|مشکل|audit|error|problem|سلامت|health/u',
 			'indexability'  => '/ایندکس|بودجه خزش|index|crawl/u',

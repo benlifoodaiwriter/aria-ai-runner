@@ -4,7 +4,7 @@ Tags: seo, ai, search console, woocommerce, schema
 Requires at least: 6.2
 Tested up to: 6.6
 Requires PHP: 7.4
-Stable tag: 1.13.3
+Stable tag: 1.13.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -72,6 +72,10 @@ Yes. The interface is fully translated and RTL-native, text analysis understands
 Enable "Delete all data on uninstall" in Settings → Privacy, then delete the plugin.
 
 == Changelog ==
+
+= 1.13.4 =
+* Fix: the AI chat now gets the real Search Console rows per page and per query. With a subscription or the GitHub route the chat does not run the extra AI tool planner, and questions about reportage, backlinks, anchors or "you are connected to Search Console" matched no data tool, so only the site totals reached the AI. New data tool "gsc_opportunities": every page in positions 4–20 with its clicks, impressions, position and the queries it ranks for, plus the strongest commercial pages; wider keyword routing in Persian and English. No extra Search Console permission is needed — the read-only access already syncs page × query rows.
+* Fix: with the route set to Direct, the header and the chat said "github" for Claude/ChatGPT subscriptions although requests ran on this server's CLI. The route shown is now where requests really go (Direct = the CLI installed here; GitHub = the runner).
 
 = 1.13.3 =
 * The AI runner repository on GitHub is now PUBLIC, and the knowledge base and data archive go to a separate PRIVATE repository. Why: GitHub Actions minutes are free for public repositories, while a private repository uses the account's paid quota — and when a payment fails or the spending limit is reached, GitHub does not start the jobs at all ("The job was not started because recent account payments have failed…"), so no AI answer ever came back. The public runner only holds its code and AES-256-GCM encrypted requests and answers; subscription logins and keys stay in GitHub Secrets, which are hidden in public repositories, and run logs print no site content.

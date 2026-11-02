@@ -215,7 +215,11 @@ final class ChatService {
 		$ctx['plugin_state']   = $tb->snapshot();
 		$ctx['navigation']     = Toolbox::navigation();
 		$calls                 = $tb->by_keywords( $question );
-		if ( in_array( $this->plugin->gateway->current(), array( 'direct', 'cloudflare' ), true ) ) {
+		// The AI tool planner costs one extra AI call: only for fast API routes. Subscriptions (a CLI
+		// run per call) and the GitHub route rely on the keyword routing below, which covers the
+		// common questions (Search Console rows, link building, audits, competitors …).
+		$sub = 0 === strpos( (string) $this->plugin->settings->get( 'ai_provider' ), 'sub_' );
+		if ( ! $sub && in_array( $this->plugin->gateway->current(), array( 'direct', 'cloudflare' ), true ) ) {
 			try {
 				$recent = array_slice( array_map( static function ( $h ) {
 					return $h['role'] . ': ' . mb_substr( $h['content'], 0, 400 );
