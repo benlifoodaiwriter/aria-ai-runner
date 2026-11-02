@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: SEOlity 1.0.0\n"
-"POT-Creation-Date: 2026-10-31 14:57+0000\n"
+"POT-Creation-Date: 2026-11-02 09:12+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1018,6 +1018,12 @@ msgstr ""
 msgid "Signing in to Codex"
 msgstr ""
 
+msgid "Checking follow-ups"
+msgstr ""
+
+msgid "Sending the notification e-mail"
+msgstr ""
+
 msgid "Site map refresh"
 msgstr ""
 
@@ -1252,7 +1258,7 @@ msgstr ""
 msgid "Reports"
 msgstr ""
 
-msgid "Alerts"
+msgid "Notifications"
 msgstr ""
 
 msgid "Automation"
@@ -1618,6 +1624,43 @@ msgstr ""
 msgid "Topic will be added to the content planner"
 msgstr ""
 
+msgid "Warning"
+msgstr ""
+
+msgid "Result"
+msgstr ""
+
+msgid "Good news"
+msgstr ""
+
+msgid "Message from the AI"
+msgstr ""
+
+msgid "Info"
+msgstr ""
+
+#, php-format
+msgid "[%1$s] %2$d new notifications"
+msgstr ""
+
+msgid "Open page"
+msgstr ""
+
+msgid "Open"
+msgstr ""
+
+msgid "All notifications"
+msgstr ""
+
+msgid "The server did not accept the e-mail (wp_mail returned false). Install an SMTP plugin (e.g. WP Mail SMTP) so mail is sent through a real mail account."
+msgstr ""
+
+msgid "Test e-mail from SEOlity"
+msgstr ""
+
+msgid "If you can read this, notifications reach this address."
+msgstr ""
+
 #, php-format
 msgid "Organic clicks dropped %1$s%% week over week"
 msgstr ""
@@ -1953,6 +1996,10 @@ msgstr ""
 msgid "Redirect %d broken URLs to their suggested pages"
 msgstr ""
 
+#, php-format
+msgid "Not a valid e-mail address: %s"
+msgstr ""
+
 msgid "Unknown secret."
 msgstr ""
 
@@ -2016,6 +2063,38 @@ msgstr ""
 
 #, php-format
 msgid "Health score %1$s. %2$d prioritized actions are waiting, %3$d AI changes need your review."
+msgstr ""
+
+msgid "Open the conversation"
+msgstr ""
+
+msgid "Added to notifications."
+msgstr ""
+
+msgid "Not added."
+msgstr ""
+
+msgid "Added to the SEO roadmap."
+msgstr ""
+
+msgid "A change needs a page and an action."
+msgstr ""
+
+msgid "This field cannot be changed on this page."
+msgstr ""
+
+msgid "This address is not a page or archive of the site."
+msgstr ""
+
+msgid "Being prepared — it will appear in the floating popup for “Review & apply”. Nothing changes until you approve."
+msgstr ""
+
+#, php-format
+msgid "Already scheduled for %s."
+msgstr ""
+
+#, php-format
+msgid "SEOlity checks the result on %s and sends you a notification."
 msgstr ""
 
 msgid "Please type a question."
@@ -2229,6 +2308,71 @@ msgid "FAQ generated from page content and real question queries."
 msgstr ""
 
 msgid "Page has an empty title, so no H1 / title tag is generated."
+msgstr ""
+
+msgid "The page does not exist."
+msgstr ""
+
+#, php-format
+msgid "“%s” is a building block (template, snippet or system item), not a page visitors find in Google."
+msgstr ""
+
+#, php-format
+msgid "Used in %d place(s) of the site — keep it, but it needs no SEO title, description or redirect."
+msgstr ""
+
+msgid "Nothing on the site uses it, so SEO changes to it have no effect."
+msgstr ""
+
+msgid "Not published."
+msgstr ""
+
+msgid "Set to noindex — Google is told not to show it."
+msgstr ""
+
+msgid "Home, shop or blog page."
+msgstr ""
+
+msgid "Linked in a navigation menu."
+msgstr ""
+
+#, php-format
+msgid "%d sales."
+msgstr ""
+
+msgid "The archive does not exist."
+msgstr ""
+
+msgid "Empty archive (no items)."
+msgstr ""
+
+#, php-format
+msgid "Internal links pointing to it: %d."
+msgstr ""
+
+msgid "No internal link points to it."
+msgstr ""
+
+#, php-format
+msgid "%1$s clicks and %2$s impressions in Google (90 days)."
+msgstr ""
+
+msgid "Critical page"
+msgstr ""
+
+msgid "Important page"
+msgstr ""
+
+msgid "Normal page"
+msgstr ""
+
+msgid "Minor page"
+msgstr ""
+
+msgid "Building block used by other pages"
+msgstr ""
+
+msgid "Unused / not a page"
 msgstr ""
 
 msgid "SEOlity Client"
@@ -3574,6 +3718,9 @@ msgstr ""
 msgid "Products & categories"
 msgstr ""
 
+msgid "Backlinks & off-site (reportage, PR)"
+msgstr ""
+
 msgid "Competitor gaps"
 msgstr ""
 
@@ -3602,6 +3749,9 @@ msgid "Content improvements based on Search Console data: highest upside once th
 msgstr ""
 
 msgid "Product and category pages: important for shops after the site-wide basics."
+msgstr ""
+
+msgid "Backlinks and reportage bring authority from other sites; they work best once the target pages are clean and strong."
 msgstr ""
 
 msgid "New content for topics competitors win: a longer-term growth step."
@@ -4817,6 +4967,38 @@ msgstr ""
 msgid "Sitemap %s exceeds 50,000 URLs and will be rejected."
 msgstr ""
 
+msgid "Follow-up"
+msgstr ""
+
+#, php-format
+msgid "%1$s: clicks %2$d → %3$d, position %4$s → %5$s"
+msgstr ""
+
+msgid "It got better."
+msgstr ""
+
+msgid "It got worse — worth a look."
+msgstr ""
+
+msgid "No clear change yet."
+msgstr ""
+
+#, php-format
+msgid "Result of “%2$s” (since %1$s)"
+msgstr ""
+
+msgid "Goal:"
+msgstr ""
+
+msgid "Ask the AI what to do next"
+msgstr ""
+
+msgid "Applied change"
+msgstr ""
+
+msgid "More clicks and a better position for the changed pages."
+msgstr ""
+
 msgid "Product not found (is WooCommerce active?)."
 msgstr ""
 
@@ -4885,9 +5067,6 @@ msgstr ""
 
 #, php-format
 msgid "%s redirect chains fixed."
-msgstr ""
-
-msgid "Open"
 msgstr ""
 
 msgid "Impact"
@@ -5077,6 +5256,9 @@ msgid "Awaiting review"
 msgstr ""
 
 msgid "Review"
+msgstr ""
+
+msgid "Alerts"
 msgstr ""
 
 msgid "All quiet"
@@ -5435,9 +5617,6 @@ msgid "Waiting"
 msgstr ""
 
 msgid "Done"
-msgstr ""
-
-msgid "Info"
 msgstr ""
 
 msgid "Cancelled"
@@ -6375,6 +6554,15 @@ msgstr ""
 msgid "Check the connection"
 msgstr ""
 
+msgid "Roadmap task"
+msgstr ""
+
+msgid "Change to review & apply"
+msgstr ""
+
+msgid "Notification"
+msgstr ""
+
 msgid "Data used"
 msgstr ""
 
@@ -6550,9 +6738,6 @@ msgid "Open a Google results page and click the SEOlity bookmark."
 msgstr ""
 
 msgid "Query:"
-msgstr ""
-
-msgid "Result"
 msgstr ""
 
 msgid "Save to the Google results database"
@@ -7593,19 +7778,107 @@ msgstr ""
 msgid "No reports yet"
 msgstr ""
 
-msgid "AI Alerts"
+msgid "Results"
 msgstr ""
 
-msgid "Ranking, traffic, CTR and indexing drops, new 404s, lost/new keywords, deindexed pages, sitemap & Core Web Vitals problems, competitor growth."
+msgid "AI messages"
+msgstr ""
+
+msgid "Sent by e-mail"
+msgstr ""
+
+msgid "E-mail failed"
+msgstr ""
+
+msgid "SEOlity measures these pages and queries again on the date shown and sends you the result. Every applied change gets one automatically (after 28 days); the AI chat adds one whenever you ask it to check something later."
+msgstr ""
+
+msgid "No follow-ups yet"
+msgstr ""
+
+msgid "Ask the AI chat “check this again in a month”, or apply a change."
+msgstr ""
+
+msgid "Better"
+msgstr ""
+
+msgid "Worse"
+msgstr ""
+
+msgid "No clear change"
+msgstr ""
+
+msgid "Checked"
+msgstr ""
+
+#, php-format
+msgid "Check on %s"
+msgstr ""
+
+#, php-format
+msgid "clicks %1$s → %2$s, position %3$s → %4$s"
+msgstr ""
+
+#, php-format
+msgid "Created %s"
+msgstr ""
+
+msgid "Check now"
+msgstr ""
+
+msgid "Right away, one e-mail per notification"
+msgstr ""
+
+msgid "Once a day, all new notifications together"
+msgstr ""
+
+msgid "E-mail notifications"
+msgstr ""
+
+msgid "Send notifications by e-mail"
+msgstr ""
+
+msgid "Recipients (comma separated)"
+msgstr ""
+
+msgid "Which notifications"
+msgstr ""
+
+msgid "Last e-mail sent"
+msgstr ""
+
+msgid "Last e-mail failed"
+msgstr ""
+
+msgid "Send a test e-mail"
+msgstr ""
+
+#, php-format
+msgid "Test e-mail sent to %s"
+msgstr ""
+
+msgid "E-mail goes through WordPress (wp_mail). If tests fail or land in spam, install an SMTP plugin such as WP Mail SMTP so mail is sent from a real mailbox."
+msgstr ""
+
+msgid "Messages from SEOlity’s AI: warnings, results of your changes, good news, follow-ups and advice — also sent to your e-mail."
 msgstr ""
 
 msgid "Mark all as read"
 msgstr ""
 
-msgid "No alerts"
+msgid "All"
 msgstr ""
 
-msgid "SEOlity checks for important changes every hour."
+msgid "Follow-ups"
+msgstr ""
+
+msgid "E-mail"
+msgstr ""
+
+msgid "Nothing here"
+msgstr ""
+
+msgid "SEOlity checks for important changes every hour and writes here."
 msgstr ""
 
 msgid "Indexable"
@@ -7735,9 +8008,6 @@ msgid "Open problems"
 msgstr ""
 
 msgid "Search queries (last 28 days)"
-msgstr ""
-
-msgid "Open page"
 msgstr ""
 
 msgid "Inspect in Search Console"
@@ -8258,16 +8528,10 @@ msgstr ""
 msgid "Re-analyze"
 msgstr ""
 
-msgid "All"
-msgstr ""
-
 msgid "All categories"
 msgstr ""
 
 msgid "Show done tasks"
-msgstr ""
-
-msgid "Nothing here"
 msgstr ""
 
 msgid "All tasks in this view are done. Press “Re-analyze” after your changes have been live for a while."

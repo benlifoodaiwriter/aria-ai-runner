@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: SEOlity 1.0.0\n"
-"POT-Creation-Date: 2026-10-31 14:57+0000\n"
+"POT-Creation-Date: 2026-11-02 09:12+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1019,6 +1019,12 @@ msgstr "تحلیل کامل سایت"
 msgid "Signing in to Codex"
 msgstr "ورود به Codex"
 
+msgid "Checking follow-ups"
+msgstr "بررسی پیگیری‌ها"
+
+msgid "Sending the notification e-mail"
+msgstr "ارسال ایمیل اعلان‌ها"
+
 msgid "Site map refresh"
 msgstr "به‌روزرسانی نقشه سایت"
 
@@ -1253,8 +1259,8 @@ msgstr "Robots.txt"
 msgid "Reports"
 msgstr "گزارش‌ها"
 
-msgid "Alerts"
-msgstr "هشدارها"
+msgid "Notifications"
+msgstr "اعلان‌ها"
 
 msgid "Automation"
 msgstr "اتوماسیون"
@@ -1619,6 +1625,43 @@ msgstr "یافته پیدا نشد — ممیزی ایندکس‌پذیری را
 msgid "Topic will be added to the content planner"
 msgstr "موضوع به برنامه‌ریز محتوا اضافه می‌شود"
 
+msgid "Warning"
+msgstr "هشدار"
+
+msgid "Result"
+msgstr "نتیجه"
+
+msgid "Good news"
+msgstr "خبر خوب"
+
+msgid "Message from the AI"
+msgstr "پیام هوش مصنوعی"
+
+msgid "Info"
+msgstr "اطلاعات"
+
+#, php-format
+msgid "[%1$s] %2$d new notifications"
+msgstr "[%1$s] %2$d اعلان تازه"
+
+msgid "Open page"
+msgstr "باز کردن صفحه"
+
+msgid "Open"
+msgstr "باز"
+
+msgid "All notifications"
+msgstr "همه اعلان‌ها"
+
+msgid "The server did not accept the e-mail (wp_mail returned false). Install an SMTP plugin (e.g. WP Mail SMTP) so mail is sent through a real mail account."
+msgstr "سرور ایمیل را نپذیرفت (wp_mail مقدار false برگرداند). یک افزونه SMTP مثل WP Mail SMTP نصب کنید تا ایمیل از یک حساب ایمیل واقعی ارسال شود."
+
+msgid "Test e-mail from SEOlity"
+msgstr "ایمیل آزمایشی از SEOlity"
+
+msgid "If you can read this, notifications reach this address."
+msgstr "اگر این را می‌خوانید، اعلان‌ها به این آدرس می‌رسند."
+
 #, php-format
 msgid "Organic clicks dropped %1$s%% week over week"
 msgstr "کلیک‌های ارگانیک نسبت به هفته قبل %1$s%% کاهش یافت"
@@ -1954,6 +1997,10 @@ msgstr "هیچ‌کدام از آدرس‌های انتخاب‌شده پیدا 
 msgid "Redirect %d broken URLs to their suggested pages"
 msgstr "ریدایرکت %d آدرس خراب به صفحات پیشنهادی"
 
+#, php-format
+msgid "Not a valid e-mail address: %s"
+msgstr "آدرس ایمیل معتبر نیست: %s"
+
 msgid "Unknown secret."
 msgstr "کلید محرمانه ناشناخته."
 
@@ -2018,6 +2065,38 @@ msgstr "گزارش روزانه سئوی شما"
 #, php-format
 msgid "Health score %1$s. %2$d prioritized actions are waiting, %3$d AI changes need your review."
 msgstr "امتیاز سلامت %1$s. %2$d اقدام اولویت‌دار در انتظار است و %3$d تغییر هوش مصنوعی نیاز به بررسی شما دارد."
+
+msgid "Open the conversation"
+msgstr "باز کردن گفتگو"
+
+msgid "Added to notifications."
+msgstr "به اعلان‌ها اضافه شد."
+
+msgid "Not added."
+msgstr "اضافه نشد."
+
+msgid "Added to the SEO roadmap."
+msgstr "به نقشه راه سئو اضافه شد."
+
+msgid "A change needs a page and an action."
+msgstr "برای تغییر، یک صفحه و یک نوع کار لازم است."
+
+msgid "This field cannot be changed on this page."
+msgstr "این فیلد در این صفحه قابل تغییر نیست."
+
+msgid "This address is not a page or archive of the site."
+msgstr "این آدرس صفحه یا بایگانی سایت نیست."
+
+msgid "Being prepared — it will appear in the floating popup for “Review & apply”. Nothing changes until you approve."
+msgstr "در حال آماده‌سازی — در پنجره شناور برای «بررسی و اعمال» ظاهر می‌شود. تا تأیید نکنید چیزی تغییر نمی‌کند."
+
+#, php-format
+msgid "Already scheduled for %s."
+msgstr "از قبل برای %s زمان‌بندی شده است."
+
+#, php-format
+msgid "SEOlity checks the result on %s and sends you a notification."
+msgstr "SEOlity در تاریخ %s نتیجه را بررسی می‌کند و برایتان اعلان می‌فرستد."
 
 msgid "Please type a question."
 msgstr "لطفاً یک سؤال بنویسید."
@@ -2231,6 +2310,71 @@ msgstr "سؤالات متداول از محتوای صفحه و کوئری‌ه�
 
 msgid "Page has an empty title, so no H1 / title tag is generated."
 msgstr "صفحه عنوان خالی دارد، بنابراین H1 / تگ عنوان تولید نمی‌شود."
+
+msgid "The page does not exist."
+msgstr "این صفحه وجود ندارد."
+
+#, php-format
+msgid "“%s” is a building block (template, snippet or system item), not a page visitors find in Google."
+msgstr "«%s» یک قطعه سازنده است (قالب، تکه کد یا مورد سیستمی)، نه صفحه‌ای که بازدیدکننده در گوگل پیدا کند."
+
+#, php-format
+msgid "Used in %d place(s) of the site — keep it, but it needs no SEO title, description or redirect."
+msgstr "در %d جای سایت استفاده شده — نگهش دارید، ولی عنوان سئو، توضیحات یا ریدایرکت لازم ندارد."
+
+msgid "Nothing on the site uses it, so SEO changes to it have no effect."
+msgstr "هیچ جای سایت از آن استفاده نمی‌کند، پس تغییر سئوی آن هیچ اثری ندارد."
+
+msgid "Not published."
+msgstr "منتشر نشده است."
+
+msgid "Set to noindex — Google is told not to show it."
+msgstr "روی noindex است — به گوگل گفته شده نمایشش ندهد."
+
+msgid "Home, shop or blog page."
+msgstr "صفحه اصلی، فروشگاه یا وبلاگ."
+
+msgid "Linked in a navigation menu."
+msgstr "در منوی سایت لینک شده است."
+
+#, php-format
+msgid "%d sales."
+msgstr "%d فروش."
+
+msgid "The archive does not exist."
+msgstr "این بایگانی وجود ندارد."
+
+msgid "Empty archive (no items)."
+msgstr "بایگانی خالی (بدون مورد)."
+
+#, php-format
+msgid "Internal links pointing to it: %d."
+msgstr "تعداد لینک‌های داخلی به این صفحه: %d."
+
+msgid "No internal link points to it."
+msgstr "هیچ لینک داخلی به آن نمی‌رسد."
+
+#, php-format
+msgid "%1$s clicks and %2$s impressions in Google (90 days)."
+msgstr "%1$s کلیک و %2$s نمایش در گوگل (۹۰ روز)."
+
+msgid "Critical page"
+msgstr "صفحه حیاتی"
+
+msgid "Important page"
+msgstr "صفحه مهم"
+
+msgid "Normal page"
+msgstr "صفحه معمولی"
+
+msgid "Minor page"
+msgstr "صفحه کم‌اهمیت"
+
+msgid "Building block used by other pages"
+msgstr "قطعه سازنده‌ای که صفحه‌های دیگر از آن استفاده می‌کنند"
+
+msgid "Unused / not a page"
+msgstr "بدون استفاده / صفحه نیست"
 
 msgid "SEOlity Client"
 msgstr "مشتری سئولیتی"
@@ -3575,6 +3719,9 @@ msgstr "محتوا و نرخ کلیک"
 msgid "Products & categories"
 msgstr "محصولات و دسته‌ها"
 
+msgid "Backlinks & off-site (reportage, PR)"
+msgstr "بک‌لینک و بیرون از سایت (رپورتاژ، روابط عمومی)"
+
 msgid "Competitor gaps"
 msgstr "شکاف‌ها نسبت به رقبا"
 
@@ -3604,6 +3751,9 @@ msgstr "بهبود محتوا بر اساس داده‌های سرچ کنسول:
 
 msgid "Product and category pages: important for shops after the site-wide basics."
 msgstr "صفحات محصول و دسته: برای فروشگاه‌ها بعد از پایه‌های کل سایت مهم‌اند."
+
+msgid "Backlinks and reportage bring authority from other sites; they work best once the target pages are clean and strong."
+msgstr "بک‌لینک و رپورتاژ اعتبار سایت‌های دیگر را می‌آورند؛ وقتی بهترین نتیجه را می‌دهند که صفحه‌های مقصد تمیز و قوی باشند."
 
 msgid "New content for topics competitors win: a longer-term growth step."
 msgstr "محتوای جدید برای موضوعاتی که رقبا می‌برند: یک گام رشد بلندمدت."
@@ -4818,6 +4968,38 @@ msgstr "نقشه سایت %s مقدار <lastmod> ندارد — lastmod دقی�
 msgid "Sitemap %s exceeds 50,000 URLs and will be rejected."
 msgstr "نقشه سایت %s بیش از ۵۰٬۰۰۰ URL دارد و رد خواهد شد."
 
+msgid "Follow-up"
+msgstr "پیگیری"
+
+#, php-format
+msgid "%1$s: clicks %2$d → %3$d, position %4$s → %5$s"
+msgstr "%1$s: کلیک %2$d ← %3$d، جایگاه %4$s ← %5$s"
+
+msgid "It got better."
+msgstr "بهتر شد."
+
+msgid "It got worse — worth a look."
+msgstr "بدتر شد — ارزش بررسی دارد."
+
+msgid "No clear change yet."
+msgstr "هنوز تغییر روشنی دیده نمی‌شود."
+
+#, php-format
+msgid "Result of “%2$s” (since %1$s)"
+msgstr "نتیجه «%2$s» (از %1$s)"
+
+msgid "Goal:"
+msgstr "هدف:"
+
+msgid "Ask the AI what to do next"
+msgstr "از هوش مصنوعی بپرسید قدم بعدی چیست"
+
+msgid "Applied change"
+msgstr "تغییر اعمال‌شده"
+
+msgid "More clicks and a better position for the changed pages."
+msgstr "کلیک بیشتر و جایگاه بهتر برای صفحه‌های تغییرکرده."
+
 msgid "Product not found (is WooCommerce active?)."
 msgstr "محصول پیدا نشد (آیا ووکامرس فعال است؟)."
 
@@ -4887,9 +5069,6 @@ msgstr "%s مورد برای پردازش هوش مصنوعی در پس‌زمی
 #, php-format
 msgid "%s redirect chains fixed."
 msgstr "%s زنجیره ریدایرکت اصلاح شد."
-
-msgid "Open"
-msgstr "باز"
 
 msgid "Impact"
 msgstr "تأثیر"
@@ -5079,6 +5258,9 @@ msgstr "در انتظار بررسی"
 
 msgid "Review"
 msgstr "بررسی"
+
+msgid "Alerts"
+msgstr "هشدارها"
 
 msgid "All quiet"
 msgstr "همه‌چیز آرام است"
@@ -5437,9 +5619,6 @@ msgstr "در انتظار"
 
 msgid "Done"
 msgstr "انجام شد"
-
-msgid "Info"
-msgstr "اطلاعات"
 
 msgid "Cancelled"
 msgstr "لغو شد"
@@ -6376,6 +6555,15 @@ msgstr "دوباره امتحان کنید"
 msgid "Check the connection"
 msgstr "بررسی اتصال"
 
+msgid "Roadmap task"
+msgstr "کار نقشه راه"
+
+msgid "Change to review & apply"
+msgstr "تغییر برای بررسی و اعمال"
+
+msgid "Notification"
+msgstr "اعلان"
+
 msgid "Data used"
 msgstr "داده‌های استفاده‌شده"
 
@@ -6552,9 +6740,6 @@ msgstr "یک صفحه نتایج گوگل باز کنید و روی نشانک S
 
 msgid "Query:"
 msgstr "کوئری:"
-
-msgid "Result"
-msgstr "نتیجه"
 
 msgid "Save to the Google results database"
 msgstr "ذخیره در پایگاه داده نتایج گوگل"
@@ -7594,20 +7779,108 @@ msgstr "گیرنده‌ای تنظیم نشده."
 msgid "No reports yet"
 msgstr "هنوز گزارشی وجود ندارد"
 
-msgid "AI Alerts"
-msgstr "هشدارهای هوشمند"
+msgid "Results"
+msgstr "نتیجه‌ها"
 
-msgid "Ranking, traffic, CTR and indexing drops, new 404s, lost/new keywords, deindexed pages, sitemap & Core Web Vitals problems, competitor growth."
-msgstr "افت رتبه، ترافیک، CTR و ایندکس، ۴۰۴های جدید، کلمات کلیدی ازدست‌رفته/جدید، صفحات حذف‌شده از ایندکس، مشکلات نقشه سایت و Core Web Vitals، رشد رقبا."
+msgid "AI messages"
+msgstr "پیام‌های هوش مصنوعی"
+
+msgid "Sent by e-mail"
+msgstr "با ایمیل ارسال شد"
+
+msgid "E-mail failed"
+msgstr "ایمیل ارسال نشد"
+
+msgid "SEOlity measures these pages and queries again on the date shown and sends you the result. Every applied change gets one automatically (after 28 days); the AI chat adds one whenever you ask it to check something later."
+msgstr "SEOlity در تاریخ نوشته‌شده این صفحه‌ها و کوئری‌ها را دوباره می‌سنجد و نتیجه را برایتان می‌فرستد. هر تغییر اعمال‌شده خودکار یک پیگیری می‌گیرد (۲۸ روز بعد) و هر وقت از چت بخواهید چیزی را بعداً بررسی کند، یک پیگیری اضافه می‌کند."
+
+msgid "No follow-ups yet"
+msgstr "هنوز پیگیری‌ای نیست"
+
+msgid "Ask the AI chat “check this again in a month”, or apply a change."
+msgstr "به چت بگویید «یک ماه دیگر این را دوباره بررسی کن»، یا یک تغییر اعمال کنید."
+
+msgid "Better"
+msgstr "بهتر"
+
+msgid "Worse"
+msgstr "بدتر"
+
+msgid "No clear change"
+msgstr "بدون تغییر روشن"
+
+msgid "Checked"
+msgstr "بررسی شد"
+
+#, php-format
+msgid "Check on %s"
+msgstr "بررسی در %s"
+
+#, php-format
+msgid "clicks %1$s → %2$s, position %3$s → %4$s"
+msgstr "کلیک %1$s ← %2$s، جایگاه %3$s ← %4$s"
+
+#, php-format
+msgid "Created %s"
+msgstr "ساخته‌شده در %s"
+
+msgid "Check now"
+msgstr "همین حالا بررسی کن"
+
+msgid "Right away, one e-mail per notification"
+msgstr "فوری، یک ایمیل برای هر اعلان"
+
+msgid "Once a day, all new notifications together"
+msgstr "روزی یک بار، همه اعلان‌های تازه با هم"
+
+msgid "E-mail notifications"
+msgstr "اعلان‌های ایمیلی"
+
+msgid "Send notifications by e-mail"
+msgstr "ارسال اعلان‌ها با ایمیل"
+
+msgid "Recipients (comma separated)"
+msgstr "گیرنده‌ها (با ویرگول جدا کنید)"
+
+msgid "Which notifications"
+msgstr "کدام اعلان‌ها"
+
+msgid "Last e-mail sent"
+msgstr "آخرین ایمیل ارسال شد"
+
+msgid "Last e-mail failed"
+msgstr "آخرین ایمیل ارسال نشد"
+
+msgid "Send a test e-mail"
+msgstr "ارسال ایمیل آزمایشی"
+
+#, php-format
+msgid "Test e-mail sent to %s"
+msgstr "ایمیل آزمایشی به %s ارسال شد"
+
+msgid "E-mail goes through WordPress (wp_mail). If tests fail or land in spam, install an SMTP plugin such as WP Mail SMTP so mail is sent from a real mailbox."
+msgstr "ایمیل از طریق وردپرس (wp_mail) فرستاده می‌شود. اگر آزمایش ناموفق بود یا به اسپم رفت، یک افزونه SMTP مثل WP Mail SMTP نصب کنید تا ایمیل از یک صندوق واقعی ارسال شود."
+
+msgid "Messages from SEOlity’s AI: warnings, results of your changes, good news, follow-ups and advice — also sent to your e-mail."
+msgstr "پیام‌های هوش مصنوعی SEOlity: هشدارها، نتیجه تغییرات شما، خبرهای خوب، پیگیری‌ها و پیشنهادها — به ایمیل شما هم ارسال می‌شود."
 
 msgid "Mark all as read"
 msgstr "علامت‌گذاری همه به‌عنوان خوانده‌شده"
 
-msgid "No alerts"
-msgstr "هشداری نیست"
+msgid "All"
+msgstr "همه"
 
-msgid "SEOlity checks for important changes every hour."
-msgstr "سئولیتی هر ساعت تغییرات مهم را بررسی می‌کند."
+msgid "Follow-ups"
+msgstr "پیگیری‌ها"
+
+msgid "E-mail"
+msgstr "ایمیل"
+
+msgid "Nothing here"
+msgstr "چیزی اینجا نیست"
+
+msgid "SEOlity checks for important changes every hour and writes here."
+msgstr "SEOlity هر ساعت تغییرات مهم را بررسی می‌کند و این‌جا می‌نویسد."
 
 msgid "Indexable"
 msgstr "قابل ایندکس"
@@ -7737,9 +8010,6 @@ msgstr "مشکلات باز"
 
 msgid "Search queries (last 28 days)"
 msgstr "کوئری‌های جستجو (۲۸ روز اخیر)"
-
-msgid "Open page"
-msgstr "باز کردن صفحه"
 
 msgid "Inspect in Search Console"
 msgstr "بررسی در سرچ کنسول"
@@ -8259,17 +8529,11 @@ msgstr "%1$s کار · %2$s بحرانی · %3$s بالا"
 msgid "Re-analyze"
 msgstr "تحلیل مجدد"
 
-msgid "All"
-msgstr "همه"
-
 msgid "All categories"
 msgstr "همه دسته‌ها"
 
 msgid "Show done tasks"
 msgstr "نمایش کارهای انجام‌شده"
-
-msgid "Nothing here"
-msgstr "چیزی اینجا نیست"
 
 msgid "All tasks in this view are done. Press “Re-analyze” after your changes have been live for a while."
 msgstr "همه کارهای این بخش انجام شده‌اند. وقتی تغییرات مدتی منتشر بودند «تحلیل مجدد» را بزنید."

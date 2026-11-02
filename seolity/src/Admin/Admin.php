@@ -41,7 +41,7 @@ final class Admin {
 			'sitemap'     => array( __( 'Sitemap', 'seolity' ), Capabilities::VIEW ),
 			'robots'      => array( __( 'Robots.txt', 'seolity' ), Capabilities::VIEW ),
 			'reports'     => array( __( 'Reports', 'seolity' ), Capabilities::VIEW ),
-			'alerts'      => array( __( 'Alerts', 'seolity' ), Capabilities::VIEW ),
+			'alerts'      => array( __( 'Notifications', 'seolity' ), Capabilities::VIEW ),
 			'automation'  => array( __( 'Automation', 'seolity' ), Capabilities::MANAGE ),
 			'knowledge'   => array( __( 'Knowledge Base', 'seolity' ), Capabilities::VIEW ),
 			'engines'     => array( __( 'AI Engines — Installation & Diagnostics', 'seolity' ), Capabilities::MANAGE ),

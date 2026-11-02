@@ -273,6 +273,16 @@ final class Engine {
 	 * @param array $r type, title, reason, evidence, action, impact, effort, confidence, url, object_type, object_id, auto_fixable, key.
 	 */
 	public function add( array $r ) {
+		// Only pages that are part of the site get SEO work: an unused Elementor template or a
+		// snippet used inside other pages is skipped; a draft / noindex / unlinked page is demoted.
+		$imp = null;
+		if ( ! empty( $r['object_id'] ) || ! empty( $r['url'] ) ) {
+			$imp = $this->plugin->importance->of( array( 'object_type' => isset( $r['object_type'] ) ? $r['object_type'] : '', 'object_id' => isset( $r['object_id'] ) ? (int) $r['object_id'] : 0, 'url' => isset( $r['url'] ) ? (string) $r['url'] : '' ) );
+			if ( ! $imp['seo_target'] && empty( $r['force'] ) ) {
+				return 0;
+			}
+			$r['evidence'] = array_merge( isset( $r['evidence'] ) ? (array) $r['evidence'] : array(), array( 'importance' => array( 'level' => $imp['level'], 'score' => $imp['score'] ) ) );
+		}
 		$impact     = max( 1, min( 100, (int) $r['impact'] ) );
 		$effort     = max( 1, min( 100, (int) $r['effort'] ) );
 		$confidence = max( 1, min( 100, (int) $r['confidence'] ) );
@@ -281,9 +291,16 @@ final class Engine {
 		if ( isset( $r['priority'] ) ) {
 			$priority = $r['priority'];
 		}
+		if ( $imp && 'minor' === $imp['level'] && empty( $r['priority'] ) ) {
+			$priority = 'low';
+			$score    = round( $score / 2, 2 );
+		}
 		$key = sha1( $r['type'] . '|' . ( isset( $r['key'] ) ? $r['key'] : ( isset( $r['url'] ) ? $r['url'] : $r['title'] ) ) );
 		$db  = $this->plugin->db;
 		$cat = self::category_of( $r['type'] );
+		if ( ! empty( $r['category'] ) && isset( self::ORDER[ $r['category'] ] ) ) {
+			$cat = array( $r['category'], isset( $r['module'] ) ? (string) $r['module'] : self::category_route( $r['category'] ) );
+		}
 		$existing = $db->row( 'SELECT id, status, resolved_at FROM {recommendations} WHERE project_id = %d AND dedupe_key = %s', array( $db->project_id(), $key ) );
 		$row = array(
 			'type'         => $r['type'],
@@ -815,9 +832,20 @@ final class Engine {
 		'links'        => 70,
 		'content'      => 65,
 		'products'     => 60,
+		'offpage'      => 50,
 		'competitors'  => 40,
 		'other'        => 30,
 	);
+
+	/** Admin page of a category (for items whose type does not name one, e.g. from the AI chat). */
+	public static function category_route( $cat ) {
+		foreach ( self::CATEGORIES as $c ) {
+			if ( $c[0] === $cat ) {
+				return $c[1];
+			}
+		}
+		return 'offpage' === $cat ? '#/competitors' : '#/actions';
+	}
 
 	public static function category_names() {
 		return array(
@@ -829,6 +857,7 @@ final class Engine {
 			'links'        => __( 'Internal links', 'seolity' ),
 			'content'      => __( 'Content & CTR', 'seolity' ),
 			'products'     => __( 'Products & categories', 'seolity' ),
+			'offpage'      => __( 'Backlinks & off-site (reportage, PR)', 'seolity' ),
 			'competitors'  => __( 'Competitor gaps', 'seolity' ),
 			'other'        => __( 'Other', 'seolity' ),
 		);
@@ -844,6 +873,7 @@ final class Engine {
 			'links'        => __( 'Internal links spread authority to the pages you just fixed.', 'seolity' ),
 			'content'      => __( 'Content improvements based on Search Console data: highest upside once the basics are clean.', 'seolity' ),
 			'products'     => __( 'Product and category pages: important for shops after the site-wide basics.', 'seolity' ),
+			'offpage'      => __( 'Backlinks and reportage bring authority from other sites; they work best once the target pages are clean and strong.', 'seolity' ),
 			'competitors'  => __( 'New content for topics competitors win: a longer-term growth step.', 'seolity' ),
 			'other'        => '',
 		);

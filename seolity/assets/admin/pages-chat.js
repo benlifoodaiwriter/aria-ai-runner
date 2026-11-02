@@ -48,6 +48,11 @@
 		var search = h( 'input', { class: 'sl-input sl-input--sm', type: 'search', placeholder: t( 'Search conversations…' ), onInput: renderList } );
 		var convs = [];
 
+		// Links from notifications ("Ask the AI what to do next") open the chat with the question filled in.
+		var q0 = App.query ? App.query() : {};
+		if ( q0.ask ) {
+			input.value = String( q0.ask );
+		}
 		App.warmAi();
 		input.addEventListener( 'focus', App.warmAi );
 		input.addEventListener( 'keydown', function ( e ) {
@@ -136,6 +141,24 @@
 				);
 			}
 			var b = h( 'div', { class: 'sl-msg sl-msg--assistant' }, SL.markdown( msg.content ) );
+			if ( meta.created && meta.created.length ) {
+				// What the AI created from this answer: roadmap items, changes waiting for review & apply,
+				// follow-ups and notifications.
+				var KIND = { task: [ 'list-checks', t( 'Roadmap task' ) ], change: [ 'wand', t( 'Change to review & apply' ) ], follow_up: [ 'calendar', t( 'Follow-up' ) ], message: [ 'bell', t( 'Notification' ) ] };
+				b.appendChild( h( 'div', { class: 'sl-msg__created' }, meta.created.map( function ( c ) {
+					var k = KIND[ c.kind ] || [ 'info', c.kind ];
+					return h( 'div', { class: 'sl-created' + ( c.ok ? '' : ' is-fail' ) },
+						h( 'span', { class: 'sl-created__ic', 'aria-hidden': 'true' }, SL.icon( c.ok ? k[ 0 ] : 'alert', 18 ) ),
+						h( 'div', { class: 'sl-created__text' }, h( 'small', { text: k[ 1 ] } ), h( 'b', { dir: 'auto', text: c.title } ), c.note ? h( 'span', { text: c.note } ) : null ),
+						c.ok && c.route ? h( 'a', { class: 'sl-btn sl-btn--sm', href: c.route, text: t( 'Open' ) } ) : null
+					);
+				} ) ) );
+				if ( meta.created.some( function ( c ) {
+					return 'change' === c.kind && c.ok;
+				} ) && SL.dock && SL.dock.restore ) {
+					SL.dock.restore(); // The prepared change appears in the floating popup.
+				}
+			}
 			if ( meta.actions && meta.actions.length ) {
 				b.appendChild( h( 'div', { class: 'sl-msg__actions' }, meta.actions.map( function ( a ) {
 					return h( 'a', { href: a.route, class: 'sl-btn sl-btn--sm' }, a.title );

@@ -526,6 +526,13 @@ REST (manage capability, REST nonce): `GET cli/doctor`, `GET cli/report`, `POST 
 
 Upgrade: settings `sub_cli_*` and the saved secrets are reused unchanged; new settings default to automatic discovery and plugin-managed logins. Rollback: install the previous ZIP — the new settings are ignored, the private folders (`seolity-cli/codex-home`, `claude-home`, `runs`, `locks`) can stay or be deleted.
 
+## 15c. Chat actions, follow-ups, notifications, page importance
+
+- `Chat\ChatActions` — the chat task (`chat@1.3`) returns `proposals` (task · change · follow_up · message). Tasks become recommendations (`chat_task`, category chosen by the AI, incl. `offpage`); changes become recommendations with an agent action (`set_field`, `optimize_*`, `generate_faq`, `create_redirect`, `internal_links_to`) and `Agent::start()` prepares them at once → operation `awaiting_approval` → floating popup "Review & apply". Created items are stored in the message meta (`created`).
+- `Watch\FollowUps` — option `seolity_follow_ups`; baseline = last 28 days of `gsc_page_query` for the URLs / queries; job `follow_ups_check` (daily, after the GSC sync) compares and calls `AlertService::message()`. `seolity_operation_finished` adds a 28-day follow-up for every applied operation.
+- `Alerts\AlertService` — kinds warning · result · success · ai · info (`kind_of()`), `message()`, HTML e-mail to `alert_emails` (instant or daily `alerts_digest` job), `wp_mail_failed` captured into `seolity_mail_last`, `test_email()`. REST: `GET alerts?kind=`, `POST alerts/email`, `POST alerts/test-email`, `GET|POST follow-ups`, `POST follow-ups/{id}/check`, `DELETE follow-ups/{id}`.
+- `Content\PageImportance` — level critical · important · normal · minor · support · unused from post type / template usage (`_elementor_conditions`, `[elementor-template]`, template widgets, reusable blocks) / status / noindex / menus / crawler inlinks / sitemap / GSC 90 days / sales. `Recommendations\Engine::add()` skips non-targets (unless `force`) and demotes minor pages; chat tool `page_importance`, and `page_audit` includes it.
+
 ## 16. Compatibility
 
 * **WooCommerce**: product SEO (title, descriptions, short description, attributes, images, schema,

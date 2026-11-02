@@ -27,6 +27,9 @@ defined( 'ABSPATH' ) || exit;
  * @property-read AI\Gateway                 $gateway
  * @property-read AI\Remote\LocalCli         $localcli
  * @property-read AI\Remote\CliAuth          $cliauth
+ * @property-read Content\PageImportance     $importance
+ * @property-read Watch\FollowUps            $followups
+ * @property-read Chat\ChatActions           $chat_actions
  * @property-read AI\ProviderManager          $aiproviders
  * @property-read Operations\Operations        $operations
  * @property-read Technical\Indexability       $indexability
@@ -130,6 +133,9 @@ final class Plugin {
 			'ai'              => AI\Engine::class,
 			'analyzer'        => Analysis\ContentAnalyzer::class,
 			'meta'            => Content\MetaStore::class,
+			'importance'      => Content\PageImportance::class,
+			'followups'       => Watch\FollowUps::class,
+			'chat_actions'    => Chat\ChatActions::class,
 			'changes'         => Content\ChangeManager::class,
 			'optimizer'       => Content\Optimizer::class,
 			'gsc_oauth'       => GSC\OAuth::class,
@@ -215,6 +221,13 @@ final class Plugin {
 		Frontend\Frontend::register_hooks( $this );
 
 		add_action( 'rest_api_init', array( new Api\Router( $this ), 'register_routes' ) );
+		// Every applied change gets a follow-up: SEOlity reports its effect four weeks later.
+		add_action(
+			'seolity_operation_finished',
+			function ( $op ) {
+				$this->followups->from_operation( $op );
+			}
+		);
 		add_filter(
 			'rest_pre_dispatch',
 			static function ( $result, $server, $request ) {

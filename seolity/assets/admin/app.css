@@ -810,3 +810,15 @@ button.sl-segcard { cursor: pointer; }
 .sl-cqm { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .sl-cqm .sl-mapcard__m a { font-size: 12px; overflow-wrap: anywhere; }
 @media (max-width: 600px) { .sl-cqm { grid-template-columns: 1fr; } }
+/* What the AI chat created from an answer */
+.sl-msg__created { display: grid; gap: 8px; margin-top: 12px; }
+.sl-created { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 10px 12px; border: 1px solid var(--sl-border); border-inline-start: 4px solid var(--sl-good); border-radius: 12px; background: var(--sl-surface); }
+.sl-created.is-fail { border-inline-start-color: var(--sl-warn); }
+.sl-created__ic { width: 34px; height: 34px; border-radius: 10px; display: grid; place-items: center; background: var(--sl-brand-50); color: var(--sl-brand); }
+.sl-created__text { display: grid; gap: 2px; min-width: 0; }
+.sl-created__text small { color: var(--sl-muted); font-size: 11px; }
+.sl-created__text span { font-size: 12px; color: var(--sl-text-2); line-height: 1.7; }
+/* Notifications */
+.sl-notice.is-new { box-shadow: 0 0 0 2px color-mix(in srgb, var(--c) 30%, transparent), var(--sl-shadow); }
+.sl-notice__msg { font-size: 14px; line-height: 1.9; white-space: normal; }
+.sl-notice__lines { margin: 0; padding-inline-start: 18px; font-size: 13px; line-height: 1.9; }

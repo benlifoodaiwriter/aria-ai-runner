@@ -24,7 +24,7 @@ final class ProblemAreas {
 		'content'     => array( array( 'content' ), array( 'content', 'duplicates' ), '#/duplicates' ),
 		'performance' => array( array( 'performance' ), array(), '#/audit' ),
 		'products'    => array( array(), array( 'products' ), '#/products' ),
-		'offpage'     => array( array(), array( 'competitors' ), '#/competitors' ),
+		'offpage'     => array( array(), array( 'competitors', 'offpage' ), '#/competitors' ),
 	);
 
 	const WEIGHT = array( 'critical' => 10, 'high' => 5, 'medium' => 2, 'low' => 1, 'info' => 0 );

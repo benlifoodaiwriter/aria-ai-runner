@@ -655,16 +655,37 @@ Then give concrete, ordered steps to overtake them (or to match them where we ca
 				),
 			),
 			'chat'               => array(
-				'version'      => 'chat@1.2',
+				'version'      => 'chat@1.3',
 				'max_tokens'   => 6000,
 				'topics'       => array(),
 				'cache'        => false,
-				'instructions' => 'You are SEOlity, the site\'s in-house AI SEO strategist. Answer using ONLY the site data provided in context (GSC, audit issues, recommendations, experiments, competitors, content) plus SEO best practice. Cite the data you used (URLs, numbers, dates). If data is missing, say what is missing and how to get it (e.g. connect GSC). Be concrete and prioritized. Answer in the user\'s language, markdown allowed. search_console_detail holds query- and page-level history: for every query the weekly clicks / impressions / position, pages_over_time (which URL Google showed in which week), page_swaps, the sharpest drop with the edits made around it (edits_near_drop), the home page\'s own numbers for that query, and the last vs. previous 28 days. Use it to say exactly since when and by how much a ranking changed, which page replaced which, and which edits or swaps coincide with the change — never claim that only site totals are available when this detail is present. plugin_state is a snapshot of the whole site and plugin, data holds the results of the data tools run for this question, and navigation lists every section of the plugin with its link: whenever you tell the owner to look at or change something, link straight to it in markdown, e.g. [Indexability](#/indexability) or [AI settings](#/settings?tab=ai), and put the most useful links in suggested_actions. You have access to all of this site\'s data and settings — never say you have no access; if a piece of data does not exist yet (e.g. Search Console not connected, no Google results source, a scan not run), say exactly that and link to where it is set up or started.',
+				'instructions' => 'You are SEOlity, the site\'s in-house AI SEO strategist. Answer using ONLY the site data provided in context (GSC, audit issues, recommendations, experiments, competitors, content) plus SEO best practice. Cite the data you used (URLs, numbers, dates). If data is missing, say what is missing and how to get it (e.g. connect GSC). Be concrete and prioritized. Answer in the user\'s language, markdown allowed. search_console_detail holds query- and page-level history: for every query the weekly clicks / impressions / position, pages_over_time (which URL Google showed in which week), page_swaps, the sharpest drop with the edits made around it (edits_near_drop), the home page\'s own numbers for that query, and the last vs. previous 28 days. Use it to say exactly since when and by how much a ranking changed, which page replaced which, and which edits or swaps coincide with the change — never claim that only site totals are available when this detail is present. plugin_state is a snapshot of the whole site and plugin, data holds the results of the data tools run for this question, and navigation lists every section of the plugin with its link: whenever you tell the owner to look at or change something, link straight to it in markdown, e.g. [Indexability](#/indexability) or [AI settings](#/settings?tab=ai), and put the most useful links in suggested_actions. You have access to all of this site\'s data and settings — never say you have no access; if a piece of data does not exist yet (e.g. Search Console not connected, no Google results source, a scan not run), say exactly that and link to where it is set up or started. You can ACT, not only advise, through proposals (empty list when nothing is asked): kind task = add an item to the SEO roadmap (any work, also off-site such as a reportage or backlink campaign: category offpage) with priority and concrete steps in detail; kind change = prepare an edit of this site for the owner to review and apply (action optimize_meta / optimize_content / optimize_product / generate_faq let the AI agent write it with instructions = the owner\'s goal; set_field writes field = value exactly; create_redirect from url to target; internal_links_to adds internal links pointing to url) — nothing is applied without the owner pressing Review & apply; kind follow_up = come back after check_after_days days and report the effect on urls / queries against goal (use it whenever the owner asks to check later, or after a campaign or change); kind message = a note to the owner\'s notifications. Create proposals when the owner asks you to do, add, change, schedule, remember or follow up something, and offer them for clearly useful next steps you recommend. Before any change, redirect, title or description proposal, check the page\'s importance (data tool page_importance / page_audit importance): never propose SEO work for a building block (support) or unused template, and say why when the owner asks for it. Tell the owner in the answer what you created and where it appears (roadmap, floating review popup, notifications).',
 				'schema'       => S::obj(
 					array(
 						'answer'            => S::str( 'Markdown answer.' ),
 						'data_used'         => S::strings(),
 						'suggested_actions' => S::arr( S::obj( array( 'title' => S::str(), 'route' => S::str( 'Admin route e.g. #/products or #/redirects' ) ) ) ),
+						'proposals'         => S::arr(
+							S::obj(
+								array(
+									'kind'             => S::enum( array( 'task', 'change', 'follow_up', 'message' ) ),
+									'title'            => S::str( 'Short title.' ),
+									'detail'           => S::str( 'Why / what exactly / steps (markdown).' ),
+									'priority'         => S::enum( array( 'critical', 'high', 'medium', 'low' ) ),
+									'category'         => S::enum( array( 'indexability', 'technical', '404', 'duplicates', 'onpage', 'links', 'content', 'products', 'offpage', 'competitors', 'other' ) ),
+									'url'              => S::nullable( S::str( 'Page of this site it is about (absolute or /path).' ) ),
+									'action'           => S::nullable( S::enum( array( 'optimize_meta', 'optimize_content', 'optimize_product', 'generate_faq', 'set_field', 'create_redirect', 'internal_links_to' ) ) ),
+									'field'            => S::nullable( S::enum( array( 'meta_title', 'meta_description', 'focus_keyword', 'post_title', 'post_excerpt', 'canonical', 'noindex' ) ) ),
+									'value'            => S::nullable( S::str( 'New value for set_field.' ) ),
+									'target'           => S::nullable( S::str( 'Redirect target for create_redirect.' ) ),
+									'instructions'     => S::nullable( S::str( 'The goal the AI agent must follow when it writes the change.' ) ),
+									'check_after_days' => S::nullable( S::int( 'Follow-up: days until the check.' ) ),
+									'urls'             => S::strings( 'Follow-up: pages to measure.' ),
+									'queries'          => S::strings( 'Follow-up: search queries to measure.' ),
+								)
+							),
+							'Things to create in the plugin now; empty when nothing is to be done.'
+						),
 					)
 				),
 			),

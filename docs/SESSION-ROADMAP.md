@@ -1,7 +1,7 @@
 # SEOlity — session roadmap (read this first; replaces the old chat history)
 
 ## State
-- Plugin: `seolity/` (WordPress, PHP PSR-4 `SEOlity\`, no-build JS SPA in `assets/admin/`). Version **1.13.1**, DB schema **1.7.0**.
+- Plugin: `seolity/` (WordPress, PHP PSR-4 `SEOlity\`, no-build JS SPA in `assets/admin/`). Version **1.14.0**, DB schema **1.7.0**.
 - Branch: `claude/beautiful-ride-7ilxpf` (push with `git push -u origin claude/beautiful-ride-7ilxpf`). No PR unless asked. `main` belongs to another tool (ARIAGH.AIWRITER) — do not touch.
 - Release ZIP: `git archive --format=zip --prefix=seolity/ -o <scratch>/seolity-X.zip HEAD:seolity` → send to user; never commit ZIPs.
 - Commits end with `Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>` and `Claude-Session: …`; never put model ids in code/commits.
@@ -13,7 +13,7 @@
 - Local CLIs (Claude Code/Codex): `src/AI/Remote/{ProcessRunner,NodeLocator,CliErrors,CliAuth,CodexInstaller,LocalCli,CliSetup}.php`, UI `assets/admin/pages-engines.js` (#/engines). Scenario test `$S/cli-arch-test.php` (run with PATH=/usr/local/bin:/bin:/usr/bin and /usr/local/bin/node moved aside; fake CLIs in `$S/seolity-cli/node_modules/.bin`; move `$S/seolity-cli/codex-native` aside first, it is the real Codex and wins). Fix test `$S/codex-fix-test.php` (run under `ulimit -v 1048576`).
 - AI: `src/AI/Engine.php`, tasks/prompts `src/AI/Tasks.php`, providers `src/AI/Providers/*`, connections `src/AI/ProviderManager.php`, effort `src/AI/Effort.php`, subscription runner `src/AI/Remote/*` + `runner/runner.mjs`.
 - Operations (preview→approve→apply→verify→undo): `src/Operations/Operations.php`, `Verifier.php`. Canonical issues/roadmap: `src/Recommendations/Engine.php`, `src/Roadmap/*`, `src/Analysis/FullAnalysis.php`, `ProblemAreas.php`.
-- GSC deep data for AI: `src/GSC/Insights.php`. Chat tools: `src/Chat/Toolbox.php`, `ChatService.php`.
+- GSC deep data for AI: `src/GSC/Insights.php`. Chat actions `src/Chat/ChatActions.php`, follow-ups `src/Watch/FollowUps.php`, notifications + e-mail `src/Alerts/AlertService.php` (UI `pages-intel.js` App.pages.alerts), page importance `src/Content/PageImportance.php`. Tests `$S/{actions-test,imp-test}.php`. Chat tools: `src/Chat/Toolbox.php`, `ChatService.php`.
 - Competitors/SERP: `src/Competitors/Intel.php`, `src/Serp/Sources.php`, `SerpService.php`, `AiVisibility.php`.
 - Duplicates/cannibalization: `src/Content/Duplicates.php`. Indexability: `src/Technical/Indexability.php`. Site map explorer: `src/Technical/SiteMap.php`. 404 AI review: `src/Redirects/NotFoundTriage.php`. Experiments/edit history: `src/Experiments/ExperimentService.php`.
 - UI modules: `assets/admin/pages-*.js` (registered in `src/Admin/Admin.php`), styles `app.css`.

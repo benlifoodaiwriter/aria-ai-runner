@@ -1056,10 +1056,49 @@ final class Router {
 			return array( 'sent' => $p->reports->email( self::int( $r, 'id' ) ) );
 		} );
 		$this->route( 'GET', '/alerts', 'view', function ( Req $r ) use ( $p ) {
-			return $p->alerts->query( self::filters( $r, array( 'status' ) ) );
+			return $p->alerts->query( self::filters( $r, array( 'status', 'kind' ) ) );
 		} );
 		$this->route( 'POST', '/alerts/(?P<id>\d+)', 'view', function ( Req $r ) use ( $p ) {
 			return array( 'ok' => $p->alerts->set_status( self::int( $r, 'id' ), self::key( $r, 'status', 'read' ) ) );
+		} );
+		$this->route( 'POST', '/alerts/email', 'manage', function ( Req $r ) use ( $p ) {
+			$emails = array_filter( array_map( 'trim', preg_split( '/[\s,;]+/', (string) $r->get_param( 'emails' ) ) ) );
+			foreach ( $emails as $e ) {
+				if ( ! is_email( $e ) ) {
+					/* translators: %s: address */
+					return new \WP_Error( 'seolity_email', sprintf( __( 'Not a valid e-mail address: %s', 'seolity' ), $e ), array( 'status' => 400 ) );
+				}
+			}
+			$kinds = array_values( array_intersect( (array) $r->get_param( 'kinds' ), \SEOlity\Alerts\AlertService::KINDS ) );
+			$res   = $p->settings->update(
+				array(
+					'alert_email_enabled' => (bool) $r->get_param( 'enabled' ),
+					'alert_emails'        => implode( ',', $emails ),
+					'alert_email_mode'    => 'digest' === $r->get_param( 'mode' ) ? 'digest' : 'instant',
+					'alert_email_kinds'   => implode( ',', $kinds ? $kinds : array( 'warning', 'result', 'ai' ) ),
+				)
+			);
+			if ( is_wp_error( $res ) ) {
+				return $res;
+			}
+			return $p->alerts->query( array() );
+		} );
+		$this->route( 'POST', '/alerts/test-email', 'manage', function () use ( $p ) {
+			return $p->alerts->test_email();
+		} );
+		$this->route( 'GET', '/follow-ups', 'view', function () use ( $p ) {
+			return array( 'items' => $p->followups->all() );
+		} );
+		$this->route( 'POST', '/follow-ups', 'ai', function ( Req $r ) use ( $p ) {
+			return $p->followups->add( array( 'title' => self::str( $r, 'title' ), 'goal' => self::str( $r, 'goal' ), 'urls' => (array) $r->get_param( 'urls' ), 'queries' => (array) $r->get_param( 'queries' ), 'days' => (int) $r->get_param( 'days' ), 'source' => 'manual' ) );
+		} );
+		$this->route( 'POST', '/follow-ups/(?P<id>[a-f0-9]{12})/check', 'ai', function ( Req $r ) use ( $p ) {
+			$p->followups->check( (string) $r['id'] );
+			return array( 'items' => $p->followups->all() );
+		} );
+		$this->route( 'DELETE', '/follow-ups/(?P<id>[a-f0-9]{12})', 'ai', function ( Req $r ) use ( $p ) {
+			$p->followups->remove( (string) $r['id'] );
+			return array( 'items' => $p->followups->all() );
 		} );
 		$this->route( 'POST', '/alerts/read-all', 'view', function () use ( $p ) {
 			return array( 'ok' => (bool) $p->alerts->mark_all_read() );

@@ -613,35 +613,181 @@
 	};
 
 	/* ================================================================ Alerts */
-	App.pages.alerts = function ( v ) {
-		v.appendChild( App.header( t( 'AI Alerts' ), t( 'Ranking, traffic, CTR and indexing drops, new 404s, lost/new keywords, deindexed pages, sitemap & Core Web Vitals problems, competitor growth.' ), [ App.abtn( t( 'Mark all as read' ), function () {
-			return SL.api( 'alerts/read-all', { method: 'POST' } ).then( function () {
-				App.refreshBoot();
-				App.pages.alerts( SL.clear( v ) );
-			} );
-		} ) ] ) );
-		var list = h( 'div' );
-		v.appendChild( list );
-		App.load( list, SL.api( 'alerts' ), function ( r ) {
+	/* Notifications: AI messages, warnings, results of changes, good news; follow-ups; e-mail. */
+	var NK = {
+		warning: [ '#dc2626', 'alert', t( 'Warnings' ), t( 'Warning' ) ],
+		result: [ '#2563eb', 'chart', t( 'Results' ), t( 'Result' ) ],
+		success: [ '#16a34a', 'check-circle', t( 'Good news' ), t( 'Good news' ) ],
+		ai: [ '#7c3aed', 'sparkles', t( 'AI messages' ), t( 'Message from the AI' ) ],
+		info: [ '#64748b', 'info', t( 'Info' ), t( 'Info' ) ],
+	};
+
+	function noticeCard( a, reload ) {
+		var k = NK[ a.kind ] || NK.info;
+		var data = a.data || {};
+		var links = ( data.links || [] ).slice( 0, 4 );
+		return h( 'article', { class: 'sl-mapcard sl-notice' + ( 'new' === a.status ? ' is-new' : '' ), style: '--c:' + k[ 0 ] },
+			h( 'div', { class: 'sl-mapcard__head' },
+				h( 'span', { class: 'sl-mapcard__ic', 'aria-hidden': 'true' }, SL.icon( k[ 1 ], 22 ) ),
+				h( 'div', { class: 'sl-mapcard__titles' }, h( 'b', { class: 'sl-mapcard__title', dir: 'auto', text: a.title } ), h( 'span', { class: 'sl-muted sl-small', text: k[ 3 ] + ' · ' + SL.date( a.created_at ) + ( 'new' === a.status ? ' · ' + t( 'New' ) : '' ) } ) ),
+				h( 'span', { class: 'sl-mapcard__status' }, h( 'b', { text: k[ 3 ] } ) )
+			),
+			a.message ? h( 'div', { class: 'sl-notice__msg', dir: 'auto' }, SL.markdown ? SL.markdown( a.message ) : a.message ) : null,
+			h( 'div', { class: 'sl-mapcard__foot' },
+				h( 'div', { class: 'sl-mapcard__flags' }, a.notified > 0 ? h( 'span', { class: 1 === +a.notified ? 'sl-mapcard__ok' : 'sl-mapcard__flag' }, SL.icon( 1 === +a.notified ? 'send' : 'alert', 13 ), h( 'span', { text: 1 === +a.notified ? t( 'Sent by e-mail' ) : t( 'E-mail failed' ) } ) ) : null ),
+				h( 'div', { class: 'sl-mapcard__actions' },
+					links.map( function ( l ) {
+						return h( 'a', { class: 'sl-btn sl-btn--sm', href: l.url ? l.url : l.route, target: l.url ? '_blank' : null, rel: l.url ? 'noopener' : null, text: l.title } );
+					} ),
+					data.url ? App.ext( data.url, t( 'Open page' ) ) : null,
+					App.btn( SL.icon( 'x', 16 ), function () {
+						SL.api( 'alerts/' + a.id, { body: { status: 'dismissed' } } ).then( reload ).catch( SL.fail );
+					}, 'ghost', { 'aria-label': t( 'Dismiss' ), title: t( 'Dismiss' ) } )
+				)
+			)
+		);
+	}
+
+	function followUps( box ) {
+		App.load( box, SL.api( 'follow-ups' ), function ( r ) {
+			box.appendChild( h( 'p', { class: 'sl-muted', text: t( 'SEOlity measures these pages and queries again on the date shown and sends you the result. Every applied change gets one automatically (after 28 days); the AI chat adds one whenever you ask it to check something later.' ) } ) );
 			if ( ! r.items.length ) {
-				list.appendChild( SL.empty( t( 'No alerts' ), t( 'SEOlity checks for important changes every hour.' ) ) );
+				box.appendChild( SL.empty( t( 'No follow-ups yet' ), t( 'Ask the AI chat “check this again in a month”, or apply a change.' ) ) );
 				return;
 			}
-			r.items.forEach( function ( a ) {
-				list.appendChild( h( 'div', { class: 'sl-alertitem' + ( a.status === 'new' ? ' is-new' : '' ) },
-					SL.priorityBadge( a.severity ),
-					h( 'div', { class: 'sl-alertitem__main' }, h( 'strong', { text: a.title } ), h( 'p', { class: 'sl-small', text: a.message } ), h( 'span', { class: 'sl-muted sl-small', text: SL.date( a.created_at ) + ' · ' + a.type } ) ),
-					h( 'div', { class: 'sl-row' }, a.data && a.data.url ? App.ext( a.data.url, t( 'Open' ) ) : null, App.btn( SL.icon( 'x', 16 ), function () {
-						SL.api( 'alerts/' + a.id, { body: { status: 'dismissed' } } ).then( function () {
-							App.pages.alerts( SL.clear( v ) );
-						} ).catch( SL.fail );
-					}, 'ghost', { 'aria-label': t( 'Dismiss' ) } ) )
+			var list = h( 'div', { class: 'sl-mapcards' } );
+			r.items.forEach( function ( f ) {
+				var done = 'waiting' !== f.status;
+				var v = done && f.result ? f.result.verdict : '';
+				var col = done ? ( 'better' === v ? '#16a34a' : ( 'worse' === v ? '#dc2626' : '#2563eb' ) ) : '#f59e0b';
+				list.appendChild( h( 'article', { class: 'sl-mapcard', style: '--c:' + col },
+					h( 'div', { class: 'sl-mapcard__head' },
+						h( 'span', { class: 'sl-mapcard__ic', 'aria-hidden': 'true' }, SL.icon( done ? 'chart' : 'calendar', 22 ) ),
+						h( 'div', { class: 'sl-mapcard__titles' }, h( 'b', { class: 'sl-mapcard__title', dir: 'auto', text: f.title } ), h( 'span', { class: 'sl-muted sl-small', dir: 'auto', text: f.goal || '' } ) ),
+						h( 'span', { class: 'sl-mapcard__status' }, h( 'b', { text: done ? ( { better: t( 'Better' ), worse: t( 'Worse' ), same: t( 'No clear change' ) }[ v ] || t( 'Checked' ) ) : t( 'Check on %s', f.check_at ) } ) )
+					),
+					h( 'div', { class: 'sl-chips' }, ( f.urls || [] ).map( function ( u ) {
+						return h( 'span', { class: 'sl-chip', dir: 'ltr', text: decodeURI( u.replace( /^https?:\/\/[^/]+/, '' ) ) } );
+					} ), ( f.queries || [] ).map( function ( q ) {
+						return h( 'span', { class: 'sl-chip', dir: 'auto', text: '«' + q + '»' } );
+					} ) ),
+					done && f.result ? h( 'ul', { class: 'sl-notice__lines' }, f.result.lines.map( function ( l ) {
+						return h( 'li', { dir: 'auto', text: ( 'pages' === l.kind ? decodeURI( l.key.replace( /^https?:\/\/[^/]+/, '' ) ) : '«' + l.key + '»' ) + ' — ' + t( 'clicks %1$s → %2$s, position %3$s → %4$s', l.before.clicks, l.after.clicks, null === l.before.position ? '—' : l.before.position, null === l.after.position ? '—' : l.after.position ) } );
+					} ) ) : null,
+					h( 'div', { class: 'sl-mapcard__foot' }, h( 'span', { class: 'sl-muted sl-small', text: t( 'Created %s', SL.date( f.created_at ) ) } ), h( 'div', { class: 'sl-mapcard__actions' },
+						! done ? App.abtn( t( 'Check now' ), function () {
+							return SL.api( 'follow-ups/' + f.id + '/check', { method: 'POST' } ).then( function () {
+								followUps( SL.clear( box ) );
+							} );
+						} ) : null,
+						App.btn( SL.icon( 'trash', 16 ), function () {
+							SL.api( 'follow-ups/' + f.id, { method: 'DELETE' } ).then( function () {
+								followUps( SL.clear( box ) );
+							} ).catch( SL.fail );
+						}, 'ghost' )
+					) )
 				) );
-				if ( a.status === 'new' ) {
-					SL.api( 'alerts/' + a.id, { body: { status: 'read' } } ).catch( function () {} );
-				}
 			} );
-			App.refreshBoot();
+			box.appendChild( list );
 		} );
+	}
+
+	function emailCard( e, reload ) {
+		var on = h( 'input', { type: 'checkbox', checked: 'off' !== e.mode } );
+		var to = h( 'textarea', { class: 'sl-input', dir: 'ltr', rows: 2, placeholder: 'you@example.com, team@example.com' } );
+		to.value = ( e.to || [] ).join( ', ' );
+		var mode = App.select( [ [ 'instant', t( 'Right away, one e-mail per notification' ) ], [ 'digest', t( 'Once a day, all new notifications together' ) ] ], 'digest' === e.mode ? 'digest' : 'instant', function () {} );
+		var kinds = {};
+		var last = e.last || null;
+		return App.card( t( 'E-mail notifications' ), h( 'div', { class: 'sl-stack' },
+			h( 'label', { class: 'sl-check' }, on, h( 'span', { text: t( 'Send notifications by e-mail' ) } ) ),
+			h( 'label', { class: 'sl-field' }, h( 'span', { text: t( 'Recipients (comma separated)' ) } ), to ),
+			h( 'label', { class: 'sl-field' }, h( 'span', { text: t( 'When' ) } ), mode ),
+			h( 'div', { class: 'sl-field' }, h( 'span', { text: t( 'Which notifications' ) } ), h( 'div', { class: 'sl-chips' }, Object.keys( NK ).map( function ( k ) {
+				kinds[ k ] = h( 'input', { type: 'checkbox', checked: ( e.kinds || [] ).indexOf( k ) >= 0 } );
+				return h( 'label', { class: 'sl-chip' }, kinds[ k ], ' ' + NK[ k ][ 2 ] );
+			} ) ) ),
+			last ? h( 'div', { class: 'sl-alert ' + ( last.ok ? 'sl-alert--success' : 'sl-alert--error' ) }, h( 'b', { text: ( last.ok ? t( 'Last e-mail sent' ) : t( 'Last e-mail failed' ) ) + ' — ' + SL.date( last.at ) } ), last.error ? h( 'p', { text: last.error } ) : null ) : null,
+			h( 'div', { class: 'sl-row' },
+				App.abtn( t( 'Save' ), function () {
+					return SL.api( 'alerts/email', { body: { enabled: on.checked ? 1 : 0, emails: to.value, mode: mode.value, kinds: Object.keys( kinds ).filter( function ( k ) {
+						return kinds[ k ].checked;
+					} ) } } ).then( function () {
+						SL.toast( t( 'Saved' ), 'success' );
+						reload();
+					} );
+				}, 'primary' ),
+				App.abtn( SL.il( 'send', t( 'Send a test e-mail' ), 14 ), function () {
+					return SL.api( 'alerts/test-email', { method: 'POST' } ).then( function ( r ) {
+						SL.toast( r.ok ? t( 'Test e-mail sent to %s', r.to.join( ', ' ) ) : r.error, r.ok ? 'success' : 'error' );
+						reload();
+					} );
+				} )
+			),
+			h( 'p', { class: 'sl-muted sl-small', text: t( 'E-mail goes through WordPress (wp_mail). If tests fail or land in spam, install an SMTP plugin such as WP Mail SMTP so mail is sent from a real mailbox.' ) } )
+		), { icon: 'send' } );
+	}
+
+	App.pages.alerts = function ( v ) {
+		var q = App.query ? App.query() : {};
+		var state = { tab: q.tab || 'all' };
+		var body = h( 'div', { class: 'sl-stack' } );
+		v.appendChild( App.header( t( 'Notifications' ), t( 'Messages from SEOlity’s AI: warnings, results of your changes, good news, follow-ups and advice — also sent to your e-mail.' ), [ App.abtn( t( 'Mark all as read' ), function () {
+			return SL.api( 'alerts/read-all', { method: 'POST' } ).then( function () {
+				App.refreshBoot();
+				load();
+			} );
+		} ) ] ) );
+		v.appendChild( body );
+		function load() {
+			App.load( body, SL.api( 'alerts' ), function ( r ) {
+				var tabs = [ { id: 'all', label: t( 'All' ) } ].concat( Object.keys( NK ).map( function ( k ) {
+					return { id: k, label: NK[ k ][ 2 ] + ( r.unread_by_kind && r.unread_by_kind[ k ] ? ' (' + r.unread_by_kind[ k ] + ')' : '' ) };
+				} ) ).concat( [ { id: 'follow', label: t( 'Follow-ups' ) }, { id: 'email', label: t( 'E-mail' ) } ] );
+				var initial = 0;
+				tabs.forEach( function ( x, i ) {
+					if ( x.id === state.tab ) {
+						initial = i;
+					}
+				} );
+				body.appendChild( SL.tabs( tabs.map( function ( x ) {
+					return { label: x.label, render: function () {
+						state.tab = x.id;
+						var b = h( 'div' );
+						if ( 'follow' === x.id ) {
+							followUps( b );
+							return b;
+						}
+						if ( 'email' === x.id ) {
+							b.appendChild( emailCard( r.email || {}, load ) );
+							return b;
+						}
+						var items = 'all' === x.id ? r.items : r.items.filter( function ( a ) {
+							return a.kind === x.id;
+						} );
+						if ( ! items.length ) {
+							b.appendChild( SL.empty( t( 'Nothing here' ), t( 'SEOlity checks for important changes every hour and writes here.' ) ) );
+							return b;
+						}
+						var list = h( 'div', { class: 'sl-mapcards' } );
+						items.forEach( function ( a ) {
+							list.appendChild( noticeCard( a, load ) );
+						} );
+						b.appendChild( list );
+						// Seen = read (after the owner had a moment to notice what was new).
+						setTimeout( function () {
+							items.filter( function ( a ) {
+								return 'new' === a.status;
+							} ).forEach( function ( a ) {
+								SL.api( 'alerts/' + a.id, { body: { status: 'read' } } ).catch( function () {} );
+							} );
+							App.refreshBoot();
+						}, 2500 );
+						return b;
+					} };
+				} ), null, initial ) );
+			} );
+		}
+		load();
 	};
 } )( window );

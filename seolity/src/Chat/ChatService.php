@@ -96,7 +96,12 @@ final class ChatService {
 			$this->update_meta( $id, array( 'status' => 'failed', 'error' => $res->get_error_message(), 'code' => $res->get_error_code() ) );
 			return $res;
 		}
-		$route = isset( $meta['activity'] ) ? (string) $db->value( 'SELECT route FROM {activity} WHERE id = %d', array( (int) $meta['activity'] ) ) : '';
+		$route   = isset( $meta['activity'] ) ? (string) $db->value( 'SELECT route FROM {activity} WHERE id = %d', array( (int) $meta['activity'] ) ) : '';
+		// What the AI proposed becomes real items: roadmap tasks, changes waiting for review &
+		// apply, follow-ups and notifications (never applied without the owner's approval).
+		$created = empty( $meta['created'] ) && ! empty( $res['data']['proposals'] ) && current_user_can( \SEOlity\Core\Capabilities::AI )
+			? $this->plugin->chat_actions->apply( (array) $res['data']['proposals'], (string) $row['conversation_id'] )
+			: ( isset( $meta['created'] ) ? (array) $meta['created'] : array() );
 		$db->update(
 			'chat',
 			array(
@@ -110,6 +115,7 @@ final class ChatService {
 							'actions'      => array_values( array_filter( (array) $res['data']['suggested_actions'], static function ( $a ) {
 								return 0 === strpos( (string) $a['route'], '#/' );
 							} ) ),
+							'created'      => $created,
 							'context_keys' => array_keys( $context ),
 							'meta'         => $res['meta'],
 							'route'        => $route,

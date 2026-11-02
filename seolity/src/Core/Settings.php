@@ -143,6 +143,9 @@ final class Settings {
 			// Alerts & reports.
 			'alert_email'          => array( 'email', '' ),
 			'alert_email_enabled'  => array( 'bool', false ),
+			'alert_emails'         => array( 'string', '' ), // Several recipients, comma separated.
+			'alert_email_mode'     => array( 'enum', 'instant', array( 'instant', 'digest' ) ),
+			'alert_email_kinds'    => array( 'string', 'warning,result,ai' ),
 			'alert_drop_percent'   => array( 'int', 25, array( 5, 90 ) ),
 			'report_frequency'     => array( 'enum', 'weekly', array( 'none', 'daily', 'weekly', 'monthly' ) ),
 			'report_recipients'    => array( 'list', array() ),

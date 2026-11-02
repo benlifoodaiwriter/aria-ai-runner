@@ -32,6 +32,7 @@ final class Toolbox {
 			'gsc_overview'  => array( '', 'Site-wide Search Console: last 28 days vs previous, top queries and pages, winners and losers.' ),
 			'gsc_opportunities' => array( '', 'Search Console rows for link building, reportage and content planning: every page in positions 4–20 (closest to page 1 / the top 3) with its clicks, impressions, average position and the queries it ranks for, plus the strongest commercial pages (categories, products).' ),
 			'find_pages'    => array( 'text', 'Find pages / posts / products of the site by words in their title.' ),
+			'page_importance' => array( 'url', 'Does a page matter at all? Level (critical / important / normal / minor / support = template used inside other pages / unused = template or snippet nothing uses), score and why: post type, status, noindex, menus, internal links, sitemap, Google clicks, sales. Check it before suggesting a redirect, title, description or content change.' ),
 			'page_audit'    => array( 'url', 'Everything about one page: crawl data, open issues, SEO title/description/focus keyword, edits and their measured effect.' ),
 			'roadmap'       => array( '', 'The SEO roadmap: problem categories in recommended order and the most important open items.' ),
 			'issues'        => array( 'category', 'Open issues of one category (indexability, technical, 404, duplicates, onpage, links, content, products, competitors).' ),
@@ -173,7 +174,10 @@ final class Toolbox {
 					}
 				}
 				$out['edit_outcomes'] = $p->gsc_insights->edit_outcomes( array( $url ) );
+				$out['importance']    = $p->importance->of( $url );
 				return $out;
+			case 'page_importance':
+				return $p->importance->of( $this->resolve_url( $arg ) );
 			case 'roadmap':
 				return array( 'categories' => $p->recommendations->board(), 'top_items' => array_map( array( $this, 'issue_brief' ), $p->recommendations->items( array( 'status' => 'active', 'per_page' => 25 ) )['items'] ) );
 			case 'issues':

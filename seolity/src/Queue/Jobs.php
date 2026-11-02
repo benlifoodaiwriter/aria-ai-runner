@@ -23,6 +23,14 @@ final class Jobs {
 			$p->indexability->scan();
 			return true;
 		} );
+		$q->handler( 'follow_ups_check', static function () use ( $p ) {
+			$p->followups->check();
+			return true;
+		} );
+		$q->handler( 'alerts_digest', static function () use ( $p ) {
+			$p->alerts->digest();
+			return true;
+		} );
 		$q->handler( 'cli_login', static function ( $a ) use ( $p ) {
 			return $p->cliauth->run_login( 'codex' );
 		} );
@@ -257,6 +265,9 @@ final class Jobs {
 		$q->push( 'recommendations_refresh', array(), array( 'unique' => true, 'priority' => 12, 'delay' => 40 * MINUTE_IN_SECONDS ) );
 		$q->push( 'rules_scheduled', array(), array( 'unique' => true, 'priority' => 14, 'delay' => 45 * MINUTE_IN_SECONDS ) );
 		$q->push( 'alerts_check', array(), array( 'unique' => true, 'priority' => 5, 'delay' => 50 * MINUTE_IN_SECONDS ) );
+		// Follow-ups after the day's Search Console sync; the e-mail digest after everything else.
+		$q->push( 'follow_ups_check', array(), array( 'unique' => true, 'priority' => 9, 'delay' => 52 * MINUTE_IN_SECONDS ) );
+		$q->push( 'alerts_digest', array(), array( 'unique' => true, 'priority' => 30, 'delay' => 100 * MINUTE_IN_SECONDS ) );
 		$q->push( 'health_snapshot', array(), array( 'unique' => true, 'priority' => 15, 'delay' => 55 * MINUTE_IN_SECONDS ) );
 		$q->push( 'briefing_generate', array( 'date' => gmdate( 'Y-m-d' ) ), array( 'unique' => true, 'priority' => 8, 'delay' => HOUR_IN_SECONDS ) );
 		$q->push( 'pagespeed_run', array(), array( 'unique' => true, 'priority' => 40, 'delay' => 70 * MINUTE_IN_SECONDS ) );

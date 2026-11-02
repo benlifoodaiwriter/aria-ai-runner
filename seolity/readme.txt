@@ -4,7 +4,7 @@ Tags: seo, ai, search console, woocommerce, schema
 Requires at least: 6.2
 Tested up to: 6.6
 Requires PHP: 7.4
-Stable tag: 1.13.4
+Stable tag: 1.14.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -72,6 +72,12 @@ Yes. The interface is fully translated and RTL-native, text analysis understands
 Enable "Delete all data on uninstall" in Settings → Privacy, then delete the plugin.
 
 == Changelog ==
+
+= 1.14.0 =
+* The AI chat can act, not only advise. From an answer it can add SEO roadmap items (any category, now also "Backlinks & off-site" for reportage and link campaigns, with the priority you ask for), prepare changes to the site that wait in the floating popup for "Review & apply" (nothing is applied without your approval), schedule follow-ups and send you notifications. What it created is shown under the answer with links.
+* Follow-ups: SEOlity records the Search Console numbers of the pages and queries when a follow-up is created and measures them again on the check date (e.g. a month after a reportage), then reports better / worse / no change with the numbers. Every applied change gets a follow-up automatically after 28 days.
+* Notifications center: warnings, results, good news, AI messages and info in separate tabs with big cards, follow-ups, and e-mail settings — several recipients, instant or a daily digest, which kinds to send, a test e-mail, and the exact reason when sending fails (e.g. the SMTP error).
+* Page importance: before suggesting a redirect, title, description or content change, SEOlity checks whether the page matters — post type (Elementor templates, floating buttons, blocks), whether a template is used anywhere, status, noindex, menus, internal links, sitemap, Google clicks and sales. Unused templates and building blocks get no SEO suggestions; drafts and noindex pages are demoted. The chat sees the same information.
 
 = 1.13.4 =
 * Fix: the AI chat now gets the real Search Console rows per page and per query. With a subscription or the GitHub route the chat does not run the extra AI tool planner, and questions about reportage, backlinks, anchors or "you are connected to Search Console" matched no data tool, so only the site totals reached the AI. New data tool "gsc_opportunities": every page in positions 4–20 with its clicks, impressions, position and the queries it ranks for, plus the strongest commercial pages; wider keyword routing in Persian and English. No extra Search Console permission is needed — the read-only access already syncs page × query rows.
