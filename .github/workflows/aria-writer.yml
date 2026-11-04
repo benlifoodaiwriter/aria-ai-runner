@@ -1,6 +1,7 @@
 # ARIAGH.AIWRITER – Subscription Runner
 # Created and managed automatically by the WordPress plugin. Do not rename this file.
 name: ARIAGH.AIWRITER
+run-name: "ARIAGH ${{ inputs.trigger }} ${{ inputs.engine }} ${{ inputs.pull_id }}"
 
 on:
   workflow_dispatch:
