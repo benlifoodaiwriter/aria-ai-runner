@@ -241,7 +241,7 @@ async function codexImage(prompt, refFiles, outName) {
   const genDir = join(codexHome, 'generated_images');
   const before = Date.now();
   const task = `Use your built-in image generation ($imagegen skill / image_gen tool) to create exactly ONE photorealistic image.
-${refFiles.length ? `The attached images are references: product photos first (keep the exact product, packaging, label and colors), then example images from the website (match their color palette, lighting and mood).\n` : ''}Image description: ${prompt}
+${refFiles.length ? `The attached images are references: product photos first (keep the exact product, packaging, label and colors), then example images from the website (match their color palette, lighting and mood).\n` : ''}Request: ${prompt}
 No text, letters or watermark in the image. Save the final image as ${target} (PNG). Do not create any other files and do not run unrelated commands.`;
   const args = ['exec', '--skip-git-repo-check', '--sandbox', 'workspace-write', '--ephemeral', '--json', '-C', workDir];
   if (refFiles.length) args.push('-i', refFiles.join(','));
@@ -878,7 +878,7 @@ async function main() {
     const q = await worker('queue_get', { id: PULL_ID }, 30000);
     const t = q.payload || {};
     const refs = await refsToFiles([...(t.refs && t.refs.products || []), ...(t.refs && t.refs.styles || [])]);
-    const image = await codexImage(t.prompt || 'editorial product photo', refs, 'featured.png');
+    const image = await codexImage(t.chat || t.prompt || 'editorial product photo', refs, 'featured.png');
     image.refs_used = refs.length;
     const inline = [];
     for (const [k, it] of (t.inline || []).entries()) {
