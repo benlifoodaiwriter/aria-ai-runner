@@ -50,8 +50,44 @@ final class Admin {
 			'github'      => array( __( 'GitHub & data', 'seolity' ), Capabilities::MANAGE ),
 			'cloudflare'  => array( __( 'Cloudflare relay', 'seolity' ), Capabilities::MANAGE ),
 			'guide'       => array( __( 'Connection guide', 'seolity' ), Capabilities::VIEW ),
-			'settings'    => array( __( 'Settings', 'seolity' ), Capabilities::MANAGE ),
+			'settings'    => array( __( 'General settings', 'seolity' ), Capabilities::MANAGE ),
+			'settings-ai' => array( __( 'AI settings', 'seolity' ), Capabilities::MANAGE ),
+			'settings-crawler' => array( __( 'Crawler & audits', 'seolity' ), Capabilities::MANAGE ),
+			'settings-reports' => array( __( 'Alerts & reports', 'seolity' ), Capabilities::MANAGE ),
+			'settings-technical' => array( __( 'Technical settings', 'seolity' ), Capabilities::MANAGE ),
+			'settings-schema' => array( __( 'Schema & entity', 'seolity' ), Capabilities::MANAGE ),
+			'settings-privacy' => array( __( 'Privacy & data', 'seolity' ), Capabilities::MANAGE ),
 		);
+	}
+
+	/**
+	 * Navigation, like the ARIAGH AI Writer admin: every page is its own menu item (no tabs inside
+	 * sections). [ group id, group label, page slugs ]; the "main" group is drawn as large tiles.
+	 * The WordPress menu and the in-app sidebar both follow this order.
+	 */
+	public static function nav() {
+		return array(
+			array( 'main', '', array( 'ai', 'actions' ) ),
+			array( 'overview', __( 'Overview', 'seolity' ), array( 'dashboard', 'alerts', 'activity', 'changes', 'experiments', 'reports' ) ),
+			array( 'data', __( 'Data collection', 'seolity' ), array( 'audit', 'gsc', 'competitors', 'knowledge' ) ),
+			array( 'content', __( 'Content', 'seolity' ), array( 'content', 'duplicates', 'products', 'images' ) ),
+			array( 'keywords', __( 'Keywords & links', 'seolity' ), array( 'keywords', 'rankmath', 'links' ) ),
+			array( 'technical', __( 'Technical SEO', 'seolity' ), array( 'redirects', '404', 'indexability', 'schema', 'sitemap', 'robots' ) ),
+			array( 'connections', __( 'Connections', 'seolity' ), array( 'engines', 'subscription', 'github', 'cloudflare', 'network', 'guide' ) ),
+			array( 'settings', __( 'Settings', 'seolity' ), array( 'settings', 'settings-ai', 'settings-crawler', 'settings-reports', 'settings-technical', 'settings-schema', 'settings-privacy', 'automation' ) ),
+		);
+	}
+
+	/** Route slugs in menu order: dashboard first (it is the top-level page), then the navigation order. */
+	private static function ordered() {
+		$order = array( 'dashboard' );
+		foreach ( self::nav() as $g ) {
+			foreach ( $g[2] as $slug ) {
+				$order[] = $slug;
+			}
+		}
+		$order = array_values( array_unique( array_merge( $order, array_keys( self::routes() ) ) ) );
+		return array_values( array_intersect( $order, array_keys( self::routes() ) ) );
 	}
 
 	/** @var Plugin */
@@ -79,42 +115,14 @@ final class Admin {
 	public function menu() {
 		$icon = 'data:image/svg+xml;base64,' . base64_encode( (string) file_get_contents( SEOLITY_DIR . 'assets/img/menu-icon.svg' ) ); // phpcs:ignore
 		add_menu_page( 'SEOLITY' === $this->brand() ? 'ARIAGH.SEOLITY' : $this->brand(), $this->brand(), Capabilities::VIEW, 'seolity', array( $this, 'render' ), $icon, 3 );
-		foreach ( self::routes() as $slug => $r ) {
+		$routes = self::routes();
+		foreach ( self::ordered() as $slug ) {
 			if ( 'products' === $slug && ! class_exists( 'WooCommerce' ) ) {
 				continue;
 			}
+			$r = $routes[ $slug ];
 			add_submenu_page( 'seolity', $r[0], $r[0], $r[1], 'dashboard' === $slug ? 'seolity' : 'seolity-' . $slug, array( $this, 'render' ) );
 		}
-		// Keep the WordPress menu short: only the section entry pages stay visible; every page stays reachable.
-		$hubs = self::hubs();
-		foreach ( array_keys( self::routes() ) as $slug ) {
-			if ( 'dashboard' !== $slug && ! isset( $hubs[ $slug ] ) ) {
-				remove_submenu_page( 'seolity', 'seolity-' . $slug );
-			}
-		}
-		global $submenu;
-		if ( isset( $submenu['seolity'] ) ) {
-			foreach ( $submenu['seolity'] as $i => $item ) {
-				$slug = 'seolity' === $item[2] ? 'dashboard' : substr( $item[2], 8 );
-				if ( isset( $hubs[ $slug ] ) ) {
-					$submenu['seolity'][ $i ][0] = $hubs[ $slug ]; // phpcs:ignore WordPress.WP.GlobalVariablesOverride
-				}
-			}
-		}
-	}
-
-	/** First page of each sidebar section => section label (mirrors HUBS in app.js). */
-	public static function hubs() {
-		return array(
-			'dashboard'    => __( 'Dashboard', 'seolity' ),
-			'actions'      => __( 'AI Center', 'seolity' ),
-			'audit'        => __( 'Data collection', 'seolity' ),
-			'content'      => __( 'Content', 'seolity' ),
-			'keywords'     => __( 'Keywords & links', 'seolity' ),
-			'redirects'    => __( 'Technical SEO', 'seolity' ),
-			'network'      => __( 'Connections', 'seolity' ),
-			'settings'     => __( 'Settings', 'seolity' ),
-		);
 	}
 
 	private function is_our_screen() {
@@ -164,10 +172,15 @@ final class Admin {
 	/** Shared JS config (admin app + editor integrations). Never contains secrets. */
 	public function js_config( $route = 'dashboard' ) {
 		$routes = array();
-		foreach ( self::routes() as $slug => $r ) {
-			if ( current_user_can( $r[1] ) && ( 'products' !== $slug || class_exists( 'WooCommerce' ) ) ) {
-				$routes[] = array( 'slug' => $slug, 'label' => $r[0] );
+		$all    = self::routes();
+		foreach ( self::ordered() as $slug ) {
+			if ( current_user_can( $all[ $slug ][1] ) && ( 'products' !== $slug || class_exists( 'WooCommerce' ) ) ) {
+				$routes[] = array( 'slug' => $slug, 'label' => $all[ $slug ][0] );
 			}
+		}
+		$nav = array();
+		foreach ( self::nav() as $g ) {
+			$nav[] = array( 'id' => $g[0], 'label' => $g[1], 'items' => $g[2] );
 		}
 		return array(
 			'root'      => esc_url_raw( rest_url( 'seolity/v1/' ) ),
@@ -175,6 +188,7 @@ final class Admin {
 			'exportUrl' => esc_url_raw( wp_nonce_url( admin_url( 'admin-post.php?action=seolity_export' ), 'seolity_export' ) ),
 			'route'     => $route,
 			'routes'    => $routes,
+			'nav'       => $nav,
 			'rtl'       => 'fa' === $this->plugin->settings->get( 'ui_language' ) ? true : ( 'en' === $this->plugin->settings->get( 'ui_language' ) ? false : is_rtl() ),
 			'locale'    => 'fa' === $this->plugin->settings->get( 'ui_language' ) ? 'fa_IR' : get_user_locale(),
 			'brand'     => array( 'name' => $this->brand(), 'logo' => (string) $this->plugin->settings->get( 'brand_logo' ), 'color' => (string) $this->plugin->settings->get( 'brand_color' ) ),

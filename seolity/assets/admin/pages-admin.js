@@ -271,30 +271,45 @@
 		crawler: [ [ 'pagespeed_api_key', 'PageSpeed Insights API key (optional)' ], [ 'serp_api_key', 'SERP data API key (optional)' ] ],
 	};
 
+	var GROUP_DESC = {
+		general: t( 'Approval mode, interface language, output and branding.' ),
+		ai: t( 'Connect an AI provider or subscription and set how the AI writes and spends.' ),
+		crawler: t( 'How often and how deep the site audit crawls, and Search Console import limits.' ),
+		reports: t( 'When to warn you about drops and who receives the reports.' ),
+		technical: t( 'Sitemap, redirects and the 404 log.' ),
+		schema: t( 'Structured data and the organization behind the site.' ),
+		privacy: t( 'Data retention, IP anonymization and what happens on uninstall.' ),
+	};
+
+	/*
+	 * Every settings group is a page of its own in the menu (#/settings, #/settings-ai …), like the
+	 * ARIAGH AI Writer admin — no tabs. Old links (#/settings?tab=ai) are mapped by the router.
+	 */
 	App.pages.settings = function ( v, q ) {
-		v.appendChild( App.header( t( 'Settings' ) ) );
 		if ( q.tab === 'github' || q.tab === 'subscription' ) {
 			App.go( q.tab ); // These moved to their own pages.
 			return;
 		}
+		settingsPage( v, q, 'general' );
+	};
+	GROUPS.forEach( function ( g ) {
+		if ( g[ 0 ] !== 'general' ) {
+			App.pages[ 'settings-' + g[ 0 ] ] = function ( v, q ) {
+				settingsPage( v, q, g[ 0 ] );
+			};
+		}
+	} );
+
+	function settingsPage( v, q, key ) {
+		var g = GROUPS.filter( function ( x ) {
+			return x[ 0 ] === key;
+		} )[ 0 ] || GROUPS[ 0 ];
+		v.appendChild( App.header( ( App.routeLabels && App.routeLabels[ App.current ] ) ? App.routeLabels[ App.current ].label : t( g[ 1 ] ), GROUP_DESC[ g[ 0 ] ] ) );
 		var body = h( 'div' );
 		v.appendChild( body );
 		App.load( body, SL.api( 'settings' ), function ( data ) {
 			var dirty = {};
-			var tabs = GROUPS.map( function ( g ) {
-				return { label: t( g[ 1 ] ), key: g[ 0 ], render: function () {
-					return group( g, data, dirty );
-				} };
-			} );
-			if ( q.tab ) {
-				var idx = tabs.findIndex( function ( x ) {
-					return x.key === q.tab;
-				} );
-				if ( idx > 0 ) {
-					tabs.unshift( tabs.splice( idx, 1 )[ 0 ] );
-				}
-			}
-			body.appendChild( SL.tabs( tabs ) );
+			body.appendChild( group( g, data, dirty ) );
 			body.appendChild( h( 'div', { class: 'sl-savebar' }, App.abtn( t( 'Save settings' ), function () {
 				return SL.api( 'settings', { body: dirty } ).then( function ( r ) {
 					SL.toast( t( 'Settings saved.' ), 'success' );
@@ -584,5 +599,5 @@
 			}
 			return box;
 		}
-	};
+	}
 } )( window );

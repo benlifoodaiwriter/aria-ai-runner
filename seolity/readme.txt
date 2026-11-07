@@ -4,7 +4,7 @@ Tags: seo, ai, search console, woocommerce, schema
 Requires at least: 6.2
 Tested up to: 6.6
 Requires PHP: 7.4
-Stable tag: 1.14.0
+Stable tag: 1.15.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -72,6 +72,11 @@ Yes. The interface is fully translated and RTL-native, text analysis understands
 Enable "Delete all data on uninstall" in Settings → Privacy, then delete the plugin.
 
 == Changelog ==
+
+= 1.15.0 =
+* Simpler navigation, like the ARIAGH AI Writer admin: every page is its own item in the WordPress menu and in the SEOlity sidebar, listed under small group headings (Overview, Data collection, Content, Keywords & links, Technical SEO, Connections, Settings). No more section tabs on top of page tabs: one click opens one page.
+* The AI chat and the SEO roadmap are the two large tiles at the top of the sidebar; the chat tile shows the connected AI engine and model. Search Console and GitHub status moved to the top bar.
+* Settings are split into separate pages (General, AI, Crawler & audits, Alerts & reports, Technical, Schema & entity, Privacy & data). Old links such as #/settings?tab=ai still open the right page.
 
 = 1.14.0 =
 * The AI chat can act, not only advise. From an answer it can add SEO roadmap items (any category, now also "Backlinks & off-site" for reportage and link campaigns, with the priority you ask for), prepare changes to the site that wait in the floating popup for "Review & apply" (nothing is applied without your approval), schedule follow-ups and send you notifications. What it created is shown under the answer with links.

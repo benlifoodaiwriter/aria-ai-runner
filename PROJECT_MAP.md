@@ -6,7 +6,8 @@
 - هوش مصنوعی: API (Anthropic/OpenAI/Gemini/…)، اشتراک Claude/ChatGPT از طریق CLI روی همین سرور یا اجراکننده GitHub Actions، رله Cloudflare.
 
 ## 2. وضعیت فعلی
-- نسخه **1.14.0** (`seolity/seolity.php:6`)، DB schema **1.7.0** (`seolity.php:23`). شاخه `claude/beautiful-ride-7ilxpf`، آخرین کامیت `2d11724`.
+- نسخه **1.15.0** (`seolity/seolity.php:6`)، DB schema **1.7.0** (`seolity.php:23`). شاخه `claude/beautiful-ride-7ilxpf`.
+- ناوبری 1.15.0 مثل AI Writer: هر صفحه یک آیتم جدا در منوی وردپرس و سایدبار، زیر عنوان گروه؛ بدون «تب بخش» بالای صفحه. چت و نقشه راه دو کاشی بزرگ بالای سایدبار. تنظیمات به ۷ صفحه جدا (`settings`، `settings-ai`، …) شکسته شد.
 - کار می‌کند (با آزمایش در سایت آزمایشی؛ با حساب واقعی کاربر تأیید نشده):
   - CLIهای محلی: کشف Node.js، اجراکننده مرکزی، طبقه‌بندی خطا، ورود Codex با کد دستگاه، نصب Codex بدون npm، صفحه «موتورهای هوش مصنوعی» (#/engines) با انتخاب مدل.
   - مسیر خودکار: CLI محلی فقط بعد از «آزمایش اتصال» موفق؛ وگرنه گیت‌هاب؛ خرابی سروری ← بازگشت به گیت‌هاب.
@@ -19,6 +20,7 @@
 | مسیر | کار | نمادها (خط) |
 |---|---|---|
 | `seolity.php` | ورودی افزونه، نسخه | Version:6، SEOLITY_DB_VERSION:23 |
+| `src/Admin/Admin.php` | منو: routes() (شامل settings-*)، nav() گروه‌ها (منبع واحد منوی وردپرس و سایدبار JS از `C.nav`)، ordered() | — |
 | `src/Plugin.php` (296) | نقشه سرویس‌ها (lazy `seolity()->x`)، هوک‌ها | factories، hook `seolity_operation_finished`:226 |
 | `src/Api/Router.php` (1631) | همه مسیرهای REST (`route()` با tier view/ai/manage) | cli/*، alerts/*، follow-ups، github/setup-all |
 | `src/Queue/Jobs.php` (322) | handlerهای صف + `daily_pipeline`:234 | follow_ups_check:26، alerts_digest:30، cli_login:34، cli_install:37 |
@@ -44,8 +46,9 @@
 | `assets/admin/pages-intel.js` | اعلان‌ها (تب‌ها، پیگیری، ایمیل) | App.pages.alerts:731 |
 | `assets/admin/pages-chat.js` | چت + نمایش created | — |
 | `assets/admin/pages-map.js` | نقشه سایت (کارت بزرگ) | App.pages.sitemap:421 |
-| `assets/admin/app.css` | همه استایل‌ها (.sl-mapcard الگوی کارت بزرگ) | — |
-| `tools/i18n/fa-*.tsv` + `build.py` | ترجمه فارسی | آخرین: fa-18.tsv |
+| `assets/admin/app.js` | پوسته: shell() سایدبار (navTile/navItem)، route() (نگاشت `settings?tab=x` ← `settings-x`)، engines() متن زیر کاشی‌ها | — |
+| `assets/admin/app.css` | همه استایل‌ها (.sl-mapcard الگوی کارت بزرگ، .sl-nav__tile کاشی سایدبار) | — |
+| `tools/i18n/fa-*.tsv` + `build.py` | ترجمه فارسی | آخرین: fa-19.tsv |
 | `docs/ARCHITECTURE.md` | معماری؛ بخش‌های 15b (CLI) و 15c (چت/اعلان) | — |
 | `readme.txt` | changelog | — |
 | `runner/runner.mjs` | کد اجراکننده گیت‌هاب (رمزنگاری AES-GCM) | — |
@@ -73,6 +76,7 @@
 - اعلان‌ها روی جدول موجود `alerts` (نوع از `kind_of`)، نه جدول جدید.
 - پیگیری‌ها در option (حداکثر ۳۰۰) به‌جای جدول جدید (بدون migration).
 - رشته‌های جمع (`_n`) استفاده نشود؛ build ترجمه آن‌ها را نمی‌گیرد.
+- ناوبری: هیچ تب بخش (hub/subtabs) نباشد؛ صفحه جدید = route در `Admin::routes()` + جای آن در `Admin::nav()`. تب‌های فیلتر داخل خود صفحه (یک سطح) مجاز است. ظاهر = کپی AI Writer (کاربر فایل `ARIAGH-AIWRITER-1.9.1` را مرجع داد).
 
 ## 6. راه‌های امتحان‌شده و شکست‌خورده
 - `npm install @openai/codex` زیر سقف ۱GB حافظه مجازی ← heap out of memory.
@@ -82,11 +86,12 @@
 - planner چت روی مسیر گیت‌هاب/اشتراک ← کند؛ به‌جایش مسیریابی کلمه کلیدی.
 - `Gateway::current()` همیشه github برای sub_* ← برچسب غلط (اصلاح شد).
 - `rm -rf` با متغیر در bash -c ← بلاک امنیتی؛ از `mktemp -d` استفاده شود.
+- ناوبری «بخش + زیرتب» (HUBS در app.js، نسخه 1.9–1.14) ← کاربر گیج می‌شد (تب در تب)؛ در 1.15.0 حذف شد. دوباره برنگردان.
 
 ## 7. قوانین و ترجیحات کاربر
 - پاسخ همیشه **فارسی**؛ کاربر غیربرنامه‌نویس است، توضیح ساده.
 - UI: کارت‌های بزرگ افقی (الگوی `.sl-mapcard`) مثل داشبورد؛ RTL؛ موبایل.
-- کامیت روی همین شاخه؛ پایان پیام کامیت: `Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>` و `Claude-Session: https://claude.ai/code/session_01VisycbSXrf58Cocgf5sfhH`. شناسه مدل در کد/کامیت ننویس. PR نساز مگر خواسته شود.
+- کامیت روی همین شاخه؛ پایان پیام کامیت: `Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>` و `Claude-Session: <لینک گفتگوی فعلی>`. شناسه مدل در کد/کامیت ننویس. PR نساز مگر خواسته شود.
 - هر نسخه: `seolity.php` (Version + SEOLITY_VERSION)، `readme.txt` (Stable tag + changelog)، ترجمه تا `missing: 0`، ZIP: `git archive --format=zip --prefix=seolity/ -o <scratch>/seolity-X.zip HEAD:seolity` و ارسال؛ ZIP کامیت نشود.
 - صرفه‌جویی توکن؛ گزارش صادقانه (چه آزمایش شد، چه نشد).
 - هرگز: جمع‌آوری رمز/کوکی، اسکرپ گوگل، دور زدن محدودیت شبکه، اعمال تغییر بدون تأیید کاربر.
@@ -97,6 +102,7 @@
 - ستون نوع در جدول activity `kind` است نه `type`؛ `chat->ask()` شناسه را در `['message']['id']` برمی‌گرداند.
 - اسکن Node.js وقتی proc_open بسته است نباید cache شود.
 - redact مسیر home فقط در مرز مسیر (نه `/opt/alt/.../root`).
+- `build.py` همه رشته‌های بین `var LABELS` و `App.pages.settings` در pages-admin.js را رشته ترجمه می‌گیرد؛ کد غیرمتنی (مثل `'settings-'`) آنجا ننویس.
 
 ## 9. مشکلات باز و قدم‌های بعدی
 1. روی سایت کاربر تأیید شود: ایمیل آزمایشی، «آزمایش اتصال» Codex/Claude، اجرای گیت‌هاب در مخزن عمومی.

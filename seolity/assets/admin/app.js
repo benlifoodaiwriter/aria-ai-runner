@@ -308,43 +308,27 @@
 	var root;
 	var view;
 	var nav;
-	var ICONS = { dashboard: 'dashboard', actions: 'wand', ai: 'prompt', audit: 'pulse', gsc: 'chart', keywords: 'key', content: 'content', products: 'bag', images: 'image', links: 'link', competitors: 'swords', experiments: 'flask', changes: 'undo', redirects: 'corner', 404: 'unlink', schema: 'braces', sitemap: 'map', robots: 'bot', reports: 'review', alerts: 'bell', automation: 'zap', knowledge: 'book', settings: 'settings', rankmath: 'target', guide: 'lifebuoy', subscription: 'sparkles', github: 'github', cloudflare: 'cloud', network: 'server', engines: 'cpu', activity: 'activity', indexability: 'eye-off', duplicates: 'copy' };
-	/** Sidebar groups (ARIAGH-style navigation sections). */
-	/**
-	 * Simple navigation: a few sections; related pages are tabs inside a section.
-	 * [ hub id, label, icon, child route slugs ] — every page keeps its own URL (#/slug).
-	 */
+	var ICONS = { dashboard: 'dashboard', actions: 'wand', ai: 'prompt', audit: 'pulse', gsc: 'chart', keywords: 'key', content: 'content', products: 'bag', images: 'image', links: 'link', competitors: 'swords', experiments: 'flask', changes: 'undo', redirects: 'corner', 404: 'unlink', schema: 'braces', sitemap: 'map', robots: 'bot', reports: 'review', alerts: 'bell', automation: 'zap', knowledge: 'book', settings: 'settings', rankmath: 'target', guide: 'lifebuoy', subscription: 'sparkles', github: 'github', cloudflare: 'cloud', network: 'server', engines: 'cpu', activity: 'activity', indexability: 'eye-off', duplicates: 'copy', 'settings-ai': 'cpu', 'settings-crawler': 'pulse', 'settings-reports': 'send', 'settings-technical': 'wrench', 'settings-schema': 'braces', 'settings-privacy': 'lock' };
 	/*
-	 * Grouped by function: everything that gathers site data (full analysis, Search Console,
-	 * competitors and the knowledge base) lives under "Data collection"; every correction type
-	 * lives in its own specialized section; the roadmap in the AI Center links to all of them.
+	 * Navigation like the ARIAGH AI Writer admin: every page is its own menu item, listed under a
+	 * small group heading (C.nav, from Admin::nav() in PHP — the WordPress menu uses the same order).
+	 * No tabs inside sections: one click opens one page.
 	 */
-	var HUBS = [
-		[ 'home', 'Dashboard', 'dashboard', [ 'dashboard', 'alerts', 'reports' ] ],
-		[ 'aicenter', 'AI Center', 'wand', [ 'actions', 'ai', 'activity', 'changes', 'experiments' ] ],
-		[ 'datahub', 'Data collection', 'database', [ 'audit', 'gsc', 'competitors', 'knowledge' ] ],
-		[ 'contenthub', 'Content', 'content', [ 'content', 'duplicates', 'products', 'images' ] ],
-		[ 'kwhub', 'Keywords & links', 'key', [ 'keywords', 'rankmath', 'links' ] ],
-		[ 'technical', 'Technical SEO', 'wrench', [ 'redirects', '404', 'indexability', 'schema', 'sitemap', 'robots' ] ],
-		[ 'connections', 'Connections', 'link', [ 'engines', 'network', 'subscription', 'github', 'cloudflare', 'guide' ] ],
-		[ 'system', 'Settings', 'settings', [ 'settings', 'automation' ] ],
-	];
-	var HUB_LABELS = { Dashboard: t( 'Dashboard' ), 'AI Center': t( 'AI Center' ), 'Data collection': t( 'Data collection' ), Content: t( 'Content' ), 'Keywords & links': t( 'Keywords & links' ), 'Technical SEO': t( 'Technical SEO' ), Connections: t( 'Connections' ), Settings: t( 'Settings' ) };
-	var HUB_COUNT = { home: 'alerts', aicenter: 'changes' }; // Counters shown on a section item.
-	App.hubOf = function ( slug ) {
-		for ( var i = 0; i < HUBS.length; i++ ) {
-			if ( HUBS[ i ][ 3 ].indexOf( slug ) !== -1 ) {
-				return HUBS[ i ];
-			}
-		}
-		return null;
-	};
 	App.icon = function ( slug ) {
 		return ICONS[ slug ] || 'info';
 	};
 
 	function navItem( r ) {
 		return h( 'a', { href: '#/' + r.slug, class: 'sl-nav__item', 'data-route': r.slug }, SL.icon( App.icon( r.slug ), 18, 'sl-nav__icon' ), h( 'span', { class: 'sl-nav__label', text: r.label } ), h( 'em', { class: 'sl-nav__count', 'data-count': r.slug } ) );
+	}
+
+	/** Large tile for the main features at the top of the sidebar (status line under the title). */
+	function navTile( r ) {
+		return h( 'a', { href: '#/' + r.slug, class: 'sl-nav__item sl-nav__tile', 'data-route': r.slug },
+			h( 'span', { class: 'sl-nav__tile-ic' }, SL.icon( App.icon( r.slug ), 20 ) ),
+			h( 'span', { class: 'sl-nav__tile-txt' }, h( 'b', { text: r.label } ), h( 'small', { dir: 'auto', 'data-tile': r.slug } ) ),
+			h( 'em', { class: 'sl-nav__count', 'data-count': r.slug } )
+		);
 	}
 
 	function brandMark() {
@@ -377,31 +361,39 @@
 			bySlug[ r.slug ] = r;
 		} );
 		nav = h( 'nav', { class: 'sl-nav', 'aria-label': t( 'SEOlity navigation' ) } );
+		var main = h( 'div', { class: 'sl-nav__main' } );
+		var minor = h( 'div', { class: 'sl-nav__minor' } );
 		var used = {};
-		HUBS.forEach( function ( hub, i ) {
-			var kids = hub[ 3 ].filter( function ( slug ) {
-				return bySlug[ slug ];
+		( C.nav || [] ).forEach( function ( g ) {
+			var kids = g.items.filter( function ( slug ) {
+				return bySlug[ slug ] && ! used[ slug ];
 			} );
 			if ( ! kids.length ) {
 				return;
 			}
-			if ( hub[ 0 ] === 'connections' ) {
-				nav.appendChild( h( 'div', { class: 'sl-nav__group', text: t( 'Setup' ) } ) );
-			}
 			kids.forEach( function ( k ) {
 				used[ k ] = true;
 			} );
-			// The section's own pages, in small text under its title (what you find inside).
-			var subs = kids.map( function ( k ) {
-				return bySlug[ k ].label;
-			} ).join( C.rtl ? '، ' : ', ' );
-			nav.appendChild( h( 'a', { href: '#/' + kids[ 0 ], class: 'sl-nav__item', 'data-hub': hub[ 0 ], title: subs }, SL.icon( hub[ 2 ], 18, 'sl-nav__icon' ), h( 'span', { class: 'sl-nav__label' }, h( 'span', { class: 'sl-nav__title', text: HUB_LABELS[ hub[ 1 ] ] || hub[ 1 ] } ), kids.length > 1 ? h( 'small', { class: 'sl-nav__sub', text: subs } ) : null ), h( 'em', { class: 'sl-nav__count', 'data-count': HUB_COUNT[ hub[ 0 ] ] || kids[ 0 ] } ) ) );
+			if ( g.id === 'main' ) {
+				kids.forEach( function ( k ) {
+					main.appendChild( navTile( bySlug[ k ] ) );
+				} );
+				return;
+			}
+			minor.appendChild( h( 'div', { class: 'sl-nav__group', text: g.label } ) );
+			kids.forEach( function ( k ) {
+				minor.appendChild( navItem( bySlug[ k ] ) );
+			} );
 		} );
 		( C.routes || [] ).forEach( function ( r ) {
 			if ( ! used[ r.slug ] ) {
-				nav.appendChild( navItem( r ) ); // Routes added by extensions.
+				minor.appendChild( navItem( r ) ); // Routes added by extensions.
 			}
 		} );
+		if ( main.childNodes.length ) {
+			nav.appendChild( main );
+		}
+		nav.appendChild( minor );
 		App.routeLabels = bySlug;
 		var themeBtn = h( 'button', { class: 'sl-icon-btn', type: 'button', title: t( 'Toggle dark mode' ), 'aria-label': t( 'Toggle dark mode' ), onClick: function () {
 			var cur = root.getAttribute( 'data-theme' ) === 'dark' ? 'light' : 'dark';
@@ -420,31 +412,21 @@
 		);
 		view = h( 'main', { class: 'sl-view', id: 'sl-view', tabindex: '-1' } );
 		root.appendChild( top );
-		root.appendChild( h( 'div', { class: 'sl-layout' }, h( 'aside', { class: 'sl-side' }, h( 'div', { class: 'sl-engines', id: 'sl-engines' } ), nav, h( 'div', { class: 'sl-side__foot', text: ( ( C.brand && C.brand.name ) === 'SEOLITY' ? 'ARIAGH.SEOLITY' : ( C.brand && C.brand.name ) || 'SEOLITY' ) + ' ' + C.version } ) ), view ) );
+		root.appendChild( h( 'div', { class: 'sl-layout' }, h( 'aside', { class: 'sl-side' }, nav, h( 'div', { class: 'sl-side__foot', text: ( ( C.brand && C.brand.name ) === 'SEOLITY' ? 'ARIAGH.SEOLITY' : ( C.brand && C.brand.name ) || 'SEOLITY' ) + ' ' + C.version } ) ), view ) );
 		return true;
 	}
 
-	/** Engine cards at the top of the sidebar (like ARIAGH's text/image AI cards). */
+	/** Status lines under the large sidebar tiles (like ARIAGH's text/image AI tiles). */
 	function engines( b ) {
-		var box = d.getElementById( 'sl-engines' );
-		if ( ! box ) {
-			return;
-		}
-		SL.clear( box );
-		var card = function ( icon, title, sub, ok, route ) {
-			return h( 'a', { href: '#/' + route, class: 'sl-engine' + ( ok ? ' is-ok' : ' is-off' ) },
-				h( 'span', { class: 'sl-engine__ic' }, SL.icon( icon, 18 ) ),
-				h( 'span', { class: 'sl-engine__text' }, h( 'b', { text: title } ), h( 'small', { dir: 'auto', text: sub } ) )
-			);
+		var set = function ( slug, text ) {
+			var el = root.querySelector( '[data-tile="' + slug + '"]' );
+			if ( el ) {
+				el.textContent = text;
+			}
 		};
 		var ai = b.ai_state || {};
-		var aiSub = b.ai_ready ? ( ai.label || b.ai_label || t( 'AI connected' ) ) + ( ai.model ? ' · ' + ai.model : '' ) + ( ai.status === 'verified' ? ' ✓' : ai.status === 'error' ? ' — ' + t( 'Error' ) : '' ) : ( ai.reason || t( 'AI not configured' ) );
-		box.appendChild( card( 'cpu', t( 'AI engine' ), aiSub, b.ai_ready && ai.status !== 'error', 'settings?tab=ai' ) );
-		box.appendChild( card( 'chart', t( 'Search Console' ), b.gsc ? ( b.gsc_property || t( 'Search Console connected' ) ).replace( /^sc-domain:/, '' ) : t( 'Search Console not connected' ), b.gsc, 'gsc' ) );
-		if ( App.cap( 'manage' ) ) {
-			var gh = b.github || {};
-			box.appendChild( card( 'github', 'GitHub', gh.token ? ( gh.login ? '@' + gh.login : t( 'GitHub connected' ) ) : t( 'GitHub not connected' ), !! gh.token, 'github' ) );
-		}
+		set( 'ai', b.ai_ready ? ( ai.label || b.ai_label || t( 'AI connected' ) ) + ( ai.model ? ' · ' + ai.model : '' ) + ( ai.status === 'verified' ? ' ✓' : ai.status === 'error' ? ' — ' + t( 'Error' ) : '' ) : ( ai.reason || t( 'AI not configured' ) ) );
+		set( 'actions', t( 'What should I do today?' ) );
 	}
 
 	function topStatus( b ) {
@@ -463,6 +445,10 @@
 		var routeNames = { direct: t( 'Direct' ), cloudflare: 'Cloudflare', github: 'GitHub' };
 		box.appendChild( chip( 'server', t( 'Route: %s', routeNames[ b.route ] || b.route ), b.region_set ? 'info' : 'warn', '#/network' ) );
 		box.appendChild( chip( 'chart', b.gsc ? t( 'Search Console connected' ) : t( 'Search Console not connected' ), b.gsc ? 'ok' : 'warn', '#/gsc' ) );
+		if ( App.cap( 'manage' ) ) {
+			var gh = b.github || {};
+			box.appendChild( chip( 'github', gh.token ? ( gh.login ? '@' + gh.login : t( 'GitHub connected' ) ) : t( 'GitHub not connected' ), gh.token ? 'ok' : 'warn', '#/github' ) );
+		}
 		var setCount = function ( slug, n ) {
 			var el = root.querySelector( '[data-count="' + slug + '"]' );
 			if ( el ) {
@@ -483,12 +469,15 @@
 	function route() {
 		var hash = location.hash.replace( /^#\/?/, '' );
 		var slug = hash.split( '?' )[ 0 ] || C.route || 'dashboard';
+		var q = App.query();
+		if ( slug === 'settings' && q.tab && App.pages[ 'settings-' + q.tab ] ) {
+			slug = 'settings-' + q.tab; // Old links (#/settings?tab=ai) open the page of their own.
+		}
 		if ( ! App.pages[ slug ] ) {
 			slug = 'dashboard';
 		}
-		var hub = App.hubOf( slug );
 		Array.prototype.forEach.call( nav.querySelectorAll( '.sl-nav__item' ), function ( a ) {
-			var on = a.getAttribute( 'data-route' ) === slug || ( hub && a.getAttribute( 'data-hub' ) === hub[ 0 ] );
+			var on = a.getAttribute( 'data-route' ) === slug;
 			a.classList.toggle( 'is-active', on );
 			if ( on ) {
 				a.setAttribute( 'aria-current', 'page' );
@@ -499,16 +488,8 @@
 		root.classList.remove( 'nav-open' );
 		SL.clear( view );
 		App.current = slug;
-		var kids = hub ? hub[ 3 ].filter( function ( k ) {
-			return App.routeLabels && App.routeLabels[ k ];
-		} ) : [];
-		if ( kids.length > 1 ) {
-			view.appendChild( h( 'nav', { class: 'sl-subtabs', 'aria-label': HUB_LABELS[ hub[ 1 ] ] || hub[ 1 ] }, kids.map( function ( k ) {
-				return h( 'a', { href: '#/' + k, class: 'sl-subtab' + ( k === slug ? ' is-active' : '' ), 'aria-current': k === slug ? 'page' : null }, SL.icon( App.icon( k ), 16 ), h( 'span', { text: App.routeLabels[ k ].label } ) );
-			} ) ) );
-		}
 		try {
-			App.pages[ slug ]( view, App.query() );
+			App.pages[ slug ]( view, q );
 		} catch ( e ) {
 			view.appendChild( h( 'div', { class: 'sl-alert sl-alert--error', text: e.message } ) );
 			if ( w.console ) {

@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: SEOlity 1.0.0\n"
-"POT-Creation-Date: 2026-11-02 09:12+0000\n"
+"POT-Creation-Date: 2026-11-07 12:33+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1285,10 +1285,28 @@ msgstr ""
 msgid "Connection guide"
 msgstr ""
 
-msgid "Settings"
+msgid "General settings"
 msgstr ""
 
-msgid "AI Center"
+msgid "AI settings"
+msgstr ""
+
+msgid "Crawler & audits"
+msgstr ""
+
+msgid "Alerts & reports"
+msgstr ""
+
+msgid "Technical settings"
+msgstr ""
+
+msgid "Schema & entity"
+msgstr ""
+
+msgid "Privacy & data"
+msgstr ""
+
+msgid "Overview"
 msgstr ""
 
 msgid "Data collection"
@@ -1301,6 +1319,9 @@ msgid "Technical SEO"
 msgstr ""
 
 msgid "Connections"
+msgstr ""
+
+msgid "Settings"
 msgstr ""
 
 msgid "You are not allowed to access this page."
@@ -5097,9 +5118,6 @@ msgstr ""
 msgid "SEOlity navigation"
 msgstr ""
 
-msgid "Setup"
-msgstr ""
-
 msgid "Toggle dark mode"
 msgstr ""
 
@@ -5115,18 +5133,6 @@ msgstr ""
 msgid "AI not configured"
 msgstr ""
 
-msgid "AI engine"
-msgstr ""
-
-msgid "Search Console not connected"
-msgstr ""
-
-msgid "GitHub connected"
-msgstr ""
-
-msgid "GitHub not connected"
-msgstr ""
-
 msgid "Manual approval"
 msgstr ""
 
@@ -5138,6 +5144,15 @@ msgstr ""
 
 #, php-format
 msgid "Route: %s"
+msgstr ""
+
+msgid "Search Console not connected"
+msgstr ""
+
+msgid "GitHub connected"
+msgstr ""
+
+msgid "GitHub not connected"
 msgstr ""
 
 msgid "Google Search Console connected. Now choose a property."
@@ -6046,6 +6061,27 @@ msgid "Save note"
 msgstr ""
 
 msgid "Knowledge saved."
+msgstr ""
+
+msgid "Approval mode, interface language, output and branding."
+msgstr ""
+
+msgid "Connect an AI provider or subscription and set how the AI writes and spends."
+msgstr ""
+
+msgid "How often and how deep the site audit crawls, and Search Console import limits."
+msgstr ""
+
+msgid "When to warn you about drops and who receives the reports."
+msgstr ""
+
+msgid "Sitemap, redirects and the 404 log."
+msgstr ""
+
+msgid "Structured data and the organization behind the site."
+msgstr ""
+
+msgid "Data retention, IP anonymization and what happens on uninstall."
 msgstr ""
 
 msgid "Save settings"
@@ -10359,18 +10395,6 @@ msgid "Maximum wait per request (minutes)"
 msgstr ""
 
 msgid "General"
-msgstr ""
-
-msgid "Crawler & audits"
-msgstr ""
-
-msgid "Alerts & reports"
-msgstr ""
-
-msgid "Schema & entity"
-msgstr ""
-
-msgid "Privacy & data"
 msgstr ""
 
 msgid "PageSpeed Insights API key (optional)"

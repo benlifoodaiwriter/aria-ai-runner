@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: SEOlity 1.0.0\n"
-"POT-Creation-Date: 2026-11-02 09:12+0000\n"
+"POT-Creation-Date: 2026-11-07 12:33+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1286,11 +1286,29 @@ msgstr "رله کلادفلر"
 msgid "Connection guide"
 msgstr "راهنمایی"
 
-msgid "Settings"
-msgstr "تنظیمات"
+msgid "General settings"
+msgstr "تنظیمات عمومی"
 
-msgid "AI Center"
-msgstr "مرکز هوش مصنوعی"
+msgid "AI settings"
+msgstr "تنظیمات هوش مصنوعی"
+
+msgid "Crawler & audits"
+msgstr "خزنده و ممیزی‌ها"
+
+msgid "Alerts & reports"
+msgstr "هشدارها و گزارش‌ها"
+
+msgid "Technical settings"
+msgstr "تنظیمات فنی"
+
+msgid "Schema & entity"
+msgstr "اسکیما و موجودیت"
+
+msgid "Privacy & data"
+msgstr "حریم خصوصی و داده"
+
+msgid "Overview"
+msgstr "نمای کلی"
 
 msgid "Data collection"
 msgstr "جمع آوری اطلاعات"
@@ -1303,6 +1321,9 @@ msgstr "سئوی فنی"
 
 msgid "Connections"
 msgstr "اتصال‌ها"
+
+msgid "Settings"
+msgstr "تنظیمات"
 
 msgid "You are not allowed to access this page."
 msgstr "شما اجازه دسترسی به این صفحه را ندارید."
@@ -5098,9 +5119,6 @@ msgstr "نسخه %s"
 msgid "SEOlity navigation"
 msgstr "ناوبری سئولیتی"
 
-msgid "Setup"
-msgstr "راه‌اندازی"
-
 msgid "Toggle dark mode"
 msgstr "تغییر حالت تاریک"
 
@@ -5116,18 +5134,6 @@ msgstr "خطا"
 msgid "AI not configured"
 msgstr "هوش مصنوعی تنظیم نشده"
 
-msgid "AI engine"
-msgstr "موتور هوش مصنوعی"
-
-msgid "Search Console not connected"
-msgstr "سرچ کنسول متصل نیست"
-
-msgid "GitHub connected"
-msgstr "GitHub متصل است"
-
-msgid "GitHub not connected"
-msgstr "GitHub متصل نیست"
-
 msgid "Manual approval"
 msgstr "تأیید دستی"
 
@@ -5140,6 +5146,15 @@ msgstr "خودمختار"
 #, php-format
 msgid "Route: %s"
 msgstr "مسیر: %s"
+
+msgid "Search Console not connected"
+msgstr "سرچ کنسول متصل نیست"
+
+msgid "GitHub connected"
+msgstr "GitHub متصل است"
+
+msgid "GitHub not connected"
+msgstr "GitHub متصل نیست"
 
 msgid "Google Search Console connected. Now choose a property."
 msgstr "گوگل سرچ کنسول متصل شد. حالا یک پراپرتی انتخاب کنید."
@@ -6048,6 +6063,27 @@ msgstr "ذخیره یادداشت"
 
 msgid "Knowledge saved."
 msgstr "دانش ذخیره شد."
+
+msgid "Approval mode, interface language, output and branding."
+msgstr "حالت تأیید، زبان رابط، خروجی سایت و برند."
+
+msgid "Connect an AI provider or subscription and set how the AI writes and spends."
+msgstr "اتصال سرویس یا اشتراک هوش مصنوعی، و اینکه هوش مصنوعی چطور بنویسد و چقدر خرج کند."
+
+msgid "How often and how deep the site audit crawls, and Search Console import limits."
+msgstr "هر چند وقت و تا چه عمقی سایت بررسی شود، و سقف دریافت داده از سرچ کنسول."
+
+msgid "When to warn you about drops and who receives the reports."
+msgstr "چه وقت درباره افت به شما هشدار داده شود و گزارش‌ها برای چه کسانی فرستاده شود."
+
+msgid "Sitemap, redirects and the 404 log."
+msgstr "نقشه سایت، ریدایرکت‌ها و ثبت خطاهای ۴۰۴."
+
+msgid "Structured data and the organization behind the site."
+msgstr "داده ساختاریافته و مشخصات کسب‌وکارِ صاحب سایت."
+
+msgid "Data retention, IP anonymization and what happens on uninstall."
+msgstr "مدت نگهداری داده، ناشناس‌سازی IP و اینکه هنگام حذف افزونه چه شود."
 
 msgid "Save settings"
 msgstr "ذخیره تنظیمات"
@@ -10361,18 +10397,6 @@ msgstr "حداکثر انتظار برای هر درخواست (دقیقه)"
 
 msgid "General"
 msgstr "عمومی"
-
-msgid "Crawler & audits"
-msgstr "خزنده و ممیزی‌ها"
-
-msgid "Alerts & reports"
-msgstr "هشدارها و گزارش‌ها"
-
-msgid "Schema & entity"
-msgstr "اسکیما و موجودیت"
-
-msgid "Privacy & data"
-msgstr "حریم خصوصی و داده"
 
 msgid "PageSpeed Insights API key (optional)"
 msgstr "کلید API پیج‌اسپید (اختیاری)"
