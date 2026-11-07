@@ -1,0 +1,104 @@
+Custom API	API سفارشی
+Replace the {placeholders} in the Custom API base URL with your own values.	{placeholders} را در Base URL API سفارشی با مقادیر خودتان جایگزین کنید.
+The Custom API answered, but not in the selected format. Check “API format”.	API سفارشی پاسخ داد، اما نه در قالب انتخاب‌شده. «قالب API» را بررسی کنید.
+Enter the base URL first.	ابتدا Base URL را وارد کنید.
+The models list answered HTTP %1$d: %2$s	فهرست مدل‌ها پاسخ HTTP %1$d داد: %2$s
+PHP extensions (OpenSSL, sodium)	افزونه‌های PHP (OpenSSL، sodium)
+Ask your host to enable the PHP sodium extension (needed to store GitHub secrets).	از هاست بخواهید افزونه sodium را برای PHP فعال کند (برای ذخیره Secrets در GitHub لازم است).
+GitHub account connected	حساب GitHub متصل است
+No GitHub token saved yet.	هنوز توکن GitHub ذخیره نشده است.
+The token is missing: %s	توکن این دسترسی‌ها را ندارد: %s
+Signed in as @%s	وارد شده با ‎@%s
+Private runner repository	مخزن خصوصی اجراکننده
+Not created yet — one click creates it with everything inside.	هنوز ساخته نشده — یک کلیک آن را با همه محتوا می‌سازد.
+The repository is PUBLIC. Make it private on GitHub (Settings → General → Danger Zone → Change visibility).	مخزن عمومی (PUBLIC) است. آن را در GitHub خصوصی کنید (Settings ← General ← Danger Zone ← Change visibility).
+The repository exists but the runner is not installed yet.	مخزن وجود دارد اما اجراکننده هنوز نصب نشده است.
+Claude subscription token saved	توکن اشتراک Claude ذخیره شده
+ChatGPT login (auth.json) saved	ورود ChatGPT (auth.json) ذخیره شده
+Stored in the runner’s GitHub Secrets.	در GitHub Secrets اجراکننده ذخیره شده است.
+Saved here; press “Install / update runner” to copy it to GitHub Secrets.	اینجا ذخیره شده؛ «نصب دوباره / به‌روزرسانی» را بزنید تا به GitHub Secrets منتقل شود.
+Fast delivery (Cloudflare relay)	تحویل سریع (رله کلادفلر)
+pushes answers to this site	پاسخ‌ها را به این سایت می‌فرستد
+this site collects answers	این سایت پاسخ‌ها را برمی‌دارد
+Optional. Without it answers arrive through a direct callback or are read from GitHub.	اختیاری. بدون آن پاسخ‌ها از طریق اتصال مستقیم یا خواندن از GitHub می‌رسند.
+This site is not reachable from the internet (local or private address). It still works by reading answers from GitHub; the free Cloudflare relay makes it faster.	این سایت از اینترنت در دسترس نیست (آدرس لوکال یا خصوصی). باز هم با خواندن پاسخ‌ها از GitHub کار می‌کند؛ رله رایگان کلادفلر آن را سریع‌تر می‌کند.
+Used as the AI engine	استفاده به‌عنوان موتور هوش مصنوعی
+Another provider is active. Press “Use as AI engine” after the test.	ارائه‌دهنده دیگری فعال است. بعد از تست «استفاده به‌عنوان موتور هوش مصنوعی» را بزنید.
+GitHub & data	GitHub و داده
+Cloudflare relay	رله کلادفلر
+This is not the whole auth.json file. Copy everything from { to }.	این کل فایل auth.json نیست. همه چیز را از { تا } کپی کنید.
+This does not look like a Claude token. It starts with sk-ant-oat01- (output of: claude setup-token).	این توکن Claude به نظر نمی‌رسد. با sk-ant-oat01- شروع می‌شود (خروجی claude setup-token).
+Save your Cloudflare API token first.	ابتدا توکن API کلادفلر را ذخیره کنید.
+Paste the Cloudflare API token first.	ابتدا توکن API کلادفلر را بچسبانید.
+Cloudflare did not accept this token. Create it again with the permissions listed in the guide.	کلادفلر این توکن را نپذیرفت. آن را با دسترسی‌های گفته‌شده در راهنما دوباره بسازید.
+Your workers.dev subdomain is not set up yet. Open Workers & Pages once in the Cloudflare dashboard, then deploy again.	زیردامنه workers.dev شما هنوز ساخته نشده است. یک‌بار بخش Workers & Pages را در داشبورد کلادفلر باز کنید و دوباره مستقر کنید.
+Save the Cloudflare API token and Account ID first.	ابتدا توکن API و Account ID کلادفلر را ذخیره کنید.
+Cloudflare is not connected.	کلادفلر متصل نیست.
+Deploy the Cloudflare worker first.	ابتدا ورکر کلادفلر را مستقر کنید.
+The Cloudflare worker is not reachable from this server.	ورکر کلادفلر از این سرور در دسترس نیست.
+Cloudflare worker answered HTTP %d. Deploy it again.	ورکر کلادفلر پاسخ HTTP %d داد. دوباره مستقر کنید.
+The token is missing the “%s” scope.	توکن دسترسی «%s» را ندارد.
+The token expires on %s. Create a new one before then.	توکن در تاریخ %s منقضی می‌شود. قبل از آن توکن جدید بسازید.
+Paste the GitHub token first.	ابتدا توکن GitHub را بچسبانید.
+GitHub did not accept this token. Copy it again (it starts with ghp_ or github_pat_) or create a new one.	GitHub این توکن را نپذیرفت. دوباره کپی کنید (با ghp_ یا github_pat_ شروع می‌شود) یا توکن جدید بسازید.
+Connect your GitHub account first (step 1).	ابتدا حساب GitHub را وصل کنید (مرحله ۱).
+Create your own knowledge repository first.	ابتدا مخزن دانش اختصاصی خود را بسازید.
+Save an Anthropic API key in AI engine settings first.	ابتدا یک کلید API از Anthropic در تنظیمات هوش مصنوعی ذخیره کنید.
+The shared knowledge base is updated by SEOlity. Create your own knowledge repository to run the builder yourself.	دانش مشترک را SEOlity به‌روز می‌کند. برای اجرای سازنده توسط خودتان، مخزن دانش اختصاصی بسازید.
+The data repository must be private. Change its visibility on GitHub or choose another name.	مخزن داده باید خصوصی باشد. حالت آن را در GitHub تغییر دهید یا نام دیگری انتخاب کنید.
+Connections	اتصال‌ها
+GitHub connected	GitHub متصل است
+GitHub not connected	GitHub متصل نیست
+e.g. DeepSeek	مثلاً DeepSeek
+OpenAI-compatible (Chat Completions)	سازگار با OpenAI (Chat Completions)
+Anthropic-compatible (Messages)	سازگار با Anthropic (Messages)
+Other header (name below)	هدر دیگر (نام در پایین)
+Query parameter (name below)	پارامتر URL (نام در پایین)
+No key (local server)	بدون کلید (سرور محلی)
+Automatic (try and remember)	خودکار (امتحان و به خاطر سپردن)
+strict schema	اسکیمای دقیق
+JSON mode	حالت JSON
+Instructions in the prompt only	فقط دستور در متن درخواست
+Automatic	خودکار
+Do not send	ارسال نشود
+empty = server default	خالی = پیش‌فرض سرور
+Header / parameter name	نام هدر / پارامتر
+Choose a service…	یک سرویس انتخاب کنید…
+Get an API key	گرفتن کلید API
+API documentation	مستندات API
+Replace the {PLACEHOLDERS} in the base URL	{PLACEHOLDERS} را در Base URL جایگزین کنید
+Request URL	آدرس درخواست
+Authentication	احراز هویت
+in the URL	در آدرس
+Fetch models	دریافت فهرست مدل‌ها
+%s models found. Pick one in the model field.	%s مدل پیدا شد. یکی را در فیلد مدل انتخاب کنید.
+Use any AI service with exactly the settings its documentation gives: choose a ready-made service or fill in the base URL, API format, how the key is sent, extra headers and the model. SEOlity shows the exact request it will send.	هر سرویس هوش مصنوعی را دقیقاً با تنظیماتی که مستنداتش می‌گوید وصل کنید: یک سرویس آماده انتخاب کنید یا Base URL، قالب API، روش ارسال کلید، هدرهای اضافه و مدل را وارد کنید. SEOlity درخواست دقیقی را که می‌فرستد نشان می‌دهد.
+Service	سرویس
+Display name	نام نمایشی
+Base URL	Base URL
+From the service documentation, e.g. https://api.example.com/v1. A full …/chat/completions URL also works.	از مستندات سرویس، مثلاً https://api.example.com/v1. آدرس کامل …/chat/completions هم قبول است.
+API format	قالب API
+Most services are OpenAI-compatible. Choose Anthropic only for Claude-style /v1/messages gateways.	بیشتر سرویس‌ها سازگار با OpenAI هستند. Anthropic را فقط برای درگاه‌های ‎/v1/messages به سبک Claude انتخاب کنید.
+How the key is sent	روش ارسال کلید
+Exact model id from the service (use “Fetch models” to list them).	شناسه دقیق مدل در سرویس (با «دریافت فهرست مدل‌ها» آن‌ها را ببینید).
+Structured output	خروجی ساختاریافته
+Automatic tries strict JSON schema, then JSON mode, then prompt instructions, and remembers what works.	خودکار به‌ترتیب اسکیمای دقیق JSON، حالت JSON و دستور در متن را امتحان می‌کند و حالت موفق را به خاطر می‌سپارد.
+Advanced: extra headers, query parameters, token limit, temperature	پیشرفته: هدرهای اضافه، پارامترهای URL، محدودیت توکن، دما
+Extra headers (one per line)	هدرهای اضافه (هر خط یکی)
+Name: value. Use {key} to insert the API key, e.g. Authorization: Token {key}	نام: مقدار. برای درج کلید از {key} استفاده کنید، مثلاً Authorization: Token {key}
+Query parameters	پارامترهای URL
+e.g. api-version=2024-10-21 (Azure OpenAI)	مثلاً api-version=2024-10-21 (Azure OpenAI)
+Token limit parameter	پارامتر محدودیت توکن
+Temperature	دما (Temperature)
+Leave empty for reasoning models that reject it.	برای مدل‌های استدلالی که آن را نمی‌پذیرند خالی بگذارید.
+Save Custom API	ذخیره API سفارشی
+Test connection	تست اتصال
+Use as AI engine	استفاده به‌عنوان موتور هوش مصنوعی
+AI engine switched.	موتور هوش مصنوعی تغییر کرد.
+Custom (fill in by hand)	سفارشی (دستی پر کنید)
+Custom API (any provider)	API سفارشی (هر ارائه‌دهنده)
+DeepSeek, Groq, Mistral, Together, xAI, Perplexity, Azure OpenAI, Cloudflare Workers AI, LM Studio, vLLM, LiteLLM or any compatible gateway.	DeepSeek، Groq، Mistral، Together، xAI، Perplexity، Azure OpenAI، Cloudflare Workers AI، LM Studio، vLLM، LiteLLM یا هر درگاه سازگار.
+Use your Claude or ChatGPT subscription instead of an API key	به‌جای کلید API از اشتراک Claude یا ChatGPT خود استفاده کنید
+Step-by-step setup with GitHub (free) and an optional Cloudflare relay.	راه‌اندازی قدم‌به‌قدم با GitHub (رایگان) و رله اختیاری کلادفلر.
+Show	نمایش
+Fix	رفع

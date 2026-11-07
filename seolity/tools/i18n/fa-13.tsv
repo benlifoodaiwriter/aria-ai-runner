@@ -1,0 +1,45 @@
+the AI provider refuses requests from this location	سرویس هوش مصنوعی درخواست از این موقعیت را رد می‌کند
+Servers in Iran need a relay: deploy the free Cloudflare worker or set up the GitHub runner (Connections → Server & speed).	سرورهای ایران به واسط نیاز دارند: ورکر رایگان کلادفلر را مستقر کنید یا رانر گیت‌هاب را راه‌اندازی کنید (اتصال‌ها ← سرور و سرعت).
+No network route could reach the AI provider.	هیچ مسیری به سرویس هوش مصنوعی نرسید.
+Deploy the Cloudflare worker again (no shared key yet).	ورکر کلادفلر را دوباره مستقر کنید (هنوز کلید مشترک ساخته نشده).
+The Cloudflare worker is outdated: deploy it again.	ورکر کلادفلر قدیمی است: دوباره مستقرش کنید.
+Could not read the answer from the Cloudflare worker (shared key mismatch). Deploy it again.	پاسخ ورکر کلادفلر خوانده نشد (کلید مشترک یکسان نیست). دوباره مستقرش کنید.
+Blocked for this server’s country (HTTP %d)	برای کشور این سرور مسدود است (HTTP %d)
+The API refuses Cloudflare’s location (HTTP %d)	API موقعیت کلادفلر را رد می‌کند (HTTP %d)
+Not deployed yet	هنوز مستقر نشده
+Runner is warm	رانر گرم است
+Cold start ≈ %d s	روشن شدن از صفر ≈ %d ثانیه
+Runner not set up yet	رانر هنوز راه‌اندازی نشده
+Direct	مستقیم
+GitHub did not deliver the AI answer in time. Check the "SEOlity AI" workflow runs on GitHub.	گیت‌هاب پاسخ هوش مصنوعی را به‌موقع نرساند. اجراهای ورک‌فلو «SEOlity AI» را در گیت‌هاب بررسی کنید.
+The GitHub route is not ready. Missing: %s.	مسیر گیت‌هاب آماده نیست. موارد ناقص: %s.
+Server & speed	سرور و سرعت
+Route: %s	مسیر: %s
+Choose where your server is	مشخص کنید سرورتان کجاست
+Iran or abroad: SEOlity then sends AI and Google requests over the fastest route that works.	ایران یا خارج: SEOlity درخواست‌های هوش مصنوعی و گوگل را از سریع‌ترین مسیری که کار می‌کند می‌فرستد.
+Saved	ذخیره شد
+Not tested	آزمون نشده
+Works	کار می‌کند
+Not set up	راه‌اندازی نشده
+Not reachable	در دسترس نیست
+Fastest	سریع‌ترین
+Set up	راه‌اندازی
+Route	مسیر
+Ping	پینگ
+Extra time per answer	زمان اضافه هر پاسخ
+Run speed test	اجرای آزمون سرعت
+Tested against %1$s · %2$s	آزمون با %1$s · %2$s
+Runner is starting	رانر در حال روشن شدن است
+Runner is off	رانر خاموش است
+View on GitHub	مشاهده در گیت‌هاب
+Warm up now	گرم کردن الان
+The runner is starting on GitHub.	رانر در گیت‌هاب روشن می‌شود.
+Not needed: AI requests do not use GitHub right now.	لازم نیست: درخواست‌های هوش مصنوعی الان از گیت‌هاب نمی‌روند.
+Set up the GitHub runner first.	اول رانر گیت‌هاب را راه‌اندازی کنید.
+Last archive: %s	آخرین بایگانی: %s
+Last archive failed: %s	آخرین بایگانی ناموفق بود: %s
+Not archived yet	هنوز بایگانی نشده
+Kept on the host: %1$s days of logs, %2$s days of Search Console data · SEOlity tables now: %3$s MB	روی هاست می‌ماند: %1$s روز لاگ‌ها، %2$s روز داده سرچ کنسول · حجم فعلی جدول‌های SEOlity: %3$s مگابایت
+Archived to GitHub	در گیت‌هاب بایگانی شد
+Set up GitHub	راه‌اندازی گیت‌هاب
+AI is answering through GitHub (%s)…	هوش مصنوعی از طریق گیت‌هاب پاسخ می‌دهد (%s)…
