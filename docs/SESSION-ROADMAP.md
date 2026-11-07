@@ -1,3 +1,5 @@
+> **Replaced by `/PROJECT_MAP.md`** (full, current project map). This short file is kept for history.
+
 # SEOlity — session roadmap (read this first; replaces the old chat history)
 
 ## State
