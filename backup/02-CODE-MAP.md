@@ -112,23 +112,23 @@
 ستون اول تعداد خطوط است و توضیح از اولین خط مستند هر فایل گرفته شده است.
 
 ```text
-   28  .claude/settings.json                                      
-   23  .claude/skills/debug-issue/SKILL.md                        
-   24  .claude/skills/explore-codebase/SKILL.md                   
-   24  .claude/skills/refactor-safely/SKILL.md                    
-   27  .claude/skills/review-changes/SKILL.md                     
+   28  .claude/settings.json
+   23  .claude/skills/debug-issue/SKILL.md
+   24  .claude/skills/explore-codebase/SKILL.md
+   24  .claude/skills/refactor-safely/SKILL.md
+   27  .claude/skills/review-changes/SKILL.md
    66  .github/workflows/aria-writer.yml                          ARIAGH.AIWRITER – Subscription Runner
    80  .github/workflows/seolity-knowledge.yml                    SEOlity – SEO knowledge builder
     2  .gitignore                                                 Added by code-review-graph
-   13  .mcp.json                                                  
-   45  CLAUDE.md                                                  
-  118  PROJECT_MAP.md                                             PROJECT_MAP — SEOlity (ARIAGH.SEOLITY)
+   13  .mcp.json
+   45  CLAUDE.md
+  120  PROJECT_MAP.md                                             PROJECT_MAP — SEOlity (ARIAGH.SEOLITY)
    10  README.md                                                  Aria AI Writer – Subscription Runner
    34  docs/SESSION-ROADMAP.md                                    SEOlity — session roadmap (read this first; replaces the old chat history)
   910  runner/runner.mjs                                          ARIAGH.AIWRITER – Subscription Runner (GitHub Actions)
-    2  seolity/.gitignore                                         
+    2  seolity/.gitignore
    88  seolity/README.md                                          ARIAGH.SEOLITY — AI SEO Intelligence for WordPress
-  834  seolity/assets/admin/app.css                               
+  834  seolity/assets/admin/app.css
   861  seolity/assets/admin/app.js                                SEOlity admin SPA — shell, router, shared page helpers and core pages
   280  seolity/assets/admin/charts.js                             SEOlity charts — tiny dependency-free SVG charts (line, bar, donut, sparkline).
   398  seolity/assets/admin/editor.css                            SEOlity design system — shared components (used by the SPA and editor screens).
@@ -145,7 +145,7 @@
   190  seolity/assets/admin/pages-focus.js                        SEOlity admin page: Rank Math & focus keywords — GSC-driven focus keyword
   475  seolity/assets/admin/pages-guide.js                        SEOlity admin page: Connection guide — step-by-step instructions with
   793  seolity/assets/admin/pages-intel.js                        SEOlity admin pages: Competitors, Experiments, Redirects, 404 Monitor,
-  513  seolity/assets/admin/pages-map.js                          Site map explorer: every URL of the site — crawl, XML sitemap, WordPress and Search Console �
+  513  seolity/assets/admin/pages-map.js                          Site map explorer: every URL of the site — crawl, XML sitemap, WordPress and Search Console —
   295  seolity/assets/admin/pages-network.js                      SEOlity "Server & speed" page: where the host is (Iran / abroad), how AI and Google
   390  seolity/assets/admin/pages-ops.js                          Operations UI: "Do it" popup → (optional instructions) → AI prepares → preview with
   563  seolity/assets/admin/pages-roadmap.js                      SEO roadmap — the "What should I do today?" page.
@@ -281,33 +281,33 @@
   215  seolity/src/Watch/FollowUps.php                            Follow-ups: "look at this again on date X and tell me what happened".
   258  seolity/src/Woo/ProductSeo.php                             AI Product SEO for WooCommerce (section 3).
    79  seolity/tools/docs/build_connect.mjs                       Build docs/CONNECT.md (Persian + English) from the in-app connection guide
-   93  seolity/tools/docs/build_features.py                       
+   93  seolity/tools/docs/build_features.py
   805  seolity/tools/docs/features_data.py                        Feature catalog data for build_features.py. Edition "1.0" = implemented; "Pro"/"Ent" = roadmap.
-  182  seolity/tools/i18n/build.py                                
-  360  seolity/tools/i18n/fa-1.tsv                                
-  120  seolity/tools/i18n/fa-10.tsv                               
-  104  seolity/tools/i18n/fa-11.tsv                               
-   44  seolity/tools/i18n/fa-12.tsv                               
-   45  seolity/tools/i18n/fa-13.tsv                               
-  282  seolity/tools/i18n/fa-14.tsv                               
-  223  seolity/tools/i18n/fa-15.tsv                               
-  864  seolity/tools/i18n/fa-16.tsv                               
-  154  seolity/tools/i18n/fa-17.tsv                               
-   87  seolity/tools/i18n/fa-18.tsv                               
-   10  seolity/tools/i18n/fa-19.tsv                               
-  360  seolity/tools/i18n/fa-2.tsv                                
-  335  seolity/tools/i18n/fa-3.tsv                                
-  260  seolity/tools/i18n/fa-4.tsv                                
-  252  seolity/tools/i18n/fa-5.tsv                                
-   38  seolity/tools/i18n/fa-6.tsv                                
-   47  seolity/tools/i18n/fa-7.tsv                                
-    7  seolity/tools/i18n/fa-8.tsv                                
-    4  seolity/tools/i18n/fa-9.tsv                                
-    2  seolity/tools/knowledge-builder/.gitignore                 
+  182  seolity/tools/i18n/build.py
+  360  seolity/tools/i18n/fa-1.tsv
+  120  seolity/tools/i18n/fa-10.tsv
+  104  seolity/tools/i18n/fa-11.tsv
+   44  seolity/tools/i18n/fa-12.tsv
+   45  seolity/tools/i18n/fa-13.tsv
+  282  seolity/tools/i18n/fa-14.tsv
+  223  seolity/tools/i18n/fa-15.tsv
+  864  seolity/tools/i18n/fa-16.tsv
+  154  seolity/tools/i18n/fa-17.tsv
+   87  seolity/tools/i18n/fa-18.tsv
+   10  seolity/tools/i18n/fa-19.tsv
+  360  seolity/tools/i18n/fa-2.tsv
+  335  seolity/tools/i18n/fa-3.tsv
+  260  seolity/tools/i18n/fa-4.tsv
+  252  seolity/tools/i18n/fa-5.tsv
+   38  seolity/tools/i18n/fa-6.tsv
+   47  seolity/tools/i18n/fa-7.tsv
+    7  seolity/tools/i18n/fa-8.tsv
+    4  seolity/tools/i18n/fa-9.tsv
+    2  seolity/tools/knowledge-builder/.gitignore
   391  seolity/tools/knowledge-builder/build.mjs                  SEOlity knowledge builder.
   165  seolity/tools/knowledge-builder/llm.mjs                    Model access for the SEOlity knowledge builder.
-   10  seolity/tools/knowledge-builder/package.json               
-   47  seolity/tools/knowledge-builder/sources.json               
+   10  seolity/tools/knowledge-builder/package.json
+   47  seolity/tools/knowledge-builder/sources.json
    56  seolity/uninstall.php                                      SEOlity uninstall.
 ```
 
