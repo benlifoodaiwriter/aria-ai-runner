@@ -1,0 +1,223 @@
+Sending the request to the AI…	در حال ارسال درخواست به هوش مصنوعی…
+Checking whether the answer has arrived…	بررسی رسیدن پاسخ…
+Asking the AI: %s…	پرسش از هوش مصنوعی: %s…
+Waiting for the answer from the GitHub runner…	در انتظار پاسخ از رانر گیت‌هاب…
+from cache	از حافظه
+tokens	توکن
+Answer received	پاسخ دریافت شد
+Claude subscription (Pro/Max)	اشتراک Claude (Pro/Max)
+ChatGPT subscription (Plus/Pro)	اشتراک ChatGPT (Plus/Pro)
+The official CLI is not installed on this server.	ابزار رسمی (CLI) روی این سرور نصب نیست.
+This server does not allow starting the CLI.	این سرور اجازه اجرای ابزار CLI را نمی‌دهد.
+The CLI on this server did not answer in time.	ابزار CLI روی این سرور به‌موقع پاسخ نداد.
+Claude Code CLI on this server (Direct mode)	ابزار Claude Code روی همین سرور (حالت مستقیم)
+Codex CLI on this server (Direct mode)	ابزار Codex روی همین سرور (حالت مستقیم)
+Direct connection is selected, so SEOlity will not use GitHub. A Claude subscription can only be used directly when the official Claude Code CLI is installed on this server (a VPS). Install it, use an API key instead, or choose the GitHub route under Server & speed.	اتصال «مستقیم» انتخاب شده، پس SEOlity از گیت‌هاب استفاده نمی‌کند. اشتراک Claude فقط وقتی مستقیم کار می‌کند که ابزار رسمی Claude Code روی همین سرور (VPS) نصب باشد. آن را نصب کنید، به‌جایش کلید API بگذارید یا در «سرور و سرعت» مسیر گیت‌هاب را انتخاب کنید.
+Direct connection is selected, so SEOlity will not use GitHub. A ChatGPT subscription can only be used directly when the official Codex CLI is installed on this server (a VPS). Install it, use an API key instead, or choose the GitHub route under Server & speed.	اتصال «مستقیم» انتخاب شده، پس SEOlity از گیت‌هاب استفاده نمی‌کند. اشتراک ChatGPT فقط وقتی مستقیم کار می‌کند که ابزار رسمی Codex روی همین سرور (VPS) نصب باشد. آن را نصب کنید، به‌جایش کلید API بگذارید یا در «سرور و سرعت» مسیر گیت‌هاب را انتخاب کنید.
+Stopped without finishing (the server ended the request).	بدون پایان متوقف شد (سرور درخواست را قطع کرد).
+Content optimization	بهینه‌سازی محتوا
+SEO title & description	عنوان و توضیحات سئو
+CTR title & description rewrite	بازنویسی عنوان و توضیحات برای CTR
+Product SEO	سئوی محصول
+Image ALT text	متن جایگزین (ALT) تصویر
+Media SEO (ALT, title, caption)	سئوی رسانه (ALT، عنوان، کپشن)
+Keyword research	تحقیق کلمات کلیدی
+Search intent analysis	تحلیل هدف جست‌وجو
+Content gap analysis	تحلیل شکاف محتوایی
+Competitor analysis	تحلیل رقبا
+Cannibalization advice	راهکار هم‌نوع‌خواری کلمات
+Focus keyword plan	برنامه کلمه کلیدی اصلی
+FAQ generation	ساخت پرسش‌های متداول
+Content brief	بریف محتوا
+Content plan	برنامه محتوا
+Topic clusters	خوشه‌های موضوعی
+Redirect target	مقصد ریدایرکت
+Experiment verdict	نتیجه آزمایش
+Daily briefing	گزارش روزانه
+Chat answer	پاسخ چت
+Schema suggestion	پیشنهاد اسکیما
+SEO roadmap analysis	تحلیل نقشه راه سئو
+AI edit	ویرایش هوش مصنوعی
+Daily SEO pipeline	کارهای روزانه سئو
+Weekly SEO pipeline	کارهای هفتگی سئو
+Search Console sync	همگام‌سازی سرچ کنسول
+Search Console history import	دریافت تاریخچه سرچ کنسول
+Site audit started	ممیزی سایت شروع شد
+Site audit finished	ممیزی سایت تمام شد
+Recommendations refresh	به‌روزرسانی پیشنهادها
+Keyword tracking sync	همگام‌سازی رتبه کلمات
+Experiment evaluation	ارزیابی آزمایش
+Alert check	بررسی هشدارها
+Competitor summary	خلاصه رقبا
+Image scan	بررسی تصاویر
+Bulk AI optimization item	مورد بهینه‌سازی گروهی
+Knowledge sync from GitHub	همگام‌سازی دانش از گیت‌هاب
+Archive data to GitHub	بایگانی داده‌ها در گیت‌هاب
+PageSpeed check	بررسی سرعت صفحه
+Route speed test	آزمون سرعت مسیرها
+Clean-up	پاک‌سازی
+Robots (noindex)	روبات‌ها (noindex)
+Applied: %1$s — %2$s	اعمال شد: %1$s — %2$s
+Undone: %1$s — %2$s	برگردانده شد: %1$s — %2$s
+Suggestion rejected: %1$s — %2$s	پیشنهاد رد شد: %1$s — %2$s
+Suggestion prepared: %1$s — %2$s	پیشنهاد آماده شد: %1$s — %2$s
+Redirect saved: %1$s → %2$s	ریدایرکت ذخیره شد: %1$s ← %2$s
+Redirect deleted	ریدایرکت حذف شد
+Settings saved	تنظیمات ذخیره شد
+Site audit completed	ممیزی سایت کامل شد
+SEO roadmap built	نقشه راه سئو ساخته شد
+Old data archived to GitHub	داده‌های قدیمی در گیت‌هاب بایگانی شد
+Recommendation executed	پیشنهاد اجرا شد
+Cloudflare worker deployed	ورکر کلادفلر نصب شد
+Subscription AI runner set up on GitHub	رانر هوش مصنوعی اشتراکی روی گیت‌هاب راه‌اندازی شد
+Knowledge collection started on GitHub	جمع‌آوری دانش روی گیت‌هاب شروع شد
+Bulk AI optimization queued	بهینه‌سازی گروهی در صف قرار گرفت
+Automation rule ran	قانون خودکار اجرا شد
+Report generated	گزارش ساخته شد
+Network route saved	مسیر شبکه ذخیره شد
+Unknown AI job.	کار هوش مصنوعی ناشناخته است.
+Queued — starting in a moment…	در صف — تا لحظاتی دیگر شروع می‌شود…
+Could not start the job (database not ready).	کار شروع نشد (دیتابیس آماده نیست).
+Reading the content, Search Console queries and the SEO knowledge base…	خواندن محتوا، جست‌وجوهای سرچ کنسول و پایگاه دانش سئو…
+Not found.	پیدا نشد.
+Activity	فعالیت‌ها
+this page	این صفحه
+Read the real Search Console queries and the content of “%s”.	جست‌وجوهای واقعی سرچ کنسول و محتوای «%s» را می‌خواند.
+Write a new SEO title and meta description with AI (SEO knowledge base + competitor results).	با هوش مصنوعی عنوان سئو و توضیحات متای جدید می‌نویسد (پایگاه دانش سئو + نتایج رقبا).
+Save them in %1$s for “%2$s” (a new version; undo anytime).	آن‌ها را در %1$s برای «%2$s» ذخیره می‌کند (نسخه جدید؛ هر وقت خواستید برگردانید).
+Track the result as an experiment (CTR after 14–28 days).	نتیجه را به‌صورت آزمایش دنبال می‌کند (CTR بعد از ۱۴ تا ۲۸ روز).
+Read “%s”, its Search Console queries, the knowledge base and competitor pages.	«%s»، جست‌وجوهای سرچ کنسول آن، پایگاه دانش و صفحات رقبا را می‌خواند.
+Rewrite and expand the content with AI — goal: %s	محتوا را با هوش مصنوعی بازنویسی و کامل می‌کند — هدف: %s
+Check the result (no keyword stuffing, links and shortcodes kept, score before vs. after).	نتیجه را بررسی می‌کند (بدون تکرار بیش از حد کلمه، حفظ لینک‌ها و شورت‌کدها، امتیاز قبل و بعد).
+Update “%s” (a new version; undo anytime).	«%s» را به‌روز می‌کند (نسخه جدید؛ هر وقت خواستید برگردانید).
+Read the product data of “%s” (attributes, price, categories, images, queries).	اطلاعات محصول «%s» را می‌خواند (ویژگی‌ها، قیمت، دسته‌ها، تصاویر، جست‌وجوها).
+Write SEO title, meta description, short description, focus keywords and image ALT with AI.	عنوان سئو، توضیحات متا، توضیح کوتاه، کلمات کلیدی و ALT تصاویر را با هوش مصنوعی می‌نویسد.
+Save every field (each one versioned; undo anytime).	همه فیلدها را ذخیره می‌کند (هرکدام نسخه‌دار؛ قابل برگشت).
+Collect the question queries people search for “%s”.	سؤال‌هایی را که مردم درباره «%s» جست‌وجو می‌کنند جمع می‌کند.
+Write short, factual answers with AI.	با هوش مصنوعی پاسخ‌های کوتاه و دقیق می‌نویسد.
+Add the FAQ (with FAQPage schema) to the page.	پرسش‌های متداول را (با اسکیمای FAQPage) به صفحه اضافه می‌کند.
+Change “%1$s” of “%2$s” (a new version; undo anytime).	«%1$s» در «%2$s» را تغییر می‌دهد (نسخه جدید؛ قابل برگشت).
+the best matching live page	مرتبط‌ترین صفحه فعال
+Create a 301 redirect from %1$s to %2$s.	ریدایرکت ۳۰۱ از %1$s به %2$s می‌سازد.
+Search the whole site for pages related to “%s” that already mention its topic.	کل سایت را برای صفحاتی که با «%s» مرتبط‌اند و درباره موضوعش حرف می‌زنند می‌گردد.
+Add a link with the text “%1$s” in “%2$s”.	لینکی با متن «%1$s» در «%2$s» اضافه می‌کند.
+Write one natural sentence with a link into “%s” (AI, using the whole site’s content).	یک جمله طبیعی همراه لینک در «%s» می‌نویسد (با هوش مصنوعی و بر اساس محتوای کل سایت).
+Save each edited page (versioned; undo anytime).	هر صفحه ویرایش‌شده را ذخیره می‌کند (نسخه‌دار؛ قابل برگشت).
+Point every redirect of a chain straight to its final URL (loops are left for you to decide).	هر ریدایرکت زنجیره را مستقیم به آدرس نهایی می‌برد (حلقه‌ها را برای تصمیم شما می‌گذارد).
+Run the AI on %d items in the background, one by one.	هوش مصنوعی را روی %d مورد، یکی‌یکی و در پس‌زمینه اجرا می‌کند.
+Add the topic to the content planner with an AI brief (headings, questions, length).	موضوع را با بریف هوش مصنوعی (تیترها، سؤال‌ها، طول) به برنامه محتوا اضافه می‌کند.
+This task needs your decision; follow the steps on the left. SEOlity can open the right screen for you.	این کار به تصمیم شما نیاز دارد؛ مراحل سمت چپ را دنبال کنید. SEOlity می‌تواند صفحه درست را برایتان باز کند.
+This task needs your decision; SEOlity cannot do it alone.	این کار به تصمیم شما نیاز دارد؛ SEOlity به‌تنهایی نمی‌تواند انجامش دهد.
+AI is doing it	هوش مصنوعی در حال انجام
+Done — every change is versioned (undo in AI Center → AI Changes).	انجام شد — همه تغییرات نسخه‌دارند (برگرداندن در مرکز هوش مصنوعی ← تغییرات هوش مصنوعی).
+Finished	تمام شد
+No related page was found to link from. Publish a related article first, or add the link by hand.	صفحه مرتبطی برای لینک دادن پیدا نشد. اول یک مقاله مرتبط منتشر کنید یا لینک را دستی اضافه کنید.
+Reading “%s” and writing a sentence that links to the page…	خواندن «%s» و نوشتن جمله‌ای که به صفحه لینک می‌دهد…
+Skipped “%s”: the topics do not fit together.	«%s» رد شد: موضوع‌ها به هم نمی‌خورند.
+Adding the link in “%s”…	افزودن لینک در «%s»…
+Link “%1$s” written into “%2$s”	لینک «%1$s» در «%2$s» نوشته شد
+The related pages are about different topics, so no natural link could be added.	صفحات مرتبط درباره موضوع‌های دیگری هستند، پس لینک طبیعی اضافه نشد.
+Reading the search queries of “%s”…	خواندن جست‌وجوهای «%s»…
+Saving the new SEO title and meta description…	ذخیره عنوان سئو و توضیحات متای جدید…
+%1$s updated on “%2$s”	%1$s در «%2$s» به‌روز شد
+Analyzing “%s” and writing the improved version with AI…	تحلیل «%s» و نوشتن نسخه بهتر با هوش مصنوعی…
+The AI produced no usable change.	هوش مصنوعی تغییر قابل استفاده‌ای نداد.
+SEO score %1$s → %2$s — updating the page…	امتیاز سئو %1$s ← %2$s — در حال به‌روزرسانی صفحه…
+“%1$s” rewritten (SEO score %2$s → %3$s)	«%1$s» بازنویسی شد (امتیاز سئو %2$s ← %3$s)
+Optimizing the product “%s” with AI…	بهینه‌سازی محصول «%s» با هوش مصنوعی…
+Saving %s…	ذخیره %s…
+%s saved	%s ذخیره شد
+Writing the FAQ for “%s”…	نوشتن پرسش‌های متداول برای «%s»…
+FAQ added to “%s”	پرسش‌های متداول به «%s» اضافه شد
+%1$s changed on “%2$s”	%1$s در «%2$s» تغییر کرد
+No matching live page was found; choose the target yourself in Technical SEO → Redirects.	صفحه فعال مناسبی پیدا نشد؛ مقصد را خودتان در سئوی فنی ← ریدایرکت‌ها انتخاب کنید.
+Creating the redirect %1$s → %2$s…	ساخت ریدایرکت %1$s ← %2$s…
+301 redirect created: %1$s → %2$s	ریدایرکت ۳۰۱ ساخته شد: %1$s ← %2$s
+Finding pages across the site that should link to “%s”…	پیدا کردن صفحاتی از سایت که باید به «%s» لینک بدهند…
+Adding the link “%1$s” in “%2$s”…	افزودن لینک «%1$s» در «%2$s»…
+Link “%1$s” added in “%2$s”	لینک «%1$s» در «%2$s» اضافه شد
+The suggested anchors are no longer in the source pages.	متن‌های لینک پیشنهادی دیگر در صفحات مبدأ نیستند.
+Adding the link…	افزودن لینک…
+Link added	لینک اضافه شد
+Pointing redirect chains straight to their final URL…	اصلاح زنجیره‌های ریدایرکت به آدرس نهایی…
+%d redirects fixed	%d ریدایرکت اصلاح شد
+%d items queued — follow them in Live activity	%d مورد در صف — در «فعالیت زنده» دنبالشان کنید
+Topic added to the content planner	موضوع به برنامه محتوا اضافه شد
+This host does not allow PHP to start programs (proc_open is disabled). Subscriptions can only run through GitHub here.	این هاست اجازه اجرای برنامه به PHP نمی‌دهد (proc_open غیرفعال است). اینجا اشتراک فقط از طریق گیت‌هاب کار می‌کند.
+Claude Code CLI was not found on this server. Install it (npm install -g @anthropic-ai/claude-code) or enter its full path.	ابزار Claude Code روی این سرور پیدا نشد. نصبش کنید (npm install -g @anthropic-ai/claude-code) یا مسیر کاملش را وارد کنید.
+Codex CLI was not found on this server. Install it (npm install -g @openai/codex) or enter its full path.	ابزار Codex روی این سرور پیدا نشد. نصبش کنید (npm install -g @openai/codex) یا مسیر کاملش را وارد کنید.
+Save your subscription login first (Settings → AI).	اول ورود اشتراک را ذخیره کنید (تنظیمات ← هوش مصنوعی).
+Reading your site data…	خواندن اطلاعات سایت شما…
+Message not found.	پیام پیدا نشد.
+Chat answer (again)	پاسخ چت (دوباره)
+Continuing…	ادامه…
+Waiting for the AI answer from GitHub…	در انتظار پاسخ هوش مصنوعی از گیت‌هاب…
+Error, will retry: %s	خطا، دوباره تلاش می‌شود: %s
+Do it yourself — exactly where	خودتان انجام دهید — دقیقاً کجا
+Let the AI do it	بگذارید هوش مصنوعی انجام دهد
+This is exactly what SEOlity will do on your site. Nothing changes until you approve. Every change is versioned — undo anytime in AI Center → AI Changes.	SEOlity دقیقاً همین کارها را روی سایت شما انجام می‌دهد. تا تأیید نکنید چیزی تغییر نمی‌کند. همه تغییرات نسخه‌دارند — هر وقت خواستید در مرکز هوش مصنوعی ← تغییرات هوش مصنوعی برگردانید.
+Connect an AI provider first (Settings → AI).	اول یک سرویس هوش مصنوعی وصل کنید (تنظیمات ← هوش مصنوعی).
+This task needs your decision; follow the steps on the left.	این کار به تصمیم شما نیاز دارد؛ مراحل سمت چپ را دنبال کنید.
+Approve & let the AI do it	تأیید و انجام توسط هوش مصنوعی
+The AI is working…	هوش مصنوعی در حال کار است…
+Stopped	متوقف شد
+Done	انجام شد
+AI route: %s	مسیر هوش مصنوعی: %s
+Review the changes	بررسی تغییرات
+AI request	درخواست هوش مصنوعی
+Background job	کار پس‌زمینه
+AI agent	دستیار اجرایی هوش مصنوعی
+Chat	چت
+Event	رویداد
+Waiting	در انتظار
+Cancelled	لغو شد
+This server	همین سرور
+via %s	از مسیر %s
+No step details for this entry.	برای این مورد جزئیات مرحله‌ای ثبت نشده است.
+Model: %s	مدل: %s
+Tokens: %1$s in / %2$s out	توکن: %1$s ورودی / %2$s خروجی
+Error code: %s	کد خطا: %s
+What SEOlity is doing right now, and an exact timeline of everything it did on your site — every AI answer (with the route it took and any error), every edit, every data collection.	SEOlity همین الان چه می‌کند و خط زمانی دقیق هر کاری که روی سایت شما انجام داده — هر پاسخ هوش مصنوعی (با مسیری که رفت و هر خطا)، هر ویرایش و هر جمع‌آوری داده.
+Live activity	فعالیت زنده
+Running now	در حال اجرا
+Waiting (GitHub / retry)	در انتظار (گیت‌هاب / تلاش دوباره)
+Failed in the last hour	ناموفق در یک ساعت اخیر
+Jobs in the queue	کارهای در صف
+Nothing is running right now	الان کاری در حال اجرا نیست
+Start an analysis, an AI edit or a chat question — you will see every step here as it happens.	یک تحلیل، ویرایش هوش مصنوعی یا سؤال چت شروع کنید — هر مرحله را همین‌جا به‌صورت زنده می‌بینید.
+Updates every 3 seconds · finished work moves to “Completed work”.	هر ۳ ثانیه به‌روز می‌شود · کارهای تمام‌شده به «کارهای انجام‌شده» می‌روند.
+Everything	همه
+All results	همه نتیجه‌ها
+%s entries	%s مورد
+Everything SEOlity does on your site will be listed here with the exact time.	هر کاری که SEOlity روی سایت شما انجام دهد با زمان دقیق اینجا فهرست می‌شود.
+%s running	%s در حال اجرا
+%s failed in the last hour	%s ناموفق در یک ساعت اخیر
+Search conversations…	جست‌وجوی گفتگوها…
+Ask anything about your site. Answers are grounded in your real Search Console, audit, competitor and experiment data — and stay here even if you reload the page.	هر سؤالی درباره سایتتان بپرسید. پاسخ‌ها بر پایه داده‌های واقعی سرچ کنسول، ممیزی، رقبا و آزمایش‌ها هستند — و حتی اگر صفحه را رفرش کنید همین‌جا می‌مانند.
+Copy conversation	کپی گفتگو
+Which new articles are not indexed yet?	کدام مقاله‌های جدید هنوز ایندکس نشده‌اند؟
+Write 5 article ideas my competitors rank for	۵ ایده مقاله که رقبایم با آن رتبه دارند بنویس
+About a page…	درباره یک صفحه…
+Enter to send · Shift+Enter for a new line	Enter برای ارسال · Shift+Enter برای خط جدید
+Conversations	گفتگوها
+Which page is the question about?	سؤال درباره کدام صفحه است؟
+Search pages, posts, products…	جست‌وجوی برگه‌ها، نوشته‌ها، محصولات…
+The AI is answering through GitHub — the answer will appear here, even after a reload.	هوش مصنوعی از طریق گیت‌هاب پاسخ می‌دهد — پاسخ حتی بعد از رفرش همین‌جا نمایش داده می‌شود.
+Thinking with your site data and the SEO knowledge base…	در حال فکر کردن با داده‌های سایت و پایگاه دانش سئو…
+The AI could not answer:	هوش مصنوعی نتوانست پاسخ دهد:
+Check the connection	بررسی اتصال
+Answer again	پاسخ دوباره
+Hi! I am your AI SEO strategist. Ask me about traffic, rankings, new articles that are not indexed yet, products, competitors or what to do next.	سلام! من استراتژیست سئوی هوش مصنوعی شما هستم. درباره ترافیک، رتبه‌ها، مقاله‌های جدیدی که هنوز ایندکس نشده‌اند، محصولات، رقبا یا قدم بعدی بپرسید.
+No conversations yet.	هنوز گفتگویی نیست.
+%s messages	%s پیام
+Delete this conversation?	این گفتگو حذف شود؟
+Copied. Open the page in its editor — the card there inserts the text with one click.	کپی شد. صفحه را در ویرایشگرش باز کنید — کارت آنجا متن را با یک کلیک درج می‌کند.
+Copy & open the editor	کپی و باز کردن ویرایشگر
+SEOlity tasks (%s)	کارهای SEOlity (%s)
+Minimize	کوچک کردن
+Show fewer	نمایش کمتر
++%s more	%s مورد دیگر+
+Hide details	بستن جزئیات
+Show details	نمایش جزئیات
+Open the report	باز کردن گزارش
+Completed work	کارهای انجام‌شده

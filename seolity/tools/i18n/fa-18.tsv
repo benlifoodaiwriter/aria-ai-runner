@@ -1,0 +1,87 @@
+Checking follow-ups	بررسی پیگیری‌ها
+Sending the notification e-mail	ارسال ایمیل اعلان‌ها
+Notifications	اعلان‌ها
+Warning	هشدار
+Good news	خبر خوب
+Message from the AI	پیام هوش مصنوعی
+[%1$s] %2$d new notifications	[%1$s] %2$d اعلان تازه
+All notifications	همه اعلان‌ها
+The server did not accept the e-mail (wp_mail returned false). Install an SMTP plugin (e.g. WP Mail SMTP) so mail is sent through a real mail account.	سرور ایمیل را نپذیرفت (wp_mail مقدار false برگرداند). یک افزونه SMTP مثل WP Mail SMTP نصب کنید تا ایمیل از یک حساب ایمیل واقعی ارسال شود.
+Test e-mail from SEOlity	ایمیل آزمایشی از SEOlity
+If you can read this, notifications reach this address.	اگر این را می‌خوانید، اعلان‌ها به این آدرس می‌رسند.
+Not a valid e-mail address: %s	آدرس ایمیل معتبر نیست: %s
+Open the conversation	باز کردن گفتگو
+Added to notifications.	به اعلان‌ها اضافه شد.
+Not added.	اضافه نشد.
+Added to the SEO roadmap.	به نقشه راه سئو اضافه شد.
+A change needs a page and an action.	برای تغییر، یک صفحه و یک نوع کار لازم است.
+This field cannot be changed on this page.	این فیلد در این صفحه قابل تغییر نیست.
+This address is not a page or archive of the site.	این آدرس صفحه یا بایگانی سایت نیست.
+Being prepared — it will appear in the floating popup for “Review & apply”. Nothing changes until you approve.	در حال آماده‌سازی — در پنجره شناور برای «بررسی و اعمال» ظاهر می‌شود. تا تأیید نکنید چیزی تغییر نمی‌کند.
+Already scheduled for %s.	از قبل برای %s زمان‌بندی شده است.
+SEOlity checks the result on %s and sends you a notification.	SEOlity در تاریخ %s نتیجه را بررسی می‌کند و برایتان اعلان می‌فرستد.
+The page does not exist.	این صفحه وجود ندارد.
+“%s” is a building block (template, snippet or system item), not a page visitors find in Google.	«%s» یک قطعه سازنده است (قالب، تکه کد یا مورد سیستمی)، نه صفحه‌ای که بازدیدکننده در گوگل پیدا کند.
+Nothing on the site uses it, so SEO changes to it have no effect.	هیچ جای سایت از آن استفاده نمی‌کند، پس تغییر سئوی آن هیچ اثری ندارد.
+Not published.	منتشر نشده است.
+Set to noindex — Google is told not to show it.	روی noindex است — به گوگل گفته شده نمایشش ندهد.
+Home, shop or blog page.	صفحه اصلی، فروشگاه یا وبلاگ.
+Linked in a navigation menu.	در منوی سایت لینک شده است.
+%d sales.	%d فروش.
+The archive does not exist.	این بایگانی وجود ندارد.
+Empty archive (no items).	بایگانی خالی (بدون مورد).
+No internal link points to it.	هیچ لینک داخلی به آن نمی‌رسد.
+%1$s clicks and %2$s impressions in Google (90 days).	%1$s کلیک و %2$s نمایش در گوگل (۹۰ روز).
+Critical page	صفحه حیاتی
+Important page	صفحه مهم
+Normal page	صفحه معمولی
+Minor page	صفحه کم‌اهمیت
+Building block used by other pages	قطعه سازنده‌ای که صفحه‌های دیگر از آن استفاده می‌کنند
+Unused / not a page	بدون استفاده / صفحه نیست
+Backlinks & off-site (reportage, PR)	بک‌لینک و بیرون از سایت (رپورتاژ، روابط عمومی)
+Backlinks and reportage bring authority from other sites; they work best once the target pages are clean and strong.	بک‌لینک و رپورتاژ اعتبار سایت‌های دیگر را می‌آورند؛ وقتی بهترین نتیجه را می‌دهند که صفحه‌های مقصد تمیز و قوی باشند.
+Follow-up	پیگیری
+%1$s: clicks %2$d → %3$d, position %4$s → %5$s	%1$s: کلیک %2$d ← %3$d، جایگاه %4$s ← %5$s
+It got better.	بهتر شد.
+It got worse — worth a look.	بدتر شد — ارزش بررسی دارد.
+No clear change yet.	هنوز تغییر روشنی دیده نمی‌شود.
+Result of “%2$s” (since %1$s)	نتیجه «%2$s» (از %1$s)
+Goal:	هدف:
+Ask the AI what to do next	از هوش مصنوعی بپرسید قدم بعدی چیست
+Applied change	تغییر اعمال‌شده
+More clicks and a better position for the changed pages.	کلیک بیشتر و جایگاه بهتر برای صفحه‌های تغییرکرده.
+Roadmap task	کار نقشه راه
+Change to review & apply	تغییر برای بررسی و اعمال
+Notification	اعلان
+Results	نتیجه‌ها
+AI messages	پیام‌های هوش مصنوعی
+Sent by e-mail	با ایمیل ارسال شد
+E-mail failed	ایمیل ارسال نشد
+SEOlity measures these pages and queries again on the date shown and sends you the result. Every applied change gets one automatically (after 28 days); the AI chat adds one whenever you ask it to check something later.	SEOlity در تاریخ نوشته‌شده این صفحه‌ها و کوئری‌ها را دوباره می‌سنجد و نتیجه را برایتان می‌فرستد. هر تغییر اعمال‌شده خودکار یک پیگیری می‌گیرد (۲۸ روز بعد) و هر وقت از چت بخواهید چیزی را بعداً بررسی کند، یک پیگیری اضافه می‌کند.
+No follow-ups yet	هنوز پیگیری‌ای نیست
+Ask the AI chat “check this again in a month”, or apply a change.	به چت بگویید «یک ماه دیگر این را دوباره بررسی کن»، یا یک تغییر اعمال کنید.
+Better	بهتر
+Worse	بدتر
+No clear change	بدون تغییر روشن
+Checked	بررسی شد
+Check on %s	بررسی در %s
+clicks %1$s → %2$s, position %3$s → %4$s	کلیک %1$s ← %2$s، جایگاه %3$s ← %4$s
+Created %s	ساخته‌شده در %s
+Check now	همین حالا بررسی کن
+Right away, one e-mail per notification	فوری، یک ایمیل برای هر اعلان
+Once a day, all new notifications together	روزی یک بار، همه اعلان‌های تازه با هم
+E-mail notifications	اعلان‌های ایمیلی
+Send notifications by e-mail	ارسال اعلان‌ها با ایمیل
+Recipients (comma separated)	گیرنده‌ها (با ویرگول جدا کنید)
+Which notifications	کدام اعلان‌ها
+Last e-mail sent	آخرین ایمیل ارسال شد
+Last e-mail failed	آخرین ایمیل ارسال نشد
+Send a test e-mail	ارسال ایمیل آزمایشی
+Test e-mail sent to %s	ایمیل آزمایشی به %s ارسال شد
+E-mail goes through WordPress (wp_mail). If tests fail or land in spam, install an SMTP plugin such as WP Mail SMTP so mail is sent from a real mailbox.	ایمیل از طریق وردپرس (wp_mail) فرستاده می‌شود. اگر آزمایش ناموفق بود یا به اسپم رفت، یک افزونه SMTP مثل WP Mail SMTP نصب کنید تا ایمیل از یک صندوق واقعی ارسال شود.
+Messages from SEOlity’s AI: warnings, results of your changes, good news, follow-ups and advice — also sent to your e-mail.	پیام‌های هوش مصنوعی SEOlity: هشدارها، نتیجه تغییرات شما، خبرهای خوب، پیگیری‌ها و پیشنهادها — به ایمیل شما هم ارسال می‌شود.
+Follow-ups	پیگیری‌ها
+E-mail	ایمیل
+SEOlity checks for important changes every hour and writes here.	SEOlity هر ساعت تغییرات مهم را بررسی می‌کند و این‌جا می‌نویسد.
+Used in %d place(s) of the site — keep it, but it needs no SEO title, description or redirect.	در %d جای سایت استفاده شده — نگهش دارید، ولی عنوان سئو، توضیحات یا ریدایرکت لازم ندارد.
+Internal links pointing to it: %d.	تعداد لینک‌های داخلی به این صفحه: %d.

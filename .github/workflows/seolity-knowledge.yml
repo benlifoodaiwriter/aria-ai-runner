@@ -1,0 +1,80 @@
+# SEOlity – SEO knowledge builder
+# Created by the SEOlity plugin. Learns from authoritative SEO documentation and, when started
+# from a site ("Collect knowledge now"), from that site's Search Console data and competitors.
+# Writes Markdown to seolity/knowledge/ which SEOlity syncs and injects into its AI prompts.
+#
+# AI access (first available): ANTHROPIC_API_KEY, CLAUDE_CODE_OAUTH_TOKEN (Claude Pro/Max)
+# or CODEX_AUTH_JSON (ChatGPT) — the subscription secrets are added automatically when you
+# deploy subscription AI into the same repository.
+name: SEOlity knowledge builder
+
+on:
+  schedule:
+    - cron: "17 3 * * 1" # Weekly, Monday 03:17 UTC
+  workflow_dispatch:
+    inputs:
+      site:
+        description: "Site host to build a playbook for (brief.json in seolity/knowledge/site/<host>)"
+        default: ""
+      max_sources:
+        description: "Maximum documents to distil in this run"
+        default: "8"
+      only:
+        description: "Comma-separated source ids (empty = all)"
+        default: ""
+      force:
+        description: "Re-distil unchanged sources (1 = yes)"
+        default: "0"
+
+concurrency:
+  group: seolity-knowledge
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    env:
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+      CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+      CODEX_AUTH_JSON: ${{ secrets.CODEX_AUTH_JSON }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install the AI tool for the available account
+        working-directory: seolity/tools/knowledge-builder
+        run: |
+          if [ -n "$ANTHROPIC_API_KEY" ]; then npm install --no-audit --no-fund
+          elif [ -n "$CLAUDE_CODE_OAUTH_TOKEN" ]; then npm install -g @anthropic-ai/claude-code && claude --version
+          elif [ -n "$CODEX_AUTH_JSON" ]; then npm install -g @openai/codex && codex --version
+          else echo "No AI secret found – see the summary."; fi
+
+      - name: Collect and distil knowledge
+        working-directory: seolity/tools/knowledge-builder
+        env:
+          KB_MODEL: ${{ vars.KB_MODEL }}
+          KB_EFFORT: ${{ vars.KB_EFFORT }}
+          KB_SITE: ${{ github.event.inputs.site || '' }}
+          KB_MAX_SOURCES: ${{ github.event.inputs.max_sources || '8' }}
+          KB_ONLY: ${{ github.event.inputs.only || '' }}
+          KB_FORCE: ${{ github.event.inputs.force || '0' }}
+        run: node build.mjs
+
+      - name: Commit changes
+        run: |
+          if [ -z "$(git status --porcelain seolity/knowledge)" ]; then
+            echo "No knowledge changes."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add seolity/knowledge
+          git commit -m "SEOlity knowledge: $(date -u +%Y-%m-%d) ${{ github.event.inputs.site || 'weekly' }}"
+          for i in 1 2 3; do git pull --rebase --quiet && git push && break; sleep 5; done

@@ -1,0 +1,260 @@
+%1$s request failed: %2$s	درخواست %1$s ناموفق بود: %2$s
+%1$s API error (%2$d): %3$s	خطای API در %1$s (%2$d): %3$s
+AI provider returned a non-JSON response.	ارائه‌دهنده هوش مصنوعی پاسخی غیر JSON برگرداند.
+No AI provider is configured. Add an API key in SEOlity → Settings → AI.	هیچ ارائه‌دهنده هوش مصنوعی تنظیم نشده است. در سئولیتی ← تنظیمات ← هوش مصنوعی یک کلید API اضافه کنید.
+Monthly AI budget reached. Increase it in Settings or wait until next month.	بودجه ماهانه هوش مصنوعی تمام شده است. آن را در تنظیمات افزایش دهید یا تا ماه بعد صبر کنید.
+The AI response did not match the expected structure. Please try again.	پاسخ هوش مصنوعی با ساختار مورد انتظار مطابقت نداشت. لطفاً دوباره تلاش کنید.
+Possible keyword stuffing: focus keyword density %s%%.	احتمال انباشت کلمه کلیدی: تراکم کلمه کانونی %s%%.
+Generated content contains hidden-text styling — removed is recommended.	محتوای تولیدشده دارای استایل متن مخفی است — حذف آن توصیه می‌شود.
+%d original link(s) were removed — review before applying.	%d لینک اصلی حذف شده است — قبل از اعمال بررسی کنید.
+New external link added: %s — verify it exists and is appropriate.	لینک خارجی جدید اضافه شد: %s — از وجود و مناسب بودن آن مطمئن شوید.
+Shortcode [%s] is missing from the optimized version.	کد کوتاه [%s] در نسخه بهینه وجود ندارد.
+New figure "%s" not found in original — verify accuracy.	عدد جدید «%s» در متن اصلی نبود — صحت آن را بررسی کنید.
+The model declined this request.	مدل این درخواست را رد کرد.
+Custom (OpenAI-compatible)	سفارشی (سازگار با OpenAI)
+Custom AI endpoint URL is not allowed.	آدرس سرویس هوش مصنوعی سفارشی مجاز نیست.
+Gemini blocked this response for safety reasons.	جمینای این پاسخ را به دلایل ایمنی مسدود کرد.
+Local LLM (Ollama)	مدل زبانی محلی (Ollama)
+Site Audit	ممیزی سایت
+Search Console	سرچ کنسول
+Products	محصولات
+Internal Links	لینک‌های داخلی
+Redirects	ریدایرکت‌ها
+Robots.txt	Robots.txt
+Reports	گزارش‌ها
+Knowledge Base	پایگاه دانش
+You are not allowed to access this page.	شما اجازه دسترسی به این صفحه را ندارید.
+SEOlity requires JavaScript.	سئولیتی به جاوااسکریپت نیاز دارد.
+Forbidden	غیرمجاز
+Analyze this page	تحلیل این صفحه
+SEO Health	سلامت سئو
+%1$d critical and %2$d high-priority actions waiting.	%1$d اقدام بحرانی و %2$d اقدام با اولویت بالا در انتظار است.
+e.g. espresso machine for home	مثلاً اسپرسوساز خانگی
+Noindex this page	نوایندکس کردن این صفحه
+SEO title & description are managed by %s. SEOlity AI reads and writes them there.	عنوان و توضیحات سئو توسط %s مدیریت می‌شوند. هوش مصنوعی سئولیتی آن‌ها را از همان‌جا می‌خواند و می‌نویسد.
+Noindex this archive	نوایندکس کردن این آرشیو
+Tip: an author bio with real credentials and experience strengthens E-E-A-T. Use “Optimize with SEOlity AI” next to the biography field.	نکته: زندگی‌نامه نویسنده با سوابق و تجربه واقعی، E-E-A-T را تقویت می‌کند. از دکمه «بهینه‌سازی با هوش مصنوعی سئولیتی» کنار فیلد زندگی‌نامه استفاده کنید.
+Organic clicks dropped %1$s%% week over week	کلیک‌های ارگانیک نسبت به هفته قبل %1$s%% کاهش یافت
+Clicks went from %2$d to %3$d (last 7 days vs previous 7). Check the Losers report and recent changes.	کلیک‌ها از %2$d به %3$d رسید (۷ روز اخیر در برابر ۷ روز قبل). گزارش بازندگان و تغییرات اخیر را بررسی کنید.
+Site CTR dropped %s%% week over week	CTR سایت نسبت به هفته قبل %s%% کاهش یافت
+Impressions held but fewer people click — SERP features, competitor snippets or title changes may be the cause.	نمایش‌ها ثابت مانده اما کلیک کمتر شده — ویژگی‌های صفحه نتایج، اسنیپت رقبا یا تغییر عنوان‌ها می‌تواند علت باشد.
+Average position worsened by %s	میانگین جایگاه %s واحد بدتر شد
+Rankings fell across the site — check for algorithm updates, technical problems or lost pages.	رتبه‌ها در کل سایت افت کرده — به‌روزرسانی الگوریتم، مشکلات فنی یا صفحات ازدست‌رفته را بررسی کنید.
+Page lost all organic clicks: %s	صفحه همه کلیک‌های ارگانیک را از دست داد: %s
+This page went from steady traffic to zero — it may be deindexed, broken, redirected or noindexed.	ترافیک این صفحه از حالت پایدار به صفر رسیده — ممکن است از ایندکس حذف، خراب، ریدایرکت یا نوایندکس شده باشد.
+Lost keyword: "%s"	کلمه کلیدی ازدست‌رفته: «%s»
+It had %1$d impressions at position %2$s and no longer appears.	این کلمه %1$d نمایش در جایگاه %2$s داشت و دیگر ظاهر نمی‌شود.
+New keyword gaining visibility: "%s"	کلمه کلیدی جدید در حال دیده‌شدن: «%s»
+%1$d impressions at position %2$s — consider strengthening the ranking page.	%1$d نمایش در جایگاه %2$s — تقویت صفحه رتبه‌دار را در نظر بگیرید.
+New 404 getting hits: %s	۴۰۴ جدید با بازدید: %s
+%d hits since it first appeared. Redirect it to the suggested target.	%d بازدید از زمان اولین ظهور. آن را به مقصد پیشنهادی ریدایرکت کنید.
+%d published pages became noindex in the last 24h	%d صفحه منتشرشده در ۲۴ ساعت گذشته نوایندکس شدند
+A setting, plugin or theme change may be hiding pages from Google.	یک تنظیم، افزونه یا تغییر قالب ممکن است صفحات را از گوگل پنهان کرده باشد.
+%1$s published %2$d new pages	%1$s تعداد %2$d صفحه جدید منتشر کرد
+Review their new content and the content-gap report.	محتوای جدید آن‌ها و گزارش شکاف محتوایی را بررسی کنید.
+Focus keyword appears in the SEO title.	کلمه کلیدی کانونی در عنوان سئو آمده است.
+Add the focus keyword to the SEO title, ideally near the beginning.	کلمه کلیدی کانونی را ترجیحاً در ابتدای عنوان سئو قرار دهید.
+Focus keyword appears in the meta description.	کلمه کلیدی کانونی در توضیحات متا آمده است.
+Mention the focus keyword naturally in the meta description (Google bolds matching terms).	کلمه کلیدی کانونی را به‌طور طبیعی در توضیحات متا بیاورید (گوگل عبارات منطبق را پررنگ می‌کند).
+Focus keyword is used in the introduction.	کلمه کلیدی کانونی در مقدمه استفاده شده است.
+Use the focus keyword (or a close variant) in the first paragraph.	کلمه کلیدی کانونی (یا شکل نزدیک آن) را در پاراگراف اول به کار ببرید.
+Focus keyword appears in a subheading.	کلمه کلیدی کانونی در یک زیرعنوان آمده است.
+Use the focus keyword or a variant in at least one H2/H3.	کلمه کلیدی کانونی یا شکل دیگری از آن را حداقل در یک H2/H3 به کار ببرید.
+URL slug reflects the topic.	نامک URL موضوع را نشان می‌دهد.
+The URL slug does not contain the focus keyword (only change slugs of new pages, or add a redirect).	نامک URL شامل کلمه کلیدی کانونی نیست (فقط نامک صفحات جدید را تغییر دهید یا ریدایرکت اضافه کنید).
+Keyword density is %s%% — this looks like keyword stuffing. Use synonyms and natural language.	تراکم کلمه کلیدی %s%% است — شبیه انباشت کلمه کلیدی است. از مترادف‌ها و زبان طبیعی استفاده کنید.
+Focus keyword used %d time(s). Make sure the main topic is clearly covered.	کلمه کلیدی کانونی %d بار استفاده شده. مطمئن شوید موضوع اصلی به‌خوبی پوشش داده شده است.
+Natural keyword usage (%s%%).	استفاده طبیعی از کلمه کلیدی (%s%%).
+At least one image ALT describes the topic.	حداقل یک ALT تصویر موضوع را توصیف می‌کند.
+Describe at least one relevant image with an ALT that relates to the topic.	حداقل یک تصویر مرتبط را با ALT مرتبط با موضوع توصیف کنید.
+No focus keyword set — SEOlity can suggest one from Search Console data.	کلمه کلیدی کانونی تعیین نشده — سئولیتی می‌تواند از داده‌های سرچ کنسول یکی پیشنهاد دهد.
+SEO title is missing.	عنوان سئو وجود ندارد.
+SEO title is short (%d chars). Use the space to add a benefit or qualifier.	عنوان سئو کوتاه است (%d نویسه). از فضای باقی‌مانده برای افزودن مزیت یا توصیف‌کننده استفاده کنید.
+SEO title may be truncated in Google (~%dpx, limit ≈580px).	عنوان سئو ممکن است در گوگل بریده شود (حدود %dpx، حد مجاز ≈۵۸۰px).
+SEO title length is good.	طول عنوان سئو مناسب است.
+Meta description is missing — Google will pick a random snippet.	توضیحات متا وجود ندارد — گوگل یک بخش تصادفی را نمایش می‌دهد.
+Meta description is short (%d chars). Aim for 120–160.	توضیحات متا کوتاه است (%d نویسه). ۱۲۰ تا ۱۶۰ نویسه هدف‌گذاری کنید.
+Meta description is long (%d chars) and will be truncated.	توضیحات متا طولانی است (%d نویسه) و بریده می‌شود.
+Meta description length is good.	طول توضیحات متا مناسب است.
+Content contains more than one H1. Themes usually output the title as H1 — use H2 inside content.	محتوا بیش از یک H1 دارد. قالب‌ها معمولاً عنوان را H1 نمایش می‌دهند — داخل محتوا از H2 استفاده کنید.
+Content is structured with subheadings.	محتوا با زیرعنوان‌ها ساختاربندی شده است.
+Break the content into sections with descriptive H2/H3 headings.	محتوا را با زیرعنوان‌های توصیفی H2/H3 بخش‌بندی کنید.
+Heading levels are skipped (e.g. H2 → H4). Keep a logical hierarchy for accessibility.	سطوح عنوان جا افتاده‌اند (مثلاً H2 ← H4). برای دسترس‌پذیری، سلسله‌مراتب منطقی را حفظ کنید.
+%d internal link(s) found.	%d لینک داخلی پیدا شد.
+Add internal links to related pages to help users and crawlers.	برای کمک به کاربران و خزنده‌ها به صفحات مرتبط لینک داخلی دهید.
+Cites external sources.	به منابع خارجی ارجاع می‌دهد.
+Consider citing authoritative sources (supports E-E-A-T).	ارجاع به منابع معتبر را در نظر بگیرید (به E-E-A-T کمک می‌کند).
+%d image(s) have no ALT text.	%d تصویر متن ALT ندارد.
+All images have ALT text.	همه تصاویر متن ALT دارند.
+No images — visuals improve engagement and can rank in Image Search.	بدون تصویر — تصاویر تعامل را افزایش می‌دهند و می‌توانند در جستجوی تصاویر رتبه بگیرند.
+Text is easy to read.	متن خوانا است.
+Shorten long sentences and paragraphs; use lists for steps and specs.	جملات و پاراگراف‌های طولانی را کوتاه کنید؛ برای مراحل و مشخصات از فهرست استفاده کنید.
+%1$d words (recommended ≥ %2$d for this type) — depth score reflects coverage, structure and supporting elements, not length alone.	%1$d کلمه (برای این نوع ≥ %2$d توصیه می‌شود) — امتیاز عمق، پوشش، ساختار و عناصر پشتیبان را می‌سنجد، نه فقط طول را.
+Covers %1$d of %2$d related terms/subtopics.	%1$d از %2$d اصطلاح/زیرموضوع مرتبط را پوشش می‌دهد.
+Mentions %1$d of %2$d key entities.	به %1$d از %2$d موجودیت کلیدی اشاره می‌کند.
+Content format vs. "%s" search intent.	قالب محتوا در برابر هدف جستجوی «%s».
+Several sentences are repeated — remove boilerplate to increase information gain.	چند جمله تکرار شده‌اند — متن‌های تکراری را حذف کنید تا ارزش اطلاعاتی افزایش یابد.
+Unexpected error.	خطای غیرمنتظره.
+You are not allowed to edit this item.	شما اجازه ویرایش این مورد را ندارید.
+Change not found.	تغییر پیدا نشد.
+Only URLs of this site can be tested.	فقط URLهای همین سایت قابل آزمایش هستند.
+This property is not available for the connected account.	این پراپرتی برای حساب متصل در دسترس نیست.
+You are not allowed to edit this product.	شما اجازه ویرایش این محصول را ندارید.
+Unknown secret.	کلید محرمانه ناشناخته.
+Dates must be YYYY-MM-DD.	تاریخ‌ها باید به‌صورت YYYY-MM-DD باشند.
+%1$s clicks this week (%2$s%%)	%1$s کلیک در این هفته (%2$s%%)
+Impressions %3$s, avg. position %4$s.	نمایش‌ها %3$s، میانگین جایگاه %4$s.
+Rising: %1$s (+%2$d clicks)	در حال رشد: %1$s (+%2$d کلیک)
+Falling: %1$s (%2$d clicks)	در حال افت: %1$s (%2$d کلیک)
+%d new issue types detected in the last audit	%d نوع مشکل جدید در آخرین ممیزی شناسایی شد
+Experiment "%1$s": %2$s	آزمایش «%1$s»: %2$s
+Organic clicks %s%% week over week	کلیک‌های ارگانیک %s%% نسبت به هفته قبل
+Your daily SEO briefing	گزارش روزانه سئوی شما
+Health score %1$s. %2$d prioritized actions are waiting, %3$d AI changes need your review.	امتیاز سلامت %1$s. %2$d اقدام اولویت‌دار در انتظار است و %3$d تغییر هوش مصنوعی نیاز به بررسی شما دارد.
+Please type a question.	لطفاً یک سؤال بنویسید.
+Enter a valid domain, e.g. example.com	یک دامنه معتبر وارد کنید، مثلاً example.com
+This domain does not resolve to a public address.	این دامنه به یک آدرس عمومی اشاره نمی‌کند.
+Competitor not found.	رقیب پیدا نشد.
+This field cannot be changed by SEOlity.	این فیلد توسط سئولیتی قابل تغییر نیست.
+Object not found.	مورد پیدا نشد.
+Suggested value is identical to the current value.	مقدار پیشنهادی با مقدار فعلی یکسان است.
+Could not store the change.	ذخیره تغییر ممکن نشد.
+This change is no longer pending.	این تغییر دیگر در انتظار نیست.
+Only applied changes can be reverted.	فقط تغییرات اعمال‌شده قابل بازگشت هستند.
+A page with organic traffic was trashed: %s	صفحه‌ای با ترافیک ارگانیک به زباله‌دان منتقل شد: %s
+It received %1$d clicks in the last 28 days and has %2$d internal links. Add a 301 redirect to the closest relevant page to keep its value.	این صفحه در ۲۸ روز گذشته %1$d کلیک گرفته و %2$d لینک داخلی دارد. برای حفظ ارزش آن، به نزدیک‌ترین صفحه مرتبط ریدایرکت ۳۰۱ بزنید.
+FAQ must be valid JSON.	سؤالات متداول باید JSON معتبر باشد.
+Term not found.	دسته/برچسب پیدا نشد.
+There is no content to optimize yet. Write a draft or use "Generate".	هنوز محتوایی برای بهینه‌سازی وجود ندارد. یک پیش‌نویس بنویسید یا از «تولید» استفاده کنید.
+Unknown bulk task.	عملیات گروهی ناشناخته.
+FAQ generated from page content and real question queries.	سؤالات متداول از محتوای صفحه و کوئری‌های سؤالی واقعی تولید شد.
+Page has an empty title, so no H1 / title tag is generated.	صفحه عنوان خالی دارد، بنابراین H1 / تگ عنوان تولید نمی‌شود.
+SEOlity Client	مشتری سئولیتی
+Pages returning 4xx errors	صفحات با خطای 4xx
+Broken pages waste crawl budget, lose link equity and frustrate users.	صفحات خراب بودجه خزش را هدر می‌دهند، اعتبار لینک را از بین می‌برند و کاربران را ناامید می‌کنند.
+Restore the page or 301-redirect it to the closest relevant URL; update internal links.	صفحه را بازیابی کنید یا به نزدیک‌ترین URL مرتبط ریدایرکت ۳۰۱ بزنید؛ لینک‌های داخلی را به‌روز کنید.
+Pages returning server errors (5xx)	صفحات با خطای سرور (5xx)
+Repeated 5xx responses make Google crawl less and can drop pages from the index.	خطاهای مکرر 5xx باعث کاهش خزش گوگل می‌شود و ممکن است صفحات از ایندکس حذف شوند.
+Check PHP error logs, hosting resources and plugin conflicts.	گزارش خطاهای PHP، منابع هاست و تداخل افزونه‌ها را بررسی کنید.
+Temporary (302/307) redirects	ریدایرکت‌های موقت (302/307)
+Temporary redirects signal the move is not permanent; signals may not consolidate.	ریدایرکت موقت نشان می‌دهد انتقال دائمی نیست؛ ممکن است سیگنال‌ها تجمیع نشوند.
+Use 301 for permanent moves.	برای انتقال دائمی از ۳۰۱ استفاده کنید.
+Redirect chains	زنجیره‌های ریدایرکت
+Each hop adds latency and Google may stop following long chains.	هر پرش تأخیر اضافه می‌کند و گوگل ممکن است زنجیره‌های طولانی را دنبال نکند.
+Point the first URL directly at the final destination.	URL اول را مستقیماً به مقصد نهایی هدایت کنید.
+Redirect loops	حلقه‌های ریدایرکت
+Loops make pages completely inaccessible.	حلقه‌ها صفحات را کاملاً غیرقابل دسترس می‌کنند.
+Break the loop by fixing or deleting one of the redirects.	با اصلاح یا حذف یکی از ریدایرکت‌ها حلقه را بشکنید.
+Noindex pages	صفحات نوایندکس
+These pages are excluded from Google. That is fine for utility pages but harmful for pages meant to rank.	این صفحات از گوگل حذف شده‌اند. برای صفحات کاربردی اشکالی ندارد اما برای صفحاتی که باید رتبه بگیرند مضر است.
+Confirm each noindex is intentional.	مطمئن شوید هر نوایندکس عمدی است.
+Noindex pages that still earn search impressions	صفحات نوایندکسی که هنوز در جستجو نمایش دارند
+A page Google still shows is set to noindex — traffic will be lost when Google re-crawls it.	صفحه‌ای که گوگل هنوز نمایش می‌دهد نوایندکس شده — با خزش مجدد گوگل ترافیک آن از دست می‌رود.
+Remove noindex if the page should rank.	اگر صفحه باید رتبه بگیرد، نوایندکس را بردارید.
+Noindex URLs listed in the XML sitemap	URLهای نوایندکس در نقشه سایت XML
+Conflicting signals: the sitemap asks Google to index a page that says noindex.	سیگنال‌های متناقض: نقشه سایت از گوگل می‌خواهد صفحه‌ای را ایندکس کند که نوایندکس است.
+Remove these URLs from the sitemap or remove the noindex.	این URLها را از نقشه سایت حذف کنید یا نوایندکس را بردارید.
+Published pages blocked by robots.txt	صفحات منتشرشده مسدود توسط robots.txt
+Google cannot crawl blocked pages, so their content cannot rank.	گوگل نمی‌تواند صفحات مسدود را خزش کند، پس محتوای آن‌ها رتبه نمی‌گیرد.
+Adjust robots.txt rules (SEOlity → Robots).	قوانین robots.txt را اصلاح کنید (سئولیتی ← Robots).
+Pages with meta nofollow	صفحات دارای متای نوفالو
+Links on these pages pass no signals to the rest of the site.	لینک‌های این صفحات هیچ سیگنالی به بقیه سایت منتقل نمی‌کنند.
+Remove nofollow unless intentional.	اگر عمدی نیست، نوفالو را بردارید.
+Missing canonical tag	تگ کنونیکال وجود ندارد
+Without a canonical, URL variants (parameters, trailing slashes) can be indexed as duplicates.	بدون کنونیکال، نسخه‌های مختلف URL (پارامترها، اسلش انتهایی) ممکن است به‌عنوان تکراری ایندکس شوند.
+Add a self-referencing canonical.	یک کنونیکال خودارجاع اضافه کنید.
+Multiple canonical tags	چند تگ کنونیکال
+Google ignores conflicting canonicals.	گوگل کنونیکال‌های متناقض را نادیده می‌گیرد.
+Make sure only one plugin/theme outputs a canonical.	مطمئن شوید فقط یک افزونه/قالب کنونیکال خروجی می‌دهد.
+Relative or invalid canonical URL	URL کنونیکال نسبی یا نامعتبر
+Canonicals should be absolute URLs.	کنونیکال باید URL مطلق باشد.
+Use the absolute URL.	از URL مطلق استفاده کنید.
+Canonical points to a redirect or error page	کنونیکال به صفحه ریدایرکت یا خطا اشاره می‌کند
+Google will likely ignore it and may choose another canonical.	گوگل احتمالاً آن را نادیده گرفته و کنونیکال دیگری انتخاب می‌کند.
+Point the canonical at a 200, indexable URL.	کنونیکال را به یک URL قابل ایندکس با کد ۲۰۰ اشاره دهید.
+Canonicalized to another URL	کنونیکال به URL دیگر
+This URL declares another URL as the primary version.	این URL، URL دیگری را نسخه اصلی معرفی می‌کند.
+Verify the canonical target is correct.	از درستی مقصد کنونیکال مطمئن شوید.
+No XML sitemap found	نقشه سایت XML پیدا نشد
+Sitemaps help Google discover and prioritize URLs.	نقشه سایت به گوگل در کشف و اولویت‌بندی URLها کمک می‌کند.
+Enable SEOlity sitemaps or your SEO plugin sitemap and submit it in GSC.	نقشه سایت سئولیتی یا افزونه سئوی خود را فعال و در سرچ کنسول ثبت کنید.
+Sitemap lists redirects or broken URLs	نقشه سایت شامل ریدایرکت یا URL خراب است
+Sitemaps should only list canonical, 200, indexable URLs.	نقشه سایت فقط باید شامل URLهای کنونیکال، با کد ۲۰۰ و قابل ایندکس باشد.
+Exclude these URLs from the sitemap.	این URLها را از نقشه سایت حذف کنید.
+robots.txt does not reference the sitemap	robots.txt به نقشه سایت اشاره نمی‌کند
+Listing the sitemap in robots.txt helps all crawlers find it.	معرفی نقشه سایت در robots.txt به همه خزنده‌ها کمک می‌کند آن را پیدا کنند.
+Add a Sitemap: line.	یک خط Sitemap: اضافه کنید.
+Missing title tag	تگ عنوان وجود ندارد
+The title is the strongest on-page relevance signal and the SERP headline.	عنوان قوی‌ترین سیگنال ارتباط در صفحه و تیتر نتیجه جستجو است.
+Write a unique, descriptive title.	یک عنوان یکتا و توصیفی بنویسید.
+Title too long (truncated in SERP)	عنوان بیش از حد طولانی (در نتایج بریده می‌شود)
+Truncated titles hide your value proposition and lower CTR.	عنوان‌های بریده‌شده ارزش پیشنهادی شما را پنهان و CTR را کم می‌کنند.
+Keep titles under ~580px / 60 characters.	عنوان‌ها را زیر حدود ۵۸۰ پیکسل / ۶۰ نویسه نگه دارید.
+Title too short	عنوان بیش از حد کوتاه
+Short titles miss qualifiers searchers look for.	عنوان‌های کوتاه توصیف‌کننده‌هایی که جستجوگران دنبالش هستند را ندارند.
+Add a benefit, qualifier or year.	یک مزیت، توصیف‌کننده یا سال اضافه کنید.
+Multiple <title> tags	چند تگ <title>
+Usually a theme/plugin conflict.	معمولاً ناشی از تداخل قالب/افزونه است.
+Ensure only one title is output.	مطمئن شوید فقط یک عنوان خروجی داده می‌شود.
+Duplicate titles	عنوان‌های تکراری
+Duplicate titles make pages compete and confuse Google.	عنوان‌های تکراری صفحات را رقیب هم می‌کنند و گوگل را سردرگم می‌کنند.
+Make every title unique.	هر عنوان را یکتا کنید.
+Missing meta description	توضیحات متا وجود ندارد
+Google writes its own snippet, often lowering CTR.	گوگل خلاصه خودش را می‌نویسد که اغلب CTR را کاهش می‌دهد.
+Write a compelling 120–158 character description.	یک توضیح جذاب ۱۲۰ تا ۱۵۸ نویسه‌ای بنویسید.
+Meta description too short or too long	توضیحات متا خیلی کوتاه یا خیلی بلند
+Short descriptions under-sell; long ones get cut off.	توضیحات کوتاه ارزش را کامل نمی‌رسانند و بلندها بریده می‌شوند.
+Aim for 120–158 characters.	۱۲۰ تا ۱۵۸ نویسه هدف‌گذاری کنید.
+Duplicate meta descriptions	توضیحات متای تکراری
+Duplicates reduce snippet relevance.	تکرار، ارتباط اسنیپت را کاهش می‌دهد.
+Write unique descriptions.	توضیحات یکتا بنویسید.
+Missing Open Graph tags	تگ‌های Open Graph وجود ندارند
+Shares on social networks look broken without OG title/image.	بدون عنوان/تصویر OG، اشتراک‌گذاری در شبکه‌های اجتماعی ناقص به نظر می‌رسد.
+SEOlity can output OG tags automatically.	سئولیتی می‌تواند تگ‌های OG را خودکار خروجی دهد.
+Missing Twitter Card tags	تگ‌های Twitter Card وجود ندارند
+X/Twitter previews fall back to plain links.	پیش‌نمایش در ایکس/توییتر به لینک ساده تبدیل می‌شود.
+Enable Twitter Cards output.	خروجی Twitter Card را فعال کنید.
+Missing H1	H1 وجود ندارد
+The H1 tells users and Google what the page is about.	H1 به کاربران و گوگل می‌گوید صفحه درباره چیست.
+Ensure the theme prints the title as H1 or add one.	مطمئن شوید قالب عنوان را به‌صورت H1 نمایش می‌دهد یا یکی اضافه کنید.
+Multiple H1 headings	چند عنوان H1
+Not an error for Google, but a weak document outline for accessibility.	برای گوگل خطا نیست، اما ساختار سند را از نظر دسترس‌پذیری ضعیف می‌کند.
+Use one H1, then H2/H3.	یک H1 و سپس H2/H3 به کار ببرید.
+Long content without subheadings	محتوای طولانی بدون زیرعنوان
+Walls of text hurt scanning and passage ranking.	متن‌های یکپارچه طولانی، مرور سریع و رتبه‌بندی بخش‌ها را دشوار می‌کنند.
+Add descriptive H2/H3 sections.	بخش‌های توصیفی H2/H3 اضافه کنید.
+Heading levels skipped	سطوح عنوان جاافتاده
+Skipped levels break the outline for screen readers.	سطوح جاافتاده ساختار را برای صفحه‌خوان‌ها به هم می‌زند.
+Keep a logical heading hierarchy.	سلسله‌مراتب منطقی عنوان‌ها را حفظ کنید.
+Pages with little unique content rarely rank and can drag down site quality.	صفحات با محتوای یکتای کم به‌ندرت رتبه می‌گیرند و می‌توانند کیفیت کل سایت را پایین بیاورند.
+Expand with genuinely helpful information, merge with a related page, or noindex.	با اطلاعات واقعاً مفید گسترش دهید، با صفحه مرتبط ادغام کنید یا نوایندکس کنید.
+Duplicate content	محتوای تکراری
+Identical pages split signals; Google picks one at random.	صفحات یکسان سیگنال‌ها را تقسیم می‌کنند؛ گوگل یکی را تصادفی انتخاب می‌کند.
+Canonicalize, merge or rewrite.	کنونیکال، ادغام یا بازنویسی کنید.
+Near-duplicate content	محتوای تقریباً تکراری
+Very similar pages may cannibalize each other.	صفحات بسیار مشابه ممکن است رقیب هم شوند.
+Differentiate the intent of each page or consolidate.	هدف هر صفحه را متمایز کنید یا آن‌ها را یکی کنید.
+Keyword cannibalization	هم‌نوع‌خواری کلمه کلیدی
+Several URLs compete for the same query, diluting rankings.	چند URL برای یک کوئری رقابت می‌کنند و رتبه‌ها تضعیف می‌شود.
+Merge, redirect, differentiate or re-target.	ادغام، ریدایرکت، متمایزسازی یا تغییر هدف.
+Content may depend on JavaScript	محتوا ممکن است به جاوااسکریپت وابسته باشد
+Very little text in the HTML but many scripts — content rendered client-side may be indexed late or not at all.	متن بسیار کمی در HTML و اسکریپت‌های زیاد — محتوای رندرشده در مرورگر ممکن است دیر یا اصلاً ایندکس نشود.
+Server-render important content.	محتوای مهم را سمت سرور رندر کنید.
+Broken internal links	لینک‌های داخلی خراب
+Links to 404 pages waste crawl budget and frustrate users.	لینک به صفحات ۴۰۴ بودجه خزش را هدر می‌دهد و کاربران را ناامید می‌کند.
+Fix the link or redirect the target.	لینک را اصلاح یا مقصد را ریدایرکت کنید.
+Internal links pointing to redirects	لینک‌های داخلی به ریدایرکت‌ها
+Extra hops slow crawling and users.	پرش‌های اضافی خزش و کاربران را کند می‌کنند.
+Link directly to the final URL.	مستقیماً به URL نهایی لینک دهید.
+Broken external links	لینک‌های خارجی خراب
+Links to dead external pages hurt UX and trust.	لینک به صفحات خارجی ازکارافتاده تجربه کاربری و اعتماد را کاهش می‌دهد.
+Update or remove the outdated links.	لینک‌های قدیمی را به‌روز یا حذف کنید.
+Orphan pages (no internal links)	صفحات یتیم (بدون لینک داخلی)
+Pages without internal links are hard to discover and seem unimportant.	صفحات بدون لینک داخلی سخت کشف می‌شوند و کم‌اهمیت به نظر می‌رسند.
+Link to them from relevant pages (SEOlity → Internal Links).	از صفحات مرتبط به آن‌ها لینک دهید (سئولیتی ← لینک‌های داخلی).
+Pages deeper than 4 clicks	صفحات عمیق‌تر از ۴ کلیک
+Deep pages get crawled less often and receive less internal PageRank.	صفحات عمیق کمتر خزش می‌شوند و اعتبار داخلی کمتری می‌گیرند.
+Improve navigation, hubs and internal links.	ناوبری، صفحات هاب و لینک‌های داخلی را بهبود دهید.
+Excessive links on page	لینک‌های بیش از حد در صفحه
+Hundreds of links dilute value and overwhelm users.	صدها لینک ارزش را رقیق و کاربران را سردرگم می‌کند.
+Trim mega-menus/footers.	مگامنوها/فوترها را خلاصه کنید.

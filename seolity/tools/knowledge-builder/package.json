@@ -1,0 +1,10 @@
+{
+  "name": "seolity-knowledge-builder",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Distils top Persian and international SEO documentation into the SEOlity knowledge base.",
+  "type": "module",
+  "engines": { "node": ">=20" },
+  "scripts": { "build": "node build.mjs" },
+  "dependencies": { "@anthropic-ai/sdk": "*" }
+}
