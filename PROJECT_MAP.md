@@ -6,7 +6,7 @@
 - هوش مصنوعی: API (Anthropic/OpenAI/Gemini/…)، اشتراک Claude/ChatGPT از طریق CLI روی همین سرور یا اجراکننده GitHub Actions، رله Cloudflare.
 
 ## 2. وضعیت فعلی
-- نسخه **1.15.0** (`seolity/seolity.php:6`)، DB schema **1.7.0** (`seolity.php:23`). شاخه `claude/beautiful-ride-7ilxpf`.
+- نسخه **1.15.0** (`seolity/seolity.php:6`)، DB schema **1.7.0** (`seolity.php:23`). شاخه کامل و مستقل: `seolity-complete` (در مخزن اصلی `benlifoodaiwriter/aria-ai-runner` کار روی `claude/beautiful-ride-7ilxpf` انجام شد).
 - ناوبری 1.15.0 مثل AI Writer: هر صفحه یک آیتم جدا در منوی وردپرس و سایدبار، زیر عنوان گروه؛ بدون «تب بخش» بالای صفحه. چت و نقشه راه دو کاشی بزرگ بالای سایدبار. تنظیمات به ۷ صفحه جدا (`settings`، `settings-ai`، …) شکسته شد.
 - کار می‌کند (با آزمایش در سایت آزمایشی؛ با حساب واقعی کاربر تأیید نشده):
   - CLIهای محلی: کشف Node.js، اجراکننده مرکزی، طبقه‌بندی خطا، ورود Codex با کد دستگاه، نصب Codex بدون npm، صفحه «موتورهای هوش مصنوعی» (#/engines) با انتخاب مدل.
@@ -52,6 +52,8 @@
 | `docs/ARCHITECTURE.md` | معماری؛ بخش‌های 15b (CLI) و 15c (چت/اعلان) | — |
 | `readme.txt` | changelog | — |
 | `runner/runner.mjs` | کد اجراکننده گیت‌هاب (رمزنگاری AES-GCM) | — |
+| `../extras/` | فایل‌هایی که جزو SEOlity نیستند (اجراکننده AI Writer، کپی workflow دانش) | — |
+| `../README.md` | معرفی مخزن (فارسی/انگلیسی) | — |
 | `../backup/*.md` | بکاپ کامل: شروع، نمای کلی + نمودار mermaid، نقشه کد، درس‌ها، تاریخچه، changelog | — |
 | `../docs/SESSION-ROADMAP.md` | نقشه قدیمی کوتاه (جایگزین با همین فایل) | — |
 | `../CLAUDE.md`, `../.mcp.json`, `../.claude/` | تنظیمات code-review-graph (کامیت شده) | — |
@@ -92,7 +94,7 @@
 ## 7. قوانین و ترجیحات کاربر
 - پاسخ همیشه **فارسی**؛ کاربر غیربرنامه‌نویس است، توضیح ساده.
 - UI: کارت‌های بزرگ افقی (الگوی `.sl-mapcard`) مثل داشبورد؛ RTL؛ موبایل.
-- کامیت روی همین شاخه؛ پایان پیام کامیت: `Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>` و `Claude-Session: <لینک گفتگوی فعلی>`. شناسه مدل در کد/کامیت ننویس. PR نساز مگر خواسته شود.
+- کامیت روی شاخه‌ای که برای گفتگو داده شده (در مخزن جدید: `seolity-complete`)؛ پایان پیام کامیت: `Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>` و `Claude-Session: <لینک گفتگوی فعلی>`. شناسه مدل در کد/کامیت ننویس. PR نساز مگر خواسته شود.
 - هر نسخه: `seolity.php` (Version + SEOLITY_VERSION)، `readme.txt` (Stable tag + changelog)، ترجمه تا `missing: 0`، ZIP: `git archive --format=zip --prefix=seolity/ -o <scratch>/seolity-X.zip HEAD:seolity` و ارسال؛ ZIP کامیت نشود.
 - صرفه‌جویی توکن؛ گزارش صادقانه (چه آزمایش شد، چه نشد).
 - هرگز: جمع‌آوری رمز/کوکی، اسکرپ گوگل، دور زدن محدودیت شبکه، اعمال تغییر بدون تأیید کاربر.

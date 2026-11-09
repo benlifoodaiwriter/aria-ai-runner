@@ -1,7 +1,8 @@
 # بکاپ و راهنمای ادامه پروژه SEOlity — از اینجا شروع کنید
 
 > تاریخ این بکاپ: 2026-11-09 · نسخه افزونه: **1.15.0** · نسخه پایگاه داده: **1.7.0**
-> مخزن: `benlifoodaiwriter/aria-ai-runner` · شاخه کار: `claude/beautiful-ride-7ilxpf`
+> شاخه کامل و مستقل: **`seolity-complete`** (قابل انتقال به هر مخزن و حساب دیگر).
+> مخزن اصلی که کار در آن انجام شد: `benlifoodaiwriter/aria-ai-runner`، شاخه `claude/beautiful-ride-7ilxpf`.
 
 این پوشه هر چیزی را که یک گفتگوی جدید Claude (یا یک برنامه‌نویس) برای ادامه دقیق پروژه لازم دارد در خود دارد.
 
@@ -29,7 +30,7 @@
 این را در یک گفتگوی جدید Claude Code (روی همین مخزن) بفرستید:
 
 ```
-ادامه پروژه SEOlity. مخزن benlifoodaiwriter/aria-ai-runner، شاخه claude/beautiful-ride-7ilxpf.
+ادامه پروژه SEOlity (افزونه وردپرس در پوشه seolity/). روی شاخه seolity-complete کار کن.
 اول PROJECT_MAP.md و بعد backup/00-START-HERE.md را بخوان و طبق «راهنمای کار با این نقشه» کار کن.
 فایل‌های backup/ را فقط وقتی لازم شد بخوان (03-LESSONS.md را قبل از هر تغییر مهم).
 کار بعدی: <کار را اینجا بنویسید>
@@ -37,7 +38,7 @@
 
 ## قوانین کار (خلاصه؛ جزئیات در 03-LESSONS.md)
 1. پاسخ همیشه فارسی و ساده (کاربر برنامه‌نویس نیست).
-2. همه تغییرات روی شاخه `claude/beautiful-ride-7ilxpf`؛ شاخه `main` مال افزونه دیگر (ARIAGH.AIWRITER) است — به آن دست نزن. PR نساز مگر کاربر بخواهد.
+2. همه تغییرات روی شاخه‌ای که برای گفتگو داده شده (در مخزن جدید: `seolity-complete`). PR نساز مگر کاربر بخواهد. در مخزن اصلی، شاخه `main` مال افزونه دیگر (ARIAGH.AIWRITER) است — به آن دست نزن.
 3. هر نسخه: `seolity/seolity.php` (Version و SEOLITY_VERSION)، `seolity/readme.txt` (Stable tag + changelog)، ترجمه تا `missing: 0`، ساخت ZIP با
    `git archive --format=zip --prefix=seolity/ -o <scratchpad>/seolity-X.Y.Z.zip HEAD:seolity` و فرستادن برای کاربر. ZIP را کامیت نکن.
 4. بعد از هر تغییر مهم، بخش مربوط در `PROJECT_MAP.md` را به‌روز کن.
@@ -47,10 +48,10 @@
 ## بازگردانی از این بکاپ
 - **کد افزونه:** همه چیز در گیت است. برای ساخت دوباره فایل نصبی:
   ```bash
-  git clone https://github.com/benlifoodaiwriter/aria-ai-runner.git
+  git clone https://github.com/<حساب-شما>/<مخزن-شما>.git
   ```
   ```bash
-  cd aria-ai-runner && git checkout claude/beautiful-ride-7ilxpf
+  cd <مخزن-شما> && git checkout seolity-complete
   ```
   ```bash
   git archive --format=zip --prefix=seolity/ -o seolity-1.15.0.zip HEAD:seolity
@@ -58,5 +59,10 @@
 - **ترجمه فارسی** (اگر رشته جدید اضافه شد): خط‌های جدید را در `seolity/tools/i18n/fa-NN.tsv` بنویسید (انگلیسی TAB فارسی) و از پوشه `seolity` اجرا کنید: `python3 tools/i18n/build.py` تا `missing: 0`.
 - **محیط آزمایش** (سایت وردپرس آزمایشی) در کانتینرهای ابری پاک می‌شود؛ روش ساخت دوباره در `03-LESSONS.md` بخش «محیط آزمایش» آمده است.
 
+## انتقال به حساب یا مخزن دیگر
+- این شاخه (`seolity-complete`) کامل و مستقل است: کد، اسناد، بکاپ، تاریخچه گیت، `CLAUDE.md` (که Claude Code خودکار می‌خواند) و `README.md`. فایل‌هایی که مال SEOlity نیستند در `extras/` هستند و هیچ workflow گیت‌هابی خودکار اجرا نمی‌شود.
+- روش انتقال: در حساب جدید گیت‌هاب از github.com/new/import آدرس مخزن اصلی را بدهید (همه شاخه‌ها منتقل می‌شوند) و بعد در Settings → Branches شاخه پیش‌فرض را `seolity-complete` بگذارید. یا فایل bundle را clone و push کنید.
+- پیش‌فرض‌های کد که هنوز به مخزن اصلی اشاره می‌کنند (عمداً تغییر نکرده‌اند): منبع دانش مشترک `GitHubHub::SHARED_KB` و تنظیم `kb_repo` (`benlifoodaiwriter/aria-ai-runner`، شاخه `main`، مسیر `seolity/knowledge`). اگر مخزن اصلی حذف یا خصوصی شود، این پیش‌فرض را به مخزن جدید تغییر دهید.
+
 ## هشدار مهم: مخزن عمومی است
-مخزن `aria-ai-runner` روی گیت‌هاب **عمومی (public)** است؛ یعنی هر کسی کد افزونه و این بکاپ را می‌بیند. هیچ رمز یا کلیدی در فایل‌ها نیست (بررسی شد). اگر نمی‌خواهید کد دیده شود، یک مخزن **خصوصی** جدید بسازید و فایل ZIP بکاپ کامل را آنجا آپلود کنید (روش در پاسخ چت آمده است). فایل لایسنس‌دار AI Writer (`ARIAGH-AIWRITER-1.9.1-OWNER-Unlimited.zip`) را هرگز در مخزن عمومی نگذارید.
+مخزن اصلی `aria-ai-runner` روی گیت‌هاب **عمومی (public)** است؛ یعنی هر کسی کد افزونه و این بکاپ را می‌بیند. هیچ رمز یا کلیدی در فایل‌ها نیست (بررسی شد). اگر نمی‌خواهید کد دیده شود، یک مخزن **خصوصی** جدید بسازید و فایل ZIP بکاپ کامل را آنجا آپلود کنید (روش در پاسخ چت آمده است). فایل لایسنس‌دار AI Writer (`ARIAGH-AIWRITER-1.9.1-OWNER-Unlimited.zip`) را هرگز در مخزن عمومی نگذارید.
