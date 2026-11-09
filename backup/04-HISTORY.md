@@ -1,11 +1,12 @@
 # تاریخچه پروژه (بازسازی‌شده از کامیت‌ها و changelog)
 
-> متن کامل گفتگوهای قبلی در دسترس نیست. این تاریخچه از ۵۲ کامیت گیت، changelog هر نسخه (`05-CHANGELOG.md`) و خلاصه‌هایی که در پایان گفتگوها نوشته شده‌اند (`/PROJECT_MAP.md` و `/docs/SESSION-ROADMAP.md`) ساخته شده است. هر تاریخ تقریباً یک یا چند گفتگو است.
+> متن کامل گفتگوهای قبلی در دسترس نیست. این تاریخچه از ۶۵ کامیت گیت (۱۴ کامیت اول، از 2026-09-30 تا 2026-10-04، را خود افزونه AI Writer برای به‌روزرسانی اجراکننده‌اش زده است؛ این مخزن در اصل مخزن اجراکننده AI Writer بود)، changelog هر نسخه (`05-CHANGELOG.md`) و خلاصه‌هایی که در پایان گفتگوها نوشته شده‌اند (`/PROJECT_MAP.md` و `/docs/SESSION-ROADMAP.md`) ساخته شده است. هر تاریخ تقریباً یک یا چند گفتگو است.
 
 ## خلاصه مسیر
 
 | تاریخ | نسخه‌ها | کار اصلی |
 |---|---|---|
+| 2026-09-30 تا 2026-10-03 | AI Writer 1.2.0 تا 1.7.0 | پیش از SEOlity: افزونه AI Writer فایل‌های اجراکننده GitHub خود (`runner/runner.mjs`، `.github/workflows/aria-writer.yml`) را خودکار در این مخزن به‌روز می‌کرد. |
 | 2026-10-04 | 1.0.0, 1.1.0 (و AI Writer 1.8.0) | شروع پروژه: هسته افزونه، موتور AI، سرچ کنسول، خزنده، REST، رابط SPA، ترجمه فارسی، پایگاه دانش، کاتالوگ ۵۶۷ قابلیت، هوش مصنوعی اشتراکی از راه GitHub Actions (1.0 تا 1.1). |
 | 2026-10-05 | 1.2.0, 1.3.0 | طراحی دوباره رابط به زبان بصری AI Writer، آیکون‌های خطی به جای ایموجی، ادغام Rank Math، کلمات کلیدی کانونی از GSC، راهنمای اتصال (1.2 تا 1.3). |
 | 2026-10-08 | 1.4.0, 1.5.0 | ویزارد اشتراک، هاب GitHub، رله Cloudflare، API سفارشی، نام تجاری ARIAGH.SEOLITY، ناوبری ۹ بخشی با تب (1.4 تا 1.5). |
@@ -21,9 +22,24 @@
 
 ## همه کامیت‌ها به ترتیب زمان
 
+### 2026-09-30 تا 2026-10-03 (کامیت‌های خودکار AI Writer)
+- `e812ec0` 2026-09-30 Initial commit
+- `280a8ce` 2026-09-30 Aria AI Writer 1.2.0: update .github/workflows/aria-writer.yml
+- `9814a09` 2026-09-30 Aria AI Writer 1.2.0: update runner/runner.mjs
+- `100407b` 2026-09-30 Aria AI Writer 1.2.0: update README.md
+- `69bd165` 2026-09-30 Aria AI Writer 1.3.0: update .github/workflows/aria-writer.yml
+- `8bef65c` 2026-09-30 Aria AI Writer 1.3.0: update runner/runner.mjs
+- `864b224` 2026-09-30 Aria AI Writer 1.4.0: update runner/runner.mjs
+- `d44c85f` 2026-09-30 ARIAGH.AIWRITER 1.5.0: update .github/workflows/aria-writer.yml
+- `466b844` 2026-09-30 ARIAGH.AIWRITER 1.5.0: update runner/runner.mjs
+- `4dea0ba` 2026-10-01 ARIAGH.AIWRITER 1.6.0: update runner/runner.mjs
+- `2510f8f` 2026-10-03 ARIAGH.AIWRITER 1.7.0: update .github/workflows/aria-writer.yml
+- `e48be26` 2026-10-03 ARIAGH.AIWRITER 1.7.0: update runner/runner.mjs
+
 ### 2026-10-04
 _شروع پروژه: هسته افزونه، موتور AI، سرچ کنسول، خزنده، REST، رابط SPA، ترجمه فارسی، پایگاه دانش، کاتالوگ ۵۶۷ قابلیت، هوش مصنوعی اشتراکی از راه GitHub Actions (1.0 تا 1.1)._
 
+- `0128ad2` ARIAGH.AIWRITER 1.8.0: update .github/workflows/aria-writer.yml
 - `332e3e6` ARIAGH.AIWRITER 1.8.0: update runner/runner.mjs
 - `6583e36` SEOlity: core platform, AI engine, GSC, crawler, intelligence services and REST API
 - `c587da6` SEOlity: admin SPA, editor integrations, design system and Persian translations
